@@ -1,0 +1,28 @@
+generated: '2026-07-19'
+method: searched
+source: https://academy.insiderone.com/docs/upsert-user-data-api-integration-wizard-2
+docs: https://academy.insiderone.com/docs/upsert-user-data-api-integration-wizard-2
+summary:
+  types: [apiKey]
+  api_key_in: [header]
+  oauth2_flows: []
+  notes: >-
+    Insider's Unified Customer Database (Upsert User Data API) authenticates with a
+    two-header API-key pair. API credentials are generated per partner/account in
+    the InOne panel via the integration wizard and must be kept confidential;
+    testing is recommended against a UAT account before production.
+schemes:
+- name: RequestToken
+  type: apiKey
+  in: header
+  parameter: X-REQUEST-TOKEN
+  description: Generated API key for the account. Sent on every request.
+  sources: [docs]
+- name: PartnerName
+  type: apiKey
+  in: header
+  parameter: X-PARTNER-NAME
+  description: >-
+    The Insider partner name for the account (auto-populated by the wizard).
+    Paired with X-REQUEST-TOKEN to identify and authorize the caller.
+  sources: [docs]
