@@ -1,0 +1,25 @@
+generated: '2026-07-19'
+method: searched
+source: https://insiderone.com/security/
+standards:
+- id: soc2
+  conforms: true
+  evidence: SOC 2 examination published for the Insider Growth Management Platform.
+- id: iso-27001
+  conforms: true
+  evidence: ISO/IEC 27001:2013 Information Security Management System certificate.
+- id: iso-27701
+  conforms: true
+  evidence: ISO/IEC 27701 Privacy Information Management certification badge on /security/.
+- id: csa-star
+  conforms: true
+  evidence: Listed in CSA STAR registry (insider-sg-pte-ltd).
+- id: gdpr
+  conforms: true
+  evidence: EU GDPR data-handling addressed in privacy policy and security posture.
+- id: oauth2
+  conforms: false
+  evidence: Own data-ingestion API uses API-key header auth, not OAuth2.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: No application/problem+json error format documented.

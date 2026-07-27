@@ -1,0 +1,16 @@
+generated: '2026-07-19'
+method: searched
+source: https://insiderone.com/security/
+url: https://insiderone.com/security/
+certifications:
+- SOC 2
+- ISO 27001:2013
+- ISO 27701
+- CSA STAR
+programs:
+  information_security_policy: https://insiderone.com/information-security-policy/
+  soc2_examination: https://insiderone.com/soc-2-examination-for-insider-growth-management-platform/
+csa_star_registry: https://cloudsecurityalliance.org/star/registry/insider-sg-pte-ltd
+evidence:
+- source: https://insiderone.com/security/
+  keywords: [soc 2, iso 27001, iso 27701, csa star, information security]

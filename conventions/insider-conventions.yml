@@ -1,0 +1,37 @@
+generated: '2026-07-19'
+method: searched
+source: https://academy.insiderone.com/docs/upsert-user-data-api-integration-wizard-2
+docs: https://academy.insiderone.com/docs
+summary: >-
+  Cross-cutting request/response conventions for Insider's data-ingestion APIs
+  (Upsert User Data API, Catalog API), derived from the Insider One Academy
+  developer documentation.
+authentication:
+  style: api-key-header
+  headers: [X-REQUEST-TOKEN, X-PARTNER-NAME]
+  ref: authentication/insider-authentication.yml
+content_type:
+  request: application/json
+  response: application/json
+versioning:
+  scheme: uri-path
+  current: v1
+  example: https://unification.useinsider.com/api/user/v1/upsert
+rate_limiting:
+  signaled_via_status: 429
+  guidance: >-
+    On a 429 response the documentation instructs clients to throttle requests and
+    retry. Specific per-minute limits are not published.
+  ref: lifecycle/insider-lifecycle.yml
+idempotency:
+  supported: false
+  notes: >-
+    No idempotency-key header/parameter is documented for the Upsert User Data API.
+    Upserts are keyed on the user identifier in the payload (natural idempotency by
+    identity), but there is no request-level idempotency contract; not asserting a
+    dedicated Idempotency pointer.
+pagination:
+  documented: false
+error_envelope:
+  documented_status_codes: [429]
+  format: json

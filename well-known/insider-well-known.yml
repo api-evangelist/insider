@@ -1,0 +1,16 @@
+generated: '2026-07-19'
+method: searched
+source: probed /.well-known/ on insiderone.com + useinsider.com
+notes: >-
+  No /.well-known/ discovery documents are published. Every probed path returned
+  404 (or an HTML 404 page). Recorded as evidence; no WellKnown/SecurityTxt pointer
+  is wired because nothing was found.
+hosts:
+- host: https://insiderone.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+- host: https://useinsider.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}

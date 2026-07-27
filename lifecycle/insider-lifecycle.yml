@@ -1,0 +1,20 @@
+generated: '2026-07-19'
+method: searched
+source: https://academy.insiderone.com/docs/upsert-user-data-api-integration-wizard-2
+versioning:
+  scheme: uri-path
+  current: v1
+  docs: https://academy.insiderone.com/docs
+  example: https://unification.useinsider.com/api/user/v1/upsert
+deprecation:
+  policy_url: null
+  sunset_header: false
+  notes: No public deprecation policy or RFC 8594 Sunset/Deprecation header support documented.
+sla:
+  url: null
+  uptime_target: null
+status_page: null
+status_page_notes: >-
+  No public status page (status.useinsider.com / status.insiderone.com) was found
+  during this pass; operational health is surfaced inside the InOne panel.
+deprecated_operations: []

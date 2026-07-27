@@ -1,0 +1,65 @@
+generated: '2026-07-19'
+method: searched
+source: https://www.npmjs.com/org/useinsider + https://github.com/useinsider
+notes: >-
+  First-party client SDKs and integration packages published under the official
+  @useinsider npm scope and the github.com/useinsider organization. Insider's own
+  data ingestion (Upsert User Data API, Catalog API) is called over HTTP; the
+  official libraries below are the client/mobile SDKs and integration nodes.
+packages:
+- language: javascript
+  registry: npm
+  name: react-native-insider
+  url: https://www.npmjs.com/package/react-native-insider
+  install: npm install react-native-insider
+  official: true
+  description: React Native Insider SDK.
+- language: javascript
+  registry: npm
+  name: expo-insider
+  url: https://www.npmjs.com/package/expo-insider
+  install: npm install expo-insider
+  official: true
+  description: Expo Insider SDK.
+- language: javascript
+  registry: npm
+  name: expo-insider-plugin
+  url: https://www.npmjs.com/package/expo-insider-plugin
+  install: npm install expo-insider-plugin
+  official: true
+  description: Expo config plugin for react-native-insider.
+- language: javascript
+  registry: npm
+  name: cordova-plugin-insider
+  url: https://www.npmjs.com/package/cordova-plugin-insider
+  install: cordova plugin add cordova-plugin-insider
+  official: true
+  description: Cordova plugin wrapping the Insider SDK.
+- language: javascript
+  registry: npm
+  name: "@useinsider/n8n-nodes-insiderone"
+  url: https://www.npmjs.com/package/@useinsider/n8n-nodes-insiderone
+  install: npm install @useinsider/n8n-nodes-insiderone
+  official: true
+  description: n8n community node for Insider One.
+- language: javascript
+  registry: npm
+  name: "@useinsider/guido"
+  url: https://www.npmjs.com/package/@useinsider/guido
+  install: npm install @useinsider/guido
+  official: true
+  description: Vue + TypeScript wrapper for the Insider Email Plugin.
+- language: swift
+  registry: github
+  name: Insider-iOS-SDK
+  url: https://github.com/useinsider/Insider-iOS-SDK
+  install: Swift Package Manager (github.com/useinsider/Insider-iOS-SDK)
+  official: true
+  description: Native iOS SDK distributed via Swift Package Manager.
+- language: go
+  registry: github
+  name: go-pkg
+  url: https://github.com/useinsider/go-pkg
+  install: go get github.com/useinsider/go-pkg
+  official: true
+  description: Insider Go utility packages (Apache-2.0).
