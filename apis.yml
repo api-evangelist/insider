@@ -1,40 +1,47 @@
 aid: insider
 name: Insider
 description: >-
-  Insider (rebranded Insider One, useinsider.com now redirects to insiderone.com)
-  is an AI-native customer engagement and personalization platform used by 2,000+
-  global brands. It unifies a Customer Data Platform (CDP), cross-channel journey
-  orchestration (Architect), personalization, predictive segmentation, and
-  behavioral analytics, delivering across Web, Email, SMS/RCS, WhatsApp, Web Push,
-  Mobile App, Site Search, InStory and conversational CX. For developers it exposes
-  a Unified Customer Database via the Upsert User Data API (POST
-  unification.useinsider.com/api/user/v1/upsert, authenticated with X-REQUEST-TOKEN
-  and X-PARTNER-NAME headers), a Product Catalog API, Web and Mobile (iOS, Android,
-  React Native, Flutter, Cordova) SDKs, and an outbound "Call an API" journey
-  channel. Recognized by Gartner and Forrester as a leader in personalization
-  engines, CDP and omnichannel marketing platforms.
+  Insider (rebranded Insider One; useinsider.com now redirects to insiderone.com) is an AI-native
+  customer engagement and personalization platform used by 2,000+ global brands. It unifies a Customer
+  Data Platform, cross-channel journey orchestration (Architect), personalization, predictive segmentation,
+  product discovery (Eureka) and behavioural analytics across Web, Email, SMS/RCS, WhatsApp, Web Push,
+  Mobile App, Site Search, InStory and conversational CX. Its developer surface is substantial and
+  public: 113 REST operations across 18 hosts, published as a public Postman collection at developers.insiderone.com,
+  covering the Unified Customer Database, consent and subscription management, transactional email/SMS/WhatsApp,
+  web and app push, iOS Live Activities, OTP verification, product catalog, recommendations, Eureka
+  search and campaign and journey analytics. Insider One also ships a first-party remote MCP server
+  at mcp.insiderone.com with 35 OAuth-scoped tools, an llms.txt indexing ~2,800 markdown-retrievable
+  doc pages, and an account-generated Agent Skill (SKILL.md) for Claude Code. It publishes per-endpoint
+  rate limits, a cross-API status-and-error-code reference, and SOC 2 / ISO 27001 / ISO 27701 / CSA
+  STAR attestations — but no OpenAPI, no pricing, no status page and no deprecation policy.
 url: https://raw.githubusercontent.com/api-evangelist/insider/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
 - 500-global
-x-tier: stub
-x-tier-reason: portfolio-lead
+x-tier: profiled
+x-tier-reason: full public API surface harvested from the provider Postman collection
 accessModel:
-  pricing: unknown
-  onboarding: self-serve
+  pricing: enterprise
+  onboarding: approval
   trial: false
   try_now: false
   public: false
-  label: Self-serve signup
-  confidence: medium
+  label: Enterprise · Contact sales
+  confidence: high
   source:
-  - authentication
-  generated: '2026-07-22'
-  method: derived
+  - plans/insider-plans-pricing.yml
+  - https://insiderone.com/request-a-demo/
+  - authentication/insider-authentication.yml
+  generated: '2026-08-13'
+  method: searched
+  note: >-
+    No public pricing page (insiderone.com/pricing 404s); the only commercial entry point is a demo
+    request form. API keys are generated inside a licensed InOne account by an Administrator, so there
+    is no self-serve developer signup.
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-19'
+modified: '2026-08-13'
 image: https://logo.clearbit.com/useinsider.com
 tags:
 - Company
@@ -46,23 +53,595 @@ tags:
 - Omnichannel
 - CDP
 - Artificial Intelligence
+- Messaging
+- WhatsApp
+- Email
+- SMS
+- Push Notifications
+- Recommendations
+- Search
+- Product Catalog
+- Analytics
+- MCP
+- Agents
+- Consent
+- GDPR
 apis:
-- name: Insider Upsert User Data API
+- name: Insider One Unification API
   description: >-
-    Send user profiles, attributes and events into Insider One's Unified Customer
-    Database. POST JSON to the upsert endpoint authenticated with an API key
-    (X-REQUEST-TOKEN) and partner name (X-PARTNER-NAME) header pair.
-  humanURL: https://academy.insiderone.com/docs/upsert-user-data-api-integration-wizard-2
-  baseURL: https://unification.useinsider.com/api/user/v1
+    The Unified Customer Database. Upsert user profiles, attributes and behavioural events, read profiles
+    back with a sparse fieldset, manage identifiers, export raw data, and run the GDPR delete/anonymize
+    operations. Profiles are addressed by customer-owned identifiers (email, phone, uuid, custom)
+    — there is no Insider-issued user id.
+  humanURL: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  baseURL: https://unification.useinsider.com
   tags:
   - CDP
   - User Data
   - Events
+  - GDPR
   properties:
+  - type: OpenAPI
+    url: openapi/insider-unification-openapi.yml
+  - type: Overlay
+    url: overlays/insider-unification-overlay.yaml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  - type: APIReference
+    url: https://developers.insiderone.com/
   - type: Authentication
     url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
   - type: Conventions
     url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+  - type: DataModel
+    url: data-model/insider-data-model.yml
+- name: Insider One Contact API
+  description: >-
+    Per-channel subscription state and first-party segment upload. v1 unsubscribes from the channel
+    database; v2 adds global-versus-group scope and bulk ingestion, and both versions run side by
+    side.
+  humanURL: https://academy.insiderone.com/docs/data-collection-consent-apis
+  baseURL: https://contact.useinsider.com
+  tags:
+  - Consent
+  - Subscriptions
+  - Email
+  - SMS
+  - WhatsApp
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-contact-openapi.yml
+  - type: Overlay
+    url: overlays/insider-contact-overlay.yaml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/data-collection-consent-apis
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+  - type: DataModel
+    url: data-model/insider-data-model.yml
+- name: Insider One Mail API
+  description: >-
+    Transactional email sending (9,000 requests/second) with dynamic fields, attachments and customer-supplied
+    unique_args for correlation, plus email campaign creation.
+  humanURL: https://academy.insiderone.com/docs/email-apis-overview
+  baseURL: https://mail.useinsider.com
+  tags:
+  - Email
+  - Transactional
+  - Messaging
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-mail-openapi.yml
+  - type: Overlay
+    url: overlays/insider-mail-overlay.yaml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-apis-overview
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+- name: Insider One SMS API
+  description: >-
+    Transactional single and bulk SMS sending, plus SMS campaign, overall, transactional and OTP/Verify
+    analytics. Bulk send carries up to 50 messages per request at 5 requests/second.
+  humanURL: https://academy.insiderone.com/docs/transactional-sms-overview
+  baseURL: https://sms.useinsider.com
+  tags:
+  - SMS
+  - Transactional
+  - Messaging
+  - Analytics
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-sms-openapi.yml
+  - type: Overlay
+    url: overlays/insider-sms-overlay.yaml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-sms-overview
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+- name: Insider One WhatsApp API
+  description: >-
+    Transactional and conversational WhatsApp sending — template, text, media, location, button-reply
+    and carousel messages. Each send returns an Insider tracking key that is echoed in every webhook
+    event for that message.
+  humanURL: https://academy.insiderone.com/docs/whatsapp-transactional-api
+  baseURL: https://whatsapp.useinsider.com
+  tags:
+  - WhatsApp
+  - Messaging
+  - Conversational
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-whatsapp-openapi.yml
+  - type: Overlay
+    url: overlays/insider-whatsapp-overlay.yaml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/whatsapp-transactional-api
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+  - type: Webhooks
+    url: asyncapi/insider-whatsapp-webhooks.yml
+- name: Insider One Gateway API (OAuth 2.0)
+  description: >-
+    The OAuth 2.0 gateway: WhatsApp v2 transactional and conversational send, plus webhook settings
+    registration. gw.useinsider.com is also the OAuth 2.0 authorization server for the whole Insider
+    One platform, serving RFC 8414 and RFC 9728 discovery documents.
+  humanURL: https://academy.insiderone.com/docs/whatsapp-transactional-api
+  baseURL: https://gw.useinsider.com
+  tags:
+  - WhatsApp
+  - OAuth
+  - Webhooks
+  - Messaging
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-gateway-openapi.yml
+  - type: Overlay
+    url: overlays/insider-gateway-overlay.yaml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/whatsapp-transactional-api
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+  - type: OAuthScopes
+    url: scopes/insider-scopes.yml
+  - type: Webhooks
+    url: asyncapi/insider-whatsapp-webhooks.yml
+- name: Insider One Web Push API
+  description: >-
+    Create, launch and delete single web push campaigns from your own backend, plus web push top-metrics,
+    overall-metrics and campaign-metrics statistics.
+  humanURL: https://academy.insiderone.com/docs/web-push-apis-overview
+  baseURL: https://web-push.api.useinsider.com
+  tags:
+  - Web Push
+  - Messaging
+  - Analytics
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-web-push-openapi.yml
+  - type: Overlay
+    url: overlays/insider-web-push-overlay.yaml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/web-push-apis-overview
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+- name: Insider One Mobile App API
+  description: >-
+    Bulk, targeted and advanced app push, Message Center retrieval, app push analytics, custom segment
+    upload and the mobile GDPR data-processing consent endpoint.
+  humanURL: https://academy.insiderone.com/docs/app-push-apis-overview
+  baseURL: https://mobile.useinsider.com
+  tags:
+  - Mobile
+  - App Push
+  - GDPR
+  - Analytics
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-mobile-openapi.yml
+  - type: Overlay
+    url: overlays/insider-mobile-overlay.yaml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/app-push-apis-overview
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+  - type: DataModel
+    url: data-model/insider-data-model.yml
+- name: Insider One Mobile Settings API
+  description: >-
+    InApp campaign detail retrieval (90-day window, YYYY-MM-DD dates) and FCM certificate upload for
+    the mobile app channel.
+  humanURL: https://academy.insiderone.com/docs/mobile-app-analytics-apis
+  baseURL: https://mobile.api.useinsider.com
+  tags:
+  - Mobile
+  - In-App
+  - Settings
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-mobile-settings-openapi.yml
+  - type: Overlay
+    url: overlays/insider-mobile-settings-overlay.yaml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-analytics-apis
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+- name: Insider One Live Activity API
+  description: >-
+    iOS Live Activity lifecycle: register, start, update and end an activity, and add or remove users
+    from a running one.
+  humanURL: https://academy.insiderone.com/docs/mobile-app-integration-guide-1
+  baseURL: https://live-activity.api.useinsider.com
+  tags:
+  - Mobile
+  - iOS
+  - Live Activity
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-live-activity-openapi.yml
+  - type: Overlay
+    url: overlays/insider-live-activity-overlay.yaml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-integration-guide-1
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+- name: Insider One Verify (OTP) API
+  description: >-
+    One-time-passcode channels and templates for SMS and WhatsApp: create and update channels, manage
+    OTP templates, generate codes and verify them.
+  humanURL: https://academy.insiderone.com/docs/otp-for-sms
+  baseURL: https://verify.useinsider.com
+  tags:
+  - OTP
+  - Verification
+  - SMS
+  - WhatsApp
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-verify-openapi.yml
+  - type: Overlay
+    url: overlays/insider-verify-overlay.yaml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/otp-for-sms
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+- name: Insider One Catalog API
+  description: >-
+    Product catalog ingestion and update in flat and nested formats, plus locale configuration. Products
+    are keyed on item_id + locale, with currency-keyed price maps and groupcode variant grouping.
+    All endpoints share one 60 requests/minute budget.
+  humanURL: https://academy.insiderone.com/docs/product-catalog-api-introduction
+  baseURL: https://catalog.api.useinsider.com
+  tags:
+  - Catalog
+  - Products
+  - Commerce
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-catalog-openapi.yml
+  - type: Overlay
+    url: overlays/insider-catalog-overlay.yaml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/product-catalog-api-introduction
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+- name: Insider One Recommendation API
+  description: >-
+    Smart Recommender served over HTTP: nineteen named algorithms (similar, complementary, substitute,
+    visually-similar, purchased-together, trending, top-sellers, user-based and more) on one path
+    template, sharing a pooled 1,000 calls/minute.
+  humanURL: https://academy.insiderone.com/docs/recommendation-api
+  baseURL: https://recommendation.api.useinsider.com
+  tags:
+  - Recommendations
+  - Personalization
+  - Commerce
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-recommendation-openapi.yml
+  - type: Overlay
+    url: overlays/insider-recommendation-overlay.yaml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/recommendation-api
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+- name: Insider One Eureka Search API
+  description: >-
+    Eureka product discovery: search results with facets, category and brand merchandising collections,
+    and type-ahead suggestions (served from a per-customer host Insider One issues).
+  humanURL: https://academy.insiderone.com/docs/eureka-search-api-overview
+  baseURL: https://ineureka.api.useinsider.com
+  tags:
+  - Search
+  - Merchandising
+  - Commerce
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-eureka-search-openapi.yml
+  - type: Overlay
+    url: overlays/insider-eureka-search-overlay.yaml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-search-api-overview
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+- name: Insider One Eureka Event Collection API
+  description: >-
+    Search event collection for Eureka ranking: search, product click, product list view, add to cart
+    and purchase interactions.
+  humanURL: https://academy.insiderone.com/docs/eureka-event-collection-api-implementation
+  baseURL: https://eurekaevent.api.useinsider.com
+  tags:
+  - Search
+  - Events
+  - Commerce
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-eureka-events-openapi.yml
+  - type: Overlay
+    url: overlays/insider-eureka-events-overlay.yaml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-event-collection-api-implementation
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+- name: Insider One Analytics API
+  description: >-
+    Email campaign lists, campaign statistics and overall analytics (v1 and v2 side by side), plus
+    OnSite campaign and overall analytics. Epoch-second time windows; one year of retained history.
+  humanURL: https://academy.insiderone.com/docs/email-analytics-api
+  baseURL: https://analytics.api.useinsider.com
+  tags:
+  - Analytics
+  - Email
+  - OnSite
+  - Reporting
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-analytics-openapi.yml
+  - type: Overlay
+    url: overlays/insider-analytics-overlay.yaml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-analytics-api
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+- name: Insider One Architect Analytics API
+  description: >-
+    Architect journey analytics: overall, per-journey, per-element/channel, conversion goals and journey
+    list export. Takes statDate as a dd/MM/yyyy range string.
+  humanURL: https://academy.insiderone.com/docs/architect-analytics-api
+  baseURL: https://architect-analytics.api.useinsider.com
+  tags:
+  - Analytics
+  - Journeys
+  - Architect
+  - Reporting
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-architect-analytics-openapi.yml
+  - type: Overlay
+    url: overlays/insider-architect-analytics-overlay.yaml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/architect-analytics-api
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+- name: Insider One Architect Transactional Journey API
+  description: >-
+    The On API Call starter: enter a user into a transactional Architect journey from your backend
+    and send in real time.
+  humanURL: https://academy.insiderone.com/docs/transactional-journeys-on-api-call-starter
+  baseURL: https://architect.useinsider.com
+  tags:
+  - Journeys
+  - Architect
+  - Transactional
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-architect-transactional-openapi.yml
+  - type: Overlay
+    url: overlays/insider-architect-transactional-overlay.yaml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-journeys-on-api-call-starter
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+- name: Insider One MCP Server
+  description: >-
+    First-party remote Model Context Protocol server exposing 35 tools across Email, SMS, WhatsApp,
+    Web Push, Mobile App and Architect — 28 read-only and 7 that create drafts for human review. Authenticated
+    with OAuth 2.0 credentials generated in the InOne panel, with per-channel scopes. Listed in the
+    Claude Connectors directory. It never sends, schedules or publishes, and cannot modify customer
+    data or journeys.
+  humanURL: https://academy.insiderone.com/docs/set-up-insider-one-mcp
+  baseURL: https://mcp.insiderone.com/mcp
+  tags:
+  - MCP
+  - Agents
+  - Analytics
+  - AI
+  properties:
+  - type: MCPServer
+    url: mcp/insider-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/insider-tool-crosswalk.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/insider-one-mcp-functions
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: OAuthScopes
+    url: scopes/insider-scopes.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -72,13 +651,13 @@ common:
 - type: Website
   url: https://insiderone.com
 - type: DeveloperPortal
-  url: https://academy.insiderone.com/
+  url: https://developers.insiderone.com/
 - type: Documentation
   url: https://academy.insiderone.com/docs
 - type: APIReference
-  url: https://academy.insiderone.com/docs/upsert-user-data-api-integration-wizard-2
+  url: https://academy.insiderone.com/docs/api-reference-welcome
 - type: GettingStarted
-  url: https://academy.insiderone.com/docs/user-guides-welcome
+  url: https://academy.insiderone.com/docs/insider-one-apis-1
 - type: Support
   url: https://useinsiderhelp.zendesk.com/hc/en-us
 - type: Blog
@@ -95,6 +674,8 @@ common:
   url: https://insiderone.com/terms-of-use/
 - type: PrivacyPolicy
   url: https://insiderone.com/privacy-policy/
+- type: Postman
+  url: https://developers.insiderone.com/
 - type: LLMsTxt
   url: llms/insider-llms.txt
 - type: Packages
@@ -103,10 +684,20 @@ common:
   url: packages/insider-packages.yml
 - type: Authentication
   url: authentication/insider-authentication.yml
+- type: OAuthScopes
+  url: scopes/insider-scopes.yml
 - type: Conventions
   url: conventions/insider-conventions.yml
+- type: RateLimits
+  url: rate-limits/insider-rate-limits.yml
+- type: ErrorCatalog
+  url: errors/insider-problem-types.yml
 - type: Lifecycle
   url: lifecycle/insider-lifecycle.yml
+- type: ChangeLog
+  url: changelog/insider-changelog.yml
+- type: Plans
+  url: plans/insider-plans-pricing.yml
 - type: Conformance
   url: conformance/insider-conformance.yml
 - type: Compliance
@@ -115,8 +706,22 @@ common:
   url: security/insider-trust-center.yml
 - type: DomainSecurity
   url: security/insider-domain-security.yml
+- type: WellKnown
+  url: well-known/insider-well-known.yml
+- type: DataModel
+  url: data-model/insider-data-model.yml
+- type: Components
+  url: components/insider-components.yml
+- type: Webhooks
+  url: asyncapi/insider-whatsapp-webhooks.yml
+- type: MCPServer
+  url: mcp/insider-mcp.yml
+- type: ToolCrosswalk
+  url: mcp/insider-tool-crosswalk.yml
+- type: AgentSkill
+  url: skills/_index.yml
 x-enrichment:
-  date: '2026-07-19'
-  status: backfilled
+  date: '2026-08-13'
+  status: enriched
+  artifacts_added: 57
   pass: local-v1
-  note: backfilled from .gitignore signal + verified work evidence
