@@ -39,7 +39,7 @@ accessModel:
     No public pricing page (insiderone.com/pricing 404s); the only commercial entry point is a demo
     request form. API keys are generated inside a licensed InOne account by an Administrator, so there
     is no self-serve developer signup.
-specificationVersion: '0.20'
+specificationVersion: '0.23'
 created: '2026-07-17'
 modified: '2026-08-13'
 image: https://logo.clearbit.com/useinsider.com
