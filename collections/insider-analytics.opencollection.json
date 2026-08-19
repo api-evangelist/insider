@@ -1,0 +1,251 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Insider One Analytics API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Email",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get email campaign list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://analytics.api.useinsider.com/email/v1/campaign/list",
+            "params": [
+              {
+                "name": "page",
+                "value": "Integer",
+                "type": "query"
+              },
+              {
+                "name": "perPage",
+                "value": "Integer",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-INS-AUTH-KEY",
+              "value": "{{X-INS-AUTH-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This request allows you to get the analytics of your email campaigns for a given time period.\n\nThe campaigns on the Draft and Scheduled statuses are not listed in the response. \n\nQuery Parameters\nThe following are the query parameters you need to use in your request.\n\nParameter\nData Type\nDescription\nRequired\n\npage\nInteger\nSpecifies the number of pages of email campaigns\nYes\n\nperPage\nInteger\nSpecifies the number of emails to be listed per page\nYes\n\nBefore sending the request, make sure:\n\nTo repla"
+        },
+        {
+          "info": {
+            "name": "Get email campaign analytics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://analytics.api.useinsider.com/email/v1/campaign/statistics",
+            "params": [
+              {
+                "name": "campaignId",
+                "value": "integer",
+                "type": "query"
+              },
+              {
+                "name": "startTime",
+                "value": "int64",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-INS-AUTH-KEY",
+              "value": "{{X-INS-AUTH-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This request allows you to get the analytics of your email campaigns for a given time period.\n\nThe campaigns on the Draft and Scheduled statuses are not listed in the response. \n\nQuery Parameters\nThe following are the query parameters you need to use in your request.\n\nParameter\nData Type\nDescription\nRequired\n\ncampaignId\nInteger\nYour campaign ID that can be found on the campaign URL.\nYes\n\nstartTime\nint64\nThe time campaign is being launched. Specifies a 10-digit epoch start time.\nYes\n\nendTime\nint6"
+        },
+        {
+          "info": {
+            "name": "Get overall analytics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://analytics.api.useinsider.com/email/v1/overall",
+            "params": [
+              {
+                "name": "startTime",
+                "value": "int64",
+                "type": "query"
+              },
+              {
+                "name": "endTime",
+                "value": "int64",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-INS-AUTH-KEY",
+              "value": "{{X-INS-AUTH-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This request allows you to get the overall analytics of your email campaigns for a given time period\n\nThe campaigns on the Draft and Scheduled statuses are not listed in the response. \n\nQuery Parameters\nThe following are the query parameters you need to use in your request.\n\nParameter\nData Type\nDescription\nRequired\n\nstartTime\nint64\nThe time campaign is being launched. Specifies a 10-digit epoch start time.\nYes\n\nendTime\nint64\nThe current date (today’s date on the payload). It can be customizable "
+        },
+        {
+          "info": {
+            "name": "Get email campaign list V2",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://analytics.api.useinsider.com/email/v2/campaign/list",
+            "params": [
+              {
+                "name": "page",
+                "value": "Integer",
+                "type": "query"
+              },
+              {
+                "name": "perPage",
+                "value": "Integer",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-INS-AUTH-KEY",
+              "value": "{{X-INS-AUTH-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This request allows you to get the analytics of your email campaigns for a given time period with more metrics than V1.\n\nThe campaigns on the Draft and Scheduled statuses are not listed in the response. \n\nQuery Parameters\nThe following are the query parameters you need to use in your request.\n\nParameter\nData Type\nDescription\nRequired\n\npage\nInteger\nSpecifies the number of pages of email campaigns\nYes\n\nperPage\nInteger\nSpecifies the number of emails to be listed per page\nYes\n\nBefore sending the req"
+        },
+        {
+          "info": {
+            "name": "Get email campaign analytics V2",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://analytics.api.useinsider.com/email/v2/campaign/statistics",
+            "params": [
+              {
+                "name": "campaignId",
+                "value": "integer",
+                "type": "query"
+              },
+              {
+                "name": "startTime",
+                "value": "int64",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-INS-AUTH-KEY",
+              "value": "{{X-INS-AUTH-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This request allows you to get the analytics of your email campaigns for a given time period with more metrics than V1.\n\nThe campaigns on the Draft and Scheduled statuses are not listed in the response. \n\nQuery Parameters\nThe following are the query parameters you need to use in your request.\n\nParameter\nData Type\nDescription\nRequired\n\ncampaignId\nInteger\nYour campaign ID that can be found on the campaign URL.\nYes\n\nstartTime\nint64\nThe time campaign is being launched. Specifies a 10-digit epoch sta"
+        },
+        {
+          "info": {
+            "name": "Get overall analytics V2",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://analytics.api.useinsider.com/email/v2/overall",
+            "params": [
+              {
+                "name": "startTime",
+                "value": "int64",
+                "type": "query"
+              },
+              {
+                "name": "endTime",
+                "value": "int64",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-INS-AUTH-KEY",
+              "value": "{{X-INS-AUTH-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This request allows you to get the overall analytics of your email campaigns for a given time period with more metrics than V1.\n\nThe campaigns on the Draft and Scheduled statuses are not listed in the response. \n\nQuery Parameters\nThe following are the query parameters you need to use in your request.\n\nParameter\nData Type\nDescription\nRequired\n\nstartTime\nint64\nThe time campaign is being launched. Specifies a 10-digit epoch start time.\nYes\n\nendTime\nint64\nThe current date (today’s date on the payloa"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "OnSite",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get onsite overall analytics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://analytics.api.useinsider.com/onsite/v1/all",
+            "auth": {
+              "type": "apikey",
+              "key": "X-INS-AUTH-KEY",
+              "value": "{{X-INS-AUTH-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This API enables you to change the filter values on OnSite campaign analytics from your own back-end without using Insider’s platform.\n\nQuery Parameters\nYou need to send the filters in body parameters.\n\nParameter\nData Type\nDescription\nSample Value\nRequired\n\nstartTime\nint64\nSpecifies a 10-digit epoch start time\n1606669200\nYes\n\nendTime\nint64\nSpecifies a 10-digit epoch end time\n1606755599\nNo\n\ncampaignReportType\nString\nThe campaign report type to be used\n\"ab\", \"hundred\"\nYes\n\nselectedGoalType\nString\n"
+        },
+        {
+          "info": {
+            "name": "Get onsite campaign analytics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://analytics.api.useinsider.com/onsite/v1/campaign",
+            "auth": {
+              "type": "apikey",
+              "key": "X-INS-AUTH-KEY",
+              "value": "{{X-INS-AUTH-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This API enables you to change the filter values on OnSite campaign analytics from your own back-end without using Insider’s platform.\n\nQuery Parameters\nYou need to send the filters in body parameters.\n\nParameter\nData Type\nDescription\nSample Value\nRequired\n\nstartTime\nint64\nSpecifies a 10-digit epoch start time\n1606669200\nYes\n\nendTime\nint64\nSpecifies a 10-digit epoch end time\n1606755599\nNo\n\ncampaignReportType\nString\nThe campaign report type to be used\n\"ab\", \"hundred\"\nYes\n\nselectedGoalType\nString\n"
+        },
+        {
+          "info": {
+            "name": "Change filter values",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://analytics.api.useinsider.com/onsite/v2/all",
+            "auth": {
+              "type": "apikey",
+              "key": "X-INS-AUTH-KEY",
+              "value": "{{X-INS-AUTH-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This API enables you to change the filter values on OnSite campaign analytics from your own back-end without using Insider’s platform.\n\nQuery Parameters\nYou need to send the filters in body parameters.\n\nParameter\nData Type\nDescription\nSample Value\nRequired\n\nstartTime\nint64\nSpecifies a 10-digit epoch start time\n1606669200\nYes\n\nendTime\nint64\nSpecifies a 10-digit epoch end time\n1606755599\nNo\n\ncampaignReportType\nString\nThe campaign report type to be used\n\"ab\", \"hundred\"\nYes\n\nselectedGoalType\nString\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

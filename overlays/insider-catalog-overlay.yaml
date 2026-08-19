@@ -1,0 +1,34 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Insider One Catalog API
+  version: 1.0.0
+extends: ../openapi/insider-catalog-openapi.yml
+x-provenance:
+  generated: '2026-08-13'
+  method: generated
+  source: openapi/insider-catalog-openapi.yml
+  note: Captures API Evangelist annotations without mutating the derived specification.
+actions:
+- target: $.info
+  description: Record that this document is an API Evangelist derivation of Insider One's own public Postman collection,
+    not a provider-published OpenAPI.
+  update:
+    x-derived-from: postman/insider-one-apis.postman_collection.json
+    x-derived-source-url: https://developers.insiderone.com/
+    x-provider-publishes-openapi: false
+- target: $.paths.*.*
+  description: Attach the documented 429 throttling response to every operation, from the published per-endpoint
+    rate-limit table.
+  update:
+    x-rate-limit-reference: https://academy.insiderone.com/docs/api-rate-limits-1
+- target: $.components.securitySchemes.*
+  description: Cross-link the authentication profile, since the API-key header name varies by Insider One host.
+  update:
+    x-authentication-profile: authentication/insider-authentication.yml
+- target: $.info
+  description: 'Cross-link the derived error catalog: Insider One documents errors globally, not per operation,
+    and uses six different envelopes.'
+  update:
+    x-error-catalog: errors/insider-problem-types.yml
+    x-error-format: vendor-json
+    x-rfc9457: false

@@ -1,0 +1,79 @@
+generated: '2026-08-13'
+method: searched
+source: https://academy.insiderone.com/docs/android-sdk-changelog
+sources:
+- https://academy.insiderone.com/docs/android-sdk-changelog
+- https://academy.insiderone.com/docs/ios-sdk-changelog
+- https://academy.insiderone.com/docs/react-native-sdk-changelog
+- https://academy.insiderone.com/docs/flutter-changelogs
+- https://academy.insiderone.com/docs/expo-changelogs
+- https://academy.insiderone.com/docs/cordova-changelogs
+summary: >-
+  Insider One publishes dated, per-release changelogs for its six client SDKs and NOTHING for the
+  REST APIs. There is no API changelog, no release-notes feed and no RSS: the only way to learn that
+  a REST endpoint changed is to notice it in the reference. The SDK changelogs are genuinely good —
+  semver, an explicit release date on each entry, and New Features / Updates / Fixes sections — and
+  they are shipping monthly.
+scheme: semver
+api_changelog: false
+api_changelog_note: No changelog, release notes page or feed exists for the Insider One REST APIs.
+feed: null
+
+streams:
+- id: android
+  name: Android SDK
+  docs: https://academy.insiderone.com/docs/android-sdk-changelog
+  current: 16.0.9
+  current_date: '2026-08-04'
+  variant_note: Each release ships twice — a standard build and an "-nh" (non-Huawei) build without HMS dependencies.
+  entries:
+  - {version: 16.0.9, date: '2026-08-04', additions: ['Partner-defined categories on App Cards, per campaign'], fixes: ['In-app freeze on non-Latin digit locales', 'TalkBack read content behind in-app messages', 'Test device registration + Test Lab reliability'], breaking: false}
+  - {version: 16.0.8, date: '2026-07-24', additions: [], fixes: ['Event delivery reliability before session startup'], breaking: false}
+  - {version: 16.0.7, date: '2026-06-22', breaking: false}
+  - {version: 16.0.6, date: '2026-06-08', breaking: false}
+  - {version: 16.0.3, date: '2026-05-08', breaking: false}
+  - {version: 16.0.1, date: '2026-04-10', breaking: false}
+- id: ios
+  name: iOS SDK
+  docs: https://academy.insiderone.com/docs/ios-sdk-changelog
+  current: 15.1.2
+  current_date: '2026-08-04'
+  entries:
+  - {version: 15.1.2, date: '2026-08-04', additions: ['Partner-defined categories on App Cards'], fixes: ['Test device QR registration reliability'], breaking: false}
+  - {version: 15.1.1, date: '2026-07-06', fixes: ['Events lost when the app backgrounded', 'Status bar clock colour during in-app', 'Deep/universal link handling after repeated relaunch'], breaking: false}
+  - {version: 15.1.0, date: '2026-06-18', breaking: false}
+  - {version: 15.0.6, date: '2026-06-10', breaking: false}
+  - {version: 15.0.3, date: '2026-05-08', breaking: false}
+- id: react-native
+  name: React Native SDK
+  docs: https://academy.insiderone.com/docs/react-native-sdk-changelog
+  current: 8.1.0
+  current_date: '2026-08-05'
+  entries:
+  - {version: 8.1.0, date: '2026-08-05', breaking: false}
+  - {version: 8.0.3, date: '2026-06-29', breaking: false}
+  - {version: 8.0.2, date: '2026-05-14', breaking: false}
+  - {version: 8.0.1, date: '2026-05-04', breaking: false}
+  - {version: 8.0.0, date: '2026-04-13', breaking: true, note: 'Major version bump.'}
+- id: flutter
+  name: Flutter SDK
+  docs: https://academy.insiderone.com/docs/flutter-changelogs
+  current: 5.1.0
+  current_date: '2026-08-10'
+  entries:
+  - {version: 5.1.0, date: '2026-08-10', breaking: false}
+  - {version: 5.0.3, date: '2026-06-23', breaking: false}
+  - {version: 5.0.2, date: '2026-05-15', breaking: false}
+  - {version: 5.0.1, date: '2026-04-28', breaking: false}
+  - {version: 5.0.0, date: '2026-04-03', breaking: true, note: 'Major version bump.'}
+- id: expo
+  name: Expo SDK
+  docs: https://academy.insiderone.com/docs/expo-changelogs
+- id: cordova
+  name: Cordova plugin
+  docs: https://academy.insiderone.com/docs/cordova-changelogs
+
+gaps:
+- No REST API changelog or release notes.
+- No dated announcement channel for endpoint additions, v2 rollouts or key retirements.
+- No RSS/Atom feed on any changelog page.

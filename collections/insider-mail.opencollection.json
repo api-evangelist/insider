@@ -1,0 +1,60 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Insider One Mail API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Email APIs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create email campaigns",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://mail.useinsider.com/content/v1/campaign/create",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-INS-AUTH-KEY",
+              "value": "{{X-INS-AUTH-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This API enables you to send email body and subject from your back-end to create email campaigns on Insider platform. With this API request, you can specify the account name, campaign name and campaign type.\n\nYou can use this API to:\n\nSend your already created email HTML body and other input parameters to Inone panel to not lose time by adding it again.\n\nSend the values of the input parameters to the panel directly if you have multiple accounts in Inone and have the same/similar value for these "
+        },
+        {
+          "info": {
+            "name": "Send transactional emails",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://mail.useinsider.com/mail/v1/send",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-INS-AUTH-KEY",
+              "value": "{{X-INS-AUTH-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This API enables you to send targeted ecommerce and personalized one to one emails to your users. You can trigger these emails once a user takes a specific action on your platform.\n\nYou can use transactional emails to:\n\nSend a post-purchase email to share details about a purchase/booking,\n\nHelp your users reset their password if they forget it,\n\nConfirm an order a user places,\n\nShare delivery tracking details of a purchase (when it is shipped, on the way, and delivered) and to take many other ac"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

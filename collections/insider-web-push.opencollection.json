@@ -1,0 +1,169 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Insider One Web Push API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Web Push APIs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create single web pushes",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://web-push.api.useinsider.com/v1/single",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Insider's web push API allows you to send single web push notifications from your own back-end without using Insider's InOne panel.\n\nHeaders\n\nHeader\nSample Value\nDescription\n\nAuthorization\n{{vault:bearer-token}}\nThis key is required to authorize your request. Refer to API Authentication Tokens to generate your token.\n\nContent-Type\napplication/json\nThis header specifies the media type of the resource.\n\nBody Parameters\nEach request body requires a partner ID and a title. \n\nParameter\nDescription\nDa"
+        },
+        {
+          "info": {
+            "name": "Launch single web pushes v1",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://web-push.api.useinsider.com/v1/single/campaign_id",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Insider's web push API allows you to launch single web push notifications from your own back-end without using Insider's InOne panel.\n\nHeaders\n\nHeader\nSample Value\nDescription\n\nAuthorization\n{{vault:bearer-token}}\nThis key is required to authorize your request. Refer to API Authentication Tokens to generate your token.\n\nContent-Type\napplication/json\nThis header specifies the media type of the resource.\n\nBody Parameters\nEach request body requires a partner ID and a title. \n\nParameter\nDescription\n"
+        },
+        {
+          "info": {
+            "name": "Delete single web pushes",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://web-push.api.useinsider.com/v1/single/campaign_id",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Insider's web push API allows you to delete single web push notifications from your own back-end without using Insider's InOne panel.\n\nHeaders\n\nHeader\nSample Value\nDescription\n\nAuthorization\n{{vault:bearer-token}}\nThis key is required to authorize your request. Refer to API Authentication Tokens to generate your token.\n\nContent-Type\napplication/json\nThis header specifies the media type of the resource.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\npartner_id\nThis is your partner id"
+        },
+        {
+          "info": {
+            "name": "Launch single web pushes v2",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://web-push.api.useinsider.com/v2/single/campaign_id",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Insider's web push API allows you to launch single web push notifications from your own back-end without using Insider's InOne panel.\n\nHeaders\n\nHeader\nSample Value\nDescription\n\nAuthorization\n{{vault:bearer-token}}\nThis key is required to authorize your request. Refer to API Authentication Tokens to generate your token.\n\nContent-Type\napplication/json\nThis header specifies the media type of the resource.\n\nBody Parameters\nEach request body requires a partner ID and a title.\n\nParameter\nDescription\nD"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Web Push",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get web push campaign metrics analytics",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://web-push.api.useinsider.com/v1/statistics/campaign-metrics",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Insider's web push API allows you to get the campaigns analytics of your web push notifications from your own back-end without using the Insider's InOne panel. This API returns analytics specific to a single campaign in the given time interval in API request payload.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\npartner_id\nThis is your partner identification number, available from InOne Settings > Account Preferences.\nString\nYes\n\nstart_date\nThis specifies the date on which you will"
+        },
+        {
+          "info": {
+            "name": "Get web push overall metrics analytics",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://web-push.api.useinsider.com/v1/statistics/overall-metrics",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Insider's web push API allows you to get the campaigns analytics of your web push notifications from your own back-end without using the Insider's InOne panel. This API returns overall metric analytics with campaign information in the given time interval in API request payload.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\npartner_id\nThis is your partner identification number, available from InOne Settings > Account Preferences.\nString\nYes\n\nstart_date\nThis specifies the date on whi"
+        },
+        {
+          "info": {
+            "name": "Get web push top metrics analytics",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://web-push.api.useinsider.com/v1/statistics/top-metrics",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Insider's web push API allows you to get the campaigns analytics of your web push notifications from your own back-end without using the Insider's InOne panel. This API returns top metric analytics (without campaign information) in the given time interval in API request payload.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\npartner_id\nThis is your partner identification number, available from InOne Settings > Account Preferences.\nString\nYes\n\nstart_date\nThis specifies the date on wh"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

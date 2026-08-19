@@ -1,0 +1,86 @@
+generated: '2026-08-13'
+method: derived
+source: >-
+  Derived by binding Insider One's published MCP tool list
+  (https://academy.insiderone.com/docs/insider-one-mcp-functions, captured in mcp/insider-mcp.yml)
+  to the REST operationIds in openapi/, which were themselves derived from Insider One's own public
+  Postman collection ("Insider One APIs", https://developers.insiderone.com/).
+purpose: >-
+  Make the MCP tool the first-class discovery unit and bind it to the REST operation that backs it.
+  Insider One's MCP surface is an ANALYTICS + CONTENT-DRAFTING projection of a much larger REST
+  estate: 35 tools against 113 REST operations. Every ingestion, sending, consent and catalog
+  operation is REST-only by design — MCP cannot send a message, launch a campaign, modify a journey
+  or write customer data.
+
+surfaces:
+  rest_openapi: openapi/            # 18 documents, 113 operations, 18 hosts — all *.useinsider.com
+  postman: postman/insider-one-apis.postman_collection.json   # the first-party source, 138 requests
+  mcp: https://mcp.insiderone.com/mcp                          # tools/list gated (401, OAuth 2.0)
+  graphql: null                                                # Insider One publishes no GraphQL surface
+
+confidence_note: >-
+  The live MCP tools/list returns 401 unauthorized, so no tool inputSchema could be read. Rows below
+  are bound by name and documented behaviour against the REST operation that serves the same data.
+  A bound tool's REAL input schema is that operation's parameters + requestBody in openapi/.
+
+crosswalk:
+- {tool: List Email Campaigns, category: email, rest: [getEmailCampaignList, getEmailCampaignListV2], binding: rest, confidence: high, spec: openapi/insider-analytics-openapi.yml}
+- {tool: Get Email Campaign Analytics, category: email, rest: [getEmailCampaignAnalytics, getEmailCampaignAnalyticsV2], binding: rest, confidence: high, spec: openapi/insider-analytics-openapi.yml}
+- {tool: Get Email Overall Analytics, category: email, rest: [getOverallAnalytics, getOverallAnalyticsV2], binding: rest, confidence: high, spec: openapi/insider-analytics-openapi.yml}
+- {tool: Create Email Campaign, category: email, rest: [createEmailCampaigns], binding: rest, confidence: medium, spec: openapi/insider-mail-openapi.yml, note: 'MCP creates a DRAFT; the REST operation creates the campaign object in the panel.'}
+- {tool: Get SMS Campaign Analytics, category: sms, rest: [getSmsCampaignAnalytics], binding: rest, confidence: high, spec: openapi/insider-sms-openapi.yml}
+- {tool: List SMS Campaigns, category: sms, rest: [getSmsCampaignList], binding: rest, confidence: high, spec: openapi/insider-sms-openapi.yml}
+- {tool: Get SMS Overall Analytics, category: sms, rest: [getOverallSmsCampaignAnalytics], binding: rest, confidence: high, spec: openapi/insider-sms-openapi.yml}
+- {tool: Get SMS Transactional Analytics, category: sms, rest: [getTransactionalSmsAnalytics], binding: rest, confidence: high, spec: openapi/insider-sms-openapi.yml}
+- {tool: Get SMS OTP/Verify Analytics, category: sms, rest: [getOtpVerifySmsAnalytics], binding: rest, confidence: high, spec: openapi/insider-sms-openapi.yml}
+- {tool: Get Web Push Campaign Analytics, category: web-push, rest: [getWebPushCampaignMetricsAnalytics], binding: rest, confidence: high, spec: openapi/insider-web-push-openapi.yml}
+- {tool: Get Web Push Overall Analytics, category: web-push, rest: [getWebPushOverallMetricsAnalytics], binding: rest, confidence: high, spec: openapi/insider-web-push-openapi.yml}
+- {tool: Get Web Push Top Metrics, category: web-push, rest: [getWebPushTopMetricsAnalytics], binding: rest, confidence: high, spec: openapi/insider-web-push-openapi.yml}
+- {tool: Get App Push Overall Analytics, category: mobile, rest: [getAppPushAnalytics], binding: rest, confidence: high, spec: openapi/insider-mobile-openapi.yml}
+- {tool: Get InApp Details, category: mobile, rest: [getInappCampaignDetails], binding: rest, confidence: high, spec: openapi/insider-mobile-settings-openapi.yml}
+- {tool: Get Message Center Messages, category: mobile, rest: [getMessageCenterData], binding: rest, confidence: high, spec: openapi/insider-mobile-openapi.yml}
+- {tool: Get Architect Journeys, category: architect, rest: [exportJourneyList], binding: rest, confidence: high, spec: openapi/insider-architect-analytics-openapi.yml}
+- {tool: Get Architect Journey Analytics, category: architect, rest: [getArchitectJourneyAnalytics], binding: rest, confidence: high, spec: openapi/insider-architect-analytics-openapi.yml}
+- {tool: Get Architect Overall Analytics, category: architect, rest: [getArchitectOverallAnalytics], binding: rest, confidence: high, spec: openapi/insider-architect-analytics-openapi.yml}
+- {tool: Get Architect Element Analytics, category: architect, rest: [getArchitectChannelAnalytics], binding: rest, confidence: high, spec: openapi/insider-architect-analytics-openapi.yml}
+- {tool: Get Architect Goals Information, category: architect, rest: [getConversionGoalsInformation], binding: rest, confidence: high, spec: openapi/insider-architect-analytics-openapi.yml}
+- {tool: Get Architect Goals Analytics, category: architect, rest: [getConversionGoalsAnalytics], binding: rest, confidence: high, spec: openapi/insider-architect-analytics-openapi.yml}
+
+mcp_only:
+- {tool: Get Email Template, reason: 'Email template library read has no public REST operation in the published collection.'}
+- {tool: Search Email Templates, reason: 'Template search is panel-only over REST; exposed to agents through MCP first.'}
+- {tool: List Email Template Categories, reason: 'No published REST equivalent.'}
+- {tool: Create Email Template, reason: 'Template authoring is panel-only over REST; MCP creates a draft.'}
+- {tool: Update Email Template, reason: 'No published REST equivalent.'}
+- {tool: Duplicate Email Template, reason: 'No published REST equivalent.'}
+- {tool: Delete Email Template, reason: 'No published REST equivalent.'}
+- {tool: List WhatsApp Campaigns, reason: 'No published REST campaign-list operation on whatsapp.useinsider.com; analytics REST covers Email/SMS/OnSite/Architect only.'}
+- {tool: Get WhatsApp Campaign Analytics, reason: 'No published REST WhatsApp analytics operation.'}
+- {tool: Get WhatsApp Overall Analytics, reason: 'No published REST WhatsApp analytics operation.'}
+- {tool: Get WhatsApp Transactional Analytics, reason: 'No published REST WhatsApp analytics operation.'}
+- {tool: Get WhatsApp OTP/Verify Analytics, reason: 'No published REST WhatsApp OTP analytics operation.'}
+- {tool: Create WhatsApp Template, reason: 'WhatsApp template authoring is panel-only over REST; MCP creates a draft that enters Meta approval.'}
+- {tool: Delete WhatsApp Template, reason: 'No published REST equivalent.'}
+
+rest_only_families:
+- {family: Unified Customer Database, spec: openapi/insider-unification-openapi.yml, operations: 9, reason: 'MCP explicitly cannot update customer data.'}
+- {family: Consent + subscription management, spec: openapi/insider-contact-openapi.yml, operations: 13, reason: 'Consent writes are excluded from the MCP surface.'}
+- {family: Transactional + campaign sending (email/SMS/WhatsApp/web push/app push), spec: 'openapi/insider-mail-openapi.yml, insider-sms-openapi.yml, insider-whatsapp-openapi.yml, insider-gateway-openapi.yml, insider-web-push-openapi.yml, insider-mobile-openapi.yml', operations: 20, reason: 'MCP never sends, schedules or publishes.'}
+- {family: Product catalog, spec: openapi/insider-catalog-openapi.yml, operations: 5, reason: 'Not exposed through MCP.'}
+- {family: Recommendations, spec: openapi/insider-recommendation-openapi.yml, operations: 20, reason: 'Not exposed through MCP.'}
+- {family: Eureka search + event collection, spec: 'openapi/insider-eureka-search-openapi.yml, insider-eureka-events-openapi.yml', operations: 5, reason: 'Not exposed through MCP.'}
+- {family: OTP / Verify channel + template management, spec: openapi/insider-verify-openapi.yml, operations: 9, reason: 'Only OTP ANALYTICS reach MCP; channel and template management stay REST-only.'}
+- {family: iOS Live Activities, spec: openapi/insider-live-activity-openapi.yml, operations: 6, reason: 'Not exposed through MCP.'}
+- {family: OnSite analytics, spec: openapi/insider-analytics-openapi.yml, operations: 3, reason: 'Insider One states OnSite is currently unsupported in MCP.'}
+- {family: Transactional journey trigger, spec: openapi/insider-architect-transactional-openapi.yml, operations: 1, reason: 'MCP cannot trigger journeys.'}
+
+coverage:
+  mcp_tools: 35
+  tools_bound_to_rest: 21
+  tools_mcp_only: 14
+  rest_operations_total: 113
+  rest_operations_reachable_via_mcp: 21
+  rest_only_operations: 92
+  note: >-
+    19% of Insider One's REST estate is reachable through MCP. The gap is deliberate and documented:
+    the MCP server is read-mostly, and every write it does allow lands as a draft for human review.

@@ -1,0 +1,60 @@
+generated: '2026-08-13'
+method: generated
+source: openapi/
+provider: Insider One
+providerId: insider
+summary: >-
+  Packaged Agent Skills for the Insider One REST estate, generated from the 18 OpenAPI documents in
+  openapi/ (themselves derived from Insider One's own public Postman collection). Every operationId
+  referenced below exists in those specs; every limit, error string and constraint quoted is from
+  Insider One's published documentation.
+
+skills:
+- name: insider-ingest-user-data
+  file: skills/insider-ingest-user-data.md
+  api: Insider One Unification API
+  flow: Send profiles, attributes and events into the Unified Customer Database and read them back.
+  operations: [upsertUserData, getUserProfiles, deleteUserAttribute, exportRawUserData]
+- name: insider-identity-resolution
+  file: skills/insider-identity-resolution.md
+  api: Insider One Unification API
+  flow: Change or remove the identifiers that address a profile without merging or orphaning records.
+  operations: [updateIdentifiers, deleteIdentifiers, getUserProfiles]
+- name: insider-consent-and-erasure
+  file: skills/insider-consent-and-erasure.md
+  api: Insider One Unification + Contact + Mobile APIs
+  flow: Honour a GDPR/CCPA request or a channel opt-out across the three hosts that own each part.
+  operations: [setDataProcessingConsentForAppUsers, deleteUserProfile, deleteUserPiiDataUsingIdentifier, deleteUserPiiDataUsingProfileId, unsubscribeEmailUsersFromDatabase, unsubscribeEmailUsersForEmailGlobalUnsubscription, unsubscribeSmsUsersFromDatabase, unsubscribeWhatsappUsersFromDatabase, resubscribeEmailUsers]
+- name: insider-transactional-messaging
+  file: skills/insider-transactional-messaging.md
+  api: Insider One Mail / SMS / WhatsApp / Gateway APIs
+  flow: Send a transactional message and reconcile the outcome through the WhatsApp webhook surface.
+  operations: [sendTransactionalEmails, sendTransactionalSingleSms, sendTransactionalBulkSms, sendTransactionalWhatsappTemplateMessage, sendConversationalWhatsappMessageTemplate, sendTransactionalWhatsappMessagesWithOauth20, updateTransactionalWhatsappWebhookSettingsWithOauth20]
+- name: insider-catalog-and-recommendations
+  file: skills/insider-catalog-and-recommendations.md
+  api: Insider One Catalog / Recommendation / Eureka APIs
+  flow: Keep the product catalog current and serve recommendations and search from it.
+  operations: [addNewProductsInAFlatFormat, addNewProductsInANestedFormat, updateExistingProductsInAFlatFormat, updateExistingProductsInANestedFormat, createLocaleConfigurations, getRecommendations, getSearchResults, collectUserEvent]
+- name: insider-campaign-analytics
+  file: skills/insider-campaign-analytics.md
+  api: Insider One Analytics / Architect Analytics / SMS Analytics APIs + Insider One MCP
+  flow: Pull campaign and journey analytics over REST or MCP without hitting the date-format and retention traps.
+  operations: [getEmailCampaignListV2, getEmailCampaignAnalyticsV2, getOverallAnalyticsV2, getOnsiteOverallAnalytics, getSmsCampaignList, getSmsCampaignAnalytics, getWebPushCampaignMetricsAnalytics, getAppPushAnalytics, getArchitectOverallAnalytics, getArchitectJourneyAnalytics, getArchitectChannelAnalytics, getConversionGoalsAnalytics, exportJourneyList]
+
+provider_published_skills:
+- name: Web SDK Integration SKILL.md
+  docs: https://academy.insiderone.com/docs/web-sdk-integration-skill-md
+  published: true
+  saved_verbatim: false
+  gated: true
+  gate: >-
+    Insider One GENERATES an account-specific SKILL.md from the Web SDK Integration wizard
+    (Integration Method > Source Code > "Download SKILL.md"). It is preloaded with that account's
+    identifiers, attributes, currencies and event parameters, and is explicitly optimised for
+    Claude Code (also documented for Cursor, Windsurf and GitHub Copilot). Because it is generated
+    per account behind the panel login, there is no public artifact to save verbatim — only the
+    documentation of the practice.
+  note: >-
+    Worth recording as a finding in its own right: Insider One ships an Agent Skill as a product
+    feature, targeted at Claude Code by name, for the web integration. That is well ahead of the
+    catalog norm — and it sits alongside a first-party remote MCP server (mcp/insider-mcp.yml).

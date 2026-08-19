@@ -1,0 +1,879 @@
+{
+  "item": [
+    {
+      "id": "f2c204d7-328d-4ab1-ae22-6e677cbce7a9",
+      "name": "Data Governance APIs",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a2f81fcd-3dce-4c06-9231-fad7b0684854",
+          "name": "Set data processing consent for app users",
+          "request": {
+            "name": "Set data processing consent for app users",
+            "description": {
+              "content": "EU’s General Data Protection Regulation came into force on May 25, 2018. This legislation requires Insider's customers to ask for specific consent to send their data to Insider as the Data Processor. Data Processing Consent API helps you send user consent programmatically in real-time over the web using predefined web services.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\npartner_name\nYour Insider partner name. The partner name should be lowercase.\nString\nYes\n\ngdpr_consent\nIf consent given, true  Otherwise false\nBoolean\nYes\n\ntarget\nThe object that contains the unique device ID of the user, and its value. E.g. \"udid\": \"1234\"\nObject\nYes\n\nSample Body\nThe following is a sample body to pass user consent to Insider.\n\n{\n    \"partner_name\": \"{partner_name}\",\n    \"gdpr_consent\": true,\n    \"target\": {\n        \"udid\": \"1A2B3C4D5E6F7X8Y9Z\"\n    }\n}\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\n    \"status\": \"ok\"\n}\n\n400 Bad Request\nThe following response returns if the partner_name or target is empty in the request.\n\nBad Payload.\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nThe partner name should be provided in the request body. If the value is incorrect, no operation will be executed.\n\nEach request can set data processing consent for only one UDID.\n\nThe value of partner_name should be lowercase.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "privacy",
+                "gdpr",
+                "consent",
+                "set"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"partner_name\": \"{partnerName}\",\n  \"gdpr_consent\": true,\n  \"target\": {\n    \"udid\": \"1A2B3C4D5E6F7X8Y9Z\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8d6b82d5-f470-4d4b-b2d6-9d4937f93419",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "privacy",
+                    "gdpr",
+                    "consent",
+                    "set"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"partner_name\": \"{partnerName}\",\n  \"gdpr_consent\": true,\n  \"target\": {\n    \"udid\": \"1A2B3C4D5E6F7X8Y9Z\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "33e85f5a-24ab-4b84-83b5-f6f242a14ff3",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "privacy",
+                    "gdpr",
+                    "consent",
+                    "set"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"partner_name\": \"{partnerName}\",\n  \"gdpr_consent\": true,\n  \"target\": {\n    \"udid\": \"1A2B3C4D5E6F7X8Y9Z\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "4daa4c93-0080-411c-b140-b4adfaf65faf",
+      "name": "Mobile App",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a0014253-f91d-43b1-9b91-42d78461b0ba",
+          "name": "Get app push analytics",
+          "request": {
+            "name": "Get app push analytics",
+            "description": {
+              "content": "You can use this service to get the analytics of the single push notifications that are sent in the current day using a predefined web service. These analytics include the campaigns created from the beginning of the day (00:00) to the time of the API request. For instance, if you send a request at 14:50, the API will return the campaigns created between 00:00-14:50.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\napi_key\nYour API key. Refer to API Authentication Tokens to get your API key.\nString\nYes\n\nSample Body\nThe following is a sample body to send this request.\n\n{\n    \"api_key\": \"Your API Key goes here\"\n}\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\n    \"campaigns\": [\n        {\n            \"id\": 5125,\n            \"name\": \"My app push name\",\n            \"delivery_count\": 1640069,\n            \"session_count\": 1085,\n            \"open_rate\": \"% 0.07\",\n            \"message\": \"This is my message\",\n            \"title\": \"This is my title\",\n            \"segment_name\": \"This is my segment\",\n            \"deep_link\": {\n                \"dl_key1\": \"value1\",\n                \"dl_key2\": \"value2\"\n            },\n            \"push_image\": \"https://pushimage1.useinsider.com\"\n        },\n        {\n            \"id\": 5126,\n            \"name\": \"My app push name 2\",\n            \"delivery_count\": 683618,\n            \"session_count\": 914,\n            \"open_rate\": \"% 0.13\",\n            \"message\": \"This is my message\",\n            \"title\": \"This is my title\",\n            \"segment_name\": \"English_lang_users\",\n            \"deep_link\": {\n                \"dl_key3\": \"value3\",\n                \"dl_key4\": \"value4\"\n            },\n            \"push_image\": \"https://pushimage2.useinsider.com\"\n        }\n    ],\n    \"total_camp_count\": 2,\n    \"total_delivery_count\": 2323687,\n    \"total_session_count\": 1999,\n    \"total_open_rate\": \"% 0.09\"\n}\n\nThe successful response returns the following metrics:\n\nParameter\nDefinition\n\nid\nCampaign ID\n\nname\nCampaign name\n\ndelivery_count\nThe number of users the campaign is delivered to\n\nsession_count\nThe number of users who open the campaign\n\nopen_rate\nOpens/deliveries\n\nmessage\nThe campaign message\n\ntitle\nThe campaign title\n\nsegment_name\nThe name of the segment that is targeted in the campaign\n\ndeep_link/deep link key\nThe deep link the users are redirected to\n\npush_image\nThe image URL of the campaign\n\n401 Unauthorized\nThe following response returns if the API Key is invalid or incorrect.\n\n{\n    \"error\": \"Bad Api Key.\"\n}\n\n401 Unauthorized\nThe following response returns if the API Key is empty.\n\nApi key can not be empty.\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nThe API key should be provided in the request body. If the key is incorrect, no operation will be executed.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "notification",
+                "get_statistics"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"api_key\": \"{mobileAppApiKey}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "1770cc1f-e5e8-462a-ab72-3beed3306c0d",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "notification",
+                    "get_statistics"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"api_key\": \"{mobileAppApiKey}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"campaigns\": [\n    {\n      \"id\": 5125,\n      \"name\": \"My app push name\",\n      \"delivery_count\": 1640069,\n      \"session_count\": 1085,\n      \"open_rate\": \"% 0.07\",\n      \"message\": \"This is my message\",\n      \"title\": \"This is my title\",\n      \"segment_name\": \"This is my segment\",\n      \"deep_link\": {\n        \"dl_key1\": \"value1\",\n        \"dl_key2\": \"value2\"\n      },\n      \"push_image\": \"https://pushimage1.useinsider.com\"\n    },\n    {\n      \"id\": 5126,\n      \"name\": \"My app push name 2\",\n      \"delivery_count\": 683618,\n      \"session_count\": 914,\n      \"open_rate\": \"% 0.13\",\n      \"message\": \"This is my message\",\n      \"title\": \"This is my title\",\n      \"segment_name\": \"English_lang_users\",\n      \"deep_link\": {\n        \"dl_key3\": \"value3\",\n        \"dl_key4\": \"value4\"\n      },\n      \"push_image\": \"https://pushimage2.useinsider.com\"\n    }\n  ],\n  \"total_camp_count\": 2,\n  \"total_delivery_count\": 2323687,\n  \"total_session_count\": 1999,\n  \"total_open_rate\": \"% 0.09\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2d623f21-9a94-44d5-b08b-072d2ee4448c",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "notification",
+                    "get_statistics"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"api_key\": \"{mobileAppApiKey}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "b1076e74-39df-49c7-a7a6-983897afef72",
+      "name": "Mobile App APIs",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d052f5bf-5cf8-4162-8416-b41b635334ae",
+          "name": "Upload custom segments to mobile suite",
+          "request": {
+            "name": "Upload custom segments to mobile suite",
+            "description": {
+              "content": "Upload custom segments via a CSV file to your Insider One Mobile Suite.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "custom_segment",
+                "v1",
+                "upload"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST"
+          },
+          "response": [
+            {
+              "id": "856d2554-573e-449f-97bb-6b672410ef9b",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "custom_segment",
+                    "v1",
+                    "upload"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ab93a47c-2c8d-49eb-8bc7-f729667fc063",
+          "name": "Get Message Center data",
+          "request": {
+            "name": "Get Message Center data",
+            "description": {
+              "content": "This API allows you to get the push notifications of any type delivered to your users during a defined time interval, including the push notifications delivered in Architect journeys.\n\nBody Parameters\nBefore sending the request, make sure to replace the values in your request body.\n\nParameter\nDescription\nData Type\nRequired\n\nidentifiers\nUser's identifier information. Identifiers can be Email, Phone Number, UUID (unique user ID), or a custom identifier. The identifiers need to be written in the mentioned letter cases in the request, while the custom attribute needs to be written in the attribute_name format.\nObject\nYes\n\nstart_date\nStart date of the timeline push notifications are delivered within, in timestamp format.\nInteger\nYes\n\nend_date\nEnd date of the timeline push notifications are delivered within, in timestamp format.\nInteger\nYes\n\nlimit\nNumber of push notifications you can get in one request. The value can be between1-100.\nInteger\nYes\n\nSample Body\nThe following is a sample body to get your message center data.\n\n{\n  \"identifiers\": {\n    \"Email\": \"j.doe@mail.com\"\n  },\n  \"start_date\": 1633068172,\n  \"end_date\": 2143433430,\n  \"limit\": 100\n}\n\nSample Responses\n200 OK\nThe following sample response returns for a successful request with a limit of 3.\n\n[\n    {\n        \"camp_id\": 650,\n        \"camp_type\": \"Single Push\",\n        \"created_at\": \"2023-01-23T18:10:17Z\",\n        \"deep_links\": {\n            \"Page\": \"Cart\",\n            \"category\": \"insider_int_push\",\n            \"mutable-content\": \"1\"\n        },\n        \"message\": \"This is my message\",\n        \"title\": \"This is my title\",\n        \"variant_id\": 1907\n    },\n    {\n        \"camp_id\": 101,\n        \"camp_type\": \"Recurring Push\",\n        \"created_at\": \"2023-01-18T21:00:21Z\",\n        \"deep_links\": {\n            \"MyKey01\": \"MyValue01\"\n        },\n        \"message\": \"New women's clothing has launched...\",\n        \"title\": \"Don't forget about me!\",\n        \"variant_id\": 898\n    },\n    {\n        \"camp_id\": 132,\n        \"camp_type\": \"Recurring Push\",\n        \"created_at\": \"2023-01-18T21:00:20Z\",\n        \"deep_links\": {\n            \"Page\": \"Cart\",\n            \"MyKey02\": \"MyValue02\"\n        },\n        \"message\": \"Your favorite items are waiting for you. \",\n        \"title\": \"Retail\",\n        \"variant_id\": 1122\n    }\n]\n\n400 Bad Request\nThe following sample response returns for a request where the start date is greater than the end date.\n\nbad payload\n\n400 Bad Request\nThe following sample response returns for a request where the limit is greater than 100.\n\nlimit should be between 1 and 100.\n\n401 Unauthorized\nA request with an invalid API key will return a 401 Unauthorized response.\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nEach request can get push notifications only for one single user.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "message_center",
+                "v1"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-INSIDER-API-KEY"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"identifiers\": {\n    \"Email\": \"j.doe@mail.com\"\n  },\n  \"start_date\": 1633068172,\n  \"end_date\": 2143433430,\n  \"limit\": 100\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "df304726-5bee-48fa-91ad-291c12ac7b68",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "message_center",
+                    "v1"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-INSIDER-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"identifiers\": {\n    \"Email\": \"j.doe@mail.com\"\n  },\n  \"start_date\": 1633068172,\n  \"end_date\": 2143433430,\n  \"limit\": 100\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"camp_id\": 897,\n    \"camp_type\": \"Single Push\",\n    \"created_at\": \"2023-05-10T19:08:39Z\",\n    \"deep_links\": {\n      \"key1\": \"value1\"\n    },\n    \"image_url\": \"https://imageurl.useinsider.com\",\n    \"message\": \"This is my message!\",\n    \"title\": \"This is my title\",\n    \"variant_id\": 1943\n  },\n  {\n    \"camp_id\": 896,\n    \"camp_type\": \"Single Push\",\n    \"created_at\": \"2023-05-09T22:10:56Z\",\n    \"deep_links\": {\n      \"key2\": \"value2\"\n    },\n    \"image_url\": \"https://imageurl.useinsider.com\",\n    \"message\": \"This is my great message\",\n    \"title\": \"This is my amazing title\",\n    \"variant_id\": 1941\n  },\n  {\n    \"camp_id\": 894,\n    \"camp_type\": \"Single Push\",\n    \"created_at\": \"2023-05-08T23:55:45Z\",\n    \"deep_links\": {\n      \"key3\": \"value3\"\n    },\n    \"message\": \"This is my message\",\n    \"title\": \"This is my title\",\n    \"variant_id\": 1937\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c339f650-86c9-4918-8abf-73f330224b06",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "message_center",
+                    "v1"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-INSIDER-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"identifiers\": {\n    \"Email\": \"j.doe@mail.com\"\n  },\n  \"start_date\": 1633068172,\n  \"end_date\": 2143433430,\n  \"limit\": 100\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1a4dd3bf-7064-4fba-9693-d1c1134f6090",
+          "name": "Send bulk app pushes",
+          "request": {
+            "name": "Send bulk app pushes",
+            "description": {
+              "content": "Bulk Push API is a service that sends push notifications to a predefined segment over the web using predefined web services.\n\nYou can reach the analytics of your bulk push notifications sent via this API through Reports > Mobile App Analytics > Push API Campaigns on Inone.\n\nBody Parameters\nThe following are the body parameters you need to use in your request.\n\nParameter\nDescription\nData Type\nRequired\n\napi_key\nYour API Key. Refer to API Authentication Tokens to get your API key.\nString\nYes\n\ncampaign_name\nName of the push campaign.\nString\nYes\n\nsegment_name\nName of the segment the push notification is sent to. It should match with the segments on the Mobile Panel.\nString\nYes\n\ntitle\nTitle of the push notification. For instance, it can be your App name.\nString\nYes\n\ncontent\nContent of the push notification.\nString\nYes\n\ndeeplink\nKey/value pairs to be passed to the application in the push payload. The most common use of deep links is sending the user to the selected landing page when they open the push notification.\nObject\nNo\n\nnotification_image\nURL of the image in the rich push notification. If advanced_push_items is in use, notification_image will not be displayed.\nString\nNo\n\nandroid_sound\nName of the custom sound file in your app to play a custom sound on Android devices.\nString\nNo\n\nios_sound\nName of the custom sound file in your app to play a custom sound on iOS devices.\nString\nNo\n\ntest_push\ntrue will send the push notification only to the test devices.\nBoolean\nNo\n\nadvanced_push_items\nArray of Advanced Push Items object.\nArray\nNo\n\npreferred_type\nIt is required only to send Advanced Pushes. E.g. carousel, slider.\nString\nNo\n\noverride_global_freq_cap  \ntrue will override global frequency capping limit.  \nBoolean\nNo\n\nSample Body\nThe following is a sample body to send bulk app push notification. Before sending the request, make sure to replace the values in your request body.\n\n{\n   \"api_key\":\"Your API Key goes here\",\n   \"campaign_name\":\"Insider API Demo\",\n   \"segment_name\":\"All People\",\n   \"title\":\"Your push notification title goes here\",\n   \"content\":\"Your push content goes here.\",\n   \"deeplink\":{\n      \"your_deeplink_key\":\"value\",\n      \"your_another_deeplink_key\":\"value\"\n   },\n   \"notification_image\":\"https://your_image_url.jpg\",\n   \"android_sound\":\"Your custom sound name for Android goes here\",\n   \"ios_sound\":\"Your custom sound name for iOS goes here\",\n   \"test_push\":true,\n   \"override_global_freq_cap\":true,\n   \"advanced_push_items\":[\n      {\n         \"headline\":\"Title for the item 1\",\n         \"description\":\"Description for the item 1\",\n         \"image_url\":\"https://your_image_url.jpg\",\n         \"deep_links\":{\n            \"your_deeplink_key\":\"value\"\n         }\n      },\n      {\n         \"headline\":\"Title for the item 2\",\n         \"description\":\"Description for the item 2\",\n         \"image_url\":\"https://your_image_url.jpg\",\n         \"deep_links\":{\n            \"your_deeplink_key\":\"value\"\n         }\n      },\n      {\n         \"headline\":\"Title for the item 3\",\n         \"description\":\"Description for the item 3\",\n         \"image_url\":\"https://your_image_url.jpg\",\n         \"deep_links\":{\n            \"your_deeplink_key\":\"value\"\n         }\n      }\n   ],\n   \"preferred_type\":\"carousel\"\n}\n\nSample Responses\n200 Campaign Created Successfully\nThe following response returns if the request is successful.\n\n{\n    \"response\": \"Campaign Created.\"\n}\n\n400 Invalid API Key\nThe following response returns if the API Key is invalid.\n\n{\n    \"response\": \"No Partner Found With Api Key.\"\n}\n\n422 No Push Message Certificate\n{\n    \"response\": \"No Push Message Certificate is Provided.\"\n}\n\nFail Records Messages\nThe following are fail records that might return in the response.\n\nMessage\nDefinition\n\nError Creating Campaign\nSome parameters are missing in the campaign. You should have all the required parameters in your request.\n\nNo API Key Provided\nThe API key is a required parameter. You should have the API Key in your request.\n\nNo Title Provided\nPush notification title is a required parameter. You should add the push notification title to your request body.\n\nNo Content Provided\nPush content is a required parameter. You should add the content to your request body.\n\nNo Partner Found With API Key\nThe API Key sent in the payload does not match the API key at Insider. You should get the correct API Key via Inone > Settings > Mobile App Settings > Integration.\n\nBad IP\nThe IP the push payload is sent from is not whitelisted.\n\nNo Segment Matched\nThe segment name in the payload does not match any segments on Insider Dashboard.\n\nAdvancedPushItems should contain at least 3, max. 6 items.\nIf advanced_push_items key is in use in the request body, it should contain 3-6 items.\n\nPreferred Type is Not Carousel or Slider\nIf preferred_type key is in use in the request body, it can either be carousel or slider.\n\nInvalid Advanced Push Payload\nAll the items for the Advanced Push Notification should have headline, description, image URL variables defined with image URLs using the HTTPS protocol.\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nThe API key should be provided in the request body. If the key is incorrect, no operation will be executed.\n\nEach payload can contain only one bulk push campaign.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "push",
+                "bulk"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"api_key\": \"{mobileAppApiKey}\",\n  \"campaign_name\": \"Insider API Demo\",\n  \"segment_name\": \"Your segment name goes here\",\n  \"title\": \"Your push notification title goes here\",\n  \"content\": \"Your push content goes here.\",\n  \"deeplink\": {\n    \"your_deeplink_key\": \"value\",\n    \"your_another_deeplink_key\": \"value\"\n  },\n  \"notification_image\": \"https://your_image_url.jpg\",\n  \"android_sound\": \"Your custom sound name for Android goes here\",\n  \"ios_sound\": \"Your custom sound name for iOS goes here\",\n  \"test_push\": true,\n  \"override_global_freq_cap\": true,\n  \"advanced_push_items\": [\n    {\n      \"headline\": \"Title for the item 1\",\n      \"description\": \"Description for the item 1\",\n      \"image_url\": \"https://your_image_url.jpg\",\n      \"deep_links\": {\n        \"your_deeplink_key\": \"value\"\n      }\n    },\n    {\n      \"headline\": \"Title for the item 2\",\n      \"description\": \"Description for the item 2\",\n      \"image_url\": \"https://your_image_url.jpg\",\n      \"deep_links\": {\n        \"your_deeplink_key\": \"value\"\n      }\n    },\n    {\n      \"headline\": \"Title for the item 3\",\n      \"description\": \"Description for the item 3\",\n      \"image_url\": \"https://your_image_url.jpg\",\n      \"deep_links\": {\n        \"your_deeplink_key\": \"value\"\n      }\n    }\n  ],\n  \"preferred_type\": \"carousel\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2bc532ba-0d79-4321-a554-fa8513bdf501",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "push",
+                    "bulk"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"api_key\": \"{mobileAppApiKey}\",\n  \"campaign_name\": \"Insider API Demo\",\n  \"segment_name\": \"Your segment name goes here\",\n  \"title\": \"Your push notification title goes here\",\n  \"content\": \"Your push content goes here.\",\n  \"deeplink\": {\n    \"your_deeplink_key\": \"value\",\n    \"your_another_deeplink_key\": \"value\"\n  },\n  \"notification_image\": \"https://your_image_url.jpg\",\n  \"android_sound\": \"Your custom sound name for Android goes here\",\n  \"ios_sound\": \"Your custom sound name for iOS goes here\",\n  \"test_push\": true,\n  \"override_global_freq_cap\": true,\n  \"advanced_push_items\": [\n    {\n      \"headline\": \"Title for the item 1\",\n      \"description\": \"Description for the item 1\",\n      \"image_url\": \"https://your_image_url.jpg\",\n      \"deep_links\": {\n        \"your_deeplink_key\": \"value\"\n      }\n    },\n    {\n      \"headline\": \"Title for the item 2\",\n      \"description\": \"Description for the item 2\",\n      \"image_url\": \"https://your_image_url.jpg\",\n      \"deep_links\": {\n        \"your_deeplink_key\": \"value\"\n      }\n    },\n    {\n      \"headline\": \"Title for the item 3\",\n      \"description\": \"Description for the item 3\",\n      \"image_url\": \"https://your_image_url.jpg\",\n      \"deep_links\": {\n        \"your_deeplink_key\": \"value\"\n      }\n    }\n  ],\n  \"preferred_type\": \"carousel\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"response\": \"Test Push Send to Test Devices\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "feb69e5a-2b2d-45e8-a8c1-b71269c0b64a",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "push",
+                    "bulk"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"api_key\": \"{mobileAppApiKey}\",\n  \"campaign_name\": \"Insider API Demo\",\n  \"segment_name\": \"Your segment name goes here\",\n  \"title\": \"Your push notification title goes here\",\n  \"content\": \"Your push content goes here.\",\n  \"deeplink\": {\n    \"your_deeplink_key\": \"value\",\n    \"your_another_deeplink_key\": \"value\"\n  },\n  \"notification_image\": \"https://your_image_url.jpg\",\n  \"android_sound\": \"Your custom sound name for Android goes here\",\n  \"ios_sound\": \"Your custom sound name for iOS goes here\",\n  \"test_push\": true,\n  \"override_global_freq_cap\": true,\n  \"advanced_push_items\": [\n    {\n      \"headline\": \"Title for the item 1\",\n      \"description\": \"Description for the item 1\",\n      \"image_url\": \"https://your_image_url.jpg\",\n      \"deep_links\": {\n        \"your_deeplink_key\": \"value\"\n      }\n    },\n    {\n      \"headline\": \"Title for the item 2\",\n      \"description\": \"Description for the item 2\",\n      \"image_url\": \"https://your_image_url.jpg\",\n      \"deep_links\": {\n        \"your_deeplink_key\": \"value\"\n      }\n    },\n    {\n      \"headline\": \"Title for the item 3\",\n      \"description\": \"Description for the item 3\",\n      \"image_url\": \"https://your_image_url.jpg\",\n      \"deep_links\": {\n        \"your_deeplink_key\": \"value\"\n      }\n    }\n  ],\n  \"preferred_type\": \"carousel\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "36b52f5b-130e-40f7-9439-cc78991ad209",
+          "name": "Send targeted app pushes",
+          "request": {
+            "name": "Send targeted app pushes",
+            "description": {
+              "content": "You can use the Targeted Push API in various cases such as sending status update of an order from your ecommerce platform, or informing users of a sale on an item that was in their wishlist.\n\nYou can reach the analytics of your targeted push notifications sent via this API through Reports > Mobile App Analytics > Push API Campaigns on Inone.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\napi_key\nYour API key. Refer to API Authentication Tokens to get your API key.\nString\nYes\n\nasync\nTrue: The request is queued and HTTP 202 {\"message\":\"Async request accepted\"} returns. The notification send results are not in the response.  False (default): HTTP 200 returns send reports with success/error counts.\nBoolean\nNo\n\nnotifications\nThe array of notification object that includes the push data\nArray\nYes\n\nidentifiers\nThe object that contains the unique identifier of the user. The key can be an identifier such as email, phone_number, or uuid. E.g., \"phone_number\": \"+651234567890\".\nObject\nYes\n\ncamp_id\nID of the campaign that can be used to retrieve the statistics of the push notification via Statistics API. You can set any campaign ID.\nInteger\nYes\n\ncamp_name\nName of the push notification\nString\nYes\n\ntitle\nTitle of the push notification\nString\nYes\n\nmessage\nContent of the push notification\nString\nYes\n\nimage_url\nURL of the image in rich push notifications\nString\nNo\n\nGFC_enabled\nWhen set to true, the Targeted Push API enforces your pushed global frequency cap (GFC). Each successful API push increments the user’s GFC counter by one. If the user has already reached the GFC limit, the API blocks the send. The user is excluded, no message is sent, and the count is not incremented. The default value is set to false. Even if GFC_enabled is set to false, the user's counter is still incremented.\nBoolean\nNo\n\nttl\nExpiration time of the push notification in seconds\nInteger\nNo\n\nandroid\nObject for Android details\nObject\nNo\n\nchannel_id\nID of the channel\nInteger\nNo\n\nios\nObject for iOS details\nObject\nNo\n\nthread_id\nID of the notification thread\nInteger\nNo\n\ndeep_link\nKey/value pairs to be passed to the application in the push payload. The most common use of deep links is sending the user to the selected landing page when they open the push notification.\nObject\nNo\n\nsound\nName of the custom sound file in your app to play a custom sound\nString\nNo\n\nbadge\nBadge for iOS\nInteger\nNo\n\ncontent-available\n(iOS only) true sends the notifications with content--available=1, but the notification does not appear. This can be used to execute background tasks remotely.\nBoolean\nNo\n\nmutable-content\n(iOS only) true sends the notification with mutable-content=1 and updates the current screen app pushes. This can be used to update app push notification content that was sent incorrectly on the user's screen.\nBoolean\nNo\n\n<p >To add key-value pairs to the deep_link object, you can use the following deep link keys depending on its type:</p> \n\nins_dl_internal for an internal deep link,\n\nins_dl_external for an external deep link,\n\nins_dl_url_scheme for a URL scheme deep link,\n\nins_dl_json for a JSON deep link.\n\nThe URL in the value should always start with https://.\n\nSample Body\nThe following is a sample body to send targeted app push notifications.\n\ncamp_id allows you to list your app push notifications in the Message Center, and get campaign-based reporting of your Push API campaigns. When replacing the sample values in the payload, make sure to use a unique campaign ID value in the camp_id key. \n\n{\n    \"api_key\": \"Your API Key goes here\",\n    \"report_attributes\": [\n        \"INSIDER.carrier\",\n        \"INSIDER.idfa\",\n        \"INSIDER.name\",\n        \"INSIDER.surname\",\n        \"INSIDER.gender\",\n        \"INSIDER.age\",\n        \"INSIDER.birthday\",\n        \"INSIDER.email\",\n        \"INSIDER.phone_number\",\n        \"INSIDER.language\",\n        \"INSIDER.email_optin\",\n        \"INSIDER.sms_optin\",\n        \"INSIDER.push_optin\",\n        \"INSIDER.location_optin\",\n        \"INSIDER.insider_id\",\n        \"INSIDER.environment\",\n        \"INSIDER.idfa\",\n        \"INSIDER.device_token\",\n        \"INSIDER.udid\",\n        \"INSIDER.model\",\n        \"INSIDER.carrier\",\n        \"INSIDER.app_version\",\n        \"INSIDER.os_version\",\n        \"INSIDER.screen_width\",\n        \"INSIDER.screen_height\",\n        \"INSIDER.platform\",\n        \"INSIDER.timezone\",\n        \"INSIDER.device_language\",\n        \"INSIDER.sdk_version\",\n        \"INSIDER.last_ip\",\n        \"INSIDER.package_name\"\n    ],\n    \"notifications\": [\n        {\n            \"identifiers\": {\n                \"INSIDER.email\": \"sample@mail.com\",\n                \"INSIDER.phone_number\": \"+65123456789\",\n                \"INSIDER.uuid\": \"1234567890\"\n            },\n            \"camp_id\": 1,\n            \"camp_name\": \"Your push notification campaign name goes here\",\n            \"title\": \"Your push notification title goes here\",\n            \"message\": \"Your push content goes here.\",\n            \"image_url\": \"https://your_image_url.jpg\",\n            \"ttl\": 1,\n            \"check_optin\": true,\n            \"android\": {\n                \"thread-id\": 1,\n                \"sound\": \"sound_check\",\n                \"deep_link\": {\n                    \"ins_dl_internal\": \"https://www.deeplink.useinsider\"\n                }\n            },\n            \"ios\": {\n                \"thread-id\": 1,\n                \"badge\": 1,\n                \"content-available\": false,\n                \"mutable-content\": true,\n                \"sound\": \"sound_check\",\n                \"deep_link\": {\n                    \"ins_dl_internal\": \"https://www.deeplink.useinsider\"\n                }\n            }\n        }\n    ]\n}\n\nAdd advanced_push_payload in notifications if you would like to use advanced app pushes. The advanced_push_type value can be a carousel or slider.\n\nParameter\nDefinition\nData Type\nRequired\n\nadvanced_push_type\nType of the advanced push: carousel or slider\nString\nYes\n\nadvanced_push_items\nDetails of the advanced push\nArray\nYes\n\nimage_url\nURL of the image in rich push notifications\nString\nYes\n\ndeep_links\nKey/value pairs to be passed to the application in the push payload. The most common use of deep links is sending the user to the selected landing page when they open the push notification.\nObject\nNo\n\ndescription\nDescription for your push\nString\nYes\n\nheadline\nTitle for your push\nString\nYes\n\nid\nID of your push\nInteger\nYes\n\n{\n    \"api_key\": \"Your API Key goes here\",\n    \"report_attributes\": [\n        \"INSIDER.carrier\",\n        \"INSIDER.idfa\",\n        \"INSIDER.name\",\n        \"INSIDER.surname\",\n        \"INSIDER.gender\",\n        \"INSIDER.age\",\n        \"INSIDER.birthday\",\n        \"INSIDER.email\",\n        \"INSIDER.phone_number\",\n        \"INSIDER.language\",\n        \"INSIDER.email_optin\",\n        \"INSIDER.sms_optin\",\n        \"INSIDER.push_optin\",\n        \"INSIDER.location_optin\",\n        \"INSIDER.insider_id\",\n        \"INSIDER.environment\",\n        \"INSIDER.idfa\",\n        \"INSIDER.device_token\",\n        \"INSIDER.udid\",\n        \"INSIDER.model\",\n        \"INSIDER.carrier\",\n        \"INSIDER.app_version\",\n        \"INSIDER.os_version\",\n        \"INSIDER.screen_width\",\n        \"INSIDER.screen_height\",\n        \"INSIDER.platform\",\n        \"INSIDER.timezone\",\n        \"INSIDER.device_language\",\n        \"INSIDER.sdk_version\",\n        \"INSIDER.last_ip\",\n        \"INSIDER.package_name\"\n    ],\n    \"notifications\": [\n        {\n            \"identifiers\": {\n                \"INSIDER.email\": \"example@gmail.com\",\n                \"INSIDER.phone_number\": \"+9059713551597135123\",\n                \"INSIDER.uuid\": \"5971351231234567\"\n            },\n            \"advanced_push_payload\": {\n                \"advanced_push_type\": \"carousel\",\n                \"advanced_push_items\": [\n                    {\n                        \"image_url\": \"https://your_image_url.jpg\",\n                        \"deep_links\": {\n                            \"your_deeplink_key\": \"value1\"\n                        },\n                        \"description\": \"Description for the item 1\",\n                        \"headline\": \"Title for the item 1\",\n                        \"id\": 1\n                    },\n                    {\n                        \"image_url\": \"https://your_image_url.jpg\",\n                        \"deep_links\": {\n                            \"your_deeplink_key\": \"value2\"\n                        },\n                        \"description\": \"Description for the item 2\",\n                        \"headline\": \"Title for the item 2\",\n                        \"id\": 2\n                    },\n                    {\n                        \"image_url\": \"https://your_image_url.jpg\",\n                        \"deep_links\": {\n                            \"your_deeplink_key\": \"value3\"\n                        },\n                        \"description\": \"Description for the item 3\",\n                        \"headline\": \"Title for the item 3\",\n                        \"id\": 3\n                    }\n                ]\n            },\n            \"camp_id\": 1,\n            \"camp_name\": \"Your push notification campaign name goes here\",\n            \"title\": \"Your push notification title goes here\",\n            \"message\": \"Your push content goes here\",\n            \"image_url\": \"https://your_image_url.jpg\",\n            \"ttl\": 1,\n            \"send_single_user\": true,\n            \"check_optin\": true,\n            \"android\": {\n                \"thread-id\": 1,\n                \"sound\": \"sound_check\",\n                \"deep_link\": {\n                    \"ins_dl_internal\": \"https://www.deeplink.useinsider\"\n                }\n            },\n            \"ios\": {\n                \"thread-id\": 13,\n                \"badge\": 1,\n                \"content-available\": false,\n                \"mutable-content\": true,\n                \"sound\": \"sound_check\",\n                \"deep_link\": {\n                    \"ins_dl_internal\": \"https://www.deeplink.useinsider\"\n                }\n            }\n        }\n    ]\n}\n\nYou can replace the advanced_push_payload.advanced_push_items[n].deep_links.your_deeplink_key with a custom deep link key, or use one of the following default keys: ins_dl_internal, ins_dl_external, ins_dl_url_scheme, or ins_dl_json. \n\nSample Responses\n200 OK\nThe following response returns if the request body has the report_attributes array.\n\ninsider_id represents the profile ID in user profiles. \n\n{\n    \"successes\": [\n        {\n            \"INSIDER.age\": 37,\n            \"INSIDER.app_version\": \"4.0\",\n            \"INSIDER.birthday\": \"1982-11-13T23:00:00Z\",\n            \"INSIDER.carrier\": \"mycarrier\",\n            \"INSIDER.device_language\": \"en\",\n            \"INSIDER.device_token\": \"d07951020f3835bbc303084ecda3746170cfb5d696ddcc55b6\",\n            \"INSIDER.email\": \"sample@mail.com\",\n            \"INSIDER.email_optin\": true,\n            \"INSIDER.environment\": \"production\",\n            \"INSIDER.gender\": \"F\",\n            \"INSIDER.idfa\": \"AF3CCF3F-0V8E-6571-B296-E9BDFF7\",\n            \"INSIDER.insider_id\": \"940E4A98F309288AAC8C4\",\n            \"INSIDER.language\": \"en_US\",\n            \"INSIDER.last_ip\": null,\n            \"INSIDER.location_optin\": false,\n            \"INSIDER.model\": \"iPhone 11\",\n            \"INSIDER.name\": \"John Smith\",\n            \"INSIDER.os_version\": \"14.7.1\",\n            \"INSIDER.package_name\": \"com.useinsider.iGurmeV3\",\n            \"INSIDER.phone_number\": \"+65123456789\",\n            \"INSIDER.platform\": \"iOS\",\n            \"INSIDER.push_optin\": true,\n            \"INSIDER.screen_height\": null,\n            \"INSIDER.screen_width\": null,\n            \"INSIDER.sdk_version\": \"10.6.0-RN-4.0.0\",\n            \"INSIDER.sms_optin\": true,\n            \"INSIDER.surname\": \"Smith\",\n            \"INSIDER.timezone\": \"Europe/Helsinki\",\n            \"INSIDER.udid\": \"98BB170F5078F309288AAC8C4\"\n        }\n    ],\n    \"errors\": {}\n}\n\nThe following response returns if the request body does not have the report_attributes array.\n\n{\n    \"successes\": [\n        {\n            \"INSIDER.device_token\": \"d07951020f3084ecd4d3deda3746170cfb5d69672c055b6\"\n        }\n    ],\n    \"errors\": {}\n}\n\nThere might be cases where the request returns a 200 response but the app pushes cannot be sent to users. The following list displays the reasons for these cases.\n\n| noUserErr | \"NoUserFound\" || optOutErr | \"OptOut\" || unregisteredErr | \"Unregistered\" || userGloballyCappedErr | \"UserGloballyCapped\" || userGloballyCappedForInappErr | \"UserGloballyCappedForInapp\" || invalidCertificateErr | \"InvalidCertificate\" |\n\n400 Bad Request\nThe following response returns if the request body does not have an identifier.\n\n{\n    \"error\": \"empty_insider_identifiers\",\n    \"message\": \"'insider_identifiers' object need to have at least one identifier\"\n}\n\n400 Bad Request\nThe following response returns if the notifications array is empty.\n\n{\n  \"error\": \"invalid_notifications\",\n  \"message\": \"'notifications' is empty, add some notification objects\"\n}\n\n400 Bad Request\nThe following response returns if the array has more than 20 objects.\n\n{\n  \"error\": \"invalid_notifications\",\n  \"message\": \"'notifications' can't have more than 20 objects\"\n}\n\n400 Bad Request\nThe following response returns if the deep link is blacklisted.\n\n{\n  \"error\": \"blacklisted_deeplink\",\n  \"message\": \"deepLink can't contain 'aps' key\"\n}\n\n400 Bad Request\nThe following response returns if the camp ID or channel ID is a negative integer.\n\n{\n  \"error\": \"negative_integer\",\n  \"message\": \"camp_id' and/or 'channel_id' must be greater than zero\"\n}\n\n400 Bad Request\nThe following response returns if the advanced push type is invalid.\n\n{\n  \"error\": \"invalid_advanced_push_type\",\n  \"message\": \"'advanced_push_type' must be either Carousel or Slider\"\n}\n\n400 Bad Request\nThe following response returns if the certificate is invalid.\n\n{\n  \"error\": \"invalid_certificate\",\n  \"message\": \"You do not have a validated certificate. Please check Certificate section under Insider's Settings.\"\n}\n\n401 Unauthorized\nThe following response returns if the API Key is either empty or incorrect.\n\n{\n    \"error\": \"bad_api_key\",\n    \"message\": \"'api_key' is either empty or wrong. You can get your API key from Insider Dashboard\"\n}\n\nFail Records Messages\n\nMessage\nDefinition\n\nInvalidRegistration (Android)\nYou should check the format of the registration passed to the server. Make sure it matches the registration token the client app receives from registering with FCM. Do not truncate or add additional characters.\n\nNotRegistered (Android)\nUser uninstalled the app and is no longer reachable.\n\nMismatchSenderId (Android)\nGoogle Sender ID used in the integration and the FCM Server Key do not belong to the same parent Google Account.\n\nBadDeviceToken (iOS)\nThe application and the app environment do not match. One is in development and the other is in production environment.\n\nDeviceTokenNotForTopic (iOS)\nPush notification certificate topic and the application package name do not match.\n\nUnregistered (iOS)\nUser uninstalled the app and is no longer reachable.\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nThe API key should be provided in the request body. If the key is incorrect, no operation will be executed.\n\nYou must complete the identifier integration with Insider SDK's user object for your platforms. See Android, iOS, React Native, Flutter, and Cordova for further details.\n\nThe camp ID value should be greater than 0.\n\nThe advanced_push_type value can be slider or carousel.\n\nThe Android channel ID value should be greater than 0.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "notification",
+                "user"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"api_key\": \"{mobileAppApiKey}\",\n  \"report_attributes\": [\n    \"INSIDER.carrier\",\n    \"INSIDER.idfa\",\n    \"INSIDER.name\",\n    \"INSIDER.surname\",\n    \"INSIDER.gender\",\n    \"INSIDER.age\",\n    \"INSIDER.birthday\",\n    \"INSIDER.email\",\n    \"INSIDER.phone_number\",\n    \"INSIDER.language\",\n    \"INSIDER.email_optin\",\n    \"INSIDER.sms_optin\",\n    \"INSIDER.push_optin\",\n    \"INSIDER.location_optin\",\n    \"INSIDER.insider_id\",\n    \"INSIDER.environment\",\n    \"INSIDER.idfa\",\n    \"INSIDER.device_token\",\n    \"INSIDER.udid\",\n    \"INSIDER.model\",\n    \"INSIDER.carrier\",\n    \"INSIDER.app_version\",\n    \"INSIDER.os_version\",\n    \"INSIDER.screen_width\",\n    \"INSIDER.screen_height\",\n    \"INSIDER.platform\",\n    \"INSIDER.timezone\",\n    \"INSIDER.device_language\",\n    \"INSIDER.sdk_version\",\n    \"INSIDER.last_ip\",\n    \"INSIDER.package_name\",\n    \"INSIDER.push_enabled\",\n    \"INSIDER.location_enabled\"\n  ],\n  \"notifications\": [\n    {\n      \"identifiers\": {\n        \"INSIDER.email\": \"sample@useinsider.com\",\n        \"INSIDER.phone_number\": \"+65123456789\",\n        \"INSIDER.uuid\": \"1234567890\"\n      },\n      \"camp_id\": 1,\n      \"camp_name\": \"Your push notification campaign name goes here\",\n      \"title\": \"Your push notification title goes here\",\n      \"message\": \"Your push content goes here.\",\n      \"image_url\": \"https://your_image_url.jpg\",\n      \"ttl\": 1,\n      \"check_optin\": true,\n      \"android\": {\n        \"thread-id\": 1,\n        \"sound\": \"sound_check\",\n        \"deep_link\": {\n          \"ins_dl_internal\": \"https://www.deeplink.useinsider\"\n        }\n      },\n      \"ios\": {\n        \"thread-id\": 1,\n        \"badge\": 1,\n        \"content-available\": false,\n        \"mutable-content\": true,\n        \"sound\": \"sound_check\",\n        \"deep_link\": {\n          \"ins_dl_internal\": \"https://www.deeplink.useinsider\"\n        }\n      }\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "075b7419-463c-4739-bbcf-a93bf4672efd",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "notification",
+                    "user"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"api_key\": \"{mobileAppApiKey}\",\n  \"report_attributes\": [\n    \"INSIDER.carrier\",\n    \"INSIDER.idfa\",\n    \"INSIDER.name\",\n    \"INSIDER.surname\",\n    \"INSIDER.gender\",\n    \"INSIDER.age\",\n    \"INSIDER.birthday\",\n    \"INSIDER.email\",\n    \"INSIDER.phone_number\",\n    \"INSIDER.language\",\n    \"INSIDER.email_optin\",\n    \"INSIDER.sms_optin\",\n    \"INSIDER.push_optin\",\n    \"INSIDER.location_optin\",\n    \"INSIDER.insider_id\",\n    \"INSIDER.environment\",\n    \"INSIDER.idfa\",\n    \"INSIDER.device_token\",\n    \"INSIDER.udid\",\n    \"INSIDER.model\",\n    \"INSIDER.carrier\",\n    \"INSIDER.app_version\",\n    \"INSIDER.os_version\",\n    \"INSIDER.screen_width\",\n    \"INSIDER.screen_height\",\n    \"INSIDER.platform\",\n    \"INSIDER.timezone\",\n    \"INSIDER.device_language\",\n    \"INSIDER.sdk_version\",\n    \"INSIDER.last_ip\",\n    \"INSIDER.package_name\",\n    \"INSIDER.push_enabled\",\n    \"INSIDER.location_enabled\"\n  ],\n  \"notifications\": [\n    {\n      \"identifiers\": {\n        \"INSIDER.email\": \"sample@useinsider.com\",\n        \"INSIDER.phone_number\": \"+65123456789\",\n        \"INSIDER.uuid\": \"1234567890\"\n      },\n      \"camp_id\": 1,\n      \"camp_name\": \"Your push notification campaign name goes here\",\n      \"title\": \"Your push notification title goes here\",\n      \"message\": \"Your push content goes here.\",\n      \"image_url\": \"https://your_image_url.jpg\",\n      \"ttl\": 1,\n      \"check_optin\": true,\n      \"android\": {\n        \"thread-id\": 1,\n        \"sound\": \"sound_check\",\n        \"deep_link\": {\n          \"ins_dl_internal\": \"https://www.deeplink.useinsider\"\n        }\n      },\n      \"ios\": {\n        \"thread-id\": 1,\n        \"badge\": 1,\n        \"content-available\": false,\n        \"mutable-content\": true,\n        \"sound\": \"sound_check\",\n        \"deep_link\": {\n          \"ins_dl_internal\": \"https://www.deeplink.useinsider\"\n        }\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"successes\": [\n    {\n      \"INSIDER.birthday\": null,\n      \"INSIDER.device_language\": \"en\",\n      \"INSIDER.email\": \"sample@useinsider.com\",\n      \"INSIDER.language\": \"en_US\",\n      \"INSIDER.model\": \"iPhone 11\",\n      \"INSIDER.phone_number\": \"+16102362339\",\n      \"INSIDER.sdk_version\": \"12.7.3-RN-5.5.0\"\n    }\n  ],\n  \"errors\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8caccb43-9ec7-48a0-bdfc-c3ee6c87a1f3",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "notification",
+                    "user"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"api_key\": \"{mobileAppApiKey}\",\n  \"report_attributes\": [\n    \"INSIDER.carrier\",\n    \"INSIDER.idfa\",\n    \"INSIDER.name\",\n    \"INSIDER.surname\",\n    \"INSIDER.gender\",\n    \"INSIDER.age\",\n    \"INSIDER.birthday\",\n    \"INSIDER.email\",\n    \"INSIDER.phone_number\",\n    \"INSIDER.language\",\n    \"INSIDER.email_optin\",\n    \"INSIDER.sms_optin\",\n    \"INSIDER.push_optin\",\n    \"INSIDER.location_optin\",\n    \"INSIDER.insider_id\",\n    \"INSIDER.environment\",\n    \"INSIDER.idfa\",\n    \"INSIDER.device_token\",\n    \"INSIDER.udid\",\n    \"INSIDER.model\",\n    \"INSIDER.carrier\",\n    \"INSIDER.app_version\",\n    \"INSIDER.os_version\",\n    \"INSIDER.screen_width\",\n    \"INSIDER.screen_height\",\n    \"INSIDER.platform\",\n    \"INSIDER.timezone\",\n    \"INSIDER.device_language\",\n    \"INSIDER.sdk_version\",\n    \"INSIDER.last_ip\",\n    \"INSIDER.package_name\",\n    \"INSIDER.push_enabled\",\n    \"INSIDER.location_enabled\"\n  ],\n  \"notifications\": [\n    {\n      \"identifiers\": {\n        \"INSIDER.email\": \"sample@useinsider.com\",\n        \"INSIDER.phone_number\": \"+65123456789\",\n        \"INSIDER.uuid\": \"1234567890\"\n      },\n      \"camp_id\": 1,\n      \"camp_name\": \"Your push notification campaign name goes here\",\n      \"title\": \"Your push notification title goes here\",\n      \"message\": \"Your push content goes here.\",\n      \"image_url\": \"https://your_image_url.jpg\",\n      \"ttl\": 1,\n      \"check_optin\": true,\n      \"android\": {\n        \"thread-id\": 1,\n        \"sound\": \"sound_check\",\n        \"deep_link\": {\n          \"ins_dl_internal\": \"https://www.deeplink.useinsider\"\n        }\n      },\n      \"ios\": {\n        \"thread-id\": 1,\n        \"badge\": 1,\n        \"content-available\": false,\n        \"mutable-content\": true,\n        \"sound\": \"sound_check\",\n        \"deep_link\": {\n          \"ins_dl_internal\": \"https://www.deeplink.useinsider\"\n        }\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://mobile.useinsider.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "4f485dd1-ed93-4389-a472-199afef0958b",
+    "name": "Insider One Mobile App API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Bulk, targeted and advanced app push, Message Center retrieval, app push analytics and mobile GDPR consent.\n\nDerived by API Evangelist from Insider One's own public Postman collection (\"Insider One APIs\", published at https://developers.insiderone.com/). Paths, methods, headers, query parameters and request/response examples are verbatim from that collection; nothing is invented. The 429 response is documented for all Insider One APIs on https://academy.insiderone.com/docs/api-rate-limits-1 .\n\nContact Support:\n Name: Insider One Support\n Email: support@useinsider.com",
+      "type": "text/plain"
+    }
+  }
+}

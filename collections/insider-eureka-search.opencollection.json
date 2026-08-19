@@ -1,0 +1,97 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Insider One Eureka Search API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Category Merchandising API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Category Collection",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://ineureka.api.useinsider.com/api/web/collections"
+          },
+          "docs": "The Category Collection type in Eureka’s Category Merchandising API allows retrieval of all products in a specific category in the product catalog, helping narrow results by product type. For example, you can retrieve products under the \"Footwear\" category to get all shoes.\n\nStructures\nFlat Structure\nSome catalogs use a non-hierarchical or flat category structure where categories are not nested (e.g., Shoes, Footwear instead of Women > Shoes > Sneakers). In this case, you can retrieve products w"
+        },
+        {
+          "info": {
+            "name": "Manage product listing pages",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://ineureka.api.useinsider.com/api/web/collections/:type",
+            "params": [
+              {
+                "name": "type",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "cf",
+                "value": "{COLLECTION_FILTER}",
+                "type": "query"
+              },
+              {
+                "name": "p",
+                "value": "{PARTNER_ID}",
+                "type": "query"
+              },
+              {
+                "name": "l",
+                "value": "{LOCALE}",
+                "type": "query"
+              },
+              {
+                "name": "c",
+                "value": "{CURRENCY}",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Eureka’s Category Merchandising API allows you to curate and manage your product listing pages effectively. Tailored for various list pages, such as categories, sales, new arrivals, and brands, enabling you to pin, boost, bury, or hide specific products as needed. You can set the rules using a visual merchandising editor to customize content for particular categories. Once you apply the rules, you can build the listing pages by making an API call based on the listing page type and its filters.\n\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Search APIs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get search results",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://ineureka.api.useinsider.com/api/web/search"
+          },
+          "docs": "Eureka’s Search API lets you quickly and smoothly implement our search engine within your website(s) or mobile application(s). Insider One's powerful search engine processes millions of queries monthly, delivering relevant results in under 150-400 ms, regardless of location.\n\nThe first step is to send your data in the correct format to Insider One. Eureka will return the results in JSON. The response will include products matching the search criteria, available facet options to refine the result"
+        },
+        {
+          "info": {
+            "name": "Get search recommendations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://ineureka.api.useinsider.com/api/web/suggestions/query"
+          },
+          "docs": "The Suggestion API offers query recommendations as users type into a search bar. It analyzes the input text and returns a list of relevant suggestions in real time based on user history and other contextual information like category and brand. This feature notably improves the user experience, accelerating the search process and effectively directing users to their intended queries.\nRequest Parameters\n\n\n\nParameter\nDescription\nData Type\nSample\nRequired\n\n\n\n\nq\nQuery String that will be searched\nStr"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

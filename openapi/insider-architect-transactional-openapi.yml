@@ -1,0 +1,60 @@
+openapi: 3.1.0
+info:
+  title: Insider One Architect Transactional Journey API
+  version: 1.0.0
+  description: 'The On API Call starter: allow backend systems to explicitly enter users into a transactional Architect
+    journey and send messages in real time.
+
+
+    Derived by API Evangelist from the Insider One APIs overview table published at https://academy.insiderone.com/docs/insider-one-apis-1.
+    This endpoint is documented by Insider One but is not part of the public Postman collection, so only the host,
+    path and method are asserted here.'
+  contact:
+    name: Insider One Support
+    email: support@useinsider.com
+    url: https://academy.insiderone.com/docs/insider-one-apis-1
+  termsOfService: https://insiderone.com/terms-of-use/
+externalDocs:
+  description: On API Call Starter
+  url: https://academy.insiderone.com/docs/transactional-journeys-on-api-call-starter
+servers:
+- url: https://architect.useinsider.com
+tags:
+- name: Transactional Journeys
+paths:
+  /v1/transactional/send:
+    post:
+      operationId: sendTransactionalJourney
+      summary: On API Call starter — enter a user into a transactional journey
+      description: Allows backend systems to explicitly enter users into a transactional journey and send messages
+        in real time. Launch settings for the journey define how it accepts API-triggered requests.
+      tags:
+      - Transactional Journeys
+      security:
+      - RequestToken: []
+      - PartnerName: []
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+components:
+  securitySchemes:
+    InsiderApiKey:
+      type: apiKey
+      in: header
+      name: X-INSIDER-API-KEY
+      description: Insider One API key for this API.
+  responses:
+    TooManyRequests:
+      description: Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring
+        Retry-After when present.
+      content:
+        application/json:
+          example:
+            message: Too Many Requests
+            status: 429
+x-provenance:
+  generated: '2026-08-13'
+  method: derived
+  source: https://academy.insiderone.com/docs/insider-one-apis-1
+  note: Host/path/method verbatim from the Insider One APIs overview table; request and response shapes are not
+    published for this endpoint.

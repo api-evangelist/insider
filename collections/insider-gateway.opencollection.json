@@ -1,0 +1,89 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Insider One Gateway API (OAuth 2.0)",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "client_credentials",
+      "accessTokenUrl": "https://gw.useinsider.com/oauth2/token",
+      "credentials": {
+        "clientId": "{{clientId}}",
+        "clientSecret": "{{clientSecret}}"
+      }
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Conversational API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Send Conversational WhatsApp Messages with OAuth 2.0",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://gw.useinsider.com/api/wa/v2/conversational/messages/send",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "WhatsApp Transactional API v2 is a REST API that enables your systems to send conversational messages through the WhatsApp Business Platform.\n\nTo send conversational WhatsApp messages using OAuth 2.0, you must first generate an OAuth 2.0 credential. For step-by-step instructions, refer to OAuth 2.0 Credentials.\n\nBefore sending Conversational WhatsApp template messages, make sure you create your template in InOne first. Refer to Create a WhatsApp Business Standard Template on InOne for step-by-st"
+        },
+        {
+          "info": {
+            "name": "Update Conversational WhatsApp Webhook Settings with OAuth 2.0",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://gw.useinsider.com/api/wa/v2/conversational/settings"
+          },
+          "docs": "This endpoint helps you update the webhook URL and other relevant settings for conversational messages.\n\nThe system supports two grant types for OAuth2 authentication:\n\ngrant_type: client_credentials\n\ngrant_type: refresh_token\n\nClient Credentials Request\ncurl -X POST \"https://gw.useinsider.com/api/wa/v2/conversational/settings\" \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer your_access_token\" \\\n  -d '{\n    \"webhook_url\": \"https://partner.example.com/webhooks/conversational"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Transactional API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Send Transactional WhatsApp Messages with OAuth 2.0",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://gw.useinsider.com/api/wa/v2/transactional/messages/send",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "WhatsApp Transactional API v2 is a REST API that enables your systems to send transactional messages through the WhatsApp Business Platform.\n\nNote: To send transactional WhatsApp messages using OAuth 2.0, you must first generate an OAuth 2.0 credential. For step-by-step instructions, refer to OAuth 2.0 Credentials.\n\nNote: Before sending Transactional WhatsApp template messages, make sure you create your template in InOne first. Refer to Create a WhatsApp Business Standard Template on InOne for s"
+        },
+        {
+          "info": {
+            "name": "Update Transactional WhatsApp Webhook Settings with OAuth 2.0",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://gw.useinsider.com/api/wa/v2/transactional/settings"
+          },
+          "docs": "You can use this API to update webhooks and other settings for transactional WhatsApp messages.\n\n<p >The system supports two grant types for OAuth2 authentication:</p> \n\nclient_credentials\n\nrefresh_token\n\nClient Credentials Request\ncurl -X POST \"https://gw.useinsider.com/api/wa/v2/transactional/settings\" \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer your_access_token\" \\\n  -d '{\n    \"webhook_url\": \"https://partner.example.com/webhooks/transactional\",\n    \"from\": \"+12345678"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,29 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Insider One Architect Transactional Journey API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Transactional Journeys",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "On API Call starter — enter a user into a transactional journey",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://architect.useinsider.com/v1/transactional/send"
+          },
+          "docs": "Allows backend systems to explicitly enter users into a transactional journey and send messages in real time. Launch settings for the journey define how it accepts API-triggered requests."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

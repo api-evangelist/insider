@@ -1,0 +1,203 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Insider One Verify (OTP) API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "OTP for SMS",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a channel",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://verify.useinsider.com/v1/channel/create",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-INS-AUTH-KEY",
+              "value": "{{X-INS-AUTH-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "The Verify API enables you to generate, send, and verify OTP codes for the SMS channel. You can utilize this API to generate OTP codes as defined in the payloads. Integrating it into your own websites or apps, you can trigger it on login pages, payment pages, and more.\n\nIn this regard, in order to send OTP codes, you must create a channel for your brand just once. Creating a channel, you will have predefined templates for 10 languages by default.\n\nTo be able to use the Verify API:\n\nBoth SMS & Tr"
+        },
+        {
+          "info": {
+            "name": "Generate OTP codes",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://verify.useinsider.com/v1/channel/generate",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-INS-AUTH-KEY",
+              "value": "{{X-INS-AUTH-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "The Verify API enables you to generate, send, and verify OTP codes for the SMS channel. You can utilize this API to generate OTP codes as defined in the payloads. Integrating it into your own websites or apps, you can trigger it on login pages, payment pages, and more.\n\nAfter you create your channel for your brand and update the templates, you need to perform the generate action for your OTP.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\nRules\n\nchannel\nChannel that you will send the"
+        },
+        {
+          "info": {
+            "name": "List OTP templates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://verify.useinsider.com/v1/channel/list",
+            "auth": {
+              "type": "apikey",
+              "key": "X-INS-AUTH-KEY",
+              "value": "{{X-INS-AUTH-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "The Verify API enables you to generate, send, and verify OTP codes for the SMS channel.\n\nAfter you create a channel for your brand, you can list its templates later.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\nRules\n\nchannel\nChannel that you will send the OTP code. Currently it is SMS only.\nString\nYes\noneof:sms\n\nbrandName\nYour brand name defines your OTP SMS content in pre-defined templates.\nString\nYes\nmin:3 max:30 characters\n\nSample Example\nSample Request\nEvery request made to th"
+        },
+        {
+          "info": {
+            "name": "Update a channel",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://verify.useinsider.com/v1/channel/update",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-INS-AUTH-KEY",
+              "value": "{{X-INS-AUTH-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "The Verify API enables you to generate, send, and verify OTP codes for the SMS channel. You can utilize this API to generate OTP codes as defined in the payloads. Integrating it into your own websites or apps, you can trigger it on login pages, payment pages, and more.\n\nAfter you create a channel for your brand, you can edit and update it later.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\nRules\n\nchannel\nChannel that you will send the OTP code. Currently it is SMS only.\nString\nYes\n"
+        },
+        {
+          "info": {
+            "name": "Verify OTP codes",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://verify.useinsider.com/v1/check",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-INS-AUTH-KEY",
+              "value": "{{X-INS-AUTH-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "The Verify API enables you to generate, send, and verify OTP codes for the SMS channel. You can utilize this API to generate OTP codes as defined in the payloads. Integrating it into your own websites or apps, you can trigger it on login pages, payment pages, and more.\n\nAfter you create your channel for your brand and update the templates, you need to perform the verify action for your OTP.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\nRules\n\nto\nSpecifies the destination phone numbe"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "OTP for WhatsApp",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Generate OTP codes",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://verify.useinsider.com/v1/generate",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-INS-AUTH-KEY",
+              "value": "{{X-INS-AUTH-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "The Verify API enables you to generate, send, and verify OTP codes for the WhatsApp channel. You can utilize this API to generate OTP codes as defined in the payloads. Integrating it into your own websites or apps, you can trigger it on login pages, payment pages, and more.\n\nAfter you create your channel for your brand and update the templates, you need to perform the generate action for your OTP.\n\nThis API key is sensitive and should never be used on the frontend or mobile SDK; it should only b"
+        },
+        {
+          "info": {
+            "name": "Create an OTP Template",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://verify.useinsider.com/v1/template/create",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-INS-AUTH-KEY",
+              "value": "{{X-INS-AUTH-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "The Verify API enables you to generate, send, and verify OTP codes for the WhatsApp channel. Ensure that the provided template name exists and corresponds to the authentication template name you created through your WhatsApp Business Account.\n\nAfter you create a channel for your brand, you can create OTP templates.\n\nThis API key is sensitive and should never be used on the frontend or mobile SDK; it should only be implemented on the backend.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequ"
+        },
+        {
+          "info": {
+            "name": "List OTP templates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://verify.useinsider.com/v1/template/list",
+            "auth": {
+              "type": "apikey",
+              "key": "X-INS-AUTH-KEY",
+              "value": "{{X-INS-AUTH-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "The Verify API enables you to generate, send, and verify OTP codes for the WhatsApp channel.\n\nAfter you create a channel for your brand, you can list its templates later.\n\nThis API key is sensitive and should never be used on the frontend or mobile SDK; it should only be implemented on the backend.\n\nSample Example\nSample Request\nEvery request made to the request endpoint requires a request body formatted in JSON and containing your parameters.\n\nMake sure to replace the sample values in the reque"
+        },
+        {
+          "info": {
+            "name": "Update OTP Templates",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://verify.useinsider.com/v1/template/list",
+            "auth": {
+              "type": "apikey",
+              "key": "X-INS-AUTH-KEY",
+              "value": "{{X-INS-AUTH-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "The Verify API enables you to generate, send, and verify OTP codes for the WhatsApp channel.\n\nAfter you create a channel for your brand, you can list its templates later.\n\nThis API key is sensitive and should never be used on the frontend or mobile SDK; it should only be implemented on the backend.\n\nSample Example\nSample Request\nEvery request made to the request endpoint requires a request body formatted in JSON and containing your parameters.\n\nMake sure to replace the sample values in the reque"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

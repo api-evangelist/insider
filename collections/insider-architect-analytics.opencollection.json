@@ -1,0 +1,158 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Insider One Architect Analytics API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Architect",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Architect Channel Analytics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://architect-analytics.api.useinsider.com/v1/element/:campaignId",
+            "params": [
+              {
+                "name": "campaignId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "statDate",
+                "value": "String",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "The Architect channel analytics endpoint provides analytics for a specific campaign element in the Architect product. Use this endpoint to gather analytics data for individual campaign elements and track user interactions, click-through rates, open rates, and other relevant metrics.\n\nHeaders\n\nHeader\nSample Value\nDescription\n\nAuthorization\n{{vault:bearer-token}}\nThis key is required to authorize your request. Refer to API Authentication Tokens to generate your token. You should enter the word Bea"
+        },
+        {
+          "info": {
+            "name": "Get Conversion Goals Information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://architect-analytics.api.useinsider.com/v1/goals",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "For Architect overall, journey, and channel analytics, you can only get the conversion metrics for one goal at a time. You can enter the goal id as a parameter to select which conversion goal you want to see the metrics. You can obtain the Goal ID either from the goal dropdown in the InOne panel or by using this endpoint.\n\nThis endpoint retrieves a list of conversion goals across various journeys in the Architect product, their IDs, and which journeys they are used in.\n\nHeaders\n\nHeader\nSample Va"
+        },
+        {
+          "info": {
+            "name": "Get Conversion Goals Analytics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://architect-analytics.api.useinsider.com/v1/goals-analytics",
+            "params": [
+              {
+                "name": "statDate",
+                "value": "statDate=01/08/2024 - 30/08/2024",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "For overall and journey analytics, you can get all conversion metrics for all goals at the same time.\n\nIf you provide the journey ID in the payload, you will also get that journey’s conversion metrics for goals. You should provide the journey ID inside the IDs filter array.\n\nThis endpoint retrieves a list of conversion goals across various journeys. You can use the Conversion Goals Information API together with this API to combine conversion goal metrics and see which journeys they are used in.\n"
+        },
+        {
+          "info": {
+            "name": "Get Architect Journey Analytics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://architect-analytics.api.useinsider.com/v1/journey/:journeyId",
+            "params": [
+              {
+                "name": "journeyId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "statDate",
+                "value": "String",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "The Architect journey analytics endpoint provides detailed analytics for a specific journey within the Architect product. Use this endpoint to retrieve detailed analytics on a journey to monitor performance, metrics, and channel activities.\n\nHeaders\n\nHeader\nSample Value\nDescription\n\nAuthorization\n{{vault:bearer-token}}\nThis key is required to authorize your request. Refer to API Authentication Tokens to generate your token. You should enter the word Bearer followed by the API key you generated.\n"
+        },
+        {
+          "info": {
+            "name": "Export Journey List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://architect-analytics.api.useinsider.com/v1/journeys",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "The Journey List API enables you to export detailed information for all journeys created in Architect. This endpoint provides metadata such as journey name, status, creation and execution dates, tags, conversion goals, and exit criteria — allowing you to easily audit, analyze, or back up journey configurations externally.\n\nIt’s particularly useful for teams that want to integrate Architect data with external analytics platforms or maintain synchronized journey catalogs.\n\nQuery Parameters\n\nParame"
+        },
+        {
+          "info": {
+            "name": "Get Architect Overall Analytics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://architect-analytics.api.useinsider.com/v1/overall",
+            "params": [
+              {
+                "name": "statDate",
+                "value": "String",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "The Architect overall analytics endpoint provides comprehensive analytics data for all user journeys. This data includes key user metrics, journey statuses, and performance insights broken down by channels and journeys, offering a high-level overview of campaign effectiveness and user interactions.\n\nHeaders\n\nHeader\nSample Value\nDescription\n\nAuthorization\n{{vault:bearer-token}}\nThis key is required to authorize your request. Refer to API Authentication Tokens to generate your token. You should en"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

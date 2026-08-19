@@ -1,0 +1,33 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+provider: Insider One
+providerId: insider
+generated: '2026-08-13'
+method: searched
+source: https://insiderone.com/request-a-demo/
+sources:
+- https://insiderone.com/request-a-demo/
+- https://insiderone.com/
+- https://academy.insiderone.com/docs/insider-one-apis-1
+plan_count: 0
+pricing_model: enterprise-quote
+public_pricing: false
+self_serve_signup: false
+description: >-
+  Insider One publishes NO pricing. There is no /pricing page — https://insiderone.com/pricing
+  returns 404 — and the only commercial entry point is "Get a demo"
+  (https://insiderone.com/request-a-demo/), a sales form. There are no tiers, no published quotas,
+  no per-message rates and no free tier. API access is not sold separately: the APIs are included
+  with a licensed Insider One account, and which APIs you can call depends on which channels your
+  contract licenses ("Available tools depend on your OAuth scopes and licensed channels").
+plans: []
+evidence:
+- {url: 'https://insiderone.com/pricing', status: 404}
+- {url: 'https://insiderone.com/pricing/', status: 404}
+- {url: 'https://insiderone.com/request-a-demo/', status: 200, note: 'Get a demo | Insider One — sales form'}
+entitlement_notes:
+- Channels are licensed per account; an unlicensed channel's API and MCP tools simply are not available.
+- Transactional send rate limits above the published defaults are granted "on demand by contacting
+  Insider One" — capacity is a commercial negotiation, not a plan tier.
+- Analytics history is capped at 1 year regardless of contract, per the status-code reference.
+login: https://inone.useinsider.com/login

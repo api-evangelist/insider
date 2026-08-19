@@ -1,0 +1,106 @@
+{
+  "item": [
+    {
+      "id": "db77ae2d-4671-4e5a-a545-ad87439bbada",
+      "name": "Event Collection API",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "4d2ea2cb-9a5b-4ddb-9b22-f2c2a6156440",
+          "name": "Collect user's search event",
+          "request": {
+            "name": "Collect user's search event",
+            "description": {
+              "content": "The Event Collection API allows you to integrate user event collection functionality into Eureka. The API is designed to collect user events such as search queries, clicks, add to carts, and purchases. You can use the collected data to improve Eureka’s performance and user experience.\n\nThe search event should be fired when a visitor makes a search for a product or content.\n\nIt is recommended to send the search event with each request unless you are using Eureka in a search-as-you-type experience.\n\nIf you are using search-as-you-type, the search event should be sent after the user completes their discovery, such as when they click on a product or navigate to another page.\n\nIf the user stops typing and does not interact with facets, sorting, or pagination, you may assume the query is complete and trigger the search event. A 10-second waiting time is recommended to determine when the user has paused long enough to consider the search finalized.\n\nEndpoint\nPOST https://eurekaevent.api.useinsider.com/api/v1/events\n\nRequest Parameters\nThe search event supports the following properties:\n\nAttribute Name\nType\nValidation\nDefault\nDescription\n\nreferrer\nString\nRequired, url\n-\nSource URL of the referring page\n\ncampId\nInteger\n-\n999999\nA unique identifier assigned to a campaign. Refer to common fields for more details.\n\nvariationId\nInteger\n-\n999999\nA unique identifier assigned to a specific variation within a campaign. Refer to common fields for more details.\n\nsource\nString\noneof=  - search-popup  - search-listing\n\nComponent where the search engine is used\n\nplatform\nString\nRequired,  oneof=  - desktop-web  - mobile-web    - tablet-web  - ios  - android  - other\n-\nPlatform used by the user\n\nintegrationType\nString\nRequired,  oneof=  - api  - web\n-\nType of integration\n\ntraceId\nString\nRequired\n-\nUnique trace identifier created for the current query. Refer to common fields for more details.\n\nsessionId\nString\n-\n-\nBrowser/app session identifier\n\nstrategyId\nString\n-\n-\nOptional strategy identifier\n\nuserId\nString\nRequired\nDefault\nUnique identifier of the user. It is expected to provide for user-based calculations.\n\nquery\nString\nRequired\n-\nQuery the user searched with\n\nresultCount\nInteger\nRequired, unless no result, min=1\n-\nNumber of search results returned\n\nitemsPerPage\nInteger\nRequired, unless no result, min=1\n-\nNumber of items per page used in the search request\n\ntotalPages\nInteger\nRequired, unless no result, min=1\n-\nTotal number of pages returned by the search\n\ncurrentPage\nInteger\nRequired, unless no result, min=1\n-\nPage number where the search results are displayed\n\nsorting\nString\nRequired\nRelevancy\nThe sorting method used in the search request. It is the type of sorting object of the search response. Refer to common fields for more details.\n\nfacets\nList of facets\n-\n-\nList of facets of the search. Required if any facet selected. Refer to common fields for more details.\n\nproducts\nList of products\nRequired, unless no result\n-\nList of products returned by the search Refer to common fields for more details.\n\neventType\nString\nRequired, equals=search\n-\nType of event\n\ncreatedAt\nString\nRequired, formatted in RFC3339\nIf omitted or invalid, it defaults to the current time\nTime when the event is created. Refer to common fields for more details.\n\nIf your integration was implemented before the Advanced Analytics September 01, 2025, release, please be aware that new fields have been added to the expected product payload structure. You are required to review and implement these additions to ensure more comprehensive and accurate analytics.\n\nYou can view the differences in the updated payload structure in the Common Properties.\n\nFor the same traceId, a product must be sent only once. Even if the user interacts with sorting, pagination, or facet filters, the same product should not be sent again within the same session. Sending the product once under the same traceId is sufficient.\n\nExample Conceptual flow\n\nUser submits a search query\n\nExample: query = \"myphone\"\n\nGenerated traceId = \"x123\" for this search session.\n\nFirst response is returned\n\nProducts:myiphone 11, myphone 12, myphone 13\n\nTracking layer checks: “Have I already sent myphone 11, myphone 12, or myphone 13 for traceId = x123?”\n\nSend only new products to tracking\n\nInitially, nothing has been sent yet, so:\n\nSend myphone 11, myphone 12, myphone 13\n\nMark them as seen for x123.\n\nUser changes sorting / goes to next page / applies a filter\n\nUnder the same traceId = x123.\n\nSome products may repeat and some may be new (e.g. myphone X, myphone 17).\n\nBefore sending events, filter out already-seen products\n\nCompare the new product list with the set {myphone 11, myphone 12, myphone 13} already sent for x123.\n\nOnly send tracking events for products not in that set.\n\nSuggested Tips for Search Event Collection\nTo ensure accurate and efficient search event tracking, the following recommendations should be applied:\n\nTimer-Based Event Triggering\n\nEach time the user types in the search input or interacts with filters (such as sorting, pagination, or facets) within the search popup, a 10-second timer is triggered.\n\nIf the user performs another action before the 10 seconds elapse, the timer is reset.\n\nIf no interactions occur within 10 seconds, the search event log is sent.\n\nAdditional Scenarios Requiring Search Event Logging\nA search event should also be sent in the following situations if it has not already been logged:\n\nWhen the user clicks a product and navigates to the product page\n\nOn exit intent, if the log has not yet been sent\n\nWhen a product is added to the cart\n\nWhen the user deletes the entire query (send for the previous query if not yet logged)\n\nWhen the user copies and pastes a new query (send for the previous query if not yet logged)\n\nWhen the user modifies the query after applying a facet (send for the previous query if not yet logged)\n\nThese recommendations ensure that search events are captured reliably without duplication, providing more accurate insights into user behavior.\n\nTo gain a deeper understanding, check out the details on facet and product fields on the Common Properties page.\n\n<p >Please note that the following user actions are also considered search requests:</p><p >- Changing the sorting option</p><p >- Applying a facet filter</p><p >- Pagination</p> \n\nSample Request\nIn the example below, you see a sample request along with guidance on modifying the necessary fields. This will help you seamlessly integrate and make the most of the provided configuration.\n\nBefore usage, modifying the values such as x-auth-token and x-partner-config-key is essential.\n\ncurl --location --request POST 'https://eurekaevent.api.useinsider.com/api/v1/events' \\\n--header 'x-auth-token: YOUR_AUTH_TOKEN' \\\n--header 'x-partner-config-key: YOUR_PARTNERID-YOUR_LOCALE' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n  \"referrer\": \"https://example.com/homepage\",\n  \"source\": \"search-listing\",\n  \"userId\": \"user-12345\",\n  \"platform\": \"desktop-web\",\n  \"campId\": 999999,\n  \"variationId\": 999999,\n  \"query\": \"laptop\",\n  \"traceId\": \"search-traceId-abc123\",\n  \"strategyId\":\"strategy-id-123\",\n  \"sessionId\":\"session-id-123\",\n  \"resultCount\": 25,\n  \"itemsPerPage\": 10,\n  \"totalPages\": 3,\n  \"currentPage\": 1,\n  \"sorting\": \"Relevancy\",\n  \"facets\": [\n    {\n      \"label\": \"Price\",\n      \"field\": \"price_en\",\n      \"values\": [\"500\", \"2000\"]\n    },\n    {\n      \"label\": \"Brand\",\n      \"field\": \"brand_en\",\n      \"values\": [\"Pear\", \"Deli\", \"SP\"]\n    }\n  ],\n  \"products\": [\n    {\n      \"id\": \"product-001\",\n      \"groupCode\": \"laptop-group-1\",\n      \"price\": 1299.99,\n      \"convertedPrice\": 1199.99,\n      \"currency\": \"USD\",\n      \"preferredCurrency\": \"EUR\",\n      \"displayPosition\": 1\n    },\n    {\n      \"id\": \"product-002\",\n      \"groupCode\": \"laptop-group-2\",\n      \"price\": 899.99,\n      \"convertedPrice\": 829.99,\n      \"currency\": \"USD\",\n      \"preferredCurrency\": \"EUR\",\n      \"displayPosition\": 2\n     }\n  ],\n  \"eventType\": \"search\",\n  \"integrationType\": \"web\",\n  \"createdAt\": \"2025-11-25T10:30:00Z\"\n}'",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "events"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0851cf4e-86c1-4802-bb2a-ebb415ab389b",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://eurekaevent.api.useinsider.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "8c562529-20c6-4be7-9d71-af57d4ee5a00",
+    "name": "Insider One Eureka Event Collection API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Search event collection for Eureka: search, product click, product list view, add to cart and purchase events.\n\nDerived by API Evangelist from Insider One's own public Postman collection (\"Insider One APIs\", published at https://developers.insiderone.com/). Paths, methods, headers, query parameters and request/response examples are verbatim from that collection; nothing is invented. The 429 response is documented for all Insider One APIs on https://academy.insiderone.com/docs/api-rate-limits-1 .\n\nContact Support:\n Name: Insider One Support\n Email: support@useinsider.com",
+      "type": "text/plain"
+    }
+  }
+}

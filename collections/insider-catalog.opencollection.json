@@ -1,0 +1,119 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Insider One Catalog API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Catalog APIs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Add New Products in a Flat Format",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://catalog.api.useinsider.com/v2/ingest",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-PARTNER-NAME",
+              "value": "{{X-PARTNER-NAME}}",
+              "placement": "header"
+            }
+          },
+          "docs": "The Catalog API allows you to insert new products in a flat format into your product catalog. It creates new product records. If a product with the same item_id + locale already exists, it will be overwritten.\n\nEndpoint and Headers\nPOST https://catalog.api.useinsider.com/v2/ingest\n\nBody Parameters\nDefault Product Attributes\nThe following product fields should be sent as parameters in the object, along with their field name and data type, as stated. If any required fields are not sent through the"
+        },
+        {
+          "info": {
+            "name": "Add New Products in a Nested Format",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://catalog.api.useinsider.com/v2/ingest/nested",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-PARTNER-NAME",
+              "value": "{{X-PARTNER-NAME}}",
+              "placement": "header"
+            }
+          },
+          "docs": "The Catalog API allows you to insert new items into your product catalog in a nested format. It creates new product records. If a product with the same item_id + locale already exists, it will be overwritten.\n\nEndpoint and Headers\nPOST https://catalog.api.useinsider.com/v2/ingest/nested\n\nBody Parameters\nDefault Product Attributes\nThe following product fields should be sent as parameters in the object, along with their field name and data type, as stated. If any required fields are not sent throu"
+        },
+        {
+          "info": {
+            "name": "Create Locale Configurations",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://catalog.api.useinsider.com/v2/locales/batch",
+            "auth": {
+              "type": "apikey",
+              "key": "X-PARTNER-NAME",
+              "value": "{{X-PARTNER-NAME}}",
+              "placement": "header"
+            }
+          },
+          "docs": "The Catalog API allows you to create locale configurations. For larger or more complex setups, the Create Locale endpoint enables faster and more scalable locale management.\n\nRefer to Locales for further information.\n\nEndpoint and Headers\nPOST https://catalog.api.useinsider.com/v2/locales/batch\n\nHeader\nSample Value\nDescription\n\nX-PARTNER-NAME\nmyParterName\nThis is your partner name. Navigate to InOne > Inone Settings > Account Settings to copy your partner name. The partner name should be lowerca"
+        },
+        {
+          "info": {
+            "name": "Update Existing Products in a Flat Format",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://catalog.api.useinsider.com/v2/update",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-PARTNER-NAME",
+              "value": "{{X-PARTNER-NAME}}",
+              "placement": "header"
+            }
+          },
+          "docs": "The Catalog API allows you to update existing products in your product catalog. You can send only the fields you want to change, and it supports partial updates. You can send only the fields you want to change, or send all fields if that's easier for your integration. Both approaches work.\n\nEndpoint and Headers\nPOST https://catalog.api.useinsider.com/v2/update\n\nBody Parameters\nDefault Product Attributes\nThe following product fields should be sent as parameters in the object, along with their fie"
+        },
+        {
+          "info": {
+            "name": "Update Existing Products in a Nested Format",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://catalog.api.useinsider.com/v2/update/nested",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-PARTNER-NAME",
+              "value": "{{X-PARTNER-NAME}}",
+              "placement": "header"
+            }
+          },
+          "docs": "The Catalog API allows you to update existing products in your product catalog using a nested format. You can send only the fields you want to change, and it supports partial updates. You can send only the fields you want to change, or send all fields if that's easier for your integration. Both approaches work.\n\nEndpoint and Headers\nPOST https://catalog.api.useinsider.com/v2/update/nested\n\nBody Parameters\nDefault Product Attributes\nThe following product fields should be sent as parameters in the"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

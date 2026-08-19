@@ -1,0 +1,68 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Insider One WhatsApp API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Conversational API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Send Conversational WhatsApp Message Template",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://whatsapp.useinsider.com/v1/conversational/send",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-INS-AUTH-KEY",
+              "value": "{{X-INS-AUTH-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "The WhatsApp Marketing product provides conversational messages, allowing users to initiate conversations with businesses after the business has sent an initial message. To create a conversational flow, one of the ways is to integrate a bot to reply to users' WhatsApp messages.\n\nThe Conversational API is designed for WhatsApp Bot connection.\n\nBody Parameters\n\nColumn\nDescription\nData Type\nRequired\n\nmessages\nAll messages are contained in the messages key. You can send multiple messages with a sing"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Transactional API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Send transactional WhatsApp template message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://whatsapp.useinsider.com/v1/send",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-INS-AUTH-KEY",
+              "value": "{{X-INS-AUTH-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Transactional WhatsApp API enables you to send targeted transactional WhatsApp messages to your users. You can trigger these WhatsApp messages once a user takes a specific action on your platform.\n\nBody Parameters\n\nColumn\nDescription\nData Type\nRequired\n\nmessages\nAll messages are contained in the messages key. You can send multiple messages with a single request.\nArray\nYes\n\nphoneNumber\nPhone number for the person you want to send a message to.\nString\nYes\n\nmessage\nMessage object\nObject\nYes\n\ntype\nM"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

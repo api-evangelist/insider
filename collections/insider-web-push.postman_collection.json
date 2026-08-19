@@ -1,0 +1,864 @@
+{
+  "item": [
+    {
+      "id": "14420d0b-4d26-4dd0-b8cd-8875b242ef02",
+      "name": "Web Push",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "1385dcaa-cc1e-4569-8a94-f0ffef7a180f",
+          "name": "Get web push campaign metrics analytics",
+          "request": {
+            "name": "Get web push campaign metrics analytics",
+            "description": {
+              "content": "Insider's web push API allows you to get the campaigns analytics of your web push notifications from your own back-end without using the Insider's InOne panel. This API returns analytics specific to a single campaign in the given time interval in API request payload.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\npartner_id\nThis is your partner identification number, available from InOne Settings > Account Preferences.\nString\nYes\n\nstart_date\nThis specifies the date on which you will start requesting campaign analytics. The date format should be YYYY-MM-DD. The Start Date cannot be earlier than the Campaign Create Date.\nString\nYes\n\nend_date\nThis specifies the date on which you will stop requesting campaign analytics. The date format should be YYYY-MM-DD.\nString\nYes\n\ncampaign_id\nThis is your campaign ID. It returns in the response and is needed to send push notifications.\nString\nYes\n\nSample Example\nSample Request\nBefore sending the request, make sure:\n\nTo replace the authorization value with your own API key.\n\nTo replace the sample values in partner_id, start_date, end_date, and campaign_id with your own values in the required data type.\n\ncurl --location --POST 'https://web-push.api.useinsider.com/v1/statistics/campaign-metrics' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: {{vault:bearer-token}}' \\\n--data '{\n \"partner_id\": \"YOURPARTNERID\",\n \"start_date\" : \"2023-06-01\",\n \"end_date\" : \"2023-06-08\",\n\n\"campaign_id\" : \"11111\"\n}'\n\nSample Responses\n200 OK\n{\n  \"name\": \"08.06.2023-2100\",\n  \"primaryGoal\": \"salesFromClick\",\n  \"startDate\": \"2023-05-31T21:00:00.000000Z\",\n  \"endDate\": \"2023-06-08T20:59:59.999999Z\",\n  \"isRecurring\": false,\n  \"alias\": \"bulk\",\n  \"preferredCurrency\": \"USD\",\n  \"personalizationStatus\": \"Active\",\n  \"isTTLEnded\": true,\n  \"goalMenu\": {\n    \"camp-join\": \"Clicks\",\n    \"sales-from-click\": \"Purchases From Click...\"\n  },\n  \"overview\": {\n    \"total\": {\n      \"targeted\": \"411,840\",\n      \"deliveryRate\": \"34.08%\",\n      \"ctr\": \"0.52%\",\n      \"conversionRate\": \"0.00%\"\n    },\n    \"targeted\": {\n      \"sent\": \"411,344\",\n      \"dropped\": \"496\"\n    },\n    \"deliveryRate\": {\n      \"delivered\": \"140,183\",\n      \"undelivered\": \"271,161\"\n    },\n    \"ctr\": {\n      \"clicks\": \"723\"\n    },\n    \"conversionRate\": {\n      \"conversions\": \"0\"\n    },\n    \"revenue\": \"0 USD\"\n  },\n  \"deviceMetrics\": [\n    {\n      \"device\": \"Desktop\",\n      \"sent\": \"36,752\",\n      \"delivered\": \"3,077\",\n      \"deliveryRate\": \"8.37%\",\n      \"clicks\": \"4\",\n      \"ctr\": \"0.13%\",\n      \"conversions\": \"0\",\n      \"conversionRate\": \"0.00%\",\n      \"revenue\": \"USD\"\n    },\n    {\n      \"device\": \"Mobile\",\n      \"sent\": \"374,592\",\n      \"delivered\": \"137,106\",\n      \"deliveryRate\": \"36.60%\",\n      \"clicks\": \"719\",\n      \"ctr\": \"0.52%\",\n      \"conversions\": \"0\",\n      \"conversionRate\": \"0.00%\",\n      \"revenue\": \"0 USD\"\n    }\n  ],\n  \"clickMetrics\": [\n    {\n      \"name\": \"mainAction\",\n      \"header\": \"Main Element\",\n      \"clicks\": \"723\",\n      \"clickRatio\": \"100.00%\"\n    },\n    {\n      \"name\": \"primaryAction\",\n      \"header\": \"\",\n      \"clicks\": \"0\",\n      \"clickRatio\": \"0.00%\"\n    },\n    {\n      \"name\": \"secondaryAction\",\n      \"header\": \"\",\n      \"clicks\": \"0\",\n      \"clickRatio\": \"0.00%\"\n    }\n  ],\n  \"unsuccessfulMessages\": {\n    \"dropped\": [\n      {\n        \"label\": \"frequencyCapped\",\n        \"count\": \"0\",\n        \"percentage\": \"0.00\"\n      },\n      {\n        \"label\": \"silentHours\",\n        \"count\": \"0\",\n        \"percentage\": \"0.00\"\n      },\n      {\n        \"label\": \"unsubscriptions\",\n        \"count\": \"453\",\n        \"percentage\": \"91.33\"\n      },\n      {\n        \"label\": \"serviceProviderErrors\",\n        \"count\": \"43\",\n        \"percentage\": \"8.67\"\n      },\n      {\n        \"label\": \"internalErrors\",\n        \"count\": \"0\",\n        \"percentage\": \"0.00\"\n      }\n    ],\n    \"undelivered\": [\n      {\n        \"label\": \"offlineRecipients\",\n        \"count\": \"270,807\",\n        \"percentage\": \"99.87\"\n      },\n      {\n        \"label\": \"other\",\n        \"count\": \"354\",\n        \"percentage\": \"0.13\"\n      }\n    ]\n  },\n  \"comparisonData\": []\n}\n\n401 UNAUTHORIZED\n{\n    \"status_code\": 401\n}\n\n422 UNPROCESSABLE ENTITY\n{\n    \"status_code\": 422,\n    \"errors\": {\n        \"end_date\": [\n            \"The end date does not match the format Y-m-d.\"\n        ]\n    }\n}\n\nError Codes\n\n400: Bad request\n\n401: Unauthorized request\n\n403: Request limit exceeded\n\n422: Missing parameter\n\nLimitations\n\nAll functions must be executed with an HTTPS POST request.\n\nThe API Key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nYou can make 30 requests per minute in aggregate. Every response you receive from the API will include two additional headers specifying the number of requests that have been used and the maximum number of requests available for your account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "statistics",
+                "campaign-metrics"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"partner_id\": \"YOURPARTNERID\",\n  \"start_date\": \"2023-06-01\",\n  \"end_date\": \"2023-06-08\",\n  \"campaign_id\": \"11111\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2b2400c9-5cf7-4dc0-9bde-9e66b6a00326",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "statistics",
+                    "campaign-metrics"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"partner_id\": \"YOURPARTNERID\",\n  \"start_date\": \"2023-06-01\",\n  \"end_date\": \"2023-06-08\",\n  \"campaign_id\": \"11111\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "427a718a-076c-4d22-a1c4-4e4d1aabb10d",
+          "name": "Get web push overall metrics analytics",
+          "request": {
+            "name": "Get web push overall metrics analytics",
+            "description": {
+              "content": "Insider's web push API allows you to get the campaigns analytics of your web push notifications from your own back-end without using the Insider's InOne panel. This API returns overall metric analytics with campaign information in the given time interval in API request payload.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\npartner_id\nThis is your partner identification number, available from InOne Settings > Account Preferences.\nString\nYes\n\nstart_date\nThis specifies the date on which you will start requesting campaign analytics. The date format should be YYYY-MM-DD. The Start Date cannot be earlier than the Campaign Create Date.\nString\nYes\n\nend_date\nThis specifies the date on which you will stop requesting campaign analytics. The date format should be YYYY-MM-DD.\nString\nYes\n\npage\nSpecifies the number of campaigns to be listed per page. Default value is 1.\nString\nNo\n\nper_page\nSpecifies the number of pages of campaign campaigns. Default value is 10.\nString\nNo\n\nSample Example\nSample Request\nBefore sending the request, make sure:\n\nTo replace the authorization value with your own API key.\n\nTo replace the sample values in partner_id, start_date, and end_date with your own values in the required data type.\n\ncurl --location --POST 'https://web-push.api.useinsider.com/v1/statistics/overall-metrics' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: {{vault:bearer-token}}' \\\n--data '{\n \"partner_id\": \"YOURPARTNERID\",\n \"start_date\": \"2023-12-02\",\n \"end_date\": \"2023-12-19\"\n \"page\": 1,\n \"per_page\": 10\n}'\n\nSample Responses\n200 OK\n{\n  \"page\": 1,\n  \"per_page\": 2,\n  \"total\": 48,\n  \"data\": [\n    {\n      \"id\": 12345,\n      \"tags\": [\n        \"Discount\",\n        \"Baby\",\n        \"Powder\"\n      ],\n      \"type\": \"Bulk\",\n      \"campName\": \"08.06.2023-2100-BabyCare\",\n      \"status\": \"Active\",\n      \"builderId\": 11111,\n      \"sendDate\": \"2023-06-08 21:15:10\",\n      \"startDate\": \"2023-06-08 21:15:00\",\n      \"endDate\": \"2023-06-08 21:15:00\",\n      \"daysActive\": 1,\n      \"messageLink\": \"https://sample.useinsider.com/discount/all-baby-care-products\",\n      \"firstButtonLink\": \"N/A\",\n      \"secondButtonLink\": \"N/A\",\n      \"targeted\": 411840,\n      \"sent\": 411344,\n      \"dropped\": 496,\n      \"deliveryRate\": 0.340792621261037,\n      \"delivered\": 140183,\n      \"undelivered\": 271161,\n      \"ctr\": 0.005157544067397616,\n      \"clicks\": 723,\n      \"conversionRate\": 0,\n      \"conversions\": 0,\n      \"revenue\": 0\n    },\n    {\n      \"id\": 22222,\n      \"tags\": [\n        \"Baby\"\n      ],\n      \"type\": \"Bulk\",\n      \"campName\": \"08.06.2023-Bebekcom-BabyProducts\",\n      \"status\": \"Active\",\n      \"builderId\": 10101,\n      \"sendDate\": \"2023-06-08 16:00:27\",\n      \"startDate\": \"2023-06-08 16:00:00\",\n      \"endDate\": \"2023-06-08 16:00:00\",\n      \"daysActive\": 1,\n      \"messageLink\": \"https://sample.useinsider.com/baby-products/\",\n      \"firstButtonLink\": \"N/A\",\n      \"secondButtonLink\": \"N/A\",\n      \"targeted\": 411733,\n      \"sent\": 411279,\n      \"dropped\": 454,\n      \"deliveryRate\": 0.3351933845394489,\n      \"delivered\": 137858,\n      \"undelivered\": 273421,\n      \"ctr\": 0.008399947772345456,\n      \"clicks\": 1158,\n      \"conversionRate\": 0,\n      \"conversions\": 0,\n      \"revenue\": 0\n    }\n  ]\n}\n\n401 UNAUTHORIZED\n{\n    \"status_code\": 401\n}\n\n422 UNPROCESSABLE ENTITY\n{\n    \"status_code\": 422,\n    \"errors\": {\n        \"end_date\": [\n            \"The end date does not match the format Y-m-d.\"\n        ]\n    }\n}\n\nError Codes\n\n400: Bad request\n\n401: Unauthorized request\n\n403: Request limit exceeded\n\n422: Missing parameter\n\nLimitations\n\nAll functions must be executed with an HTTPS POST request.\n\nThe API Key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nYou can make 30 requests per minute in aggregate. Every response you receive from the API will include two additional headers specifying the number of requests that have been used and the maximum number of requests available for your account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "statistics",
+                "overall-metrics"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"partner_id\": \"YOURPARTNERID\",\n  \"start_date\": \"2023-06-01\",\n  \"end_date\": \"2023-06-08\",\n  \"per_page\": \"100\",\n  \"page\": \"1\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "abdc2258-0c02-4490-96c9-747e16e32a7a",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "statistics",
+                    "overall-metrics"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"partner_id\": \"YOURPARTNERID\",\n  \"start_date\": \"2023-06-01\",\n  \"end_date\": \"2023-06-08\",\n  \"per_page\": \"100\",\n  \"page\": \"1\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0554466a-8378-4a07-a26a-597f487d3f7e",
+          "name": "Get web push top metrics analytics",
+          "request": {
+            "name": "Get web push top metrics analytics",
+            "description": {
+              "content": "Insider's web push API allows you to get the campaigns analytics of your web push notifications from your own back-end without using the Insider's InOne panel. This API returns top metric analytics (without campaign information) in the given time interval in API request payload.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\npartner_id\nThis is your partner identification number, available from InOne Settings > Account Preferences.\nString\nYes\n\nstart_date\nThis specifies the date on which you will start requesting campaign analytics. The date format should be YYYY-MM-DD. The Start Date cannot be earlier than the Campaign Create Date.\nString\nYes\n\nend_date\nThis specifies the date on which you will stop requesting campaign analytics. The date format should be YYYY-MM-DD.\nString\nYes\n\nSample Example\nSample Request\nBefore sending the request, make sure:\n\nTo replace the authorization value with your own API key.\n\nTo replace the sample values in partner_id, start_date, and end_date with your own values in the required data type.\n\ncurl --location --request POST 'https://web-push.api.useinsider.com/v1/statistics/top-metrics' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: {{vault:bearer-token}}' \\\n--data '{\n \"partner_id\": \"YOURPARTNERID\",\n \"start_date\" : \"2023-06-01\",\n \"end_date\" : \"2023-06-08\"\n}'\n\nSample Responses\n200 OK\n{\n  \"overview\": {\n    \"total\": {\n      \"targeted\": \"9,550,384\",\n      \"deliveryRate\": \"32.42%\",\n      \"ctr\": \"0.76%\",\n      \"conversionRate\": \"0.01%\"\n    },\n    \"targeted\": {\n      \"sent\": \"9,505,769\",\n      \"dropped\": \"44,615\"\n    },\n    \"deliveryRate\": {\n      \"delivered\": \"3,082,158\",\n      \"undelivered\": \"6,423,611\"\n    },\n    \"ctr\": {\n      \"clicks\": \"23,419\"\n    },\n    \"conversionRate\": {\n      \"conversions\": \"3\"\n    },\n    \"revenue\": \"2,480 TRY\"\n  },\n  \"performance\": [\n    {\n      \"label\": \"Bulk\",\n      \"campaignCount\": 22,\n      \"deliveryRate\": \"32.42\",\n      \"ctr\": \"0.76\",\n      \"conversionRate\": \"0.01\",\n      \"revenue\": \"2479.6600112915\"\n    },\n    {\n      \"label\": \"In Stock Alert\",\n      \"campaignCount\": 4,\n      \"deliveryRate\": \"0.00\",\n      \"ctr\": \"0.00\",\n      \"conversionRate\": \"0.00\",\n      \"revenue\": \"0\"\n    },\n    {\n      \"label\": \"Segment\",\n      \"campaignCount\": 2,\n      \"deliveryRate\": \"0.00\",\n      \"ctr\": \"0.00\",\n      \"conversionRate\": \"0.00\",\n      \"revenue\": \"0\"\n    },\n    {\n      \"label\": \"Cart Reminder\",\n      \"campaignCount\": 4,\n      \"deliveryRate\": \"0.00\",\n      \"ctr\": \"0.00\",\n      \"conversionRate\": \"0.00\",\n      \"revenue\": \"0\"\n    },\n    {\n      \"label\": \"Price Alert\",\n      \"campaignCount\": 6,\n      \"deliveryRate\": \"0.00\",\n      \"ctr\": \"0.00\",\n      \"conversionRate\": \"0.00\",\n      \"revenue\": \"0\"\n    },\n    {\n      \"label\": \"Trigger\",\n      \"campaignCount\": 10,\n      \"deliveryRate\": \"0.00\",\n      \"ctr\": \"0.00\",\n      \"conversionRate\": \"0.00\",\n      \"revenue\": \"0\"\n    }\n  ],\n  \"dropped\": [\n    {\n      \"label\": \"frequencyCapped\",\n      \"count\": \"0\",\n      \"percentage\": \"0.00\"\n    },\n    {\n      \"label\": \"silentHours\",\n      \"count\": \"0\",\n      \"percentage\": \"0.00\"\n    },\n    {\n      \"label\": \"unsubscriptions\",\n      \"count\": \"44,203\",\n      \"percentage\": \"99.08\"\n    },\n    {\n      \"label\": \"serviceProviderErrors\",\n      \"count\": \"412\",\n      \"percentage\": \"0.92\"\n    },\n    {\n      \"label\": \"internalErrors\",\n      \"count\": \"0\",\n      \"percentage\": \"0.00\"\n    }\n  ],\n  \"undelivered\": [\n    {\n      \"label\": \"offlineRecipients\",\n      \"count\": \"6,413,534\",\n      \"percentage\": \"99.84\"\n    },\n    {\n      \"label\": \"other\",\n      \"count\": \"10,077\",\n      \"percentage\": \"0.16\"\n    }\n  ]\n}\n\n401 UNAUTHORIZED\n{\n    \"status_code\": 401\n}\n\n422 UNPROCESSABLE ENTITY\n{\n    \"status_code\": 422,\n    \"errors\": {\n        \"end_date\": [\n            \"The end date does not match the format Y-m-d.\"\n        ]\n    }\n}\n\nError Codes\n\n400: Bad request\n\n401: Unauthorized request\n\n403: Request limit exceeded\n\n422: Missing parameter\n\nLimitations\n\nAll functions must be executed with an HTTPS POST request.\n\nThe API Key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nYou can make 30 requests per minute in aggregate. Every response you receive from the API will include two additional headers specifying the number of requests that have been used and the maximum number of requests available for your account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "statistics",
+                "top-metrics"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"partner_id\": \"YOURPARTNERID\",\n  \"start_date\": \"2023-06-01\",\n  \"end_date\": \"2023-06-08\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "285fa23a-34dd-45fd-af34-c6275178311f",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "statistics",
+                    "top-metrics"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"partner_id\": \"YOURPARTNERID\",\n  \"start_date\": \"2023-06-01\",\n  \"end_date\": \"2023-06-08\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "5585abeb-d9b3-4972-9241-21a262d3aec9",
+      "name": "Web Push APIs",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "1e645b00-2c1a-4c3f-9695-aa6c7278073d",
+          "name": "Create single web pushes",
+          "request": {
+            "name": "Create single web pushes",
+            "description": {
+              "content": "Insider's web push API allows you to send single web push notifications from your own back-end without using Insider's InOne panel.\n\nHeaders\n\nHeader\nSample Value\nDescription\n\nAuthorization\n{{vault:bearer-token}}\nThis key is required to authorize your request. Refer to API Authentication Tokens to generate your token.\n\nContent-Type\napplication/json\nThis header specifies the media type of the resource.\n\nBody Parameters\nEach request body requires a partner ID and a title. \n\nParameter\nDescription\nData Type\nRequired\n\npartner_id\nThis is your partner identification number, available from InOne Settings > Account Preferences.\nString\nYes\n\ntitle\nEvery request creates a push notification campaign on InOne with the push type Single Push. This is the title of the campaign. It cannot be more than 100 characters.\nString\nYes\n\nlanguage\nThe language of the campaign, e.g., en_US. If you want to send the push to all languages, you can write “all_ALL”.\nString\nYes\n\nis_all\nIt helps you set when you want to send push notifications to all subscribers or segmented subscribers.  If you type true, it will be sent only once, and you can open the campaign in the InOne Panel. If you type false, it will be sent multiple times, but you cannot open the campaign in the InOne Panel.\nBoolean\nNo\n\nSample Example\nBefore sending the request, make sure:\n\nTo replace the authorization value with your own API key.\n\nTo add your partner ID in partner_id.\n\nTo add your campaign name in title.\n\nWhen you send the request, you will get your campaign_id as a response. You will use this campaign_id when launching the campaign.\n\nSample Request\ncurl --location --request POST 'https://web-push.api.useinsider.com/v1/single' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: {{vault:bearer-token}}' \\\n--data-raw '{\n  \"partner_id\": \"100XXXXX\",\n  \"title\": \"Title of campaign\",\n  \"language\": \"tr_TR\",\n  \"is_all\": false\n}'\n\nSample Responses\n201 CREATED\nYou can see this kind of response when you successfully created your campaign.\n\n{\n    \"success\": true,\n    \"campaign_id\": 25696\n}\n\nYou can also see your campaign in your InOne panel on the Web Push listing page as in Draft status, indicating that the campaign has been created but not launched yet.\n\n401 UNAUTHORIZED\n{\n\"message\": \"Unauthorized\"\n}\n\n424 FAILED DEPENDENCY\n{\n  \"message\": \"SERVICE:-\"\n}\n\nERROR CODES\n\n400: Bad request\n\n401: Unauthorized request\n\n424 Failed Dependency\n\n429 Request limit exceeded\n\nLimitations\n\nAll create requests must be executed with an HTTPS POST request.\n\nThe API key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nThe rate limit is 30 requests per minute second.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "single"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"partner_id\": \"100XXXXX\",\n  \"title\": \"Title of campaign\",\n  \"language\": \"tr_TR\",\n  \"is_all\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "dd6e5872-b33a-46ed-b6a8-1e0790b6baf7",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "single"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"partner_id\": \"100XXXXX\",\n  \"title\": \"Title of campaign\",\n  \"language\": \"tr_TR\",\n  \"is_all\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "efd87691-8f61-4526-bcbf-00bb87302486",
+          "name": "Launch single web pushes v1",
+          "request": {
+            "name": "Launch single web pushes v1",
+            "description": {
+              "content": "Insider's web push API allows you to launch single web push notifications from your own back-end without using Insider's InOne panel.\n\nHeaders\n\nHeader\nSample Value\nDescription\n\nAuthorization\n{{vault:bearer-token}}\nThis key is required to authorize your request. Refer to API Authentication Tokens to generate your token.\n\nContent-Type\napplication/json\nThis header specifies the media type of the resource.\n\nBody Parameters\nEach request body requires a partner ID and a title. \n\nParameter\nDescription\nData Type\nRequired\n\npartner_id\nThis is your partner identification number, available from InOne Settings > Account Preferences.\nString\nYes\n\ntitle\nEvery request creates a push notification campaign on InOne with the push type Single Push. This is the title of the push content. Itcannot be more than 100 characters.\nString\nYes\n\ndescription\nThis is the body of your push notification. It cannot be more than 255 characters. If it is a rich push that has a banner, it is limited to 30 characters.\nString\nYes\n\nimage\nThis is the push notification icon. Only HTTPS protocols are accepted. If not provided, the default icon is used instead.\nString\nYes\n\nbanner\nThis is the rich push notification image. Only HTTPS protocols are accepted.\nString\nNo\n\nlink\nThe link of the Web push message.\nString\nYes\n\ninclude_unengaged\nEnables you to decide whether the bulk push should target unengaged tokens. When not sent in the payload, unengaged users are automatically excluded.\nBoolean (true/false)\nNo\n\nttl\nShort for time to live: This is the maximum time the system will try to send a push notification to an offline or temporarily unavailable user. TTL is limited to 240 hours.\nString\nYes\n\ntarget\nTargeting options for the campaign (segmenting).\nObject\nYes if is_all: false\n\nattribute\nThe attribute used for targeting, e.g. \"d_wp_browser\".\nString\nYes if target is used.\n\nvalues\nAn array of values to target, e.g. [\"Edg\"]\nArray\nYes if target is used.\n\nSample Example\nBefore sending the request, make sure:\n\nTo replace the authorization value with your own API key.\n\nTo add your partner ID in partner_id.\n\nTo add your campaign name in title.\n\nWhen you send the request to create it, you will get your campaign_id as a response.\n\nSample Request\nBelow you can see a sample request without segments; is_all: true.\n\ncurl --location --request POST 'https://web-push.api.useinsider.com/v1/single/campaign_id' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: {{vault:bearer-token}}' \\\n--data-raw '{\n  \"partner_id\": \"100000001\",\n  \"title\": \"title of push\",\n  \"description\": \"description of push\",\n  \"image\": \"https://image.useinsider.com/mywebsite/webPushDefaultImage/JpVu9aBXgTXmcrBkiZLB1512577074.jpeg\",\n  \"banner\": \"https://image.useinsider.com/mywebsite/webPushDefaultImage/JpVu9aBXgTXmcrBkiZLB1512577074.jpeg\",\n  \"link\": \"https://image.useinsider.com\",\n  \"include_unengage\": true,\n  \"ttl\": \"1000\"\n}'\n\nBelow you can see a sample request with segments; is_all: false.\n\ncurl --location --request POST 'https://web-push.api.useinsider.com/v1/single/campaign_id' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: {{vault:bearer-token}}' \\\n--data-raw '{\n  \"partner_id\": \"10000001\",\n  \"title\": \"title of push\",\n  \"description\": \"description of push\",\n  \"image\": \"https://image.useinsider.com/mywebsite/webPushDefaultImage/JpVu9aBXgTXmcrBkiZLB1512577074.jpeg\",\n  \"banner\": \"https://image.useinsider.com/mywebsite/webPushDefaultImage/JpVu9aBXgTXmcrBkiZLB1512577074.jpeg\",\n  \"link\": \"https://image.useinsider.com\",\n  \"include_unengage\": true,\n  \"ttl\": \"1000\",\n  \"language\": \"en_US\",\n  \"target\": {\n    \"attribute\": \"d_wp_browser\",\n    \"values\": [\"Edg\"]\n  }\n}'\n\nSample Responses\n200 OK\nYou can see this kind of response when you successfully launched your campaign.\n\n{\n  \"success\": true,\n  \"campaign_id\": 1697300275\n}\n\n401 UNAUTHORIZED\n{\n\"message\": \"Unauthorized\"\n}\n\n424 FAILED DEPENDENCY\n{\n  \"message\": \"SERVICE:-\"\n}\n\nERROR CODES\n\n400: Bad request\n\n401: Unauthorized request\n\n424 Failed Dependency\n\n429 Request limit exceeded\n\nLimitations\n\nAll functions must be executed with an HTTPS POST request.\n\nThe API key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nThe rate limit is 30 requests per minute second.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "single",
+                "campaign_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"partner_id\": \"100000001\",\n  \"title\": \"title of push\",\n  \"description\": \"description of push\",\n  \"image\": \"https://image.useinsider.com/mywebsite/webPushDefaultImage/JpVu9aBXgTXmcrBkiZLB1512577074.jpeg\",\n  \"banner\": \"https://image.useinsider.com/mywebsite/webPushDefaultImage/JpVu9aBXgTXmcrBkiZLB1512577074.jpeg\",\n  \"link\": \"https://image.useinsider.com\",\n  \"include_unengage\": true,\n  \"ttl\": \"1000\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3de5891d-3635-4320-b849-3cce3248fd7b",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "single",
+                    "campaign_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"partner_id\": \"100000001\",\n  \"title\": \"title of push\",\n  \"description\": \"description of push\",\n  \"image\": \"https://image.useinsider.com/mywebsite/webPushDefaultImage/JpVu9aBXgTXmcrBkiZLB1512577074.jpeg\",\n  \"banner\": \"https://image.useinsider.com/mywebsite/webPushDefaultImage/JpVu9aBXgTXmcrBkiZLB1512577074.jpeg\",\n  \"link\": \"https://image.useinsider.com\",\n  \"include_unengage\": true,\n  \"ttl\": \"1000\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1fd825d2-b85f-429b-81b9-d8b385006ad9",
+          "name": "Delete single web pushes",
+          "request": {
+            "name": "Delete single web pushes",
+            "description": {
+              "content": "Insider's web push API allows you to delete single web push notifications from your own back-end without using Insider's InOne panel.\n\nHeaders\n\nHeader\nSample Value\nDescription\n\nAuthorization\n{{vault:bearer-token}}\nThis key is required to authorize your request. Refer to API Authentication Tokens to generate your token.\n\nContent-Type\napplication/json\nThis header specifies the media type of the resource.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\npartner_id\nThis is your partner identification number, available from InOne Settings > Account Preferences.\nString\nYes\n\nSample Example\nBefore sending the request, make sure:\n\nTo replace the authorization value with your own API key.\n\nTo add your partner ID in partner_id.\n\nWhen you send the request to create it, you will get your campaign_id as a response.\n\nSample Request\ncurl --location --request DELETE 'https://web-push.api.useinsider.com/v1/single/campaign_id' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: {{vault:bearer-token}}' \\\n--data-raw '{\n  \"partner_id\": \"100000001\",\n}'\n\nSample Responses\n200 OK\nYou can see this kind of response when you successfully deleted your campaign.\n\n{\n  \"success\": true,\n  \"campaign_id\": 1697300275\n}\n\n401 UNAUTHORIZED\n{\n\"message\": \"Unauthorized\"\n}\n\n424 FAILED DEPENDENCY\n{\n  \"message\": \"SERVICE:-\"\n}\n\nERROR CODES\n\n400: Bad request\n\n401: Unauthorized request\n\n424 Failed Dependency\n\n429 Request limit exceeded\n\nLimitations\n\nAll functions must be executed with an HTTPS DELETE request.\n\nThe API key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nThe rate limit is 30 requests per minute second.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "single",
+                "campaign_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "text/plain"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"partner_id\": \"100000001\",\n}"
+            }
+          },
+          "response": [
+            {
+              "id": "c924c717-8194-4580-97f1-9995e8e76ad1",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "single",
+                    "campaign_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"partner_id\": \"100000001\",\n}"
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9fde1dd3-2f9b-481b-96ab-42dd51d000b8",
+          "name": "Launch single web pushes v2",
+          "request": {
+            "name": "Launch single web pushes v2",
+            "description": {
+              "content": "Insider's web push API allows you to launch single web push notifications from your own back-end without using Insider's InOne panel.\n\nHeaders\n\nHeader\nSample Value\nDescription\n\nAuthorization\n{{vault:bearer-token}}\nThis key is required to authorize your request. Refer to API Authentication Tokens to generate your token.\n\nContent-Type\napplication/json\nThis header specifies the media type of the resource.\n\nBody Parameters\nEach request body requires a partner ID and a title.\n\nParameter\nDescription\nData Type\nRequired\n\npartner_id\nThis is your partner identification number, available from InOne Settings > Account Preferences.\nString\nYes\n\ntitle\nEvery request creates a push notification campaign on InOne with the push type Single Push. This is the title of the push content. Itcannot be more than 100 characters.\nString\nYes\n\ndescription\nThis is the body of your push notification. It cannot be more than 255 characters. If it is a rich push that has a banner, it is limited to 30 characters.\nString\nYes\n\nimage\nThis is the push notification icon. Only HTTPS protocols are accepted. If not provided, the default icon is used instead.\nString\nYes\n\nbanner\nThis is the rich push notification image. Only HTTPS protocols are accepted.\nString\nNo\n\nlink\nThe link of the Web push message.\nString\nYes\n\ninclude_unengaged\nEnables you to decide whether the bulk push should target unengaged tokens. When not sent in the payload, unengaged users are automatically excluded.\nBoolean (true/false)\nNo\n\nttl\nShort for time to live: This is the maximum time the system will try to send a push notification to an offline or temporarily unavailable user. TTL is limited to 240 hours.\nString\nYes\n\ntarget\nTargeting options for the campaign (segmenting).\nObject\nYes if is_all: false\n\nattribute\nThe attribute used for targeting, e.g. \"d_wp_browser\".\nString\nYes if target is used.\n\nvalues\nAn array of values to target, e.g. [\"Edg\"]\nArray\nYes if target is used.\n\nSample Example\nBefore sending the request, make sure:\n\nTo replace the authorization value with your own API key.\n\nTo add your partner ID in partner_id.\n\nTo add your campaign name in title.\n\nWhen you send the request to create it, you will get your campaign_id as a response.\n\nSample Request\nBelow you can see a sample request without segments; is_all: true.\n\ncurl --location --request POST 'https://web-push.api.useinsider.com/v2/single/campaign_id' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: {{vault:bearer-token}}' \\\n--data-raw '{\n  \"partner_id\": \"100000001\",\n  \"title\": \"title of push\",\n  \"description\": \"description of push\",\n  \"image\": \"https://image.useinsider.com/mywebsite/webPushDefaultImage/JpVu9aBXgTXmcrBkiZLB1512577074.jpeg\",\n  \"banner\": \"https://image.useinsider.com/mywebsite/webPushDefaultImage/JpVu9aBXgTXmcrBkiZLB1512577074.jpeg\",\n  \"link\": \"https://image.useinsider.com\",\n  \"include_unengage\": true,\n  \"ttl\": \"1000\"\n}'\n\nBelow you can see a sample request with segments; is_all: false.\n\ncurl --location --request POST 'https://web-push.api.useinsider.com/v2/single/campaign_id' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: {{vault:bearer-token}}' \\\n--data-raw '{\n  \"partner_id\": \"10000001\",\n  \"title\": \"title of push\",\n  \"description\": \"description of push\",\n  \"image\": \"https://image.useinsider.com/mywebsite/webPushDefaultImage/JpVu9aBXgTXmcrBkiZLB1512577074.jpeg\",\n  \"banner\": \"https://image.useinsider.com/mywebsite/webPushDefaultImage/JpVu9aBXgTXmcrBkiZLB1512577074.jpeg\",\n  \"link\": \"https://image.useinsider.com\",\n  \"include_unengage\": true,\n  \"ttl\": \"1000\",\n  \"language\": \"en_US\",\n  \"target\": {\n    \"attribute\": \"d_wp_browser\",\n    \"values\": [\"Edg\"]\n  }\n}'\n\nSample Responses\n200 OK\nYou can see this kind of response when you successfully launched your campaign.\n\n{\n  \"success\": true,\n  \"campaign_id\": 1697300275\n}\n\n401 UNAUTHORIZED\n{\n\"message\": \"Unauthorized\"\n}\n\n424 FAILED DEPENDENCY\n{\n  \"message\": \"SERVICE:-\"\n}\n\nERROR CODES\n\n400: Bad request\n\n401: Unauthorized request\n\n424 Failed Dependency\n\n429 Request limit exceeded\n\nLimitations\n\nAll functions must be executed with an HTTPS POST request.\n\nThe API key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nThe rate limit is 6000 requests per minute second.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "single",
+                "campaign_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"partner_id\": \"100000001\",\n  \"title\": \"title of push\",\n  \"description\": \"description of push\",\n  \"image\": \"https://image.useinsider.com/mywebsite/webPushDefaultImage/JpVu9aBXgTXmcrBkiZLB1512577074.jpeg\",\n  \"banner\": \"https://image.useinsider.com/mywebsite/webPushDefaultImage/JpVu9aBXgTXmcrBkiZLB1512577074.jpeg\",\n  \"link\": \"https://image.useinsider.com\",\n  \"include_unengage\": true,\n  \"ttl\": \"1000\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8a3d1019-e70e-48dd-900e-048e420a88c3",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "single",
+                    "campaign_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"partner_id\": \"100000001\",\n  \"title\": \"title of push\",\n  \"description\": \"description of push\",\n  \"image\": \"https://image.useinsider.com/mywebsite/webPushDefaultImage/JpVu9aBXgTXmcrBkiZLB1512577074.jpeg\",\n  \"banner\": \"https://image.useinsider.com/mywebsite/webPushDefaultImage/JpVu9aBXgTXmcrBkiZLB1512577074.jpeg\",\n  \"link\": \"https://image.useinsider.com\",\n  \"include_unengage\": true,\n  \"ttl\": \"1000\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://web-push.api.useinsider.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "9110c3af-4f04-4439-afc2-6ee43a97f23c",
+    "name": "Insider One Web Push API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Create, launch and delete single web push campaigns, plus web push statistics.\n\nDerived by API Evangelist from Insider One's own public Postman collection (\"Insider One APIs\", published at https://developers.insiderone.com/). Paths, methods, headers, query parameters and request/response examples are verbatim from that collection; nothing is invented. The 429 response is documented for all Insider One APIs on https://academy.insiderone.com/docs/api-rate-limits-1 .\n\nContact Support:\n Name: Insider One Support\n Email: support@useinsider.com",
+      "type": "text/plain"
+    }
+  }
+}

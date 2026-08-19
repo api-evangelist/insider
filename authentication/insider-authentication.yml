@@ -1,28 +1,113 @@
-generated: '2026-07-19'
+generated: '2026-08-13'
 method: searched
-source: https://academy.insiderone.com/docs/upsert-user-data-api-integration-wizard-2
-docs: https://academy.insiderone.com/docs/upsert-user-data-api-integration-wizard-2
+source: https://academy.insiderone.com/docs/api-authentication-tokens-1
+docs: https://academy.insiderone.com/docs/api-authentication-tokens-1
+sources:
+- https://academy.insiderone.com/docs/api-authentication-tokens-1
+- https://academy.insiderone.com/docs/insider-one-apis-1
+- https://academy.insiderone.com/docs/anatomy-of-an-api-request-1
+- https://academy.insiderone.com/docs/set-up-insider-one-mcp
+- https://gw.useinsider.com/.well-known/oauth-authorization-server
+- postman/insider-one-apis.postman_collection.json
 summary:
-  types: [apiKey]
+  types: [apiKey, oauth2]
   api_key_in: [header]
-  oauth2_flows: []
+  oauth2_flows: [authorization_code, client_credentials, refresh_token]
   notes: >-
-    Insider's Unified Customer Database (Upsert User Data API) authenticates with a
-    two-header API-key pair. API credentials are generated per partner/account in
-    the InOne panel via the integration wizard and must be kept confidential;
-    testing is recommended against a UAT account before production.
+    Insider One runs TWO authentication regimes side by side. (1) The REST estate is key-based:
+    every request carries an account API key in a header, but the HEADER NAME VARIES BY API — the
+    Unification/UCD APIs take the X-PARTNER-NAME + X-REQUEST-TOKEN pair, while other hosts take
+    X-INS-AUTH-KEY, X-Api-Key, X-INSIDER-API-KEY or an Authorization value. There are six distinct
+    key headers in the provider's own Postman collection. Keys are generated per API type in the
+    InOne panel by an Administrator, shown once, and can be pinned to allowed IP addresses.
+    (2) The newer gateway (gw.useinsider.com) and the MCP server use OAuth 2.0, with Client
+    ID/Secret generated in Integration Settings, per-channel scopes chosen at generation time,
+    PKCE S256, and RFC 8414 + RFC 9728 discovery documents served anonymously.
+
 schemes:
-- name: RequestToken
-  type: apiKey
-  in: header
-  parameter: X-REQUEST-TOKEN
-  description: Generated API key for the account. Sent on every request.
-  sources: [docs]
 - name: PartnerName
   type: apiKey
   in: header
   parameter: X-PARTNER-NAME
   description: >-
-    The Insider partner name for the account (auto-populated by the wizard).
-    Paired with X-REQUEST-TOKEN to identify and authorize the caller.
-  sources: [docs]
+    The Insider One partner (account) name, lowercase and without spaces. Found in InOne >
+    Inone Settings > Account Settings. Paired with X-REQUEST-TOKEN.
+  used_by: [unification.useinsider.com, contact.useinsider.com, mobile.useinsider.com]
+  sources: [docs, postman]
+- name: RequestToken
+  type: apiKey
+  in: header
+  parameter: X-REQUEST-TOKEN
+  description: The account API key (request token) generated in InOne > Settings > Integration Settings.
+  used_by: [unification.useinsider.com, contact.useinsider.com, mobile.useinsider.com, analytics.api.useinsider.com, architect-analytics.api.useinsider.com]
+  occurrences_in_collection: 52
+  sources: [docs, postman]
+- name: InsAuthKey
+  type: apiKey
+  in: header
+  parameter: X-INS-AUTH-KEY
+  description: Per-API authorization key used by the messaging and catalog hosts.
+  used_by: [sms.useinsider.com, whatsapp.useinsider.com, verify.useinsider.com, mail.useinsider.com, catalog.api.useinsider.com, web-push.api.useinsider.com]
+  occurrences_in_collection: 44
+  sources: [postman]
+- name: ApiKey
+  type: apiKey
+  in: header
+  parameter: X-Api-Key
+  description: Mobile-suite API key (a second casing, X-API-KEY, also appears in the collection).
+  used_by: [mobile.api.useinsider.com, mobile.useinsider.com]
+  sources: [postman, docs]
+- name: InsiderApiKey
+  type: apiKey
+  in: header
+  parameter: X-INSIDER-API-KEY
+  description: Single-use variant seen on one collection request.
+  sources: [postman]
+- name: Authorization
+  type: http
+  scheme: bearer
+  in: header
+  parameter: Authorization
+  description: >-
+    Bearer credential. On gw.useinsider.com this carries an OAuth 2.0 access token; on some other
+    hosts the collection uses the same header to carry the channel API key.
+  sources: [postman, docs]
+- name: OAuth2
+  type: oauth2
+  description: >-
+    OAuth 2.0 for the Insider One gateway and MCP server. Client ID / Client Secret generated in
+    InOne > Settings > InOne Settings > Integration Settings > OAuth 2.0 Credentials, with the
+    channel scopes selected at generation time.
+  issuer: https://gw.useinsider.com
+  flows:
+  - {flow: authorizationCode, authorizationUrl: 'https://gw.useinsider.com/oauth2/authorize', tokenUrl: 'https://gw.useinsider.com/oauth2/token'}
+  - {flow: clientCredentials, tokenUrl: 'https://gw.useinsider.com/oauth2/token'}
+  refresh: supported (refresh_token grant)
+  revocation_endpoint: https://gw.useinsider.com/oauth2/revoke
+  pkce: [S256]
+  token_endpoint_auth_methods: [client_secret_basic, client_secret_post, none]
+  token_lifetime: up to 90 minutes
+  discovery: well-known/insider-gw-oauth-authorization-server.json
+  used_by: [gw.useinsider.com, 'https://mcp.insiderone.com/mcp']
+  sources: [well-known, docs]
+
+key_management:
+  who_can_generate: Administrator role only
+  visibility: full key shown once at creation; not retrievable afterwards
+  ip_restriction: supported — allowed IPs are authorized at key generation; transactional keys can also
+    be IP-restricted on request
+  limits:
+  - Two active mobile API keys per account; a third requires deleting one.
+  - Web Push keys created in the legacy Web Push Settings screen were disabled on 2025-10-15.
+  rotation_guidance: >-
+    Documented rotation procedure: generate the replacement key with the same authorized IPs, store
+    it in a secrets manager, swap it into every consumer, test, monitor for auth failures, then
+    delete the old key. Keys cannot be rotated automatically.
+  mcp_guidance: Create a dedicated OAuth 2.0 credential for the MCP client; do not reuse existing keys.
+
+gaps:
+- Six different API-key header names across the estate, with two casings of the same header
+  (X-Api-Key / X-API-KEY); a client cannot infer the header from the host.
+- No OpenID Connect discovery (gw.useinsider.com/.well-known/openid-configuration is 404).
+- scopes_supported in the protected-resource metadata is the wildcard "*", so the real per-channel
+  scope names are only visible inside the panel — see scopes/insider-scopes.yml.

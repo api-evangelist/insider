@@ -1,0 +1,12 @@
+{
+    "resource": "https://gw.useinsider.com",
+    "authorization_servers": [
+        "https://gw.useinsider.com"
+    ],
+    "bearer_methods_supported": [
+        "header"
+    ],
+    "scopes_supported": [
+        "*"
+    ]
+}

@@ -1,11 +1,21 @@
-generated: '2026-07-19'
+generated: '2026-08-13'
 method: searched
-source: https://www.npmjs.com/org/useinsider + https://github.com/useinsider
+source: https://github.com/useinsider
+sources:
+- https://www.npmjs.com/org/useinsider
+- https://github.com/useinsider
+- https://pub.dev/packages/flutter_insider
+- https://academy.insiderone.com/docs/android-sdk-changelog
+- https://academy.insiderone.com/docs/ios-sdk-changelog
 notes: >-
-  First-party client SDKs and integration packages published under the official
-  @useinsider npm scope and the github.com/useinsider organization. Insider's own
-  data ingestion (Upsert User Data API, Catalog API) is called over HTTP; the
-  official libraries below are the client/mobile SDKs and integration nodes.
+  Insider One's first-party libraries are CLIENT SDKs — mobile, web and integration nodes. There is
+  no server-side SDK for the REST estate in any language: the 113 published REST operations are
+  called over plain HTTP, and Insider One's own onboarding path for them is the Postman collection.
+  Every mobile SDK is actively released — Android 16.0.9 (2026-08-04), iOS 15.1.2 (2026-08-04),
+  React Native 8.1.0 (2026-08-05), Flutter 5.1.0 (2026-08-10) — so nothing here is abandoned except
+  the Expo runtime package, whose last npm release was 2020.
+server_sdks: none
+
 packages:
 - language: javascript
   registry: npm
@@ -13,53 +23,139 @@ packages:
   url: https://www.npmjs.com/package/react-native-insider
   install: npm install react-native-insider
   official: true
+  version: 8.1.0
+  published: '2026-08-05'
   description: React Native Insider SDK.
-- language: javascript
-  registry: npm
-  name: expo-insider
-  url: https://www.npmjs.com/package/expo-insider
-  install: npm install expo-insider
+  changelog: https://academy.insiderone.com/docs/react-native-sdk-changelog
+- language: dart
+  registry: pub.dev
+  name: flutter_insider
+  url: https://pub.dev/packages/flutter_insider
+  install: flutter pub add flutter_insider
   official: true
-  description: Expo Insider SDK.
-- language: javascript
-  registry: npm
-  name: expo-insider-plugin
-  url: https://www.npmjs.com/package/expo-insider-plugin
-  install: npm install expo-insider-plugin
+  version: 5.1.0+nh
+  published: '2026-08-10'
+  description: Flutter Insider SDK. The "+nh" build is the non-Huawei variant, shipped alongside each release.
+  changelog: https://academy.insiderone.com/docs/flutter-changelogs
+- language: swift
+  registry: github
+  name: Insider-iOS-SDK
+  url: https://github.com/useinsider/Insider-iOS-SDK
+  install: Swift Package Manager — https://github.com/useinsider/Insider-iOS-SDK
   official: true
-  description: Expo config plugin for react-native-insider.
+  version: 1.9.2
+  published: '2026-08-04'
+  version_note: >-
+    The GitHub release tag (1.9.2) is the SPM distribution version and does NOT match the product
+    version in Insider One's own iOS changelog (15.1.2, same date, 2026-08-04). Two version lines
+    for one SDK.
+  description: Native iOS SDK distributed via Swift Package Manager.
+  changelog: https://academy.insiderone.com/docs/ios-sdk-changelog
+- language: kotlin
+  registry: null
+  name: Insider Android SDK
+  url: https://academy.insiderone.com/docs/android-integration
+  official: true
+  version: 16.0.9
+  published: '2026-08-04'
+  version_note: >-
+    Checked Maven Central 2026-08-13 — search.maven.org returns numFound 0 for g:"com.useinsider" and
+    repo1.maven.org/maven2/com/useinsider/ 404s. The Android SDK is NOT on Maven Central under that
+    group; the artifact coordinates and repository come from the panel integration wizard, so there
+    is no public registry metadata endpoint to read. Version and date are taken from Insider One's
+    own dated changelog.
+  description: Native Android SDK. Every release also ships an "-nh" (non-Huawei) build with the HMS
+    dependencies removed.
+  changelog: https://academy.insiderone.com/docs/android-sdk-changelog
 - language: javascript
   registry: npm
   name: cordova-plugin-insider
   url: https://www.npmjs.com/package/cordova-plugin-insider
   install: cordova plugin add cordova-plugin-insider
   official: true
+  version: 4.0.1
+  published: '2026-04-16'
+  license: ISC
   description: Cordova plugin wrapping the Insider SDK.
+  changelog: https://academy.insiderone.com/docs/cordova-changelogs
 - language: javascript
   registry: npm
-  name: "@useinsider/n8n-nodes-insiderone"
+  name: expo-insider-plugin
+  url: https://www.npmjs.com/package/expo-insider-plugin
+  install: npm install expo-insider-plugin
+  official: true
+  version: 1.1.1
+  published: '2025-07-31'
+  description: Expo config plugin for react-native-insider.
+- language: javascript
+  registry: npm
+  name: expo-insider
+  url: https://www.npmjs.com/package/expo-insider
+  install: npm install expo-insider
+  official: true
+  version: 1.0.2
+  published: '2020-01-24'
+  decay: true
+  decay_note: >-
+    Last published 2020-01-24 — over six years stale, while the Expo changelog page in the Academy is
+    still maintained and react-native-insider shipped 8.1.0 on 2026-08-05. Integrators should treat
+    expo-insider-plugin + react-native-insider as the live path.
+  description: Expo Insider SDK.
+- language: javascript
+  registry: npm
+  name: '@useinsider/n8n-nodes-insiderone'
   url: https://www.npmjs.com/package/@useinsider/n8n-nodes-insiderone
   install: npm install @useinsider/n8n-nodes-insiderone
   official: true
-  description: n8n community node for Insider One.
+  version: 1.0.4
+  published: '2026-06-23'
+  license: MIT
+  repo: https://github.com/useinsider/n8n-nodes-insiderone
+  description: n8n community node for Insider One — the closest thing to a server-side client library.
 - language: javascript
   registry: npm
-  name: "@useinsider/guido"
+  name: '@useinsider/guido'
   url: https://www.npmjs.com/package/@useinsider/guido
   install: npm install @useinsider/guido
   official: true
+  version: 3.15.0-beta.0cbd17f
+  published: '2026-08-12'
+  license: ISC
+  version_note: The published latest tag is a beta with a commit-hash suffix; no stable release is tagged latest.
   description: Vue + TypeScript wrapper for the Insider Email Plugin.
-- language: swift
-  registry: github
-  name: Insider-iOS-SDK
-  url: https://github.com/useinsider/Insider-iOS-SDK
-  install: Swift Package Manager (github.com/useinsider/Insider-iOS-SDK)
-  official: true
-  description: Native iOS SDK distributed via Swift Package Manager.
 - language: go
   registry: github
   name: go-pkg
   url: https://github.com/useinsider/go-pkg
   install: go get github.com/useinsider/go-pkg
   official: true
-  description: Insider Go utility packages (Apache-2.0).
+  version: inssqs/v1.1.0
+  published: '2026-08-05'
+  description: >-
+    Insider Go utility packages (Apache-2.0). Internal platform utilities, not a client for the
+    Insider One APIs.
+  client_library: false
+- language: javascript
+  registry: cdn
+  name: Insider Tag (ins.js)
+  url: https://academy.insiderone.com/docs/insider-tag-integration-1
+  official: true
+  version: null
+  published: null
+  version_note: >-
+    Distributed as a per-partner script tag with no version in the URL. There is no registry, no
+    CDN JSON metadata and no pin — the tag floats to whatever build Insider One is serving, so a
+    consumer cannot tell which version they are running either.
+  description: The web loader script every on-site Insider One experience depends on.
+  ref: components/insider-components.yml
+
+related_repos:
+- {name: segment-insider-action-destinations, url: 'https://github.com/useinsider/segment-insider-action-destinations', description: 'Segment Action Destination for Insider.', official: true}
+- {name: insider-chatgpt-integration, url: 'https://github.com/useinsider/insider-chatgpt-integration', description: 'ChatGPT MCP server with Insider integration (demo repo, not the hosted MCP server).', official: true}
+- {name: Demo apps, url: 'https://github.com/useinsider', description: 'KotlinDemo, SwiftDemo, ReactNativeDemo, FlutterDemo, CordovaDemo, IonicDemo, ExpoDemo, WebViewDemo — runnable SDK samples, all pushed within the last two months.', official: true}
+
+gaps:
+- No server-side SDK in any language for the REST estate.
+- The Android SDK is not on Maven Central under com.useinsider, so its distribution cannot be
+  verified or pinned from a public registry.
+- iOS ships two disagreeing version lines (SPM tag 1.9.2 vs product 15.1.2).

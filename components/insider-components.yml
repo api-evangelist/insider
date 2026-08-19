@@ -1,0 +1,82 @@
+generated: '2026-08-13'
+method: searched
+source: https://academy.insiderone.com/docs/insider-web-sdk
+sources:
+- https://academy.insiderone.com/docs/insider-web-sdk
+- https://academy.insiderone.com/docs/insider-tag-integration-1
+- https://academy.insiderone.com/docs/web-smart-recommender-widget-design-editor
+- https://academy.insiderone.com/docs/instory-overview
+- https://academy.insiderone.com/docs/product-details-widget
+- https://academy.insiderone.com/docs/eureka-overview
+summary: >-
+  Insider One's client-side surface is a tag-plus-widget model rather than a component library. One
+  loader script (the Insider Tag, ins.js) is installed on the page; everything the end user sees —
+  recommender widgets, stories, in-app messages, the shopping-agent product widget, search UI — is
+  authored in the InOne panel's visual editors and rendered by that tag at runtime. There are no
+  published npm-installable web components, no element library and no framework packages for the
+  web surfaces; the mobile equivalents ship as native SDKs (see packages/insider-packages.yml).
+model: tag-loader + panel-authored widgets
+npm_distributed_components: false
+
+loaders:
+- id: insider-tag
+  name: Insider Tag (ins.js)
+  type: script-tag
+  docs: https://academy.insiderone.com/docs/insider-tag-integration-1
+  description: >-
+    The single script installed on every page. Required for the Web SDK and for every on-site
+    experience. Distribution is unpinned — the tag is served per partner and floats to the current
+    build, so a consumer cannot pin a version.
+  version: null
+  version_note: Unpinned per-partner script; no published version identifier to record.
+- id: web-sdk
+  name: Insider Web SDK
+  type: javascript-api
+  docs: https://academy.insiderone.com/docs/insider-web-sdk
+  description: >-
+    Queue-based JavaScript API layered on the tag. Data is pushed through InsiderQueue with an
+    explicit push method, giving the site control over initialization order (the improvement over
+    the legacy global Insider Object). Carries page, user, product and custom event data.
+  primitives: [InsiderQueue.push, page type, user identifiers, user attributes, currency, custom events]
+  ai_assisted_setup: skills/ — Insider One generates an account-specific SKILL.md for Claude Code
+    from the integration wizard (see skills/_index.yml).
+
+families:
+- id: smart-recommender
+  name: Web Smart Recommender widget
+  docs: https://academy.insiderone.com/docs/web-smart-recommender-widget-design-editor
+  surface: web
+  authored_in: panel design editor
+  also: JavaScript-SDK-based Smart Recommender for custom rendering
+    (https://academy.insiderone.com/docs/javascript-sdk-based-web-smart-recommender)
+  backed_by: openapi/insider-recommendation-openapi.yml
+- id: instory
+  name: InStory
+  docs: https://academy.insiderone.com/docs/instory-overview
+  surface: web + mobile app
+  description: Instagram/Snapchat-style story units that expand from a thumbnail to full screen.
+  elements: element library authored in the panel
+- id: eureka-search
+  name: Eureka search + category merchandising UI
+  docs: https://academy.insiderone.com/docs/eureka-overview
+  surface: web
+  description: Product discovery UI — search results, type-ahead suggestions and merchandised
+    listing pages, rendered against the Eureka APIs.
+  backed_by: [openapi/insider-eureka-search-openapi.yml, openapi/insider-eureka-events-openapi.yml]
+- id: shopping-agent-widget
+  name: Shopping Agent Product Details Widget
+  docs: https://academy.insiderone.com/docs/product-details-widget
+  surface: web (AI Agents)
+  description: Product-detail card rendered inside the AI Agents conversational surface; configured
+    under AI Agents Settings alongside shared API endpoints with secure headers.
+- id: in-app-and-app-cards
+  name: In-app messages, App Cards, App Surveys, Message Center
+  surface: mobile app
+  rendered_by: native SDKs
+  backed_by: openapi/insider-mobile-openapi.yml
+
+gaps:
+- No versioned, publicly installable web component or element package — the web surfaces are
+  panel-authored and delivered by an unpinned tag, so there is nothing for a consumer to pin,
+  diff or audit.
+- No documented CSP guidance or subresource-integrity hash for the tag.

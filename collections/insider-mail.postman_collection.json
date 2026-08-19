@@ -1,0 +1,379 @@
+{
+  "item": [
+    {
+      "id": "17de129c-bcdf-4c4e-a250-3fcc0ecf80bf",
+      "name": "Email APIs",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "1de78dc2-a729-4c0c-8edb-20086688b0d8",
+          "name": "Create email campaigns",
+          "request": {
+            "name": "Create email campaigns",
+            "description": {
+              "content": "This API enables you to send email body and subject from your back-end to create email campaigns on Insider platform. With this API request, you can specify the account name, campaign name and campaign type.\n\nYou can use this API to:\n\nSend your already created email HTML body and other input parameters to Inone panel to not lose time by adding it again.\n\nSend the values of the input parameters to the panel directly if you have multiple accounts in Inone and have the same/similar value for these parameters.\n\nBody Parameters\nBefore sending your request, make sure you create it within the following criteria:\n\nAll body parameters should be lowercase. Otherwise, they will not be validated and you will receive a validation error.\n\nIf the campaign type is Experiment, you should have 2 variations. Otherwise, your request will not be validated and you will receive a validation error.\n\nIf the campaign type is Single, you should have 1 variation. Otherwise, your request will not be validated and you will receive a validation error.\n\nThe subject is required with a maximum of 200 characters.\n\nThe pre-header is optional with a maximum of 150 characters.\n\nSource, medium, and campaign parameters are required for UTM parameters.\n\nUTM keys can only be alphanumeric with _.\n\nUTM values can have a maximum of 40 characters.\n\nUTM values can only be alphanumeric with _-.\n\nThe campaign you create will automatically be tagged with the email-content-api tag.\n\nThe campaign creation on Insider platform is real-time after you send the request.\n\nThe default status of the campaign you create is set to Draft. You can schedule your campaigns on the panel.\n\nEmail content is not saved as a template.\n\nParameter\nDescription\nData Type\nRequired\n\nname\nName of the campaign that you want to create on Insider platform. It should be alphanumeric with -_{space}, max. 40 and min. 5 characters.\nString\nYes\n\ntags\nTag of the campaign that you want to create on Insider platform. It should be alphanumeric with -_{space}, max. 5 tags, max. 15 character-long each.\nArray of strings\nNo\n\ntype\nType of the campaign that you want to create on Insider platform (single, experiment, recurring)\nString\nYes\n\nvariations\nArray that contains email subject, preheader, email HTML, and UTM parameters.\nArray of object\nYes\n\nsubject\nThe subject of your email campaign up to 200 characters.\nString\nYes\n\npre_header\nThe summary of your email message up to 150 characters.\nString\nNo\n\nhtml\nThe HTML of your email campaign in base64 format.\nString\nYes\n\nutm\nThe source, campaign, medium, and extra UTM parameters of your email campaign. The value for each can have 40 characters max.\nObject\nNo\n\nEvery request made to the request endpoint requires a request body formatted in JSON and containing your email's content as variations.\n\nMake sure to replace the sample values in the request header(s) and body where required before sending your request.\n\nSample Body\nBelow is a sample body for a Single email campaign.\n\n{\n  \"name\": \"my single campaign\",\n  \"tags\": [\n    \"v\",\n    \"tag1 789dfs44\"\n  ],\n  \"type\": \"single\",\n  \"variations\": [\n    {\n      \"subject\": \"Hello {{name}} {{email}} {{custom3|fallback}}\",\n      \"pre_header\": \"apre {{surname|there}}\",\n      \"html\": \"PHRkIGNsYXNzPSJlc2Qtc3RydWN0dXJlIGVzLXAyMCIgYWxpZ249ImxlZnQiIGJnY29sb3I9IiM5MTk0OUYiIHN0eWxlPSJiYWNrZ3JvdW5kLWNvbG9yOiAjOTE5NDlGOyI+DQogICAgPHRhYmxlIHdpZHRoPSIxMDAlIiBjZWxsc3BhY2luZz0iMCIgY2VsbHBhZGRpbmc9IjAiPg0KICAgICAgICA8dGJvZHk+DQogICAgICAgICAgICA8dHI+DQogICAgICAgICAgICAgICAgPHRkIGNsYXNzPSJlc2QtY29udGFpbmVyLWZyYW1lIiB3aWR0aD0iNTYwIiB2YWxpZ249InRvcCIgYWxpZ249ImNlbnRlciI+DQogICAgICAgICAgICAgICAgICAgIDx0YWJsZSB3aWR0aD0iMTAwJSIgY2VsbHNwYWNpbmc9IjAiIGNlbGxwYWRkaW5nPSIwIj4NCiAgICAgICAgICAgICAgICAgICAgICAgIDx0Ym9keT4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dHI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDx0ZCBhbGlnbj0iY2VudGVyIiBjbGFzcz0iZXNkLWJsb2NrLWltYWdlIGVzLXAxNSIgc3R5bGU9ImZvbnQtc2l6ZTogMHB4OyI+PGEgdGFyZ2V0PSJfYmxhbmsiPjxpbWcgY2xhc3M9ImFkYXB0LWltZyIgc3JjPSJodHRwczovL2ltYWdlLnVzZWluc2lkZXIuY29tL2VtYWlsLXRlbXBsYXRlL2xvZ28ucG5nIiBhbHQgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgaGVpZ2h0PSIzMCI+PC9hPjwvdGQ+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgPC90cj4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dHI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDx0ZCBjbGFzcz0iZXNkLWJsb2NrLXRleHQiIGFsaWduPSJjZW50ZXIiPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPGgyIHN0eWxlPSJjb2xvcjogI0ZGRkZGRjsgZm9udC1zaXplOiAzMHB4OyI+PHN0cm9uZz5UaW1lIGZvciBncmVhdCBlbWFpbCBkZXNpZ248L3N0cm9uZz48L2gyPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L3RkPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvdHI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgPHRyPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dGQgY2xhc3M9ImVzZC1ibG9jay10ZXh0IGVzLW0tdHh0LWMgZXMtcDEwdCIgYWxpZ249ImNlbnRlciI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8cCBzdHlsZT0iY29sb3I6ICNGRkZGRkY7Ij5UaGlzIGlzIGEgbmV3IHRleHQgYmxvY2sgcmVhZHkgZm9yIHlvdXIgbWVzc2FnZSBjb250ZW50LjwvcD4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPC90ZD4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L3RyPg0KICAgICAgICAgICAgICAgICAgICAgICAgPC90Ym9keT4NCiAgICAgICAgICAgICAgICAgICAgPC90YWJsZT4NCiAgICAgICAgICAgICAgICA8L3RkPg0KICAgICAgICAgICAgPC90cj4NCiAgICAgICAgPC90Ym9keT4NCiAgICA8L3RhYmxlPg0KPC90ZD4=\",\n      \"utm\": {\n        \"source\": \"thisis_source\",\n        \"campaign\": \"thisis_campaign\",\n        \"medium\": \"thisis_medium\",\n        \"extra\": \"thisis_extra\"\n      }\n    }\n  ]\n}\n\nBelow is a sample body for an Experiment (A/B) campaign.\n\n{\n  \"name\": \"Campaign Name\",\n  \"tags\": [\n    \"campaign-tag\"\n  ],\n  \"type\": \"experiment\",\n  \"variations\": [\n    {\n      \"subject\": \"Variation A subject {{custom}}\",\n      \"html\": \"PHA+TXkgZW1haWwgYm9keSBBPC9wPg==\",\n      \"pre_header\": \"Variation A preheader\"\n    },\n    {\n      \"subject\": \"Variation B subject {{custom}}\",\n      \"html\": \"PHA+TXkgZW1haWwgYm9keSBBPC9wPg==\",\n      \"pre_header\": \"Variation B preheader\",\n      \"utm\": {\n        \"source\": \"my_source\",\n        \"campaign\": \"my_campaign\",\n        \"medium\": \"email\",\n        \"extra\": \"value\"\n      }\n    }\n  ]\n}\n\nSample Responses\n201 Created Success Message\nThe following response returns if the request is successful.\n\n{\n   \"message\":\"created\",\n   \"id\":\"builderID\"\n}\n\n400 Validation Error Message\nThe following response returns if the request is not validated.\n\n{\n   \"error\":\"$message\"\n}\n\n401 Unauthorized Error Message\nThe following response returns if the request is not authorized.\n\n{\n   \"error\":\"unathorized\"\n}\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nOnly new email campaigns can be created via this API. No data can be retrieved.\n\nThe API Key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nThe rate limit is 1 request per second. Each request might take approximately 1 second.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "content",
+                "v1",
+                "campaign",
+                "create"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-INS-AUTH-KEY"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"my single campaign\",\n  \"tags\": [\n    \"v\",\n    \"tag1 789dfs44\"\n  ],\n  \"type\": \"single\",\n  \"variations\": [\n    {\n      \"subject\": \"Hello {{name}} {{email}} {{custom3|fallback}}\",\n      \"pre_header\": \"apre {{surname|there}}\",\n      \"html\": \"PHRkIGNsYXNzPSJlc2Qtc3RydWN0dXJlIGVzLXAyMCIgYWxpZ249ImxlZnQiIGJnY29sb3I9IiM5MTk0OUYiIHN0eWxlPSJiYWNrZ3JvdW5kLWNvbG9yOiAjOTE5NDlGOyI+DQogICAgPHRhYmxlIHdpZHRoPSIxMDAlIiBjZWxsc3BhY2luZz0iMCIgY2VsbHBhZGRpbmc9IjAiPg0KICAgICAgICA8dGJvZHk+DQogICAgICAgICAgICA8dHI+DQogICAgICAgICAgICAgICAgPHRkIGNsYXNzPSJlc2QtY29udGFpbmVyLWZyYW1lIiB3aWR0aD0iNTYwIiB2YWxpZ249InRvcCIgYWxpZ249ImNlbnRlciI+DQogICAgICAgICAgICAgICAgICAgIDx0YWJsZSB3aWR0aD0iMTAwJSIgY2VsbHNwYWNpbmc9IjAiIGNlbGxwYWRkaW5nPSIwIj4NCiAgICAgICAgICAgICAgICAgICAgICAgIDx0Ym9keT4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dHI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDx0ZCBhbGlnbj0iY2VudGVyIiBjbGFzcz0iZXNkLWJsb2NrLWltYWdlIGVzLXAxNSIgc3R5bGU9ImZvbnQtc2l6ZTogMHB4OyI+PGEgdGFyZ2V0PSJfYmxhbmsiPjxpbWcgY2xhc3M9ImFkYXB0LWltZyIgc3JjPSJodHRwczovL2ltYWdlLnVzZWluc2lkZXIuY29tL2VtYWlsLXRlbXBsYXRlL2xvZ28ucG5nIiBhbHQgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgaGVpZ2h0PSIzMCI+PC9hPjwvdGQ+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgPC90cj4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dHI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDx0ZCBjbGFzcz0iZXNkLWJsb2NrLXRleHQiIGFsaWduPSJjZW50ZXIiPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPGgyIHN0eWxlPSJjb2xvcjogI0ZGRkZGRjsgZm9udC1zaXplOiAzMHB4OyI+PHN0cm9uZz5UaW1lIGZvciBncmVhdCBlbWFpbCBkZXNpZ248L3N0cm9uZz48L2gyPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L3RkPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvdHI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgPHRyPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dGQgY2xhc3M9ImVzZC1ibG9jay10ZXh0IGVzLW0tdHh0LWMgZXMtcDEwdCIgYWxpZ249ImNlbnRlciI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8cCBzdHlsZT0iY29sb3I6ICNGRkZGRkY7Ij5UaGlzIGlzIGEgbmV3IHRleHQgYmxvY2sgcmVhZHkgZm9yIHlvdXIgbWVzc2FnZSBjb250ZW50LjwvcD4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPC90ZD4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L3RyPg0KICAgICAgICAgICAgICAgICAgICAgICAgPC90Ym9keT4NCiAgICAgICAgICAgICAgICAgICAgPC90YWJsZT4NCiAgICAgICAgICAgICAgICA8L3RkPg0KICAgICAgICAgICAgPC90cj4NCiAgICAgICAgPC90Ym9keT4NCiAgICA8L3RhYmxlPg0KPC90ZD4=\",\n      \"utm\": {\n        \"source\": \"thisis_source\",\n        \"campaign\": \"thisis_campaign\",\n        \"medium\": \"thisis_medium\",\n        \"extra\": \"thisis_extra\"\n      }\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "73a9baf8-40b6-4005-aa2e-96407b343fdc",
+              "name": "Created",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "content",
+                    "v1",
+                    "campaign",
+                    "create"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-INS-AUTH-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"my single campaign\",\n  \"tags\": [\n    \"v\",\n    \"tag1 789dfs44\"\n  ],\n  \"type\": \"single\",\n  \"variations\": [\n    {\n      \"subject\": \"Hello {{name}} {{email}} {{custom3|fallback}}\",\n      \"pre_header\": \"apre {{surname|there}}\",\n      \"html\": \"PHRkIGNsYXNzPSJlc2Qtc3RydWN0dXJlIGVzLXAyMCIgYWxpZ249ImxlZnQiIGJnY29sb3I9IiM5MTk0OUYiIHN0eWxlPSJiYWNrZ3JvdW5kLWNvbG9yOiAjOTE5NDlGOyI+DQogICAgPHRhYmxlIHdpZHRoPSIxMDAlIiBjZWxsc3BhY2luZz0iMCIgY2VsbHBhZGRpbmc9IjAiPg0KICAgICAgICA8dGJvZHk+DQogICAgICAgICAgICA8dHI+DQogICAgICAgICAgICAgICAgPHRkIGNsYXNzPSJlc2QtY29udGFpbmVyLWZyYW1lIiB3aWR0aD0iNTYwIiB2YWxpZ249InRvcCIgYWxpZ249ImNlbnRlciI+DQogICAgICAgICAgICAgICAgICAgIDx0YWJsZSB3aWR0aD0iMTAwJSIgY2VsbHNwYWNpbmc9IjAiIGNlbGxwYWRkaW5nPSIwIj4NCiAgICAgICAgICAgICAgICAgICAgICAgIDx0Ym9keT4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dHI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDx0ZCBhbGlnbj0iY2VudGVyIiBjbGFzcz0iZXNkLWJsb2NrLWltYWdlIGVzLXAxNSIgc3R5bGU9ImZvbnQtc2l6ZTogMHB4OyI+PGEgdGFyZ2V0PSJfYmxhbmsiPjxpbWcgY2xhc3M9ImFkYXB0LWltZyIgc3JjPSJodHRwczovL2ltYWdlLnVzZWluc2lkZXIuY29tL2VtYWlsLXRlbXBsYXRlL2xvZ28ucG5nIiBhbHQgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgaGVpZ2h0PSIzMCI+PC9hPjwvdGQ+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgPC90cj4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dHI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDx0ZCBjbGFzcz0iZXNkLWJsb2NrLXRleHQiIGFsaWduPSJjZW50ZXIiPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPGgyIHN0eWxlPSJjb2xvcjogI0ZGRkZGRjsgZm9udC1zaXplOiAzMHB4OyI+PHN0cm9uZz5UaW1lIGZvciBncmVhdCBlbWFpbCBkZXNpZ248L3N0cm9uZz48L2gyPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L3RkPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvdHI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgPHRyPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dGQgY2xhc3M9ImVzZC1ibG9jay10ZXh0IGVzLW0tdHh0LWMgZXMtcDEwdCIgYWxpZ249ImNlbnRlciI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8cCBzdHlsZT0iY29sb3I6ICNGRkZGRkY7Ij5UaGlzIGlzIGEgbmV3IHRleHQgYmxvY2sgcmVhZHkgZm9yIHlvdXIgbWVzc2FnZSBjb250ZW50LjwvcD4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPC90ZD4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L3RyPg0KICAgICAgICAgICAgICAgICAgICAgICAgPC90Ym9keT4NCiAgICAgICAgICAgICAgICAgICAgPC90YWJsZT4NCiAgICAgICAgICAgICAgICA8L3RkPg0KICAgICAgICAgICAgPC90cj4NCiAgICAgICAgPC90Ym9keT4NCiAgICA8L3RhYmxlPg0KPC90ZD4=\",\n      \"utm\": {\n        \"source\": \"thisis_source\",\n        \"campaign\": \"thisis_campaign\",\n        \"medium\": \"thisis_medium\",\n        \"extra\": \"thisis_extra\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 1086764,\n  \"message\": \"created\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "29e77785-21ad-4215-9105-73497ff7ce3b",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "content",
+                    "v1",
+                    "campaign",
+                    "create"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-INS-AUTH-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"my single campaign\",\n  \"tags\": [\n    \"v\",\n    \"tag1 789dfs44\"\n  ],\n  \"type\": \"single\",\n  \"variations\": [\n    {\n      \"subject\": \"Hello {{name}} {{email}} {{custom3|fallback}}\",\n      \"pre_header\": \"apre {{surname|there}}\",\n      \"html\": \"PHRkIGNsYXNzPSJlc2Qtc3RydWN0dXJlIGVzLXAyMCIgYWxpZ249ImxlZnQiIGJnY29sb3I9IiM5MTk0OUYiIHN0eWxlPSJiYWNrZ3JvdW5kLWNvbG9yOiAjOTE5NDlGOyI+DQogICAgPHRhYmxlIHdpZHRoPSIxMDAlIiBjZWxsc3BhY2luZz0iMCIgY2VsbHBhZGRpbmc9IjAiPg0KICAgICAgICA8dGJvZHk+DQogICAgICAgICAgICA8dHI+DQogICAgICAgICAgICAgICAgPHRkIGNsYXNzPSJlc2QtY29udGFpbmVyLWZyYW1lIiB3aWR0aD0iNTYwIiB2YWxpZ249InRvcCIgYWxpZ249ImNlbnRlciI+DQogICAgICAgICAgICAgICAgICAgIDx0YWJsZSB3aWR0aD0iMTAwJSIgY2VsbHNwYWNpbmc9IjAiIGNlbGxwYWRkaW5nPSIwIj4NCiAgICAgICAgICAgICAgICAgICAgICAgIDx0Ym9keT4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dHI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDx0ZCBhbGlnbj0iY2VudGVyIiBjbGFzcz0iZXNkLWJsb2NrLWltYWdlIGVzLXAxNSIgc3R5bGU9ImZvbnQtc2l6ZTogMHB4OyI+PGEgdGFyZ2V0PSJfYmxhbmsiPjxpbWcgY2xhc3M9ImFkYXB0LWltZyIgc3JjPSJodHRwczovL2ltYWdlLnVzZWluc2lkZXIuY29tL2VtYWlsLXRlbXBsYXRlL2xvZ28ucG5nIiBhbHQgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgaGVpZ2h0PSIzMCI+PC9hPjwvdGQ+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgPC90cj4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dHI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDx0ZCBjbGFzcz0iZXNkLWJsb2NrLXRleHQiIGFsaWduPSJjZW50ZXIiPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPGgyIHN0eWxlPSJjb2xvcjogI0ZGRkZGRjsgZm9udC1zaXplOiAzMHB4OyI+PHN0cm9uZz5UaW1lIGZvciBncmVhdCBlbWFpbCBkZXNpZ248L3N0cm9uZz48L2gyPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L3RkPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvdHI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgPHRyPg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dGQgY2xhc3M9ImVzZC1ibG9jay10ZXh0IGVzLW0tdHh0LWMgZXMtcDEwdCIgYWxpZ249ImNlbnRlciI+DQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8cCBzdHlsZT0iY29sb3I6ICNGRkZGRkY7Ij5UaGlzIGlzIGEgbmV3IHRleHQgYmxvY2sgcmVhZHkgZm9yIHlvdXIgbWVzc2FnZSBjb250ZW50LjwvcD4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPC90ZD4NCiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L3RyPg0KICAgICAgICAgICAgICAgICAgICAgICAgPC90Ym9keT4NCiAgICAgICAgICAgICAgICAgICAgPC90YWJsZT4NCiAgICAgICAgICAgICAgICA8L3RkPg0KICAgICAgICAgICAgPC90cj4NCiAgICAgICAgPC90Ym9keT4NCiAgICA8L3RhYmxlPg0KPC90ZD4=\",\n      \"utm\": {\n        \"source\": \"thisis_source\",\n        \"campaign\": \"thisis_campaign\",\n        \"medium\": \"thisis_medium\",\n        \"extra\": \"thisis_extra\"\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1283e973-49c6-4ee6-9e8c-f00b6626a649",
+          "name": "Send transactional emails",
+          "request": {
+            "name": "Send transactional emails",
+            "description": {
+              "content": "This API enables you to send targeted ecommerce and personalized one to one emails to your users. You can trigger these emails once a user takes a specific action on your platform.\n\nYou can use transactional emails to:\n\nSend a post-purchase email to share details about a purchase/booking,\n\nHelp your users reset their password if they forget it,\n\nConfirm an order a user places,\n\nShare delivery tracking details of a purchase (when it is shipped, on the way, and delivered) and to take many other actions.\n\nBody Parameters\nEvery request made to the request endpoint requires a request body formatted in JSON and containing your email's content and metadata (e.g. to, reply-to, and email subject).\n\nParameter\nDescription\nData Type\nRequired\n\nsubject\nSubject line that is sent to the recipient\nString\nYes\n\ntos\nEmail address(es) to send the email to\nArray\nYes\n\nname\nUser name\nString\nNo\n\nemail\nEmail address of the recipient\nString\nNo\n\nfrom\nEmail address that the email is sent from\nObject\nYes\n\nname\nName that is used as the sender name\nString\nNo\n\nemail\nEmail address that is used as the sender email\nString\nNo\n\ncontent\nContent of the email\nArray\nYes\n\ntype\nType of your email content\nString\nNo\n\nvalue\nEmail content\nString\nYes\n\ncc\nEmail address(es) to send a carbon copy of the email to\nArray\nNo\n\nname\nUser name\nString\nNo\n\nemail\nEmail address of the recipient in the cc\nString\nNo\n\nbcc\nEmail address(es) to send a blank carbon copy of the email to\nArray\nNo\n\nname\nUser name\nString\nNo\n\nemail\nEmail address of the recipient that is in bcc\nString\nNo\n\nreply_to\nReply-to address and name that are used to send the email to\nObject\nNo\n\nname\nReply-to name that the email is replied to\nString\nNo\n\nemail\nReply-to email that the email is replied to\nString\nNo\n\nattachments\nAny attachments in the email\nArray\nNo\n\ncontent\nBase64 encoded content of the attachment\nString\nNo\n\nfile_name\nAttached file name\nString\nNo\n\ndynamic_fields\nDynamic fields that you can use to personalize the content (e.g. first_name, last_name, product_name1, etc.)\nObject\nNo\n\nunique_args\nUnique arguments of transactional emails used for tracking purposes\nObject\nNo\n\ncallback\nThe endpoint that you define to receive the webhook events\nObject\nNo\n\nurl\nCallback endpoint\nString\nNo\n\nsecret\nThe secret key to encrypt the body of your webhook events in SHA1 algorithm\nString\nNo\n\nSample Body\nThe following is a sample body to send transactional emails.\n\n{\n  \"subject\": \"Hello\",\n  \"tos\": [\n    {\n      \"name\": \"John Doe\",\n      \"email\": \"sample@mail.com\"\n    }\n  ],\n  \"from\": {\n    \"name\": \"Posh Street\",\n    \"email\": \"posh@street.com\"\n  },\n  \"content\": [\n    {\n      \"type\": \"text/html\",\n      \"value\": \"<p class=&#x27;preserveHtml&#x27; class=&#x27;preserveHtml&#x27; class=&#x27;preserveHtml&#x27; class=&#x27;preserveHtml&#x27; class=&#x27;preserveHtml&#x27; class=&#x27;preserveHtml&#x27; class=&#x27;preserveHtml&#x27; class=&#x27;preserveHtml&#x27; class=&#x27;preserveHtml&#x27; class=&#x27;preserveHtml&#x27; class=&#x27;preserveHtml&#x27;>I am {{first_name}}.</p>\"\n    }\n  ],\n  \"cc\": [\n    {\n      \"name\": \"User in CC\",\n      \"email\": \"user.cc@mail.com\"\n    }\n  ],\n  \"bcc\": [\n    {\n      \"name\": \"User in BCC\",\n      \"email\": \"user.bcc@mail.com\"\n    }\n  ],\n  \"reply_to\": {\n    \"name\": \"Reply to\",\n    \"email\": \"reply@mail.com\"\n  },\n  \"dynamic_fields\": {\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"product_name1\": \"Laptop\",\n    \"price1\": \"$1000\",\n    \"product_name2\": \"Iphone\",\n    \"price2\": \"$850\"\n  },\n  \"unique_args\": {\n    \"category\": \"Confirmation Email\",\n    \"purchase_channel\": \"App\"\n  },\n  \"attachments\": [\n    {\n      \"content\": \"aW5zaWRlciB0ZXN0\",\n      \"file_name\": \"file.txt\"\n    }\n  ],\n  \"callback\": {\n    \"url\": \"yourcallbackurl\",\n    \"secret\": \"yoursecret\"\n  }\n}\n\nIf you create your transactional email template via the Email Template Library, use the following sample payload instead. In this example, the ID of the template is used by the template_id key.\n\n{\n  \"subject\": \"Hello\",\n  \"tos\": [\n    {\n      \"name\": \"John Doe\",\n      \"email\": \"sample@useinsider.com\"\n    }\n  ],\n  \"from\": {\n    \"name\": \"Posh Street\",\n    \"email\": \"posh@street.com\"\n  },\n  \"reply_to\": {\n    \"name\": \"Reply to\",\n    \"email\": \"reply@useinsider.com\"\n  },\n  \"template_id\": \"275\",\n  \"content\": [\n    {\n      \"type\": \"text/html\",\n      \"value\": \"html code\"\n    }\n  ],\n  \"attachments\": [],\n  \"dynamic_fields\": {}\n}\n\nSample Responses\n202 Accepted\nThis response indicates that your request was successfully completed.\n\n{\n    \"message_id\": \"8e664ecd-352d-4dbd-9786-ceb78b5b173b\",\n    \"status_message\": \"accepted\"\n}\n\n400 Bad Request\nThis response indicates that your request is missing the email address in the 'to' parameter.\n\n{\n  \"errors\": [\n    \"Missing 'email' on 'tos' parameter\"\n  ],\n  \"status_message\": \"failed to validate request\"\n}\n\n400 Bad Request\nThis response indicates that the request has an invalid callback URL.\n\n{\n  \"errors\": [\n    \"Invalid callback URL in 'url' on 'callback'\"\n  ],\n  \"status_message\": \"failed to validate request\"\n}\n\n400 Missing Content Type\nThis response indicates that the content type header of the request is incorrect.\n\n{\n  \"message\": \"content type must be application/json\",\n  \"status\": 400\n}\n\n400 Missing Subject Line\nThis response indicates that the request is missing the 'subject' parameter.\n\n{\n  \"errors\": [\n    \"Missing 'subject' parameter\"\n  ],\n  \"message\": \"bad-request\",\n  \"status\": 400\n}\n\n400 Missing Content\nThis response indicates that the request is missing the 'content' parameter.\n\n{\n  \"errors\": [\n    \"Missing 'content' parameter\"\n  ],\n  \"message\": \"bad-request\",\n  \"status\": 400\n}\n\n400 Missing 'From' Parameter\nThis response indicates that the request is missing the 'from' parameter.\n\n{\n  \"errors\": [\n    \"Missing 'from' parameter\"\n  ],\n  \"message\": \"bad-request\",\n  \"status\": 400\n}\n\n400 Missing 'To' Parameter\nThis response indicates that the request is missing the 'to' parameter.\n\n{\n  \"errors\": [\n    \"Missing 'to' parameter\"\n  ],\n  \"message\": \"bad-request\",\n  \"status\": 400\n}\n\n401 Invalid API Key\nThis response indicates that the API key provided in the request is invalid, expired, or revoked.\n\n{\n  \"message\": \"The provided API key is invalid, expired or revoked\",\n  \"status\": 401\n}\n\n500 Internal Server Error\nThis response indicates that an internal error occurred on the server side and the request could not be processed.\n\n503 Service Unavailable\nThis response indicates that the service is temporarily unavailable due to server overload or maintenance.\n\n504 Server Timeout\nThis response indicates that the server did not receive a timely response from an upstream server.\n\n520 Cloudflare Network Error\nThis response indicates an unexpected error on the Cloudflare network side, preventing the request from being processed.\n\nSuggested Retry Mechanism: If any of the above errors are encountered, the request was not processed successfully on the server side. A retry mechanism is recommended to distribute retries randomly within a 5-minute interval, allowing server resources to recover and traffic to stabilize.\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nOnly new emails can be sent via this API. No data can be retrieved.\n\nThe API Key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nTransactional API cannot be used for sending bulk emails. It is designed only to set transactional emails.\n\nThe rate limit is 2000 requests per second.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "mail",
+                "v1",
+                "send"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-INS-AUTH-KEY"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"subject\": \"Hello\",\n  \"tos\": [\n    {\n      \"name\": \"John Doe\",\n      \"email\": \"sample@useinsider.com\"\n    }\n  ],\n  \"from\": {\n    \"name\": \"Posh Street\",\n    \"email\": \"posh@useinsider.com\"\n  },\n  \"content\": [\n    {\n      \"type\": \"text/html\",\n      \"value\": \"<p>I am {{first_name}}.</p>\"\n    }\n  ],\n  \"cc\": [\n    {\n      \"name\": \"User in CC\",\n      \"email\": \"user.cc@useinsider.com\"\n    }\n  ],\n  \"bcc\": [\n    {\n      \"name\": \"User in BCC\",\n      \"email\": \"user.bcc@useinsider.com\"\n    }\n  ],\n  \"reply_to\": {\n    \"name\": \"Reply to\",\n    \"email\": \"reply@useinsider.com\"\n  },\n  \"dynamic_fields\": {\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"product_name1\": \"Laptop\",\n    \"price1\": \"$1000\",\n    \"product_name2\": \"Iphone\",\n    \"price2\": \"$850\"\n  },\n  \"unique_args\": {\n    \"category\": \"Confirmation Email\",\n    \"purchase_channel\": \"App\"\n  },\n  \"attachments\": [\n    {\n      \"content\": \"aW5zaWRlciB0ZXN0\",\n      \"file_name\": \"file.txt\"\n    }\n  ],\n  \"callback\": {\n    \"url\": \"yourcallbackurl\",\n    \"secret\": \"yoursecret\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "868ec6f6-3831-4c8f-a6c5-d1f32cf9e0ca",
+              "name": "Accepted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mail",
+                    "v1",
+                    "send"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-INS-AUTH-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"subject\": \"Hello\",\n  \"tos\": [\n    {\n      \"name\": \"John Doe\",\n      \"email\": \"sample@useinsider.com\"\n    }\n  ],\n  \"from\": {\n    \"name\": \"Posh Street\",\n    \"email\": \"posh@useinsider.com\"\n  },\n  \"content\": [\n    {\n      \"type\": \"text/html\",\n      \"value\": \"<p>I am {{first_name}}.</p>\"\n    }\n  ],\n  \"cc\": [\n    {\n      \"name\": \"User in CC\",\n      \"email\": \"user.cc@useinsider.com\"\n    }\n  ],\n  \"bcc\": [\n    {\n      \"name\": \"User in BCC\",\n      \"email\": \"user.bcc@useinsider.com\"\n    }\n  ],\n  \"reply_to\": {\n    \"name\": \"Reply to\",\n    \"email\": \"reply@useinsider.com\"\n  },\n  \"dynamic_fields\": {\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"product_name1\": \"Laptop\",\n    \"price1\": \"$1000\",\n    \"product_name2\": \"Iphone\",\n    \"price2\": \"$850\"\n  },\n  \"unique_args\": {\n    \"category\": \"Confirmation Email\",\n    \"purchase_channel\": \"App\"\n  },\n  \"attachments\": [\n    {\n      \"content\": \"aW5zaWRlciB0ZXN0\",\n      \"file_name\": \"file.txt\"\n    }\n  ],\n  \"callback\": {\n    \"url\": \"yourcallbackurl\",\n    \"secret\": \"yoursecret\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message_id\": \"f0935bbf-fe1d-4b89-aa04-149c9a860081\",\n  \"status_message\": \"accepted\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2cf1d8c3-821c-49f3-9c64-f73e181bbb85",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "mail",
+                    "v1",
+                    "send"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-INS-AUTH-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"subject\": \"Hello\",\n  \"tos\": [\n    {\n      \"name\": \"John Doe\",\n      \"email\": \"sample@useinsider.com\"\n    }\n  ],\n  \"from\": {\n    \"name\": \"Posh Street\",\n    \"email\": \"posh@useinsider.com\"\n  },\n  \"content\": [\n    {\n      \"type\": \"text/html\",\n      \"value\": \"<p>I am {{first_name}}.</p>\"\n    }\n  ],\n  \"cc\": [\n    {\n      \"name\": \"User in CC\",\n      \"email\": \"user.cc@useinsider.com\"\n    }\n  ],\n  \"bcc\": [\n    {\n      \"name\": \"User in BCC\",\n      \"email\": \"user.bcc@useinsider.com\"\n    }\n  ],\n  \"reply_to\": {\n    \"name\": \"Reply to\",\n    \"email\": \"reply@useinsider.com\"\n  },\n  \"dynamic_fields\": {\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"product_name1\": \"Laptop\",\n    \"price1\": \"$1000\",\n    \"product_name2\": \"Iphone\",\n    \"price2\": \"$850\"\n  },\n  \"unique_args\": {\n    \"category\": \"Confirmation Email\",\n    \"purchase_channel\": \"App\"\n  },\n  \"attachments\": [\n    {\n      \"content\": \"aW5zaWRlciB0ZXN0\",\n      \"file_name\": \"file.txt\"\n    }\n  ],\n  \"callback\": {\n    \"url\": \"yourcallbackurl\",\n    \"secret\": \"yoursecret\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://mail.useinsider.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "6c23e1b5-d977-4340-82f3-3ab598ce0778",
+    "name": "Insider One Mail API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Transactional email sending and email campaign creation.\n\nDerived by API Evangelist from Insider One's own public Postman collection (\"Insider One APIs\", published at https://developers.insiderone.com/). Paths, methods, headers, query parameters and request/response examples are verbatim from that collection; nothing is invented. The 429 response is documented for all Insider One APIs on https://academy.insiderone.com/docs/api-rate-limits-1 .\n\nContact Support:\n Name: Insider One Support\n Email: support@useinsider.com",
+      "type": "text/plain"
+    }
+  }
+}

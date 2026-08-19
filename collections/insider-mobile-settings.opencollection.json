@@ -1,0 +1,56 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Insider One Mobile Settings API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Mobile App APIs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get inapp campaign details",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://mobile.api.useinsider.com/v1/details/inapp",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This API allows you to retrieve detailed information about your app template campaigns. The campaigns in the App Templates, App Survey, App Template from Push, and Architect journeys can return in the response if available.\n\nYou can either:\n\nSearch for a specific campaign using its ID or\n\nFilter campaigns created within a specific date range.\n\nBody Parameters\nBefore sending the request, make sure to replace the values in your request body.\n\nParameter\nDescription\nData Type\n\ninapp_id\nThe ID of the"
+        },
+        {
+          "info": {
+            "name": "Upload FCM certificate",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://mobile.api.useinsider.com/v1/settings/certificate/firebase",
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This API allows you to upload your FCM certificate to Insider without visiting the Inone panel. With this API, you can upload or change your certificate."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

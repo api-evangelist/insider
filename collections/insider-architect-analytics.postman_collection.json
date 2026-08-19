@@ -1,0 +1,688 @@
+{
+  "item": [
+    {
+      "id": "61d6130b-9e27-4e13-97e5-3929ad697b0a",
+      "name": "Architect",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d67aab2b-da8b-4a19-a7b2-4465d6ecaff5",
+          "name": "Get Architect Channel Analytics",
+          "request": {
+            "name": "Get Architect Channel Analytics",
+            "description": {
+              "content": "The Architect channel analytics endpoint provides analytics for a specific campaign element in the Architect product. Use this endpoint to gather analytics data for individual campaign elements and track user interactions, click-through rates, open rates, and other relevant metrics.\n\nHeaders\n\nHeader\nSample Value\nDescription\n\nAuthorization\n{{vault:bearer-token}}\nThis key is required to authorize your request. Refer to API Authentication Tokens to generate your token. You should enter the word Bearer followed by the API key you generated.\n\nAccept\napplication/json\nYou should enter it as application/json at all times.\n\nQuery Parameters\n\nParameter\nData Type\nDescription\nSample Value\nRequired\n\nstatDate\nString\nDefines the date range for statistics. Format: DD/MM/YYYY - DD/MM/YYYY\nstatDate=01/08/2024 - 30/08/2024\nYes\n\nconversionGoal\nInteger\nA number representing the conversion goal ID filter. Default is 0 which is the Purchase goal.\nconversionGoal=123\nNo\n\ngoalType\nInteger\nAttribution type for reporting. 0 for Click-Through attribution (default). 1 for View-Through attribution.\n0\nNo\n\nThe statDate parameter is essential for defining the time range for analytics. The start date must be earlier than the end date. You can select any time range, including those longer than one year or before the past year. However, if you encounter a timeout when exporting a range longer than one year, try selecting a shorter range.\n\nUse conversionGoal filter to tailor your analytics queries to specific requirements.\n\nFor journey analytics, you can only get the conversion metrics for one goal at a time. You can enter the goal id as a parameter to select which conversion goal you want to see the metrics. You can obtain the Goal ID either from the goal dropdown in the InOne panel or by using the conversion goals information endpoint.\n\nSample Example\nSample Query\nBefore sending the request, make sure:\n\nTo replace the authorization value with your own API key.\n\nTo replace campaignId with the specific campaign's ID. You can find this ID on the inner page of the element.\n\ncurl -X GET \"https://architect-analytics.api.useinsider.com/v1/element/12345?statDate=01/08/2024 - 30/08/2024&conversionGoal=789&goalType=1\" \\\n  -H \"Authorization: {{vault:bearer-token}}\" \\\n  -H \"Accept: application/json\"\n\nSample Responses\n200 OK\n{\n    \"filterDate\": \"22/05/2024 - 11/11/2024\",\n    \"attributionType\": \"Click-Through\",\n    \"goal\": \"confirmation_page_view\",\n    \"partner\": {\n        \"exportTime\": \"11/11/2024 12:27\",\n        \"accountName\": \"shopbagg\"\n    },\n    \"elementMetrics\": {\n        \"averageOrderValue\": 0,\n        \"block\": 95,\n        \"bounce\": 0,\n        \"bounceRate\": 0,\n        \"clickThroughRate\": 1.49,\n        \"clickToOpenRate\": 5.7,\n        \"conversions\": 0,\n        \"conversionRate\": 0,\n        \"delivered\": 18889,\n        \"deliveryRate\": 99.57,\n        \"droppedMessages\": [],\n        \"drops\": {\n            \"frequencyDrops\": 0,\n            \"frequencyDropPercentage\": 0,\n            \"sendingDrops\": 98,\n            \"sendingDropPercentage\": 100,\n            \"systemDrops\": 0,\n            \"systemDropPercentage\": 0\n        },\n        \"linkActivity\": [\n            {\n                \"link\": \"https://example.com/app/\",\n                \"totalClick\": 910,\n                \"uniqueClick\": 256\n            },\n            {\n                \"link\": \"https://example.com/about/\",\n                \"totalClick\": 211,\n                \"uniqueClick\": 207\n            },\n            {\n                \"link\": \"https://example.com/pay/\",\n                \"totalClick\": 211,\n                \"uniqueClick\": 208\n            }\n        ],\n        \"machineOpen\": 0,\n        \"openRate\": 26.2,\n        \"revenue\": 0,\n        \"sent\": 18971,\n        \"spam\": 2,\n        \"totalClicks\": 3896,\n        \"totalOpens\": 6355,\n        \"uniqueClicks\": 282,\n        \"uniqueMachineOpens\": 3232,\n        \"uniqueMachineOpensRate\": 17.11,\n        \"uniqueOpens\": 4949,\n        \"uniqueOpenRate\": 26.2,\n        \"unsubscribe\": 15,\n        \"unsubscribeRate\": 0.08\n    }\n}\n\n401 Unauthorized\n{\n    \"error\": \"Invalid API key\"\n}\n\n422 Bad Request\n{\n    \"message\": \"The stat date field is required.\",\n    \"errors\": {\n        \"statDate\": [\n            \"The stat date field is required.\"\n        ]\n    }\n}\n\nResponse Details\n\nid: The unique ID of the conversion goal.\n\nname: The name of the conversion goal.\n\ntype: The type of conversion goal (e.g., on-event, on-attribute).\n\nparameters: An array detailing the conditions for the goal, such as key-value pairs with operators and value types.\n\njourneys: A list of journeys where the conversion goal is used, including journey IDs and names.\n\nLimitations\n\nThe request must be executed with an HTTPS GET request.\n\nThe API Key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nYou can send 200 requests per minute with the same API Key. If you exceed the rate limit, you will receive a 429 error.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "element",
+                ":campaignId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "statDate",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "campaignId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "6f7f82ff-3149-4caf-a70e-12c3bcf3f665",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "element",
+                    ":campaignId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "statDate",
+                      "value": "String"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "campaignId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "525508dd-5a1d-40a1-848f-4ecad80b2547",
+          "name": "Get Conversion Goals Information",
+          "request": {
+            "name": "Get Conversion Goals Information",
+            "description": {
+              "content": "For Architect overall, journey, and channel analytics, you can only get the conversion metrics for one goal at a time. You can enter the goal id as a parameter to select which conversion goal you want to see the metrics. You can obtain the Goal ID either from the goal dropdown in the InOne panel or by using this endpoint.\n\nThis endpoint retrieves a list of conversion goals across various journeys in the Architect product, their IDs, and which journeys they are used in.\n\nHeaders\n\nHeader\nSample Value\nDescription\n\nAuthorization\n{{vault:bearer-token}}\nThis key is required to authorize your request. Refer to API Authentication Tokens to generate your token. You should enter the word Bearer followed by the API key you generated.\n\nAccept\napplication/json\nYou should enter it as application/json at all times.\n\nQuery Parameters\nThis endpoint does not require any query parameters.\n\nSample Example\nSample Query\nBefore sending the request, make sure:\n\nTo replace the authorization value with your own API key.\n\ncurl -X GET \"https://architect-analytics.api.useinsider.com/v1/goals\" \\\n  -H \"Authorization: {{vault:bearer-token}}\" \\\n  -H \"Accept: application/json\"\n\nSample Response\n200 OK\n{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"name\": \"payment_successful\",\n            \"type\": \"on-event\",\n            \"parameters\": [\n                [\n                    {\n                        \"key\": \"retailer_name\",\n                        \"operator\": \"cnt\",\n                        \"type\": \"string\",\n                        \"values\": [\n                            \"VCC\"\n                        ]\n                    }\n                ]\n            ],\n            \"journeys\": [\n                {\n                    \"id\": 89,\n                    \"name\": \"Journey Name 1\"\n                }\n            ]\n        },\n        {\n            \"id\": 2,\n            \"name\": \"payment_failed\",\n            \"type\": \"on-event\",\n            \"parameters\": [\n                [\n                    {\n                        \"key\": \"retailer_name\",\n                        \"operator\": \"cnt\",\n                        \"type\": \"string\",\n                        \"values\": [\n                            \"VCC\",\n                            \"Direct\"\n                        ]\n                    }\n                ]\n            ],\n            \"journeys\": [\n                {\n                    \"id\": 90,\n                    \"name\": \"Journey Name 2\"\n                }\n            ]\n        }\n    ]\n}\n\n401 Unauthorized\n{\n    \"error\": \"Invalid API key\"\n}\n\nResponse Details\n\nid: The unique ID of the conversion goal.\n\nname: The name of the conversion goal.\n\ntype: The type of conversion goal (e.g., on-event, on-attribute).\n\nparameters: An array detailing the conditions for the goal, such as key-value pairs with operators and value types.\n\njourneys: A list of journeys where the conversion goal is used, including journey IDs and names.\n\nLimitations\n\nThe request must be executed with an HTTPS GET request.\n\nThe API Key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nYou can send 200 requests per minute with the same API Key. If you exceed the rate limit, you will receive a 429 error.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "goals"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "e1ef1db7-f29e-44b8-beb8-b044f96d3959",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "goals"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "be4e0477-4db9-45ea-ac5a-2af2261b96a6",
+          "name": "Get Conversion Goals Analytics",
+          "request": {
+            "name": "Get Conversion Goals Analytics",
+            "description": {
+              "content": "For overall and journey analytics, you can get all conversion metrics for all goals at the same time.\n\nIf you provide the journey ID in the payload, you will also get that journey’s conversion metrics for goals. You should provide the journey ID inside the IDs filter array.\n\nThis endpoint retrieves a list of conversion goals across various journeys. You can use the Conversion Goals Information API together with this API to combine conversion goal metrics and see which journeys they are used in.\n\nHeaders\n\nHeader\nSample Value\nDescription\n\nAuthorization\n{{vault:bearer-token}}\nThis key is required to authorize your request. Refer to API Authentication Tokens to generate your token. You should enter the word Bearer followed by the API key you generated.\n\nAccept\napplication/json\nYou should enter it as application/json at all times.\n\nQuery Parameters\n\nParameter\nDescription\nSample Value\nRequired\n\nstatDate\nDefines the date range for statistics. Format: DD/MM/YYYY - DD/MM/YYYY\nstatDate=01/08/2024 - 30/08/2024\nYes\n\nstatuses\nArray filter for journey statuses. Default is active if not provided.  Allowed values: active, test, passive, sunset\nstatuses[]=active&statuses[]=passive\nNo\n\nchannels\nArray filter specifying which channels' analytics data to return. If not provided, all channels are included.  Allowed values: web-push, app-push, email, sms, whatsapp, in-app, journey-web, call-api\nchannels[]=email&channels[]=sms\nNo\n\nids\nArray of journey IDs for filtering\nids[]=89&ids[]=90\nNo\n\ngoalType\nAttribution type for reporting.  0 for Click-Through attribution (default)  1 for View-Through attribution\n0\nNo\n\nSample Example\nSample Query\nBefore sending the request, make sure:\n\nTo replace the authorization value with your own API key.\n\nTo replace the sample values in parameters with your own values in the required data type.\n\ncurl -X GET \"https://architect-analytics.api.useinsider.com/v1/goals-analytics\" \\\n-H \"Authorization: {{vault:bearer-token}}\" \\\n-H \"Accept: application/json\"\n\nSample Responses\n200 OK\n{\n    \"data\": [\n        {\n            \"conversionRateReference\": 35010,\n            \"goalId\": 0,\n            \"goalName\": \"confirmation_page_view\",\n            \"conversion\": 4,\n            \"conversionRate\": 0.01,\n            \"revenue\": 123088700,\n            \"aov\": 30772175\n        },\n        {\n            \"conversionRateReference\": 35010,\n            \"goalId\": 2,\n            \"goalName\": \"item_added_to_cart\",\n            \"conversion\": 30,\n            \"conversionRate\": 0.09,\n            \"revenue\": 565852200,\n            \"aov\": 18861740\n        },\n        {\n            \"conversionRateReference\": 35010,\n            \"goalId\": 3,\n            \"goalName\": \"product_detail_page_view\",\n            \"conversion\": 125,\n            \"conversionRate\": 0.36,\n            \"revenue\": 11732341800,\n            \"aov\": 93858734\n        }\n    ]\n}\n\n401 Unauthorized\n{\n    \"error\": \"Invalid API key\"\n}\n\nLimitations\n\nThe request must be executed with an HTTPS GET request.\n\nThe API Key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nYou can send 200 requests per minute with the same API Key. If you exceed the rate limit, you will receive a 429 error.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "goals-analytics"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "statDate",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "c7fe14ba-f1c1-4699-87d8-a703350dae59",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "goals-analytics"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "statDate",
+                      "value": "statDate=01/08/2024 - 30/08/2024"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b14b82a6-fb80-4f98-97e8-52c84dff9204",
+          "name": "Get Architect Journey Analytics",
+          "request": {
+            "name": "Get Architect Journey Analytics",
+            "description": {
+              "content": "The Architect journey analytics endpoint provides detailed analytics for a specific journey within the Architect product. Use this endpoint to retrieve detailed analytics on a journey to monitor performance, metrics, and channel activities.\n\nHeaders\n\nHeader\nSample Value\nDescription\n\nAuthorization\n{{vault:bearer-token}}\nThis key is required to authorize your request. Refer to API Authentication Tokens to generate your token. You should enter the word Bearer followed by the API key you generated.\n\nAccept\napplication/json\nYou should enter it as application/json at all times.\n\nQuery Parameters\n\nParameter\nData Type\nDescription\nSample Value\nRequired\n\nstatDate\nString\nDefines the date range for statistics. Format: DD/MM/YYYY - DD/MM/YYYY\nstatDate=01/08/2024 - 30/08/2024\nYes\n\nconversionGoal\nInteger\nA number representing the conversion goal ID filter. Default is 0 which is the Purchase goal.\nconversionGoal=123\nNo\n\ngoalType\nInteger\nAttribution type for reporting. 0 for Click-Through attribution (default). 1 for View-Through attribution.\n0\nNo\n\nThe statDate parameter is essential for defining the time range for analytics. The start date must be earlier than the end date. You can select any time range, including those longer than one year or before the past year. However, if you encounter a timeout when exporting a range longer than one year, try selecting a shorter range.\n\nUse conversionGoal filter to tailor your analytics queries to specific requirements.\n\nFor journey analytics, you can only get the conversion metrics for one goal at a time. You can enter the goal id as a parameter to select which conversion goal you want to see the metrics. You can obtain the Goal ID either from the goal dropdown in the InOne panel or by using the conversion goals information endpoint.\n\nSample Example\nSample Query\nBefore sending the request, make sure:\n\nTo replace the authorization value with your own API key.\n\nTo replace journeyId with the specific journey's ID.\n\ncurl -X GET \"https://architect-analytics.api.useinsider.com/v1/journey/251?statDate=01/08/2024 - 30/08/2024&conversionGoal=123&goalType=0\" \\\n  -H \"Authorization: {{vault:bearer-token}}\" \\\n  -H \"Accept: application/json\"\n\nSample Responses\n200 OK\n{\n    \"filterDate\": \"20/05/2024 - 17/10/2024\",\n    \"attributionType\": \"Click-Through\",\n    \"goal\": \"confirmation_page_view\",\n    \"partner\": {\n        \"exportTime\": \"11/11/2024 12:13\",\n        \"accountName\": \"shopbagg\"\n    },\n    \"journey\": {\n        \"status\": \"active\",\n        \"startDate\": \"01/07/2024 16:10\",\n        \"endDate\": \"20/12/2034 17:09\",\n        \"daysActive\": 133,\n        \"journeyId\": 251,\n        \"journeyName\": \"Journey Name\",\n        \"journeyTags\": [\n            \"Lorem ipsum\"\n        ]\n    },\n    \"userMetrics\": {\n        \"dropped\": 30167,\n        \"exited\": 51412,\n        \"completed\": 199181,\n        \"entered\": 285966,\n        \"sent\": 421412,\n        \"delivered\": 414186,\n        \"dropRate\": 10.55,\n        \"completeRate\": 69.65,\n        \"deliveryRate\": 98.29\n    },\n    \"performanceMetrics\": {\n        \"totalClicks\": 15641,\n        \"totalConversions\": 0,\n        \"revenue\": 0,\n        \"conversionRate\": 0,\n        \"clickThroughRate\": 3.78,\n        \"averageOrderValue\": 0\n    },\n    \"exitCriteria\": {\n        \"386\": {\n            \"type\": \"Event\",\n            \"name\": \"application_declined\",\n            \"parameters\": [],\n            \"exited\": 51412\n        }\n    },\n    \"performanceOfChannels\": {\n        \"app-push\": {\n            \"conversions\": 0,\n            \"drops\": 0,\n            \"delivered\": 6,\n            \"totalClicks\": 0,\n            \"revenue\": 0,\n            \"sent\": 6,\n            \"numberOfChannels\": 2,\n            \"averageOrderValue\": 0,\n            \"clickThroughRate\": 0,\n            \"dropRate\": 0,\n            \"conversionRate\": 0,\n            \"deliveryRate\": 100\n        },\n        \"email\": {\n            \"conversions\": 0,\n            \"drops\": 3,\n            \"delivered\": 399,\n            \"totalClicks\": 177,\n            \"totalOpens\": 235,\n            \"revenue\": 0,\n            \"uniqueClicks\": 31,\n            \"sent\": 406,\n            \"uniqueOpens\": 151,\n            \"unsubscribes\": 3,\n            \"numberOfChannels\": 1,\n            \"averageOrderValue\": 0,\n            \"clickThroughRate\": 7.77,\n            \"dropRate\": 0.73,\n            \"conversionRate\": 0,\n            \"openRate\": 37.84,\n            \"deliveryRate\": 98.28,\n            \"unsubscribeRate\": 0.75\n        },\n        \"sms\": {\n            \"conversions\": 0,\n            \"drops\": 0,\n            \"delivered\": 0,\n            \"totalClicks\": 0,\n            \"revenue\": 0,\n            \"sent\": 0,\n            \"smsMessageParts\": 0,\n            \"unsubscribes\": 0,\n            \"numberOfChannels\": 1,\n            \"averageOrderValue\": 0,\n            \"clickThroughRate\": 0,\n            \"dropRate\": 0,\n            \"conversionRate\": 0,\n            \"deliveryRate\": 0,\n            \"unsubscribeRate\": 0\n        }\n    },\n    \"channelsMetrics\": [\n        {\n            \"sent\": 2,\n            \"conversions\": 0,\n            \"drops\": 0,\n            \"delivered\": 2,\n            \"totalClicks\": 0,\n            \"revenue\": 0,\n            \"averageOrderValue\": 0,\n            \"conversionRate\": 0,\n            \"dropRate\": 0,\n            \"clickThroughRate\": 0,\n            \"deliveryRate\": 100,\n            \"channel\": \"app-push\",\n            \"channelName\": \"Paid Ads Lead Nurture_mobile App Push 1\",\n            \"campaignId\": 4098\n        },\n        {\n            \"sent\": 140,\n            \"conversions\": 0,\n            \"drops\": 0,\n            \"delivered\": 137,\n            \"totalClicks\": 67,\n            \"uniqueClicks\": 11,\n            \"totalOpens\": 66,\n            \"uniqueOpens\": 44,\n            \"revenue\": 0,\n            \"unsubscribes\": 3,\n            \"averageOrderValue\": 0,\n            \"conversionRate\": 0,\n            \"dropRate\": 0,\n            \"clickThroughRate\": 8.03,\n            \"openRate\": 32.12,\n            \"deliveryRate\": 97.86,\n            \"unsubscribeRate\": 2.19,\n            \"channel\": \"email\",\n            \"channelName\": \"Paid Ads Lead Nurture_mobile Email 1\",\n            \"campaignId\": 4104\n        },\n        {\n            \"sent\": 0,\n            \"conversions\": 0,\n            \"drops\": 0,\n            \"delivered\": 0,\n            \"totalClicks\": 0,\n            \"revenue\": 0,\n            \"smsMessageParts\": 0,\n            \"unsubscribes\": 0,\n            \"averageOrderValue\": 0,\n            \"conversionRate\": 0,\n            \"dropRate\": 0,\n            \"clickThroughRate\": 0,\n            \"deliveryRate\": 0,\n            \"unsubscribeRate\": 0,\n            \"channel\": \"sms\",\n            \"channelName\": \"Paid Ads Lead Nurture_mobile SMS 1\",\n            \"campaignId\": 4110\n        },\n        {\n            \"sent\": 2,\n            \"conversions\": 0,\n            \"drops\": 0,\n            \"delivered\": 2,\n            \"totalClicks\": 0,\n            \"revenue\": 0,\n            \"averageOrderValue\": 0,\n            \"conversionRate\": 0,\n            \"dropRate\": 0,\n            \"clickThroughRate\": 0,\n            \"deliveryRate\": 100,\n            \"channel\": \"app-push\",\n            \"channelName\": \"Paid Ads Lead Nurture_mobile App Push 2\",\n            \"campaignId\": 4100\n        }\n    ]\n}\n\n401 Unauthorized\n{\n    \"error\": \"Invalid API key\"\n}\n\n422 Bad Request\n{\n    \"message\": \"The stat date field is required.\",\n    \"errors\": {\n        \"statDate\": [\n            \"The stat date field is required.\"\n        ]\n    }\n}\n\nResponse Details\n\nid: The unique ID of the conversion goal.\n\nname: The name of the conversion goal.\n\ntype: The type of conversion goal (e.g., on-event, on-attribute).\n\nparameters: An array detailing the conditions for the goal, such as key-value pairs with operators and value types.\n\njourneys: A list of journeys where the conversion goal is used, including journey IDs and names.\n\nLimitations\n\nThe request must be executed with an HTTPS GET request.\n\nThe API Key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nYou can send 200 requests per minute with the same API Key. If you exceed the rate limit, you will receive a 429 error.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "journey",
+                ":journeyId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "statDate",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "journeyId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a9f11ac7-1c86-4508-94b7-1591fba073ee",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "journey",
+                    ":journeyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "statDate",
+                      "value": "String"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "journeyId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "289804ba-1b6c-47a1-b887-c7852d3a9d5c",
+          "name": "Export Journey List",
+          "request": {
+            "name": "Export Journey List",
+            "description": {
+              "content": "The Journey List API enables you to export detailed information for all journeys created in Architect. This endpoint provides metadata such as journey name, status, creation and execution dates, tags, conversion goals, and exit criteria — allowing you to easily audit, analyze, or back up journey configurations externally.\n\nIt’s particularly useful for teams that want to integrate Architect data with external analytics platforms or maintain synchronized journey catalogs.\n\nQuery Parameters\n\nParameter\nDescription\nSample Value\nRequired\n\nstatuses\nFilters journeys by status.  Allowed values are active, test, passive, sunset.\n?statuses[]=active&statuses[]=test\nNo\n\nids\nFilters by specific journey IDs\n?ids[]=1&ids[]=2&ids[]=3\nNo\n\nsearch\nReturns journeys whose names partially match the provided text.\n?search=welcome\nNo\n\ntags\nFilters journeys by their assigned tags. Each tag must exist in the tags table.\n?tags[]=cart abandonment&tags[]=retention\nNo\n\nlimit, page\nPagination for the export. You can determine which page and for what limit you want to get an export for. You can get at most 300 journeys per export.\n?limit=100&page=1 → Brings the 100 journeys of the first page.  If you have 900 journeys, and you want to get an export for all of them, you need 3 API calls:    ?limit=300&page=1  ?limit=300&page=2  ?limit=300&page=3\nNo\n\nSample Responses\n200 OK\n{\n  \"journeys\": [\n    {\n      \"journeyId\": 5756,\n      \"parentJourneyId\": 38,\n      \"journeyName\": \"Demo Journey\",\n      \"status\": \"active\",\n      \"createdAt\": \"2025-10-14T11:42:29.000000Z\",\n      \"startDate\": \"2025-10-14T11:44:53.000000Z\",\n      \"endDate\": \"2025-11-13T11:42:45.000000Z\",\n      \"tags\": [\"Demo\"],\n      \"description\": null,\n      \"starterType\": \"on-event\",\n      \"languages\": [\"ar_AE\", \"ja_JP\", \"ka_GA\"],\n      \"reEligibility\": {\n        \"rule\": \"Users re-enter after 3 day\",\n        \"value\": 3\n      },\n      \"conversionGoals\": [\n        {\n          \"id\": 216,\n          \"event\": \"confirmation_page_view\",\n          \"eventParameters\": [\n            {\n              \"display_name\": \"Event Source\",\n              \"key\": \"source\",\n              \"operator\": \"eq\",\n              \"type\": \"string\",\n              \"values\": [\"crm\", \"mobile\"]\n            }\n          ]\n        }\n      ],\n      \"exitCriteria\": [\n        {\n          \"event\": \"item_added_to_cart\",\n          \"parameters\": {\n            \"name\": \"item_added_to_cart\",\n            \"type\": \"event\",\n            \"params\": [],\n            \"identifierParameter\": \"\",\n            \"hash\": \"item_added_to_cartnacntstring3/4 Sleeve Kimono DressProduct Name\",\n            \"consistencyStatus\": false,\n            \"groupPartners\": [],\n            \"value\": \"item_added_to_cart\"\n          }\n        },\n        {\n          \"event\": \"login\",\n          \"parameters\": {\n            \"name\": \"login\",\n            \"type\": \"event\",\n            \"params\": [],\n            \"identifierParameter\": \"\",\n            \"hash\": \"login\",\n            \"consistencyStatus\": false,\n            \"groupPartners\": [],\n            \"value\": \"login\"\n          }\n        }\n      ],\n      \"campaigns\": [\n                {\n                    \"id\": 64592,\n                    \"name\": \"Demo Journey Web Push 1\",\n                    \"channel\": \"Web Push\"\n                },\n                {\n                    \"id\": 64596,\n                    \"name\": \"Demo Journey Web Push 2\",\n                    \"channel\": \"Web Push\"\n                },\n                {\n                    \"id\": 64595,\n                    \"name\": \"Demo Journey SMS 2\",\n                    \"channel\": \"SMS\"\n                },\n                {\n                    \"id\": 64599,\n                    \"name\": \"Demo Journey SMS 1\",\n                    \"channel\": \"SMS\"\n                },\n                {\n                    \"id\": 64591,\n                    \"name\": \"Demo Journey On-Site 1\",\n                    \"channel\": \"On-Site\"\n                }\n            ]\n    }\n  ]\n}\n\n401 Unauthorized\n{\n    \"error\": \"Invalid API key\"\n}\n\nLimitations\n\nThe request must be executed with an HTTPS GET request.\n\nThe API Key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nYou can send 200 requests per minute with the same API Key. If you exceed the rate limit, you will receive a 429 error.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "journeys"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "582e8449-8495-44d1-ba1b-ba65d21f94b2",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "journeys"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f4962ba5-e44d-4b80-824c-91e4313dd738",
+          "name": "Get Architect Overall Analytics",
+          "request": {
+            "name": "Get Architect Overall Analytics",
+            "description": {
+              "content": "The Architect overall analytics endpoint provides comprehensive analytics data for all user journeys. This data includes key user metrics, journey statuses, and performance insights broken down by channels and journeys, offering a high-level overview of campaign effectiveness and user interactions.\n\nHeaders\n\nHeader\nSample Value\nDescription\n\nAuthorization\n{{vault:bearer-token}}\nThis key is required to authorize your request. Refer to API Authentication Tokens to generate your token. You should enter the word Bearer followed by the API key you generated.\n\nAccept\napplication/json\nYou should enter it as application/json at all times.\n\nQuery Parameters\n\nParameter\nData Type\nDescription\nSample Value\nRequired\n\nstatDate\nString\nDefines the date range for statistics. Format: DD/MM/YYYY - DD/MM/YYYY\nstatDate=01/08/2024 - 30/08/2024\nYes\n\nstatuses\nArray of Strings\nArray filter for journey statuses. Default is active if not provided.  Allowed values are active, test, passive, sunset.\nstatuses[]=active&statuses[]=passive\nNo\n\nchannels\nArray of Strings\nArray filter specifying which channels' analytics data to return. If not provided, all channels are included. Allowed values are web-push, app-push, email, sms, whatsapp, in-app, journey-web, call-api\nchannels[]=email&channels[]=sms\nNo\n\nids\nArray of Integers\nArray of journey IDs for filtering\nids[]=89&ids[]=90\nNo\n\nconversionGoal\nInteger\nA number representing the conversion goal ID filter. Default is 0 which is the Purchase goal.\nconversionGoal=123\nNo\n\ngoalType\nInteger\nAttribution type for reporting. 0 for Click-Through attribution (default). 1 for View-Through attribution.\n0\nNo\n\nThe statDate parameter is essential for defining the time range for analytics. The start date must be earlier than the end date. You can select any time range, including those longer than one year or before the past year. However, if you encounter a timeout when exporting a range longer than one year, try selecting a shorter range.\n\nUse statuses, channels, ids, and conversionGoal filters to tailor your analytics queries to specific requirements.\n\nFor overall analytics, you can only get the conversion metrics for one goal at a time. You can enter the goal id as a parameter to select which conversion goal you want to see the metrics. You can obtain the Goal ID either from the goal dropdown in the InOne panel or by using the conversion goals information endpoint.\n\nSample Example\nSample Query\nBefore sending the request, make sure:\n\nTo replace the authorization value with your own API key.\n\nTo replace the sample values in parameters with your own values in the required data type.\n\ncurl -X GET \"https://architect-analytics.api.useinsider.com/v1/overall?statDate=01/08/2024 - 30/08/2024&statuses[]=active&channels[]=email&channels[]=sms\" \\\n-H \"Authorization: {{vault:bearer-token}}\" \\\n-H \"Accept: application/json\"\n\nSample Responses\n200 OK\n{\n    \"filterDate\": \"01/08/2024 - 30/08/2024\",\n    \"attributionType\": \"Click-Through\",\n    \"goal\": \"confirmation_page_view\",\n    \"partner\": {\n        \"exportTime\": \"11/11/2024 11:29\",\n        \"accountName\": \"shopbagg\"\n    },\n    \"statuses\": [],\n    \"journeysCount\": {\n        \"active\": 1,\n        \"passive\": 1,\n        \"sunset\": 0,\n        \"test\": 0\n    },\n    \"journeyTags\": [\n        \"Survey\",\n        \"Tag1\"\n    ],\n    \"journeyIds\": [\n        89,\n        90\n    ],\n    \"userMetrics\": {\n        \"dropped\": 282138,\n        \"exited\": 109647,\n        \"completed\": 2391841,\n        \"entered\": 2805589,\n        \"sent\": 6250485,\n        \"delivered\": 6022681,\n        \"dropRate\": 10.06,\n        \"completeRate\": 85.25,\n        \"deliveryRate\": 96.36\n    },\n    \"exitCriteria\": {\n        \"112\": {\n            \"type\": \"Event\",\n            \"name\": \"email_click\",\n            \"parameters\": [],\n            \"exited\": 58,\n            \"journeys\": [\n                {\n                    \"id\": 89,\n                    \"name\": \"Journey Name 1\"\n                }\n            ]\n        },\n        \"255\": {\n            \"type\": \"Event\",\n            \"name\": \"payment_successful\",\n            \"parameters\": [],\n            \"exited\": 14022,\n            \"journeys\": [\n                {\n                    \"id\": 90,\n                    \"name\": \"Journey Name 2\"\n                }\n            ]\n        }\n    },\n    \"performanceMetrics\": {\n        \"totalClicks\": 123137,\n        \"totalConversions\": 0,\n        \"revenue\": 0,\n        \"conversionRate\": 0,\n        \"clickThroughRate\": 2.04,\n        \"averageOrderValue\": 0\n    },\n    \"performanceOfChannels\": {\n        \"email\": {\n            \"conversions\": 0,\n            \"drops\": 15120,\n            \"delivered\": 3945177,\n            \"totalClicks\": 37067,\n            \"totalOpens\": 544420,\n            \"revenue\": 0,\n            \"uniqueClicks\": 13395,\n            \"sent\": 3975505,\n            \"uniqueOpens\": 452539,\n            \"unsubscribes\": 2392,\n            \"numberOfChannels\": 697,\n            \"averageOrderValue\": 0,\n            \"clickThroughRate\": 0.34,\n            \"dropRate\": 0.38,\n            \"conversionRate\": 0,\n            \"openRate\": 11.47,\n            \"deliveryRate\": 99.24,\n            \"unsubscribeRate\": 0.06\n        },\n        \"app-push\": {\n            \"conversions\": 0,\n            \"drops\": 0,\n            \"delivered\": 0,\n            \"totalClicks\": 63,\n            \"revenue\": 0,\n            \"sent\": 0,\n            \"numberOfChannels\": 106,\n            \"averageOrderValue\": 0,\n            \"clickThroughRate\": 0,\n            \"dropRate\": 0,\n            \"conversionRate\": 0,\n            \"deliveryRate\": 0\n        },\n        \"sms\": {\n            \"conversions\": 0,\n            \"drops\": 252852,\n            \"delivered\": 2041121,\n            \"totalClicks\": 53552,\n            \"revenue\": 0,\n            \"sent\": 2274980,\n            \"smsMessageParts\": 3049175,\n            \"unsubscribes\": 36745,\n            \"numberOfChannels\": 318,\n            \"averageOrderValue\": 0,\n            \"clickThroughRate\": 2.62,\n            \"dropRate\": 9.93,\n            \"conversionRate\": 0,\n            \"deliveryRate\": 89.72,\n            \"unsubscribeRate\": 1.8\n        },\n        \"in-app\": {\n            \"conversions\": 0,\n            \"drops\": 181,\n            \"delivered\": 36383,\n            \"totalClicks\": 32455,\n            \"revenue\": 0,\n            \"sent\": 0,\n            \"numberOfChannels\": 15,\n            \"averageOrderValue\": 0,\n            \"clickThroughRate\": 89.2,\n            \"dropRate\": 0.06,\n            \"conversionRate\": 0,\n            \"deliveryRate\": 0\n        }\n    },\n    \"performanceOfJourneys\": {\n        \"89\": {\n            \"journeyId\": 89,\n            \"journeyName\": \"Journey Name 1\",\n            \"status\": \"passive\",\n            \"averageOrderValue\": 0,\n            \"conversions\": 0,\n            \"delivered\": 0,\n            \"totalClicks\": 11,\n            \"totalOpens\": 437,\n            \"revenue\": 0,\n            \"uniqueClicks\": 11,\n            \"sent\": 0,\n            \"drops\": 0,\n            \"uniqueOpens\": 372,\n            \"smsMessageParts\": 0,\n            \"unsubscribes\": 1,\n            \"clickThroughRate\": 0,\n            \"dropRate\": 0,\n            \"conversionRate\": 0,\n            \"openRate\": 0,\n            \"deliveryRate\": 0,\n            \"unsubscribeRate\": 0\n        },\n        \"90\": {\n            \"journeyId\": 90,\n            \"journeyName\": \"Journey Name 2\",\n            \"status\": \"active\",\n            \"averageOrderValue\": 0,\n            \"conversions\": 0,\n            \"delivered\": 0,\n            \"totalClicks\": 9,\n            \"totalOpens\": 300,\n            \"revenue\": 0,\n            \"uniqueClicks\": 7,\n            \"sent\": 0,\n            \"drops\": 0,\n            \"uniqueOpens\": 125,\n            \"smsMessageParts\": 0,\n            \"unsubscribes\": 0,\n            \"clickThroughRate\": 0,\n            \"dropRate\": 0,\n            \"conversionRate\": 0,\n            \"openRate\": 0,\n            \"deliveryRate\": 0,\n            \"unsubscribeRate\": 0\n        }\n    }\n}\n\n401 Unauthorized\n{\n    \"error\": \"Invalid API key\"\n}\n\n422 Bad Request\n{\n    \"message\": \"The stat date field is required.\",\n    \"errors\": {\n        \"statDate\": [\n            \"The stat date field is required.\"\n        ]\n    }\n}\n\nResponse Details\n\nid: The unique ID of the conversion goal.\n\nname: The name of the conversion goal.\n\ntype: The type of conversion goal (e.g., on-event, on-attribute).\n\nparameters: An array detailing the conditions for the goal, such as key-value pairs with operators and value types.\n\njourneys: A list of journeys where the conversion goal is used, including journey IDs and names.\n\nLimitations\n\nThe request must be executed with an HTTPS GET request.\n\nThe API Key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nYou can send 200 requests per minute with the same API Key. If you exceed the rate limit, you will receive a 429 error.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "overall"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "statDate",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "Authorization"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "b7bc0d75-3249-4bb8-beea-52dc78802b05",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "overall"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "statDate",
+                      "value": "String"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://architect-analytics.api.useinsider.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "448740cd-f0ac-45c2-82a1-3048ad012883",
+    "name": "Insider One Architect Analytics API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Architect journey analytics: overall, per-journey, per-element, conversion goals and journey export.\n\nDerived by API Evangelist from Insider One's own public Postman collection (\"Insider One APIs\", published at https://developers.insiderone.com/). Paths, methods, headers, query parameters and request/response examples are verbatim from that collection; nothing is invented. The 429 response is documented for all Insider One APIs on https://academy.insiderone.com/docs/api-rate-limits-1 .\n\nContact Support:\n Name: Insider One Support\n Email: support@useinsider.com",
+      "type": "text/plain"
+    }
+  }
+}

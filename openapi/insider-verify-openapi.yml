@@ -1,0 +1,456 @@
+openapi: 3.1.0
+info:
+  title: Insider One Verify (OTP) API
+  version: 1.0.0
+  description: 'OTP channels and templates for SMS and WhatsApp: create/update channels, manage templates, generate
+    and verify OTP codes.
+
+
+    Derived by API Evangelist from Insider One''s own public Postman collection ("Insider One APIs", published at
+    https://developers.insiderone.com/). Paths, methods, headers, query parameters and request/response examples
+    are verbatim from that collection; nothing is invented. The 429 response is documented for all Insider One APIs
+    on https://academy.insiderone.com/docs/api-rate-limits-1 .'
+  contact:
+    name: Insider One Support
+    email: support@useinsider.com
+    url: https://academy.insiderone.com/docs/insider-one-apis-1
+  termsOfService: https://insiderone.com/terms-of-use/
+externalDocs:
+  description: Insider One API reference
+  url: https://academy.insiderone.com/docs/api-reference-welcome
+servers:
+- url: https://verify.useinsider.com
+tags:
+- name: OTP for SMS
+- name: OTP for WhatsApp
+paths:
+  /v1/channel/create:
+    post:
+      operationId: createAChannel
+      summary: Create a channel
+      tags:
+      - OTP for SMS
+      description: "The Verify API enables you to generate, send, and verify OTP codes for the SMS channel. You\
+        \ can utilize this API to generate OTP codes as defined in the payloads. Integrating it into your own websites\
+        \ or apps, you can trigger it on login pages, payment pages, and more.\n\nIn this regard, in order to send\
+        \ OTP codes, you must create a channel for your brand just once. Creating a channel, you will have predefined\
+        \ templates for 10 languages by default.\n\nTo be able to use the Verify API:\n\nBoth SMS & Transactional\
+        \ SMS Products should be enabled in Insider's InOne Panel.\n\nSMS Integration should be finalized and you\
+        \ should be able to receive a test message from the Insider's InOnePanel.\n\nBody Parameters\n\nParameter\n\
+        Description\nData Type\nRequired\nRules\n\nchannel\nChannel that you will send the OTP code. Currently it\
+        \ is SMS only.\nString\nYes\noneof:sms\n\nbrandName\nYour brand name defines your OTP SMS content in pre-defined\
+        \ templates.\nString\nYes\nmin:3 max:30 characters\n\nSample Example\nSample Request\nEvery request made\
+        \ to the request endpoint requires a request body formatted in JSON and containing your parameters.\n\n\
+        Make sure to replace the sample values in the request header(s) and body where required before sending your\
+        \ request.\n\ncurl --location 'https://verify.useinsider.com/v1/channel/create' \\\n--header 'Content-Type:\
+        \ application/json' \\\n--header 'x-ins-auth-key: INS.************************' \\\n--data '{\n    \"channel\"\
+        : \"sms\",\n    \"brandName\": \"YourBrandName\"\n}'\n\nSample Responses\n201 CREATED\n{\n    \"status\"\
+        : \"success\"\n}\n\n400 BAD REQUEST\n{\n    \"errors\": [\n        {\n            \"message\": \"invalid\
+        \ request payload\"\n        }\n    ]\n}\n\n400 BAD REQUEST\n{\n    \"errors\": [\n        {\n         \
+        \   \"message\": \"this field must be one of these:sms\",\n            \"field\": \"channel\"\n        }\n\
+        \    ]\n}\n\n401 UNAUTHORIZED\n{\n    \"errors\": [\n        {\n            \"message\": \"unauthorized\"\
+        \n        }\n    ]\n}\n\n429 TOO MANY REQUESTS\n{\n    \"errors\": [\n        {\n            \"message\"\
+        : \"rate limit exceeded\"\n        }\n    ]\n}\n\n500 INTERNAL SERVER ERROR\n{\n    \"errors\": [\n    \
+        \    {\n            \"message\": \"channel already exists\"\n        }\n    ]\n}\n\n500 INTERNAL SERVER\
+        \ ERROR\n{\n    \"errors\": [\n        {\n            \"message\": \"server error\"\n        }\n    ]\n\
+        }\n\nLimitations\n\nAll functions must be executed with a simple HTTPS POST request.\n\nThe API Key should\
+        \ be provided as the authorization key on the request header. If the key is incorrect, the operation will\
+        \ not be executed and an authorization error will return in the response.\n\nYou can only create OTP for\
+        \ SMS channel."
+      security:
+      - InsAuthKey: []
+      requestBody:
+        content:
+          application/json:
+            examples:
+              default:
+                value:
+                  channel: sms
+                  brandName: YourBrand
+              create-a-channel:
+                summary: Create a channel
+                value:
+                  channel: whatsapp
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /v1/channel/generate:
+    post:
+      operationId: generateOtpCodes
+      summary: Generate OTP codes
+      tags:
+      - OTP for SMS
+      description: "The Verify API enables you to generate, send, and verify OTP codes for the SMS channel. You\
+        \ can utilize this API to generate OTP codes as defined in the payloads. Integrating it into your own websites\
+        \ or apps, you can trigger it on login pages, payment pages, and more.\n\nAfter you create your channel\
+        \ for your brand and update the templates, you need to perform the generate action for your OTP.\n\nBody\
+        \ Parameters\n\nParameter\nDescription\nData Type\nRequired\nRules\n\nchannel\nChannel that you will send\
+        \ the OTP code. Currently it is SMS only.\nString\nYes\noneof:sms\n\nto\nSpecifies the destination phone\
+        \ number in E.164 format to which the OTP code will be sent.\nString\nYes\ne164\n\nlocale\nDetermines the\
+        \ language/locale in which the OTP code message will be sent.\nString\nNo (Default: en)\noneof:de en es\
+        \ fr it ja nl pt ru tr\n\nttl\nSpecifies the Time-To-Live (TTL) duration for the OTP code, i.e., the time\
+        \ window within which the OTP code is valid. Measured in seconds.\nInteger\nNo (Default: 180)\nmin:60 max:600\n\
+        \ncode-length\nSpecifies the length of the OTP code to be generated. The code length must be between 4 and\
+        \ 8 digits.\nInteger\nNo (Default: 4)\nmin:4 max:8\n\ncustom-code\nIf provided, allows you to specify a\
+        \ custom OTP code instead of generating one.\nInteger\nNo\nmin:1000 max:99999999\n\nmax-attempts\nSets the\
+        \ maximum number of allowed OTP verification attempts. If the verification fails after reaching this limit,\
+        \ further attempts might be denied.\nInteger\nNo (Default: 3)\nmin:1 max:10\n\nSample Example\nSample Request\n\
+        Every request made to the request endpoint requires a request body formatted in JSON and containing your\
+        \ parameters.\n\nMake sure to replace the sample values in the request header(s) and body where required\
+        \ before sending your request.\n\ncurl --location 'https://verify.useinsider.com/v1/generate' \\\n--header\
+        \ 'Content-Type: application/json' \\\n--header 'x-ins-auth-key: INS.************************' \\\n--data\
+        \ '{\n    \"channel\": \"sms\",\n    \"to\": \"+905XXXXXXXXX\"\n}'\n\nSample Responses\n202 ACCEPTED\nThis\
+        \ response indicates that your request was successfully completed.\n\n{\n    \"channel\": \"sms\",\n   \
+        \ \"dateCreated\": \"2023-07-28T14:40:41Z\",\n    \"dateUpdated\": \"2023-07-28T14:40:41Z\",\n    \"locale\"\
+        : \"en\",\n    \"maxAttempts\": 3,\n    \"ttl\": 180\n}\n\n400 BAD REQUEST\n{\n    \"errors\": [\n     \
+        \   {\n            \"message\": \"invalid request payload\"\n        }\n    ]\n}\n\n400 BAD REQUEST\n{\n\
+        \    \"errors\": [\n        {\n            \"message\": \"channel information must be a valid phone number\
+        \ for sms\",\n            \"field\": \"to\"\n        }\n    ]\n}\n\n401 UNAUTHORIZED\n{\n    \"errors\"\
+        : [\n        {\n            \"message\": \"unauthorized\"\n        }\n    ]\n}\n\n429 TOO MANY REQUESTS\n\
+        {\n    \"errors\": [\n        {\n            \"message\": \"rate limit exceeded\"\n        }\n    ]\n}\n\
+        \n500 INTERNAL SERVER ERROR\n{\n    \"errors\": [\n        {\n            \"message\": \"server error\"\n\
+        \        }\n    ]\n}\n\nLimitations\n\nAll functions must be executed with a simple HTTPS POST request.\n\
+        \nThe API Key should be provided as the authorization key on the request header. If the key is incorrect,\
+        \ the operation will not be executed and an authorization error will return in the response.\n\nYou can\
+        \ only create OTP for SMS channel."
+      security:
+      - InsAuthKey: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              channel: sms
+              to: +905XXXXXXXXX
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /v1/channel/list:
+    get:
+      operationId: listOtpTemplates
+      summary: List OTP templates
+      tags:
+      - OTP for SMS
+      description: "The Verify API enables you to generate, send, and verify OTP codes for the SMS channel.\n\n\
+        After you create a channel for your brand, you can list its templates later.\n\nBody Parameters\n\nParameter\n\
+        Description\nData Type\nRequired\nRules\n\nchannel\nChannel that you will send the OTP code. Currently it\
+        \ is SMS only.\nString\nYes\noneof:sms\n\nbrandName\nYour brand name defines your OTP SMS content in pre-defined\
+        \ templates.\nString\nYes\nmin:3 max:30 characters\n\nSample Example\nSample Request\nEvery request made\
+        \ to the request endpoint requires a request body formatted in JSON and containing your parameters.\n\n\
+        Make sure to replace the sample values in the request header(s) and body where required before sending your\
+        \ request.\n\ncurl --location 'verify.useinsider.com/v1/template/list' \\\n--header 'Content-Type: application/json'\
+        \ \\\n--header 'x-ins-auth-key: INS.************************'\n\nSample Responses\n200 OK\nThis response\
+        \ indicates that your request was successfully completed.\n\n{\n    \"templates\": {\n        \"sms\": [\n\
+        \            {\n                \"locale\": \"de\",\n                \"text\": \"Ihr {brandName} Bestätigungscode\
+        \ lautet: {code}\"\n            },\n            {\n                \"locale\": \"en\",\n               \
+        \ \"text\": \"Your {brandName} verification code is: {code}\"\n            },\n            {\n         \
+        \       \"locale\": \"es\",\n                \"text\": \"Su código de verificación de {brandName} es: {code}\"\
+        \n            },\n            {\n                \"locale\": \"fr\",\n                \"text\": \"Votre\
+        \ code de vérification {brandName} est: {code}\"\n            },\n            {\n                \"locale\"\
+        : \"it\",\n                \"text\": \"Il tuo codice di verifica {brandName} è: {code}\"\n            },\n\
+        \            {\n                \"locale\": \"ja\",\n                \"text\": \"あなたの{brandName}確認コードは:\
+        \ {code}です\"\n            },\n            {\n                \"locale\": \"nl\",\n                \"text\"\
+        : \"Uw {brandName} verificatiecode is: {code}\"\n            },\n            {\n                \"locale\"\
+        : \"pt\",\n                \"text\": \"Seu código de verificação {brandName} é: {code}\"\n            },\n\
+        \            {\n                \"locale\": \"ru\",\n                \"text\": \"Ваш проверочный код {brandName}:\
+        \ {code}\"\n            },\n            {\n                \"locale\": \"tr\",\n                \"text\"\
+        : \"{brandName} doğrulama kodunuz: {code}\"\n            }\n        ]\n    }\n}\n\n401 UNAUTHORIZED\n{\n\
+        \    \"errors\": [\n        {\n            \"message\": \"unauthorized\"\n        }\n    ]\n}\n\n429 TOO\
+        \ MANY REQUESTS\n{\n    \"errors\": [\n        {\n            \"message\": \"rate limit exceeded\"\n   \
+        \     }\n    ]\n}\n\nLimitations\n\nAll functions must be executed with a simple HTTPS GET request.\n\n\
+        The API Key should be provided as the authorization key on the request header. If the key is incorrect,\
+        \ the operation will not be executed and an authorization error will return in the response.\n\nYou can\
+        \ only create OTP for SMS channel."
+      security:
+      - InsAuthKey: []
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /v1/channel/update:
+    post:
+      operationId: updateAChannel
+      summary: Update a channel
+      tags:
+      - OTP for SMS
+      description: "The Verify API enables you to generate, send, and verify OTP codes for the SMS channel. You\
+        \ can utilize this API to generate OTP codes as defined in the payloads. Integrating it into your own websites\
+        \ or apps, you can trigger it on login pages, payment pages, and more.\n\nAfter you create a channel for\
+        \ your brand, you can edit and update it later.\n\nBody Parameters\n\nParameter\nDescription\nData Type\n\
+        Required\nRules\n\nchannel\nChannel that you will send the OTP code. Currently it is SMS only.\nString\n\
+        Yes\noneof:sms\n\nbrandName\nYour brand name defines your OTP SMS content in pre-defined templates.\nString\n\
+        Yes\nmin:3 max:30 characters\n\nSample Example\nSample Request\nEvery request made to the request endpoint\
+        \ requires a request body formatted in JSON and containing your parameters.\n\nMake sure to replace the\
+        \ sample values in the request header(s) and body where required before sending your request.\n\ncurl --location\
+        \ 'verify.useinsider.com/v1/channel/update' \\\n--header 'Content-Type: application/json' \\\n--header 'x-ins-auth-key:\
+        \ INS.************************' \\\n--data '{\n    \"channel\": \"sms\",\n    \"brandName\": \"YourBrand\"\
+        \n}'\n\nSample Responses\n202 ACCEPTED\n{\n    \"status\": \"success\"\n}\n\n400 BAD REQUEST\n{\n    \"\
+        errors\": [\n        {\n            \"message\": \"invalid request payload\"\n        }\n    ]\n}\n\n400\
+        \ BAD REQUEST\n{\n    \"errors\": [\n        {\n            \"message\": \"this field must be one of these:sms\"\
+        ,\n            \"field\": \"channel\"\n        }\n    ]\n}\n\n401 UNAUTHORIZED\n{\n    \"errors\": [\n \
+        \       {\n            \"message\": \"unauthorized\"\n        }\n    ]\n}\n\n429 TOO MANY REQUESTS\n{\n\
+        \    \"errors\": [\n        {\n            \"message\": \"rate limit exceeded\"\n        }\n    ]\n}\n\n\
+        500 INTERNAL SERVER ERROR\n{\n    \"errors\": [\n        {\n            \"message\": \"channel already exists\"\
+        \n        }\n    ]\n}\n\n500 INTERNAL SERVER ERROR\n{\n    \"errors\": [\n        {\n            \"message\"\
+        : \"server error\"\n        }\n    ]\n}\n\nLimitations\n\nAll functions must be executed with a simple HTTPS\
+        \ POST request.\n\nThe API Key should be provided as the authorization key on the request header. If the\
+        \ key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\
+        \nYou can only create OTP for SMS channel."
+      security:
+      - InsAuthKey: []
+      requestBody:
+        content:
+          application/json:
+            examples:
+              default:
+                value:
+                  channel: sms
+                  brandName: YOURBRAND
+              update-otp-templates:
+                summary: Update OTP templates
+                value:
+                  channel: sms
+                  locale: en
+                  text: 'Your {brandName} verification code is: {code}'
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /v1/check:
+    post:
+      operationId: verifyOtpCodes
+      summary: Verify OTP codes
+      tags:
+      - OTP for SMS
+      description: "The Verify API enables you to generate, send, and verify OTP codes for the SMS channel. You\
+        \ can utilize this API to generate OTP codes as defined in the payloads. Integrating it into your own websites\
+        \ or apps, you can trigger it on login pages, payment pages, and more.\n\nAfter you create your channel\
+        \ for your brand and update the templates, you need to perform the verify action for your OTP.\n\nBody Parameters\n\
+        \nParameter\nDescription\nData Type\nRequired\nRules\n\nto\nSpecifies the destination phone number in E.164\
+        \ format to which the OTP code will be sent.\nString\nYes\ne164\n\ncode\nRepresents the OTP code provided\
+        \ for verification. The code length must be between 4 and 8 digits.\nInteger\nNo (Default: 4)\nmin:4 max:8\n\
+        \nSample Example\nSample Request\nEvery request made to the request endpoint requires a request body formatted\
+        \ in JSON and containing your parameters.\n\nMake sure to replace the sample values in the request header(s)\
+        \ and body where required before sending your request.\n\ncurl --location 'verify.useinsider.com/v1/check'\
+        \ \\\n--header 'Content-Type: application/json' \\\n--header 'x-ins-auth-key: INS.**************************'\
+        \ \\\n--data \n    \"to\": \"+905XXXXXXXXX\",\n    \"code\": 1234\n}'\n\nSample Responses\n202 ACCEPTED\n\
+        This response indicates that your request was successfully completed.\n\n{\n    \"status\": \"success\"\n\
+        }\n\n400 BAD REQUEST\n{\n    \"errors\": [\n        {\n            \"message\": \"invalid request payload\"\
+        \n        }\n    ]\n}\n\n401 UNAUTHORIZED\n{\n    \"errors\": [\n        {\n            \"message\": \"\
+        invalid code\"\n        }\n    ]\n}\n\n401 UNAUTHORIZED\n{\n    \"errors\": [\n        {\n            \"\
+        message\": \"unauthorized\"\n        }\n    ]\n}\n\n404 NOT FOUND\n{\n    \"errors\": [\n        {\n   \
+        \         \"message\": \"code not found\",\n            \"field\": \"code\"\n        }\n    ]\n}\n\n429\
+        \ TOO MANY REQUESTS\n{\n    \"errors\": [\n        {\n            \"message\": \"rate limit exceeded\"\n\
+        \        }\n    ]\n}\n\n429 TOO MANY REQUESTS\n{\n    \"errors\": [\n        {\n            \"message\"\
+        : \"maximum attempts exceeded\",\n            \"field\": \"code\"\n        }\n    ]\n}\n\n500 INTERNAL SERVER\
+        \ ERROR\n{\n    \"errors\": [\n        {\n            \"message\": \"server error\"\n        }\n    ]\n\
+        }\n\nLimitations\n\nAll functions must be executed with a simple HTTPS POST request.\n\nThe API Key should\
+        \ be provided as the authorization key on the request header. If the key is incorrect, the operation will\
+        \ not be executed and an authorization error will return in the response.\n\nYou can only create OTP for\
+        \ SMS channel."
+      security:
+      - InsAuthKey: []
+      requestBody:
+        content:
+          application/json:
+            examples:
+              default:
+                value:
+                  to: +905XXXXXXXXX
+                  code: 1234
+              verify-otp-codes:
+                summary: Verify OTP codes
+                value:
+                  to: +905XXXXXXXXX
+                  code: 1234
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /v1/generate:
+    post:
+      operationId: generateOtpCodesWhatsapp
+      summary: Generate OTP codes
+      tags:
+      - OTP for WhatsApp
+      description: "The Verify API enables you to generate, send, and verify OTP codes for the WhatsApp channel.\
+        \ You can utilize this API to generate OTP codes as defined in the payloads. Integrating it into your own\
+        \ websites or apps, you can trigger it on login pages, payment pages, and more.\n\nAfter you create your\
+        \ channel for your brand and update the templates, you need to perform the generate action for your OTP.\n\
+        \nThis API key is sensitive and should never be used on the frontend or mobile SDK; it should only be implemented\
+        \ on the backend.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\nRules\n\nchannel\n\
+        Channel that you will send the OTP code.\nString\nYes\noneof:whatsapp\n\nto\nSpecifies the destination phone\
+        \ number in E.164 format to which the OTP code will be sent.\nString\nYes\ne164\n\nlocale\nDetermines the\
+        \ language/locale in which the OTP code message will be sent.\nString\nNo (Default: en)\noneof:pt af sq\
+        \ ar az bn bg ca zh_CN zh_HK zh_TW hr cs da nl en en_GB en_US et fil fi fr ka de el gu ha he hi hu id ga\
+        \ it ja kn kk rw_RW ko ky_KG lo lv lt mk ms ml mr nb fa pl pt_BR pt_PT pa ro ru sr sk sl es es_AR es_ES\
+        \ es_MX sw sv ta te th tr uk ur uz vi zu\n\nttl\nSpecifies the Time-To-Live (TTL) duration for the OTP code,\
+        \ i.e., the time window within which the OTP code is valid. Measured in seconds.\nInteger\nNo (Default:\
+        \ 180)\nmin:60 max:600\n\ncode-length\nSpecifies the length of the OTP code to be generated. The code length\
+        \ must be between 4 and 8 digits.\nInteger\nNo (Default: 4)\nmin:4 max:8\n\ncustom-code\nIf provided, allows\
+        \ you to specify a custom OTP code instead of generating one.\nInteger\nNo\nmin:1000 max:99999999\n\nmax-attempts\n\
+        Sets the maximum number of allowed OTP verification attempts. If the verification fails after reaching this\
+        \ limit, further attempts might be denied.\nInteger\nNo (Default: 3)\nmin:1 max:10\n\nSample Example\nSample\
+        \ Request\nEvery request made to the request endpoint requires a request body formatted in JSON and containing\
+        \ your parameters.\n\nMake sure to replace the sample values in the request header(s) and body where required\
+        \ before sending your request.\n\ncurl --location 'https://verify.useinsider.com/v1/generate' \\\n--header\
+        \ 'Content-Type: application/json' \\\n--header 'x-ins-auth-key: INS.************************' \\\n--data\
+        \ '{\n    \"channel\": \"whatsapp\",\n    \"locale\": \"tr\",\n    \"to\": \"+905XXXXXXXXX\",\n    \"ttl\"\
+        : 600\n}'\n\nSample Responses\n202 Accepted\nThis response indicates that your request was successfully\
+        \ completed.\n\n{\n    \"key\": \"whatsapp-12345\",\n    \"channel\": \"whatsapp\",\n    \"dateCreated\"\
+        : \"2023-07-28T14:40:41Z\",\n    \"dateUpdated\": \"2023-07-28T14:40:41Z\",\n    \"locale\": \"en\",\n \
+        \   \"maxAttempts\": 3,\n    \"ttl\": 180\n}\n\n400 Bad Request\n{\n    \"errors\": [\n        {\n     \
+        \       \"message\": \"invalid request payload\"\n        }\n    ]\n}\n\n400 Bad Request\n{\n    \"errors\"\
+        : [\n        {\n            \"message\": \"this field is required\",\n            \"field\": \"text\"\n\
+        \        }\n    ]\n}\n\n401 Unauthorized\n{\n    \"errors\": [\n        {\n            \"message\": \"unauthorized\"\
+        \n        }\n    ]\n}\n\n429 Too Many Requests\n{\n    \"errors\": [\n        {\n            \"message\"\
+        : \"rate limit exceeded\"\n        }\n    ]\n}\n\n500 Internal Server Error\n{\n    \"errors\": [\n    \
+        \    {\n            \"message\": \"server error\"\n        }\n    ]\n}\n\nLimitations\n\nAll functions must\
+        \ be executed with a simple HTTPS POST request.\n\nThe API Key should be provided as the authorization key\
+        \ in the request header. If the key is incorrect, the operation will not be executed and an authorization\
+        \ error will return in the response.\n\nThe service is subject to a rate limit of 100 requests per second\
+        \ to ensure optimal system performance, and clients exceeding this limit will receive an HTTP 429 Too Many\
+        \ Requests response."
+      security:
+      - InsAuthKey: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              channel: whatsapp
+              locale: tr
+              to: +905XXXXXXXXX
+              ttl: 600
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /v1/template/create:
+    post:
+      operationId: createAnOtpTemplate
+      summary: Create an OTP Template
+      tags:
+      - OTP for WhatsApp
+      description: "The Verify API enables you to generate, send, and verify OTP codes for the WhatsApp channel.\
+        \ Ensure that the provided template name exists and corresponds to the authentication template name you\
+        \ created through your WhatsApp Business Account.\n\nAfter you create a channel for your brand, you can\
+        \ create OTP templates.\n\nThis API key is sensitive and should never be used on the frontend or mobile\
+        \ SDK; it should only be implemented on the backend.\n\nBody Parameters\n\nParameter\nDescription\nData\
+        \ Type\nRequired\nRules\n\nchannel\nChannel that you will send the OTP code. It will be WhatsApp.\nString\n\
+        Yes\noneof:whatsapp\n\nlocale\nDetermines the language/locale in which the OTP code message will be sent.\n\
+        String\nYes\noneof:pt af sq ar az bn bg ca zh_CN zh_HK zh_TW hr cs da nl en en_GB en_US et fil fi fr ka\
+        \ de el gu ha he hi hu id ga it ja kn kk rw_RW ko ky_KG lo lv lt mk ms ml mr nb fa pl pt_BR pt_PT pa ro\
+        \ ru sr sk sl es es_AR es_ES es_MX sw sv ta te th tr uk ur uz vi zu\n\ntemplateName\nThe template name that\
+        \ will be inserted\nString\nYes\nThe template has to exist already.\n\nSample Example\nSample Request\n\
+        Every request made to the request endpoint requires a request body formatted in JSON and containing your\
+        \ parameters.\n\nMake sure to replace the sample values in the request header(s) and body where required\
+        \ before sending your request.\n\ncurl --location 'verify.useinsider.com/v1/template/create' \\\n--header\
+        \ 'Content-Type: application/json' \\\n--header 'x-ins-auth-key: INS.************************' \\\n--data\
+        \ '{\n    \"channel\": \"whatsapp\",\n    \"locale\": \"tr\",\n    \"templateName\": \"otp_template\"\n\
+        }'\n\nSample Responses\n202 Accepted\n{\n    \"status\": \"success\"\n}\n\n400 Bad Request\n{\n    \"errors\"\
+        : [\n        {\n            \"message\": \"invalid request payload\"\n        }\n    ]\n}\n\n400 Bad Request\n\
+        {\n    \"errors\": [\n        {\n            \"message\": \"this field must be one of these:whatsapp\",\n\
+        \            \"field\": \"text\"\n        }\n    ]\n}\n\n401 Unauthorized\n{\n    \"errors\": [\n      \
+        \  {\n            \"message\": \"unauthorized\"\n        }\n    ]\n}\n\n409 Conflict\n{\n    \"errors\"\
+        : [\n        {\n            \"message\": \"no changes detected\"\n        }\n    ]\n}\n\n429 Too Many Requests\n\
+        {\n    \"errors\": [\n        {\n            \"message\": \"rate limit exceeded\"\n        }\n    ]\n}\n\
+        \n500 Internal Server Error\n{\n    \"errors\": [\n        {\n            \"message\": \"server error\"\n\
+        \        }\n    ]\n}\n\nLimitations\n\nAll functions must be executed with a simple HTTPS POST request.\n\
+        \nThe API Key should be provided as the authorization key in the request header. If the key is incorrect,\
+        \ the operation will not be executed and an authorization error will return in the response.\n\nFor effective\
+        \ usage, create a dedicated template for each language.\n\nThe service is subject to a rate limit of 100\
+        \ requests per second to ensure optimal system performance, and clients exceeding this limit will receive\
+        \ an HTTP 429 Too Many Requests response."
+      security:
+      - InsAuthKey: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              channel: whatsapp
+              locale: tr
+              templateName: otp_template
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /v1/template/list:
+    post:
+      operationId: updateOtpTemplates
+      summary: Update OTP Templates
+      tags:
+      - OTP for WhatsApp
+      description: "The Verify API enables you to generate, send, and verify OTP codes for the WhatsApp channel.\n\
+        \nAfter you create a channel for your brand, you can list its templates later.\n\nThis API key is sensitive\
+        \ and should never be used on the frontend or mobile SDK; it should only be implemented on the backend.\n\
+        \nSample Example\nSample Request\nEvery request made to the request endpoint requires a request body formatted\
+        \ in JSON and containing your parameters.\n\nMake sure to replace the sample values in the request header(s)\
+        \ and body where required before sending your request.\n\ncurl --location 'verify.useinsider.com/v1/template/list'\
+        \ \\\n--header 'Content-Type: application/json' \\\n--header 'x-ins-auth-key: INS.************************'\n\
+        \nSample Responses\n200 OK\nThis response indicates that your request was successfully completed.\n\n{\n\
+        \    \"templates\": {\n        \"whatsapp\": [\n            {\n                \"locale\": \"en\",\n   \
+        \             \"text\": \"\",\n                \"templateName\": \"sample_otp_template_1\"\n           \
+        \ },\n            {\n                \"locale\": \"tr\",\n                \"text\": \"\",\n            \
+        \    \"templateName\": \"sample_otp_template_2\"\n            }\n        ]\n    }\n}\n\n401 Unauthorized\n\
+        {\n    \"errors\": [\n        {\n            \"message\": \"unauthorized\"\n        }\n    ]\n}\n\n429 Too\
+        \ Many Requests\n{\n    \"errors\": [\n        {\n            \"message\": \"rate limit exceeded\"\n   \
+        \     }\n    ]\n}\n\nLimitations\n\nAll functions must be executed with a simple HTTPS GET request.\n\n\
+        The API Key should be provided as the authorization key in the request header. If the key is incorrect,\
+        \ the operation will not be executed and an authorization error will return in the response.\n\nThe service\
+        \ is subject to a rate limit of 100 requests per second to ensure optimal system performance, and clients\
+        \ exceeding this limit will receive an HTTP 429 Too Many Requests response."
+      security:
+      - InsAuthKey: []
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      x-source-note: The published collection maps the "Update OTP Templates" request to POST /v1/template/list;
+        Insider One's own rate-limit table lists Update OTP Templates as /v1/template/update. Recorded as published
+        — not silently corrected.
+    get:
+      operationId: listOtpTemplatesWhatsapp
+      summary: List OTP templates
+      tags:
+      - OTP for WhatsApp
+      description: "The Verify API enables you to generate, send, and verify OTP codes for the WhatsApp channel.\n\
+        \nAfter you create a channel for your brand, you can list its templates later.\n\nThis API key is sensitive\
+        \ and should never be used on the frontend or mobile SDK; it should only be implemented on the backend.\n\
+        \nSample Example\nSample Request\nEvery request made to the request endpoint requires a request body formatted\
+        \ in JSON and containing your parameters.\n\nMake sure to replace the sample values in the request header(s)\
+        \ and body where required before sending your request.\n\ncurl --location 'verify.useinsider.com/v1/template/list'\
+        \ \\\n--header 'Content-Type: application/json' \\\n--header 'x-ins-auth-key: INS.************************'\n\
+        \nSample Responses\n200 OK\nThis response indicates that your request was successfully completed.\n\n{\n\
+        \    \"templates\": {\n        \"whatsapp\": [\n            {\n                \"locale\": \"en\",\n   \
+        \             \"text\": \"\",\n                \"templateName\": \"sample_otp_template_1\"\n           \
+        \ },\n            {\n                \"locale\": \"tr\",\n                \"text\": \"\",\n            \
+        \    \"templateName\": \"sample_otp_template_2\"\n            }\n        ]\n    }\n}\n\n401 Unauthorized\n\
+        {\n    \"errors\": [\n        {\n            \"message\": \"unauthorized\"\n        }\n    ]\n}\n\n429 Too\
+        \ Many Requests\n{\n    \"errors\": [\n        {\n            \"message\": \"rate limit exceeded\"\n   \
+        \     }\n    ]\n}\n\nLimitations\n\nAll functions must be executed with a simple HTTPS GET request.\n\n\
+        The API Key should be provided as the authorization key in the request header. If the key is incorrect,\
+        \ the operation will not be executed and an authorization error will return in the response.\n\nThe service\
+        \ is subject to a rate limit of 100 requests per second to ensure optimal system performance, and clients\
+        \ exceeding this limit will receive an HTTP 429 Too Many Requests response."
+      security:
+      - InsAuthKey: []
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+components:
+  securitySchemes:
+    InsAuthKey:
+      type: apiKey
+      in: header
+      name: X-INS-AUTH-KEY
+      description: Insider One authorization key for this API, generated in the InOne panel.
+  responses:
+    TooManyRequests:
+      description: Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring
+        Retry-After when present.
+      content:
+        application/json:
+          example:
+            message: Too Many Requests
+            status: 429
+x-provenance:
+  generated: '2026-08-13'
+  method: derived
+  source: postman/insider-one-apis.postman_collection.json
+  source_url: https://documenter.gw.postman.com/api/collections/24851117/2sB3dSR9bM
+  publisher_page: https://developers.insiderone.com/
+  note: Insider One publishes a single public Postman collection covering every REST API. This document is the subset
+    of that collection served from verify.useinsider.com.

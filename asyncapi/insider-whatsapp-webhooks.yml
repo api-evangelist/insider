@@ -1,0 +1,100 @@
+generated: '2026-08-13'
+method: searched
+source: https://academy.insiderone.com/docs/webhooks-for-transactional-whatsapp
+sources:
+- https://academy.insiderone.com/docs/webhooks-for-transactional-whatsapp
+- https://academy.insiderone.com/docs/webhooks-for-conversational-whatsapp
+- https://academy.insiderone.com/docs/webhooks-for-otp-whatsapp
+- https://academy.insiderone.com/docs/whatsapp-settings
+- postman/insider-one-apis.postman_collection.json
+asyncapi_published: false
+asyncapi_note: >-
+  Insider One publishes no AsyncAPI, no CloudEvents profile and no event schema registry. The event
+  surface below is documented in prose + sample payloads only, so this artifact captures the webhook
+  CATALOG rather than a machine-readable event contract. Nothing here is fabricated: every event
+  name, field and payload shape is verbatim from Insider One's own webhook reference.
+summary: >-
+  The only outbound event surface Insider One publishes is WhatsApp message-status webhooks, in
+  three flavours — Transactional, Conversational and Verify (OTP). Delivery-state events are
+  forwarded from Meta's WhatsApp Cloud API and correlated back to the send call by an Insider-issued
+  tracking "key". Webhooks are registered in the InOne panel (WhatsApp Settings > Account APIs) or,
+  for the v2 OAuth 2.0 surface, through the gateway API.
+
+surfaces:
+  registration_ui: https://academy.insiderone.com/docs/whatsapp-settings
+  registration_api:
+  - {operation: updateTransactionalWhatsappWebhookSettingsWithOauth20, method: POST, url: 'https://gw.useinsider.com/api/wa/v2/transactional/settings', spec: openapi/insider-gateway-openapi.yml}
+  - {operation: updateConversationalWhatsappWebhookSettingsWithOauth20, method: POST, url: 'https://gw.useinsider.com/api/wa/v2/conversational/settings', spec: openapi/insider-gateway-openapi.yml}
+
+registration:
+  transport: HTTPS POST to a subscriber-supplied webhook_url
+  auth_methods:
+  - {id: bearer, description: 'Bearer Token authentication — webhook URL + bearer token, configured per API type.'}
+  - {id: oauth2, description: 'OAuth 2.0 — webhook URL, server token URL, client id/secret; grant types client_credentials or refresh_token; scopes e.g. webhook.write.'}
+  api_types: [Conversational, Transactional, Verify]
+  api_type_immutable: true
+  limits:
+    max_total: 20
+    max_bearer: 10
+    max_oauth2: 10
+    duplicates_allowed: false
+  settings_payload_fields: [webhook_url, from, auth_type, oauth2.grant_type, oauth2.token_url, oauth2.client_id, oauth2.client_secret, oauth2.refresh_token, oauth2.scopes, oauth2.expires_in]
+  operational_warning: >-
+    Changing a webhook URL immediately breaks any chatbot or automation flow bound to the previous
+    URL. Insider One does not fan out to both during a cutover.
+
+events:
+- {name: sent, api_types: [Transactional, Conversational, Verify], description: 'Message accepted by WhatsApp.'}
+- {name: delivered, api_types: [Transactional, Conversational, Verify], description: 'Delivered to at least one of the user devices. A single message can produce both delivered and failed when the user is signed in on multiple devices.'}
+- {name: read, api_types: [Transactional, Conversational, Verify], description: 'Message read by the recipient.'}
+- {name: failed, api_types: [Transactional, Conversational, Verify], description: 'Meta returned an error for the message; the Meta error object is forwarded verbatim.'}
+- {name: reply, api_types: [Conversational], mandatory: true, description: 'Inbound reply from the user. Mandatory for Conversational webhooks and cannot be removed. Unsupported for the Verify API type.'}
+
+payloads:
+- id: accepted
+  when: message accepted by WhatsApp
+  fields:
+  - {name: messaging_product, type: string, required: true, description: 'whatsapp'}
+  - {name: contacts, type: array, required: true}
+  - {name: 'contacts[].input', type: string, required: true, description: "User's phone number"}
+  - {name: 'contacts[].wa_id', type: string, required: true, description: "Customer's WhatsApp ID"}
+  - {name: messages, type: array, required: true}
+  - {name: 'messages[].id', type: string, required: true, description: 'Message ID received by the business'}
+  - {name: key, type: string, required: true, description: 'Insider One message tracking key, echoed in every later event for this message'}
+- id: error
+  when: WhatsApp returned an error for the message
+  fields:
+  - {name: error.message, type: string, required: true, description: 'e.g. "(#130429) Rate limit hit"'}
+  - {name: error.type, type: string, required: true, description: 'e.g. OAuthException'}
+  - {name: error.code, type: integer, required: true, description: 'Meta numeric error code'}
+  - {name: error.fbtrace_id, type: string, required: false, description: 'Meta trace id for Direct Support'}
+  - {name: error.error_data, type: object, required: false, description: 'Optional supplementary context; rely on code + message'}
+  - {name: key, type: string, required: true}
+
+correlation:
+  id: key
+  issued_by: Insider One
+  returned_on: the send response
+  present_on: every webhook event for that message
+  note: >-
+    This is the only end-to-end correlation identifier Insider One publishes anywhere — there is no
+    request-id header on the REST responses.
+
+delivery_semantics:
+  send_response_meaning: accepted and queued, not delivered
+  duplicate_states: 'A single message may report delivered on one device and failed on another.'
+  missing_reports: >-
+    "Delivery Report Missing" covers messages for which Meta never sends an event; those outcomes
+    never arrive over either the Transactional or Conversational webhook.
+
+other_event_surfaces:
+- {name: 'MindBehind Live webhook service', docs: 'https://academy.insiderone.com/docs/mindbehind-live-webhook-service', description: 'Real-time conversation events from the MindBehind conversational product to subscriber endpoints.'}
+- {name: 'Call an API (Architect journey channel)', docs: 'https://academy.insiderone.com/docs/architect-channel-call-an-api', description: 'OUTBOUND-BY-JOURNEY, not a webhook: an Architect journey element that calls a subscriber-defined endpoint mid-journey, with its own auth, throttling (requests/second) and response-check step.'}
+
+gaps:
+- No AsyncAPI, no event schema registry, no signature/HMAC verification documented on inbound webhooks
+  (authentication is by the subscriber's own bearer token or OAuth credential, which authenticates
+  Insider TO you, not the payload).
+- No retry/backoff policy published for failed webhook deliveries.
+- No webhook surface at all for Email, SMS, Web Push, App Push or Architect journey events — those
+  outcomes are only readable by polling the analytics APIs.

@@ -1,0 +1,115 @@
+generated: '2026-08-13'
+method: searched
+source: https://academy.insiderone.com/docs/status-and-error-codes-1
+docs: https://academy.insiderone.com/docs/status-and-error-codes-1
+sources:
+- https://academy.insiderone.com/docs/status-and-error-codes-1
+- https://academy.insiderone.com/docs/api-rate-limits-1
+- https://academy.insiderone.com/docs/webhooks-for-transactional-whatsapp
+- openapi/
+format: vendor-json
+rfc9457: false
+problem_json_media_type: false
+summary: >-
+  Insider One publishes a single cross-API status-and-error-code reference covering 2XX, 4XX and 5XX
+  with sample payloads. It is unusually complete for a marketing platform — roughly 95 documented
+  responses — but it is NOT a normalized error registry: the docs themselves warn "the responses vary
+  depending on the APIs" and there are at least SIX different error-envelope shapes in use across the
+  hosts. There is no application/problem+json, no stable machine error-code namespace shared across
+  APIs, and no per-operation error mapping. An agent must branch on envelope shape before it can read
+  an error.
+
+envelopes:
+- id: success-message
+  shape: '{"success": false, "message": "<human text>"}'
+  used_by: [catalog.api.useinsider.com, unification.useinsider.com, analytics.api.useinsider.com]
+  machine_code: false
+- id: bare-error-string
+  shape: '{"error": "<human text>"}'
+  used_by: [unification.useinsider.com, mobile.api.useinsider.com, web-push.api.useinsider.com]
+  machine_code: false
+- id: error-code-message
+  shape: '{"error": "<snake_case_code>", "message": "<human text>"}'
+  used_by: [mobile.useinsider.com]
+  machine_code: true
+  note: The closest thing Insider One has to a stable machine-readable error code namespace.
+- id: errors-array-objects
+  shape: '{"errors": [{"message": "<text>", "field": "<field>"}]}'
+  used_by: [sms.useinsider.com, verify.useinsider.com, whatsapp.useinsider.com]
+  machine_code: false
+  note: Carries a field pointer, which the other envelopes do not.
+- id: errors-array-strings
+  shape: '{"errors": ["Missing ''subject'' parameter"], "message": "bad-request", "status": 400}'
+  used_by: [mail.useinsider.com]
+  machine_code: false
+- id: status-data-validations
+  shape: '{"status": "Invalid|BusinessException|Error", "data": null, "error": {"code": "...", "message": "..."}, "validations": [...]}'
+  used_by: [ineureka.api.useinsider.com]
+  machine_code: true
+- id: meta-error-passthrough
+  shape: '{"error": {"message": "(#130429) Rate limit hit", "type": "OAuthException", "code": 130429, "fbtrace_id": "...", "error_data": {...}}}'
+  used_by: [whatsapp.useinsider.com, gw.useinsider.com]
+  machine_code: true
+  note: >-
+    WhatsApp errors are Meta Cloud API errors forwarded verbatim to your webhook, including numeric
+    Meta error codes and fbtrace_id. error_data is optional — rely on code + message.
+
+request_id_header: null
+request_id_note: >-
+  No request-id / trace header is documented on Insider One responses. For WhatsApp sends the
+  response carries a "key" (Insider-created message tracking key) that appears in every subsequent
+  webhook event for that message — that is the only end-to-end correlation identifier published.
+
+entries:
+- {status: 400, code: null, envelope: bare-error-string, title: 'users must be defined', message: 'users must be defined: bad request', remediation: 'Include the users array in the upsert payload.', operation: upsertUserData}
+- {status: 400, code: null, envelope: bare-error-string, title: 'Request too large', message: 'request body is bigger than maximum allowed size 5,000,000 bytes', remediation: 'Keep the whole request under 5 MB; split the batch.', operation: upsertUserData}
+- {status: 400, code: null, envelope: success-message, title: 'Partner is invalid', message: 'Partner is invalid.', remediation: 'Check X-PARTNER-NAME; the panel name is lowercase and has no spaces.'}
+- {status: 400, code: null, envelope: bare-error-string, title: 'Identifier values are the same', message: 'identifier values are the same: bad request', remediation: 'old_identifier and new_identifier must differ.', operation: updateIdentifiers}
+- {status: 400, code: null, envelope: bare-error-string, title: 'Missing identifier pair', message: 'there must be exactly 1 entry for both new and old identifiers: bad request', remediation: 'Supply exactly one old_identifier and one new_identifier.', operation: updateIdentifiers}
+- {status: 400, code: null, envelope: bare-error-string, title: 'Identifier already assigned', message: 'new identifier already has a user assigned to it: bad request', remediation: 'Identifiers are unique; delete the value from the other profile first.', operation: updateIdentifiers}
+- {status: 400, code: null, envelope: bare-error-string, title: 'No valid identifier', message: 'no valid identifier: bad request', remediation: 'Check Identity Resolution Management Settings for which identifiers are enabled.'}
+- {status: 400, code: null, envelope: bare-error-string, title: 'Cannot delete sole identifier', message: 'you cannot delete the sole identifier specified for a user: bad request', remediation: 'A profile must retain at least one identifier.', operation: deleteIdentifiers}
+- {status: 400, code: empty_insider_identifiers, envelope: error-code-message, title: 'No identifiers supplied', message: "'insider_identifiers' object need to have at least one identifier", operation: sendTargetedAppPushes}
+- {status: 400, code: invalid_notifications, envelope: error-code-message, title: 'Notifications array empty or oversized', message: "'notifications' is empty / can't have more than 20 objects", remediation: 'Send 1–20 notification objects per request.', operation: sendTargetedAppPushes}
+- {status: 400, code: blacklisted_deeplink, envelope: error-code-message, title: 'Blacklisted deep link', message: "deepLink can't contain 'aps' key", operation: sendTargetedAppPushes}
+- {status: 400, code: negative_integer, envelope: error-code-message, title: 'Negative identifier', message: "'camp_id' and/or 'channel_id' must be greater than zero"}
+- {status: 400, code: invalid_advanced_push_type, envelope: error-code-message, title: 'Invalid advanced push type', message: "'advanced_push_type' must be either Carousel or Slider"}
+- {status: 400, code: invalid_certificate, envelope: error-code-message, title: 'No validated push certificate', message: 'You do not have a validated certificate.', remediation: 'Upload/validate the push certificate in Settings, or use uploadFcmCertificate.'}
+- {status: 400, code: null, envelope: bare-error-string, title: 'Invalid date range', message: "date range must not exceed 90 days / invalid date format for 'from'; expected format is YYYY-MM-DD", remediation: 'Use YYYY-MM-DD and keep the window inside 90 days.', operation: getInappCampaignDetails}
+- {status: 400, code: null, envelope: success-message, title: 'Maximum allowed size', message: 'Maximum allowed size is 100.', remediation: 'Catalog and segment batches are capped; split the payload.'}
+- {status: 400, code: null, envelope: success-message, title: 'Throttling exception (record count)', message: 'The request is denied. More than 10000 records were sent.'}
+- {status: 400, code: null, envelope: success-message, title: 'Invalid JSON', message: 'Request data is not in valid JSON format.', remediation: 'Use double quotes for keys and values.'}
+- {status: 400, code: null, envelope: errors-array-strings, title: 'Missing required mail parameter', message: "Missing 'subject' / 'content' / 'to' / 'from' parameter", operation: sendTransactionalEmails}
+- {status: 400, code: null, envelope: errors-array-strings, title: 'Invalid callback URL', message: "Invalid callback URL in 'url' on 'callback'", operation: sendTransactionalEmails}
+- {status: 400, code: null, envelope: bare-error-string, title: 'Missing content type', message: 'content type must be application/json'}
+- {status: 401, code: null, envelope: bare-error-string, title: 'Bad API key', message: 'Bad Api Key.', remediation: 'Regenerate the key in InOne > Settings > Integration Settings.'}
+- {status: 401, code: bad_api_key, envelope: error-code-message, title: 'Empty or wrong API key', message: "'api_key' is either empty or wrong."}
+- {status: 401, code: null, envelope: success-message, title: 'Partner token authentication failed', message: 'Partner token authentication failed.', remediation: 'X-REQUEST-TOKEN and X-PARTNER-NAME must belong to the same account.'}
+- {status: 401, code: null, envelope: errors-array-strings, title: 'Key invalid, expired or revoked', message: 'The provided API key is invalid, expired or revoked'}
+- {status: 401, code: null, envelope: errors-array-strings, title: 'Unauthenticated domain', message: 'The domain you are trying to use is not authenticated.', remediation: 'Open a support ticket to authenticate the transactional email domain.'}
+- {status: 403, code: null, envelope: success-message, title: 'Access denied', message: 'Access Denied. You do not have sufficient access to perform this action.'}
+- {status: 403, code: null, envelope: bare-error-string, title: 'Invalid api key', message: 'Invalid api key'}
+- {status: 403, code: null, envelope: meta-error-passthrough, title: 'Request limit exceeded', message: 'Too many attempts, please slow down the request. 30 Requests/minute is allowed.', remediation: 'Throttling is signalled as 403 on some hosts and 429 on others.', throttling: true}
+- {status: 404, code: null, envelope: bare-error-string, title: 'No such user', message: 'no such user for these identifiers: no data', operation: getUserProfiles}
+- {status: 404, code: null, envelope: bare-error-string, title: 'InApp not found', message: 'inapp not found', operation: getInappCampaignDetails}
+- {status: 405, code: null, envelope: bare-error-string, title: 'Invalid payload', message: 'Invalid Payload.'}
+- {status: 406, code: null, envelope: null, title: 'Analytics window exceeded', message: 'Analytics data is available for the last 1 year only.'}
+- {status: 409, code: null, envelope: errors-array-objects, title: 'No changes detected', message: 'no changes detected', remediation: 'The update body is identical to stored values; nothing to write.'}
+- {status: 422, code: null, envelope: errors-array-strings, title: 'Missing / unprocessable field', message: 'The <field> is required.'}
+- {status: 422, code: null, envelope: bare-error-string, title: 'No push message certificate', message: 'No Push Message Certificate is Provided.'}
+- {status: 424, code: null, envelope: bare-error-string, title: 'Failed dependency', message: 'SERVICE:-Campaign not found'}
+- {status: 429, code: null, envelope: bare-error-string, title: 'Too many requests', message: 'rejected: too many requests', remediation: 'Back off with exponential retry; honour Retry-After when present.', throttling: true, ref: rate-limits/insider-rate-limits.yml}
+- {status: 429, code: null, envelope: errors-array-objects, title: 'Maximum attempts exceeded', message: 'maximum attempts exceeded', field: code, operation: verifyOtpCodes, throttling: true}
+- {status: 500, code: null, envelope: success-message, title: 'Unknown error', message: 'The request processing has failed because of an unknown error.', note: 'Insider One states it is alerted automatically on these.'}
+- {status: 503, code: null, envelope: null, title: 'Service unavailable', message: 'Temporarily unavailable due to overload or maintenance.', retryable: true}
+- {status: 504, code: null, envelope: null, title: 'Server timeout', message: 'No timely response from an upstream server.', retryable: true, note: 'Resending identical content for the same user within 15 minutes may be de-duplicated.'}
+- {status: 520, code: null, envelope: null, title: 'Cloudflare network error', message: 'Unexpected error on the Cloudflare edge.', retryable: true}
+
+entry_count: 43
+documented_response_count: 95
+gaps:
+- No RFC 9457 problem+json anywhere.
+- Six incompatible error envelopes across hosts; no shared machine-readable code namespace.
+- Errors are documented globally, not per operation, so an OpenAPI response mapping cannot be derived
+  reliably beyond the throttling case.
+- No request-id or trace header on responses.

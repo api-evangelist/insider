@@ -1,0 +1,140 @@
+generated: '2026-08-13'
+method: searched
+status: published
+source: https://academy.insiderone.com/docs/set-up-insider-one-mcp
+sources:
+- https://academy.insiderone.com/docs/set-up-insider-one-mcp
+- https://academy.insiderone.com/docs/insider-one-mcp-functions
+- https://academy.insiderone.com/docs/insider-one-mcp-best-practices
+- https://mcp.insiderone.com/.well-known/oauth-protected-resource
+summary: >-
+  Insider One ships a first-party REMOTE MCP server at https://mcp.insiderone.com/mcp that exposes
+  35 tools over the Insider One analytics, campaign and template surface. It is listed in the Claude
+  Connectors directory (no-code install) and reachable from any MCP client via `npx mcp-remote`.
+  Authentication is OAuth 2.0 (Client ID + Client Secret generated in the InOne panel, per-channel
+  scopes chosen at credential-generation time); the authorization server is https://gw.useinsider.com
+  and it publishes RFC 8414 + RFC 9728 discovery documents.
+
+deployment:
+  mode: remote
+  endpoint: https://mcp.insiderone.com/mcp
+  install: 'npx -y mcp-remote https://mcp.insiderone.com/mcp --header "Authorization: Bearer YOUR_ACCESS_TOKEN"'
+  package: null
+  auth: oauth
+  verified: probed
+  note: >-
+    mcp-remote is the generic Cloudflare/community bridge, not an Insider-published package — the
+    product Insider ships is the hosted HTTP endpoint, so mode is `remote`, not `both`. Claude
+    Desktop installs it from the Connectors directory with no local component at all.
+
+server:
+  name: insider-one-mcp
+  transport: http
+  url: https://mcp.insiderone.com/mcp
+  listings:
+  - Claude Connectors directory ("Insider One")
+  tool_count: 35
+  read_only_tools: 28
+  write_tools: 7
+  write_semantics: >-
+    Write tools create DRAFTS in the InOne panel only. They never send, schedule or publish. Every
+    write action defaults to "Needs approval" in the client. Journeys and customer data cannot be
+    modified through MCP.
+
+auth:
+  methods:
+  - oauth2
+  oauth2:
+    issuer: https://gw.useinsider.com
+    authorization_endpoint: https://gw.useinsider.com/oauth2/authorize
+    token_endpoint: https://gw.useinsider.com/oauth2/token
+    revocation_endpoint: https://gw.useinsider.com/oauth2/revoke
+    grant_types:
+    - authorization_code
+    - refresh_token
+    - client_credentials
+    pkce:
+    - S256
+    token_lifetime: up to 90 minutes
+    credential_source: InOne panel > Settings > InOne Settings > Integration Settings > OAuth 2.0 Credentials
+    scope_model: per-channel scopes selected when the credential is generated; a tool is available only
+      if the credential carries the matching scope
+    discovery:
+    - well-known/insider-gw-oauth-authorization-server.json
+    - well-known/insider-mcp-oauth-protected-resource.json
+    ref: scopes/insider-scopes.yml
+
+x-evidence:
+  probed: '2026-08-13'
+  tools_list:
+    url: https://mcp.insiderone.com/mcp
+    method: 'POST {"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+    http_status: 401
+    body: '{"error":"unauthorized"}'
+    conclusion: >-
+      The live tool schemas are auth-gated. The endpoint is real and answers, but inputSchema for each
+      tool requires an authenticated introspection. The tool list below is therefore taken from
+      Insider One's own published function reference (names + behaviour + read/write class), NOT from
+      a live tools/list, and carries no invented input schemas.
+  well_known:
+  - {url: 'https://mcp.insiderone.com/.well-known/oauth-authorization-server', http_status: 200}
+  - {url: 'https://mcp.insiderone.com/.well-known/oauth-protected-resource', http_status: 200}
+  - {url: 'https://mcp.insiderone.com/.well-known/oauth-protected-resource/mcp', http_status: 200}
+  - {url: 'https://gw.useinsider.com/.well-known/oauth-authorization-server', http_status: 200}
+  - {url: 'https://mcp.insiderone.com/.well-known/agent-card.json', http_status: 404}
+
+channels:
+- Email
+- SMS
+- WhatsApp
+- Web Push
+- Mobile App
+- Architect
+unsupported_channels:
+- OnSite
+
+tools:
+- {name: List Email Campaigns, category: email, type: read, description: Lists email campaigns.}
+- {name: Get Email Campaign Analytics, category: email, type: read, description: Retrieves analytics for a specific email campaign.}
+- {name: Get Email Overall Analytics, category: email, type: read, description: Retrieves overall email analytics.}
+- {name: Get Email Template, category: email, type: read, description: Retrieves the content of an email template.}
+- {name: Search Email Templates, category: email, type: read, description: Searches the email template library.}
+- {name: List Email Template Categories, category: email, type: read, description: Lists email template categories.}
+- {name: Create Email Campaign, category: email, type: write, description: Creates an email campaign draft in the InOne panel.}
+- {name: Create Email Template, category: email, type: write, description: Creates an email template draft.}
+- {name: Update Email Template, category: email, type: write, description: Updates an existing email template.}
+- {name: Duplicate Email Template, category: email, type: write, description: Duplicates an existing email template.}
+- {name: Delete Email Template, category: email, type: write, description: Deletes an email template.}
+- {name: List SMS Campaigns, category: sms, type: read, description: Lists SMS campaigns.}
+- {name: Get SMS Campaign Analytics, category: sms, type: read, description: Retrieves analytics for a specific SMS campaign.}
+- {name: Get SMS Overall Analytics, category: sms, type: read, description: Retrieves overall SMS analytics.}
+- {name: Get SMS Transactional Analytics, category: sms, type: read, description: Retrieves transactional SMS analytics.}
+- {name: Get SMS OTP/Verify Analytics, category: sms, type: read, description: Retrieves SMS OTP and Verify analytics.}
+- {name: List WhatsApp Campaigns, category: whatsapp, type: read, description: Lists WhatsApp campaigns.}
+- {name: Get WhatsApp Campaign Analytics, category: whatsapp, type: read, description: Retrieves analytics for a specific WhatsApp campaign.}
+- {name: Get WhatsApp Overall Analytics, category: whatsapp, type: read, description: Retrieves overall WhatsApp analytics.}
+- {name: Get WhatsApp Transactional Analytics, category: whatsapp, type: read, description: Retrieves transactional WhatsApp analytics.}
+- {name: Get WhatsApp OTP/Verify Analytics, category: whatsapp, type: read, description: Retrieves WhatsApp OTP and Verify analytics.}
+- {name: Create WhatsApp Template, category: whatsapp, type: write, description: Creates a WhatsApp template draft that enters the standard approval flow.}
+- {name: Delete WhatsApp Template, category: whatsapp, type: write, description: Deletes a WhatsApp template.}
+- {name: Get App Push Overall Analytics, category: mobile, type: read, description: Retrieves overall app push analytics.}
+- {name: Get InApp Details, category: mobile, type: read, description: Retrieves details for an InApp campaign.}
+- {name: Get Message Center Messages, category: mobile, type: read, description: Retrieves Message Center messages.}
+- {name: Get Web Push Campaign Analytics, category: web-push, type: read, description: Retrieves analytics for a specific Web Push campaign.}
+- {name: Get Web Push Overall Analytics, category: web-push, type: read, description: Retrieves overall Web Push analytics.}
+- {name: Get Web Push Top Metrics, category: web-push, type: read, description: Retrieves top Web Push metrics with breakdowns.}
+- {name: Get Architect Journeys, category: architect, type: read, description: Lists Architect journeys.}
+- {name: Get Architect Journey Analytics, category: architect, type: read, description: Retrieves analytics for a specific Architect journey.}
+- {name: Get Architect Overall Analytics, category: architect, type: read, description: Retrieves overall Architect journey analytics.}
+- {name: Get Architect Element Analytics, category: architect, type: read, description: Retrieves analytics for Architect elements and channels.}
+- {name: Get Architect Goals Information, category: architect, type: read, description: Lists configured conversion goals.}
+- {name: Get Architect Goals Analytics, category: architect, type: read, description: Retrieves conversion goal analytics.}
+
+limitations:
+- Only documented tools are exposed; available tools depend on OAuth scopes and licensed channels.
+- Write tools create drafts only — no sending, scheduling, launching or customer-data mutation.
+- Journeys cannot be created or modified through MCP.
+- OnSite analytics are not exposed through MCP.
+- Existing Insider One API rate limits apply to MCP calls (see rate-limits/insider-rate-limits.yml).
+
+crosswalk: mcp/insider-tool-crosswalk.yml

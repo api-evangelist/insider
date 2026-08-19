@@ -1,37 +1,125 @@
-generated: '2026-07-19'
+generated: '2026-08-13'
 method: searched
-source: https://academy.insiderone.com/docs/upsert-user-data-api-integration-wizard-2
-docs: https://academy.insiderone.com/docs
+source: https://academy.insiderone.com/docs/anatomy-of-an-api-request-1
+docs: https://academy.insiderone.com/docs/insider-one-apis-1
+sources:
+- https://academy.insiderone.com/docs/anatomy-of-an-api-request-1
+- https://academy.insiderone.com/docs/api-authentication-tokens-1
+- https://academy.insiderone.com/docs/api-rate-limits-1
+- https://academy.insiderone.com/docs/status-and-error-codes-1
+- openapi/
 summary: >-
-  Cross-cutting request/response conventions for Insider's data-ingestion APIs
-  (Upsert User Data API, Catalog API), derived from the Insider One Academy
-  developer documentation.
+  Cross-cutting request/response conventions for the Insider One REST estate — 18 hosts, 113
+  published operations, all on *.useinsider.com. The estate is host-per-product rather than one
+  gateway: each product family has its own hostname, its own key header and its own error envelope.
+  There is no shared base URL, no shared error format, no request-id header and no idempotency
+  contract. Consistent across all of them: JSON in and out, a version segment in the path, key auth
+  in a header, and a 429 on rate-limit exhaustion.
+
 authentication:
   style: api-key-header
-  headers: [X-REQUEST-TOKEN, X-PARTNER-NAME]
+  headers: [X-PARTNER-NAME, X-REQUEST-TOKEN, X-INS-AUTH-KEY, X-Api-Key, X-INSIDER-API-KEY, Authorization]
+  header_varies_by_api: true
+  oauth2: gw.useinsider.com and mcp.insiderone.com only
   ref: authentication/insider-authentication.yml
+
+base_urls:
+  model: host-per-product
+  count: 18
+  examples:
+  - https://unification.useinsider.com/api/user/v1
+  - https://contact.useinsider.com
+  - https://mail.useinsider.com
+  - https://catalog.api.useinsider.com/v2
+  - https://recommendation.api.useinsider.com/v2
+  - https://gw.useinsider.com/api/wa/v2
+  templated:
+  - 'https://{domain_name}/api/web/suggestions/query — Eureka suggestion host is issued per customer domain.'
+  ref: openapi/
+
 content_type:
   request: application/json
   response: application/json
+  enforced: true
+  enforcement_note: '400 "content type must be application/json" is a documented response.'
+
 versioning:
   scheme: uri-path
-  current: v1
-  example: https://unification.useinsider.com/api/user/v1/upsert
-rate_limiting:
-  signaled_via_status: 429
-  guidance: >-
-    On a 429 response the documentation instructs clients to throttle requests and
-    retry. Specific per-minute limits are not published.
+  observed: [v1, v2]
+  policy_url: null
+  side_by_side: true
+  side_by_side_note: >-
+    v1 and v2 of the same operation are served concurrently on several hosts (email subscribe/
+    unsubscribe, web push launch, email analytics), with different rate limits and different
+    semantics — v2 generally adds bulk/group support. Neither version is marked deprecated.
   ref: lifecycle/insider-lifecycle.yml
+
+rate_limiting:
+  published: true
+  per_endpoint: true
+  exhaustion_status: 429
+  alternate_exhaustion_status: 403
+  response_headers: [Retry-After]
+  quota_headers: none
+  backoff: exponential, documented
+  ref: rate-limits/insider-rate-limits.yml
+
 idempotency:
   supported: false
+  header: null
   notes: >-
-    No idempotency-key header/parameter is documented for the Upsert User Data API.
-    Upserts are keyed on the user identifier in the payload (natural idempotency by
-    identity), but there is no request-level idempotency contract; not asserting a
-    dedicated Idempotency pointer.
+    No Idempotency-Key header or request-level idempotency contract exists anywhere in the estate.
+    Upserts are idempotent BY IDENTITY (the payload's identifiers key the record), and a documented
+    504 note says identical content for the same user inside 15 minutes may be de-duplicated — but
+    neither is a caller-controlled idempotency guarantee, so no Idempotency pointer is asserted.
+
 pagination:
-  documented: false
+  documented: partial
+  style: page-number
+  params: [page, perPage]
+  used_by: [analytics.api.useinsider.com/email/*/campaign/list, sms.useinsider.com/analytics/v1/list]
+  response_fields: not documented
+  notes: Most operations return whole result sets with no pagination envelope.
+
+filtering:
+  time_windows:
+  - 'Analytics endpoints take startTime/endTime as int64 epoch values.'
+  - 'Architect analytics takes statDate as a dd/MM/yyyy - dd/MM/yyyy range string.'
+  - 'InApp details takes from/to as YYYY-MM-DD and caps the window at 90 days.'
+  - 'Analytics data is retained for 1 year; older windows return 406.'
+  inconsistency_note: Three different date formats across three analytics hosts.
+
+batching:
+  supported: true
+  limits:
+  - 'Upsert: request body max 5 MB; up to 25 million user records per minute with full batching.'
+  - 'Bulk SMS: up to 50 messages per request.'
+  - 'Targeted app push: up to 20 notification objects per request.'
+  - 'Catalog / segment batches: maximum 100 products, 10,000 records.'
+
+async_semantics:
+  send_endpoints: >-
+    A 2xx on a transactional send means ACCEPTED AND QUEUED, not delivered. Actual delivery is
+    governed by Messaging Per Second (MPS), not by the request rate limit. Delivery outcome arrives
+    on the webhook, correlated by the tracking key returned in the send response.
+  ref: asyncapi/insider-whatsapp-webhooks.yml
+
+request_id_tracing:
+  header: null
+  correlation: 'WhatsApp sends return a "key" (Insider tracking key) echoed in every webhook event for that message.'
+
 error_envelope:
-  documented_status_codes: [429]
-  format: json
+  format: vendor-json
+  rfc9457: false
+  distinct_shapes: 6
+  ref: errors/insider-problem-types.yml
+
+expansion_and_sparse_fields:
+  supported: partial
+  notes: 'getUserProfiles takes an attributes[] array selecting which attributes to return.'
+
+metadata:
+  custom_fields: >-
+    User payloads carry a nested "custom" object for both identifiers and attributes; events carry
+    event_params with their own "custom" object. Custom attributes MUST be nested under custom —
+    placing them at the root is the most common integration error Insider One documents.

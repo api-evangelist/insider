@@ -1,25 +1,103 @@
-generated: '2026-07-19'
+generated: '2026-08-13'
 method: searched
 source: https://insiderone.com/security/
+sources:
+- https://insiderone.com/security/
+- https://gw.useinsider.com/.well-known/oauth-authorization-server
+- https://mcp.insiderone.com/.well-known/oauth-protected-resource
+- https://academy.insiderone.com/docs/set-up-insider-one-mcp
+- https://academy.insiderone.com/docs/status-and-error-codes-1
+- https://academy.insiderone.com/docs/api-rate-limits-1
 standards:
 - id: soc2
   conforms: true
   evidence: SOC 2 examination published for the Insider Growth Management Platform.
+  url: https://insiderone.com/soc-2-examination-for-insider-growth-management-platform/
 - id: iso-27001
   conforms: true
   evidence: ISO/IEC 27001:2013 Information Security Management System certificate.
+  url: https://insiderone.com/security/
 - id: iso-27701
   conforms: true
   evidence: ISO/IEC 27701 Privacy Information Management certification badge on /security/.
 - id: csa-star
   conforms: true
   evidence: Listed in CSA STAR registry (insider-sg-pte-ltd).
+  url: https://cloudsecurityalliance.org/star/registry/insider-sg-pte-ltd
 - id: gdpr
   conforms: true
-  evidence: EU GDPR data-handling addressed in privacy policy and security posture.
+  evidence: >-
+    GDPR handled as a first-class API surface, not just a policy page — dedicated consent, delete
+    and anonymize operations (setDataProcessingConsentForAppUsers, deleteUserProfile,
+    deleteUserPiiDataUsingIdentifier, deleteUserPiiDataUsingProfileId) plus per-channel
+    subscribe/unsubscribe at global and group level.
 - id: oauth2
+  conforms: true
+  evidence: >-
+    OAuth 2.0 authorization server at https://gw.useinsider.com with authorization_code,
+    client_credentials and refresh_token grants; used by the gateway WhatsApp v2 API and the MCP
+    server. (Superseding the 2026-07-19 pass, which recorded oauth2 as false from the Upsert API alone.)
+  url: https://gw.useinsider.com/.well-known/oauth-authorization-server
+- id: rfc8414-authorization-server-metadata
+  conforms: true
+  evidence: /.well-known/oauth-authorization-server served anonymously with 200 on gw.useinsider.com
+    and mcp.insiderone.com.
+- id: rfc9728-protected-resource-metadata
+  conforms: true
+  evidence: /.well-known/oauth-protected-resource and /.well-known/oauth-protected-resource/mcp both
+    200, though scopes_supported is the wildcard "*" rather than a scope list.
+- id: rfc7636-pkce
+  conforms: true
+  evidence: code_challenge_methods_supported = ["S256"].
+- id: rfc7009-token-revocation
+  conforms: true
+  evidence: revocation_endpoint = https://gw.useinsider.com/oauth2/revoke.
+- id: oidc
   conforms: false
-  evidence: Own data-ingestion API uses API-key header auth, not OAuth2.
+  evidence: gw.useinsider.com/.well-known/openid-configuration returns 404; OAuth 2.0 only, no OIDC.
+- id: mcp
+  conforms: true
+  evidence: First-party remote MCP server at https://mcp.insiderone.com/mcp with 35 documented tools,
+    OAuth 2.0 authorization, and a Claude Connectors listing. tools/list returns 401 unauthenticated.
+  ref: mcp/insider-mcp.yml
+- id: a2a
+  conforms: false
+  evidence: No agent card served on any host; /.well-known/agent-card.json 404s everywhere probed.
+- id: llms-txt
+  conforms: true
+  evidence: >-
+    academy.insiderone.com/llms.txt is a real llms.txt — ~2,800 indexed doc pages with descriptions,
+    and every page is retrievable as markdown by appending .md. insiderone.com/llms.txt is a
+    different thing: a robots-style AI-usage policy file, not the llms.txt format.
+- id: openapi
+  conforms: false
+  evidence: >-
+    Insider One publishes no OpenAPI. The machine-readable contract it does publish is a public
+    Postman collection (138 requests) at https://developers.insiderone.com/ ; the 18 OpenAPI
+    documents in openapi/ are API Evangelist derivations of that collection.
+- id: postman
+  conforms: true
+  evidence: Public Postman collection "Insider One APIs", 138 requests across 18 hosts.
+  url: https://developers.insiderone.com/
+- id: asyncapi
+  conforms: false
+  evidence: No AsyncAPI; the WhatsApp webhook surface is documented in prose only.
 - id: rfc9457-problem-details
   conforms: false
-  evidence: No application/problem+json error format documented.
+  evidence: No application/problem+json; six different vendor error envelopes across hosts.
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: No deprecation policy and no Sunset/Deprecation headers; retirements are announced as
+    inline doc notes.
+- id: rate-limit-headers
+  conforms: false
+  evidence: >-
+    Per-endpoint limits are published in full (59 entries) and 429 is returned on exhaustion with an
+    optional Retry-After, but no RateLimit-*/X-RateLimit-* quota headers are emitted.
+- id: rfc7807-idempotency
+  conforms: false
+  evidence: No Idempotency-Key or request-level idempotency contract anywhere in the estate.
+- id: pagination
+  conforms: partial
+  evidence: page/perPage on the analytics list endpoints only; the rest of the estate returns whole
+    result sets.

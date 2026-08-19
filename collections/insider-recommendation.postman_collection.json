@@ -1,0 +1,1979 @@
+{
+  "item": [
+    {
+      "id": "14d3acb0-5226-4eed-862f-c4c5fd892581",
+      "name": "Algorithm Descriptions",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "3616a533-d926-4683-8ba8-a41d64b82801",
+          "name": "Chef",
+          "request": {
+            "name": "Chef",
+            "description": {
+              "content": "Chef is an automated recommendation algorithm that automatically identifies the best mixed strategy by testing the most popular items, top sellers, user-based, highest-discounted, new arrivals, and trending items algorithms to improve conversion rates. In a mixed strategy, you manually choose an algorithm for each slot. Chef, instead, chooses the best combination by automatically evaluating the algorithms' performance.\n\nEndpoint\n\nGET https://recommendation.api.useinsider.com/v2/chef\n\nQuery Parameters\n\nParameter\nSample Value\nDescription\nData Type\nRequired\n\npartnerName\nmybrand\nPartner Identifier, which is assigned by Insider One. You can use PartnerID as well.\nString\nYes\n\nlocale\nus_US\nLanguage or region of the site.\nString\nYes\n\nplatform\nweb\nIt is the requested platform. Its value can be web and app. Web comes by default.\nEnum\nNo\n\ncurrency\nUSD\nShows products with the specified currency.\nString\nNo\n\nuserId\ntestUser\nUser identifier, which is assigned by Insider One.\nString\nNo\n\nhp\nfalse, true or 0, 1\nMakes affinities affect the products of the response. The default is false.\nBoolean\nNo\n\ncategoryList\n[\"Tops\",\"Shirts\"]\nCategory filter of the products\n\nfilter\n\nSmart Recommender filtering. There can be more than one filter parameter.\nString\nNo\n\ndetails\ntrue\nAdds details to the products of the response.\nBoolean\nNo\n\nshuffle\nfalse\nShuffles the products of the response.\nBoolean\nNo\n\ngetGroupProducts\ntrue\nShows variant products under the products of the response.\nBoolean\nNo\n\ngroupProductsFields\n\nAdds these fields to the variant products’ details.\nString\nNo\n\nexcludeVariants\ntrue\nExclude variants from the response.\nBoolean\nNo\n\nexcludeViewDay\n30\nAfter how many days viewed products should be excluded. The default is -1.\nInteger\nNo (Can only be used with userId)\n\nexcludeViewItem\n10\nHow many viewed products should be excluded. The default is -1.\nInteger\nNo (Can only be used with userId)\n\nexcludePurchaseDay\n30\nAfter how many days purchased products should be excluded. The default is -1.\nInteger\nNo (Can only be used with userId)\n\nexcludePurchaseItem\n10\nHow many purchased products should be excluded. The default is -1.\nInteger\nNo (Can only be used with userId)\n\ncountry\nItaly\nRequested country information\nString\nNo (Only for Location Based Top Sellers usage in Mixed Strategy)\n\ncity\nMilan\nRequested city information\nString\nNo (Only for Location Based Top Sellers usage in Mixed Strategy)\n\ndayLimit\n7\nThreshold last update day value for Publisher partners The default is 2 days.\nInteger\nNo\n\nulv\ntrue, false\nEnables User Last Visit to affect recommendation results\nBoolean\nNo\n\nSample Request\nThe sample below shows a request to Chef, an automated recommendation strategy that picks the best-performing mix (popular items, top sellers, user-based, highest-discounted, new arrivals, trending, etc.) per slot—no manual algorithm selection required.\n\nhttps://recommendation.api.useinsider.com/v2/chef?partnerName={PartnerName}&locale={Locale}\n\nSample Response\n{\n        \"success\": true,\n        \"total\": 16,\n        \"types\": {\n        \"mpop\": 14,\n        \"mvop\": 2\n        },\n        \"data\": [\n        \"ABC1234\",\n        \"ABC1243\",\n        \"ABC1234\",\n        \"ABC1235\",\n        \"ABC1237\",\n        \"ABC1230\",\n        \"ABC1263\",\n        \"ABC1209\",\n        \"ABC1256\",\n        \"CBA1234\",\n        \"CBA1233\",\n        \"CBA1236\",\n        \"CBA1239\",\n        \"CBA1221\",\n        \"CBA1209\",\n        \"CBA1247\"\n        ]\n        }\n\nFallback Algorithms\nThe Chef algorithm doesn't have a specific fallback mechanism; instead, fallback algorithms are determined by the individual algorithms selected by Chef.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "chef"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-REQUEST-TOKEN"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "afd0d38a-1357-468e-aca7-871f72526bad",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "chef"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-REQUEST-TOKEN",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "428246f7-bd36-48f3-a468-8b78b6c524a6",
+          "name": "Complementary Products",
+          "request": {
+            "name": "Complementary Products",
+            "description": {
+              "content": "The Complementary Products algorithm surfaces products that go well with the one the shopper is currently viewing, items that complete the look, set, or use case rather than replace it (e.g., a belt for trousers, a case for a phone, a lamp for a sofa).\n\nIt uses a catalog-aware map of complementary category relationships generated by a language model from your category tree, so it works even on catalogs with little or no purchase history. Performs optimally on product detail and cart pages.\n\nEndpoint\n\nGET https://recommendation.api.useinsider.com/v2/complementary\n\nQuery Parameters\n\nParameter\nSample Value\nDescription\nData Type\nRequired\n\npartnerName\nmybrand\nPartner Identifier assigned by Insider One. You can use PartnerID as well.\nString\nYes\n\nlocale\nus_US\nLocale of requested product catalog\nString\nYes\n\nproductId\n1068\nThe reference product for which the complement is computed\nString\nYes\n\ncurrency\nUSD\nProduct currency. If no value is set, the default currency in your settings is used.\nString\nNo\n\nsize\n10\nResponse items. Valid values are 0 to 100.\nInteger\nNo\n\ncategoryList\n[“Clothes”]\nCategory filter of the products\nArray\nNo\n\nuserId\na1b2c3d4\nUser identifier; enables personalization boosts when provided\nString\nNo\n\nplatform\nweb\nRequested platform (default: web)\nEnum\nNo\n\ndetails\ntrue\nAdds details to the products of the response\nBoolean\nNo\n\nexcludeVariants\ntrue\nHides color/size variants of the same base product\nBoolean\nNo\n\nshuffle\nfalse\nShuffles the products of the response\nBoolean\nNo\n\nfilter\n[in_stock][=][true]\nRestricts results by fields such as price, brand, color, gender, in_stock, or category\nString\nNo\n\nhp\ntrue\nHyper-personalization flag. Re-ranks results using the shopper's attribute preferences\nBoolean\nNo\n\ngetGroupProducts\ntrue\nReturns all color/size variants grouped under each recommended product\nBoolean\nNo\n\ngroupProductsFields\nproduct_attributes.color,price\nComma-separated list of fields to include in the grouped variants; products missing any listed field are dropped\nString\nNo\n\ngetAllGroupProductsFields\ntrue\nReturns all variant fields without dropping products for missing fields; automatically enables getGroupProducts\nBoolean\nNo\n\nexcludeViewDay\n30\nDays before excluding previously viewed products\nInteger\nNo\n\nexcludeViewItem\n100\nNumber of viewed products to exclude\nInteger\nNo\n\nexcludePurchaseDay\n30\nDays before excluding previously purchased products\nInteger\nNo\n\nexcludePurchaseItem\n100\nNumber of purchased products to exclude\nInteger\nNo\n\nSample Request\nThe sample below shows a request to Complementary Products, the algorithm that suggests items frequently bought or viewed alongside the anchor product.\n\nhttps://recommendation.api.useinsider.com/v2/complementary?partnerName={PartnerName}&locale={Locale}&productId={ABC123}&size=10\n\nSample Response\n{\n  \"success\": true,\n  \"total\": 10,\n  \"types\": { \"cp\": 10 },\n  \"data\": [\n    \"649517_49890\",\n    \"568334_49053\",\n    \"639714_49677\"\n  ]\n}\n\nFallback Algorithms\nWhen Complementary Products results are insufficient, these algorithms fill the response:\n\nPurchased Together\n\nMost Popular Items",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "complementary"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-REQUEST-TOKEN"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "8c49a82c-87b7-467a-9470-0a9ffda1fbec",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "complementary"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-REQUEST-TOKEN",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f3fe3b60-1ce8-4603-b4f6-c90fa9f92061",
+          "name": "Highest Discounted Products",
+          "request": {
+            "name": "Highest Discounted Products",
+            "description": {
+              "content": "The Highest Discounted Products algorithm recommends products based on their discount ratios, prioritizing those with higher discounts. It calculates the discount ratio for each product using the original and discounted prices. Recommended products will be sorted from highest to lowest discount for the given size. For each currency type, the discount ratio is calculated separately. This type of algorithm works best on main and category pages.\n\nEndpoint\n\nGET https://recommendation.api.useinsider.com/v2/highest-discounted\n\nQuery Parameters\n\nParameter\nSample Value\nDescription\nData Type\nRequired\n\npartnerName\nmybrand\nPartner Identifier assigned by Insider One. You can use PartnerID as well.\nString\nYes\n\nlocale\nus_US\nLocale of the requested product catalog\nString\nYes\n\nplatform\nweb\nRequested platform. Web comes by default.\nEnum\nNo\n\ncurrency\nUSD\nRequested currency of the products. If no value is set, the default currency in your settings is used.\nString\nYes\n\nuserId\na1b2c3d4\nUser identifier which is assigned by Insider One\nString\nNo\n\nhp\nfalse, true, or 1, 0\nMakes affinities affect products of the response. The default is false.\nBoolean\nNo (Can only be used with userId)\n\nsize\n50\nRequired number of items in response. Valid values are 0 to 100.\nInteger\nNo\n\ncategoryList\n[“Clothes”, “Skirts”]\nCategory filter of the products\nArray (of string)\nNo\n\nfilter\n\nSmart Recommender filtering. There can be more than one filter parameter.\nString\nNo\n\ndetails\ntrue\nAdds details to the products of the response\nBoolean\nNo\n\nshuffle\nfalse\nShuffles the products of the response\nBoolean\nNo\n\ngetGroupProducts\nfalse\nShows variant products under the products of the response\nBoolean\nNo\n\ngroupProductsFields\n\nAdds these fields to the variant products’ details\nString\nNo\n\nexcludeVariants\ntrue\nExclude variants from the response\nBoolean\nNo\n\nexcludeViewDay\n30\nAfter how many days viewed products should be excluded. The default is -1.\nInteger\nNo (Can only be used with userId)\n\nexcludeViewItem\n10\nHow many viewed products should be excluded. The default is -1.\nInteger\nNo (Can only be used with userId)\n\nexcludePurchaseDay\n30\nAfter how many days purchased products should be excluded. The default is -1.\nInteger\nNo (Can only be used with userId)\n\nexcludePurchaseItem\n10\nHow many purchased products should be excluded. The default is -1.\nInteger\nNo (Can only be used with userId)\n\nproductId\nABC123CBA\nCurrent product ID\nString\nNo\n\nIf you want to get top sellers products from the category or categories you want, specify either categoryList or category and subCategory.\n\nSample Request\nThe sample below displays a request for the Highest Discounted Products; the algorithm recommends products based on their discount ratios, prioritizing those with higher discounts.\n\nhttps://recommendation.api.useinsider.com/v2/highest-discounted?partnerName={Partner Name}&locale={Locale}&size=5¤cy={Currency}\n\nSample Response\n{\n        \"success\": true,\n        \"total\": 5,\n        \"types\": {\n        \"hdop\": 5\n        },\n        \"data\": [\n        \"AB76543\",\n        \"AB54321\",\n        \"YZ76543\",\n        \"AB49876\",\n        \"AB01234\"\n        ]\n        }\n\nFallback Algorithms\nIf the products from the Highest Discounted Products are not enough to fill the response data, some fallback algorithms below fill it:\n\nHighest discounted products of the category without excluding the right-most item in the categoryList",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "highest-discounted"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-REQUEST-TOKEN"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f5218edf-3dae-4fc6-8bab-14217cfef62b",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "highest-discounted"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-REQUEST-TOKEN",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e7b19dc9-5e48-4f74-8ab0-28ab3f64ae65",
+          "name": "Purchased with Last Purchased",
+          "request": {
+            "name": "Purchased with Last Purchased",
+            "description": {
+              "content": "The Purchased with Last Purchased algorithm is one of Insider One's personalized algorithms. It recommends the purchased products along with the user’s last purchased product. Purchase events can be collected from Web, Mobile, and Offline (CRM) UCD events. It is available on Web Smart Recommender, API-based Recommender, and App Recommender.\n\nEndpoint\n\nGET https://recommendation.api.useinsider.com/v2/last-purchased-together\n\nQuery Parameters\n\nParameter\nSample Value\nDescription\nData Type\nRequired\n\npartnerName\n1000001\nPartner Identifier assigned by Insider One. You can use PartnerID as well.\nString\nYes\n\nlocale\nus_US\nLanguage or region of the site\nString\nYes\n\ncurrency\nUSD\nShows products with the specified currency\nString\nNo\n\nuserId\na1b2c3d4\nUser identifier that is assigned by Insider One\nString\nYes\n\nplatform\nweb\nRequested platform. Web comes by default.\nString\nNo\n\ndetails\ntrue\nAdds item details to the response\nBoolean\nNo\n\nhp\nfalse\nHyper-personalization activation\nBoolean\nNo\n\nsize\n50\nRequired number of items in response. The maximum allowed size is 100.\nInteger\nNo\n\nshuffle\nfalse\nShuffle the products in the response\nBoolean\nNo\n\nexcludeVariants\ntrue\nExclude variants by the same group ID. If the panel setting is true for this feature, the parameter will always be true. Otherwise, it depends on the parameter. The default value is false.\nBoolean\nNo\n\nexcludePurchaseDay\n30\nExclude items the user purchased in X days\nInteger\nNo\n\nexcludeViewDay\n30\nExclude items the user viewed in X days\nInteger\nNo\n\nexcludePurchaseItem\n100\nThe number of purchased products to exclude\nInteger\nNo\n\nexcludeViewItem\n100\nThe number of viewed products to exclude\nInteger\nNo\n\nproductId\nABC123CBA\nCurrent product ID\nString\nNo\n\nfilter\n\nSmart Recommender filtering. There can be more than one filter parameter.\nString\nNo\n\ncategoryList\n[“Clothes”, “Skirts”]\nCategory filters of the product\nArray (of string)\nNo\n\ngetGroupProducts\ntrue, false\nShows variant products under the products of the response\nBoolean\nNo\n\ngroupProductsFields\nname, category\nAdds these fields to the variant products’ details\nString\nNo\n\ndayLimit\n7\nThreshold last update day value for Publisher partners. The default is 2 days.\nInteger\nNo\n\nSample Request\nThe sample below displays a request to Purchased with Last Purchased, one of Insider One’s personalized recommendation algorithms.\n\nhttps://recommendation.api.useinsider.com/v2/last=purchased-together?partnerName={PartnerName}&locale={Locale}&userId={UserId}\n\nSample Response\n{\n  \"success\": true,\n  \"total\": 10,\n  \"types\": {\n    \"lpt\": 10\n  },\n  \"data\": [\n    \"QAZ-7890\",\n    \"XYZ-1234\",\n    \"QAZ-7899\",\n    \"XYZ-1233\",\n    \"QAZ-7898\",\n    \"XYZ-1243\",\n    \"QAZ-7891\",\n    \"XYZ-1223\",\n    \"QAZ-7892\",\n    \"XYZ-1342\"\n  ]\n}\n\nFallback Algorithms\nBecause of its nature, the Purchased with Last Purchased Algorithm doesn’t have a fallback. However, you can always tune it by configuring the minimum number of products displayed in the Recommendation carousel under Recommendation Strategies.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "last-purchased-together"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-REQUEST-TOKEN"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "99540652-8771-481c-940f-67b13c4da1c4",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "last-purchased-together"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-REQUEST-TOKEN",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e3c34298-ebcc-4aa6-b651-aa3d58b3665e",
+          "name": "Manual Merchandising",
+          "request": {
+            "name": "Manual Merchandising",
+            "description": {
+              "content": "The Manual Merchandising algorithm retrieves product details manually specified and returns only in-stock products. It enables you to showcase specific products or content (e.g., for special days) from a list specified in the campaign configuration. In addition, only in-stock products will be displayed in the recommendation widget. This type of algorithm can be used on all page types to promote specific products.\n\nEndpoint\n\nGET https://recommendation.api.useinsider.com/v2/manual-merchandising\n\nYou need to write Product IDs as comma-separated in the productId parameter, such as productId=ed061306,287a4a89,8f0db743,69de9b05\n\nQuery Parameters\n\nParameter\nSample Value\nDescription\nData Type\nRequired\n\npartnerName\nmybrand\nPartner Identifier assigned by Insider One. You can use PartnerID as well.\nString\nYes\n\nlocale\nus_US\nLocale of requested product catalog\nString\nYes\n\nplatform\nweb\nRequested platform. Web comes by default.\nEnum\nNo\n\ncurrency\nUSD\nRequested currency of the products. If no value is set, the default currency in your settings is used.\nString\nYes\n\nproductId\nABC1234\nThe ID of the product whose complementary is requested\nString\nYes\n\nuserId\ntestUser\nUser identifier which is assigned by Insider One\nString\nNo\n\nhp\nfalse, true or 0, 1\nMakes affinities affect products of the response. The default is false.\nBoolean\nNo (Can only be used with userId)\n\nsize\n50\nRequired number of items in response. Valid values are 0 to 100.\nInteger\nNo\n\nfilter\n\nSmart Recommender filtering. There can be more than one filter parameter.\nString\nNo\n\ndetails\ntrue\nAdds details to the products of the response\nBoolean\nNo\n\nshuffle\nfalse\nShuffles the products of the response\nBoolean\nNo\n\ngetGroupProducts\nfalse\nShows variant products under the products of the response\nBoolean\nNo\n\ngroupProductsFields\n\nAdds these fields to the variant products’ details\nString\nNo\n\nexcludeViewDay\n30\nAfter how many days viewed products should be excluded. The default is -1.\nInteger\nNo (Can only be used with userId)\n\nexcludeViewItem\n10\nHow many viewed products should be excluded. The default is -1.\nInteger\nNo (Can only be used with userId)\n\nexcludePurchaseDay\n30\nAfter how many days purchased products should be excluded. The default is -1.\nInteger\nNo (Can only be used with userId)\n\nexcludePurchaseItem\n10\nHow many purchased products should be excluded. The default is -1.\nInteger\nNo (Can only be used with userId)\n\nincludeOutOfStockItems\nFalse, true, 0, or 1\nBoolean flag to decide if out of stock products given in endpoint parameter should return in API response. The default is false.\nBoolean\nNo\n\nSample Request\nThe sample below displays a request to the Manual Merchandising algorithm:\n\nhttps://recommendation.api.useinsider.com/v2/manual-merchandising?partnerName={Partner Name}&locale={Locale}&productId=ABC12345,XYZ12345\n\nSample Response\n{\n    \"success\": true,\n    \"total\": 2,\n    \"types\": {\n        \"mm\": 2\n    },\n    \"data\": [\n        \"ABC12345\",\n        \"XYZ12345\"\n    ]\n}\n\nFallback Algorithms\nThere is no fallback algorithm for this recommendation type, as only requested items are recommended.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "manual-merchandising"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-REQUEST-TOKEN"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "6207ce19-c718-449f-914a-d8e52b62d82d",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "manual-merchandising"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-REQUEST-TOKEN",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c23b7b8a-ea77-4f65-93ea-a92dc195a3b3",
+          "name": "Mixed Strategy",
+          "request": {
+            "name": "Mixed Strategy",
+            "description": {
+              "content": "The Mixed Strategy algorithm creates a customized, mixed recommendation strategy that combines different recommendation types. It is a way to use different algorithms for each slot in the Recommendation Widget. The mixed strategy allows you to use multiple algorithms in a single recommendation widget on your website. It works best on the main and category pages.\n\nThe duplicated items are automatically removed by the Mixed Strategy algorithm.\n\nEndpoint\n\nGET https://recommendation.api.useinsider.com/v2/mixed\n\nQuery Parameters\n\nParameter\nSample Value\nDescription\nData Type\nRequired\n\npartnerName\nmybrand\nPartner Identifier assigned by Insider One. You can use PartnerID as well.\nString\nYes\n\nlocale\nus_US\nLocale of requested product catalog\nString\nYes\n\nplatform\nweb\nRequested platform. Web comes by default.\nEnum\nNo\n\ncurrency\nUSD\nRequested currency of the products. If no value is set, the default currency in your settings is used.\nString\nNo\n\nsize\n50\nRequired number of items in response. Valid values are 0 to 100.\nInteger\nNo\n\ncategoryList\n[“Clothes”, “Skirts”]\nCategory filter of the products\nArray (of string)\nNo\n\nfilter\n\nSmart Recommender filtering. There can be more than one filter parameter.\nString\nNo\n\ndetails\ntrue\nAdds details to the products of the response\nBoolean\nNo\n\nshuffle\nfalse\nShuffles the products of the response\nBoolean\nNo\n\ngetGroupProducts\nfalse\nShows variant products under the products of the response\nBoolean\nNo\n\ngroupProductsFields\n\nAdds these fields to the variant products’ details\nString\nNo\n\nexcludeVariants\ntrue\nExclude variants from the response\nBoolean\nNo\n\nstrategy\n[{\"recommendationType\":\"rvp\",\"size\":1}, {\"recommendationType\":\"ub\",\"size\":2}]\nList of strategies.\nString\nYes\n\nuserId\ntestUser\nUser ID\nString\nNo\n\nhp\nfalse, true, or 0, 1\nMakes affinities affect the products of the response. The default is false.\nBoolean\nNo\n\nexcludeViewDay\n30\nAfter how many days viewed products should be excluded. The default is -1.\nInteger\nNo (Can only be used with userId)\n\nexcludeViewItem\n10\nHow many viewed products should be excluded. The default is -1.\nInteger\nNo (Can only be used with userId)\n\nexcludePurchaseDay\n30\nAfter how many days purchased products should be excluded. The default is -1.\nInteger\nNo (Can only be used with userId)\n\nexcludePurchaseItem\n10\nHow many purchased products should be excluded. The default is -1.\nInteger\nNo (Can only be used with userId)\n\ncountry\nGermany\nRequested country information\nString\nNo (Only for Location Based Top Sellers usage in Mixed Strategy)\n\ncity\nHamburg\nRequested city information\nString\nNo (Only for Location Based Top Sellers usage in Mixed Strategy)\n\ndayLimit\n7\nThreshold last update day value for Publisher partners (The default is 2 days.)\nInteger\nNo\n\nulv\ntrue, false\nEnables User Last Visit to affect the recommendation results\nBoolean\nNo\n\nYou need to add the necessary query parameters for the strategy or strategies you are using.\n\nStrategy\nStrategy is used to specify the desired recommendation types and sizes. Strategies are given within an array. Each strategy is an object that contains the keys recommendationType and size. recommendationType indicates the type of recommendation required, while size specifies the quantity needed.\n\n[\n    {\n        \"recommendationType\": \"ub\",\n        \"size\": 2\n    },\n    {\n        \"recommendationType\": \"btb\",\n        \"size\": 2\n    },\n    ...\n]\n\nList of Strategies\n\nAlgorithm\nAbbreviation\n\nChef\nchef\n\nComplementary Products\ncp\n\nHighest Discounted\nhdop\n\nHighest Discounted of Category\nhdoc\n\nLocation Based Top Sellers\nmpol\n\nManual Merchandising\nmm\n\nMost Popular\nmvop\n\nMost Popular of Category\nmvoc\n\nMost Valuable Products\nmvpop\n\nMost Valuable Products of Category\nmvpoc\n\nNew Arrivals\nnaop\n\nNew Arrivals of the Category\nnaoc\n\nViewed Together\nvtv\n\nPurchased Together\nbtb\n\nPurchased with Last Purchased\nlpt\n\nSubstitute Products\nsp\n\nTop Sellers\nmpop\n\nTop Sellers of Category\nmpoc\n\nTrending Products\ntpop\n\nTrending Products of Category\ntpoc\n\nUser Based\nub\n\nViewed Together\nvtv\n\nSample Request\nThe sample below displays a request to the Mixed Strategy algorithm:\n\nhttps://recommendation.api.useinsider.com/v2/mixed?locale={Locale}&partnerName={PartnerName}&strategy=[{\"recommendationType\":\"hdop\",\"size\":2}]\n\nSample Response\n{\n    \"success\": true,\n    \"total\": 2,\n    \"types\": {\n        \"hdop\": 2\n    },\n    \"data\": [\n        \"XYZ-987789\",\n        \"ABC-123321\"\n    ]\n}\n\nFallback Algorithms\nFallback algorithms are determined by your strategy selections.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "mixed"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-REQUEST-TOKEN"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "090dca12-fec8-4993-a43a-4a212a729b65",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "mixed"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-REQUEST-TOKEN",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "df204194-6c2b-40a4-a31f-cef864a1398f",
+          "name": "Most Popular Items",
+          "request": {
+            "name": "Most Popular Items",
+            "description": {
+              "content": "The Most Popular Items algorithm recommends items by analyzing the most popular products by page views. It generates recommendations based on the page view counts during the last 30 days. The Most Popular Items algorithm works best on main, category, and product pages.\n\nEndpoint\nGET https://recommendation.api.useinsider.com/v2/most-popular\n\nQuery Parameters\n\nParameter\nSample Value\nDescription\nData Type\nRequired\n\npartnerName\nmybrand\nPartner Identifier assigned by Insider One. You can use PartnerID as well.\nString\nYes\n\nlocale\nus_US\nLocale of requested product catalog\nString\nYes\n\nplatform\nweb\nRequested platform. Web comes by default.\nEnum\nNo\n\ncurrency\nUSD\nRequested currency of the products. If no value is set, the default currency in your settings is used.\nString\nNo\n\nsize\n50\nRequired number of items in response. Valid values are 0 to 100.\nInteger\nNo\n\ncategoryList\n[“Clothes”, “Skirts”]\nCategory filter of the products\nArray (of string)\nNo\n\nfilter\n\nSmart Recommender filtering. There can be more than one filter parameter.\nString\nNo\n\ndetails\ntrue\nAdds details to the products of the response\nBoolean\nNo\n\nshuffle\nfalse\nShuffles the products of the response\nBoolean\nNo\n\ngetGroupProducts\nfalse\nShows variant products under the products of the response\nBoolean\nNo\n\ngroupProductsFields\n\nAdds these fields to the details of variant products\nString\nNo\n\nexcludeVariants\ntrue\nExclude variants from the response.\nBoolean\nNo\n\nuserId\na1b2c3d4\nUser identifier, which is assigned by Insider One\nString\nNo\n\nexcludeViewDay\n30\nAfter how many days should viewed products be excluded\nInteger\nNo (Can be used only with userId)\n\nexcludeViewItem\n100\nHow many viewed products should be excluded\nInteger\nNo (Can be used only with userId)\n\nexcludePurchaseDay\n30\nAfter how many days should purchased products be excluded\nInteger\nNo (Can be used only with userId)\n\nexcludePurchaseItem\n100\nHow many purchased products should be excluded\nInteger\nNo (Can be used only with userId)\n\nhp\nfalse\nMakes affinities affect products of the response\nBoolean\nNo\n\nproductId\nABC123CBA\nCurrent product ID\nString\nNo\n\nAlgorithm Customization\nThe Most Popular Items algorithm also provides users with product recommendations based on their popularity within categories. To obtain category-based most popular products, the API endpoint should include the categoryList parameter with valid category values from the Product Catalog.\n\nVariant Name\nCondition\nParameter(s)\n\nMost Popular Items of Partner\nNo category filter\nDefault (no categoryList)\n\nMost Popular Items of Category\nCategory filter provided\ncategoryList=[category1, category2, ...]\n\nWhen categoryList is provided, recommendations are filtered to show only the Most Popular products within the specified categories. Recommendations served in the API response will be abbreviated as mvoc for Most Popular Items of Category recommendations.\n\nSample Request\nThe sample below displays a request to Most Popular Items, an algorithm that recommends products with the highest overall engagement based on page views.\n\nhttps://recommendation.api.useinsider.com/v2/most-popular?locale={Locale}&partnerName={PartnerName}\n\nSample Response\n{\n    \"success\": true,\n    \"total\": 1,\n    \"types\": {\n        \"mvop\": 1\n    },\n    \"data\": [\n{\n            \"image_url\": \"test.image_url.com\",\n            \"name\": \"Original Air-dried Beef recipe for dogs\",\n            \"item_id\": \"46177313784082\",\n            \"url\": \"test.url.com\",\n            \"description\": \"Having access to lush fields of grass year-round makes New Zealand free-range, grass-fed beef among the best in the world.\",\n            \"in_stock\": 1,\n            \"price\": {\n                \"USD\": 29.58\n            },\n            \"groupcode\": \"8528988209426\",\n            \"locale\": \"en_US\",\n            \"product_attributes\": {\n                \"activation_date\": \"2023-08-11\",\n                \"shopify_tag\": [\n                    \"air-dried\",\n                    \"beef\",\n                    \"dog\"\n                ]\n            },\n            \"stock_count\": 99,\n            \"category\": [\n                \"Dog Food\",\n                \"Pets Collection\"\n            ],\n            \"discount\": {\n                \"USD\": 0.0\n            },\n            \"original_price\": {\n                \"USD\": 29.58\n            }\n        }\n    ]\n}\n\nSample Request for Most Popular of Category\nhttps://recommendation.api.useinsider.com/v2/most-popular?locale={Locale}&partnerName={PartnerName}&categoryList=[“Dog Food”]\n\nSample Response\n{\n    \"success\": true,\n    \"total\": 1,\n    \"types\": {\n        \"mvoc\": 1\n    },\n    \"data\": [\n{\n            \"image_url\": \"test.image_url.com\",\n            \"name\": \"Original Air-dried Beef recipe for dogs\",\n            \"item_id\": \"46177313784082\",\n            \"url\": \"test.url.com\",\n            \"description\": \"Having access to lush fields of grass year-round makes New Zealand free-range, grass-fed beef among the best in the world.\",\n            \"in_stock\": 1,\n            \"price\": {\n                \"USD\": 29.58\n            },\n            \"groupcode\": \"8528988209426\",\n            \"locale\": \"en_US\",\n            \"product_attributes\": {\n                \"activation_date\": \"2023-08-11\",\n                \"shopify_tag\": [\n                    \"air-dried\",\n                    \"beef\",\n                    \"dog\"\n                ]\n            },\n            \"stock_count\": 99,\n            \"category\": [\n                \"Dog Food\",\n                \"Pets Collection\"\n            ],\n            \"discount\": {\n                \"USD\": 0.0\n            },\n            \"original_price\": {\n                \"USD\": 29.58\n            }\n        }\n    ]\n}\n\nFallback Algorithms\nIf the products come from Most Popular Items are not enough to fill the response data, some fallback algorithms below fill it:\n\nMost viewed items of the category, including the rightmost item in the categoryList",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "most-popular"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-REQUEST-TOKEN"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "60637829-37b2-4ba5-98f7-db796b1b73c0",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "most-popular"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-REQUEST-TOKEN",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "89191c41-e010-4557-b93e-980ef89346ea",
+          "name": "Most Valuable Products",
+          "request": {
+            "name": "Most Valuable Products",
+            "description": {
+              "content": "The Most Valuable Products algorithm recommends items based on their contribution to total revenue. It recommends products that generate more revenue across your site. Products are recommended based on the contribution to revenue and revenue per visit. This type of algorithm can be used on all page types.\n\nEndpoint\n\nGET https://recommendation.api.useinsider.com/v2/most-valuable\n\nQuery Parameters\n\nParameter\nSample Value\nDescription\nData Type\nRequired\n\npartnerName\nmybrand\nPartner Identifier assigned by Insider One. You can use PartnerID as well.\nString\nYes\n\nlocale\nus_US\nLocale of the requested product catalog\nString\nYes\n\nplatform\nweb\nRequested platform. Web comes by default.\nEnum\nNo\n\ncurrency\nUSD\nRequested currency of the products. If no value is set, the default currency in your settings is used.\nString\nNo\n\nsize\n50\nRequired number of items in response. Valid values are 0 to 100.\nInteger\nNo\n\ncategoryList\n[“Clothes”, “Skirts”]\nCategory filter of the products\nArray (of string)\nNo\n\nfilter\n\nSmart Recommender filtering. There can be more than one filter parameter.\nString\nNo\n\ndetails\ntrue\nAdds details to the products of the response.\nBoolean\nNo\n\nshuffle\nfalse\nShuffles the products of the response.\nBoolean\nNo\n\ngetGroupProducts\nfalse\nShows variant products under the products of the response\nBoolean\nNo\n\ngroupProductsFields\n\nAdds these fields to the variant products’ details\nString\nNo\n\nexcludeVariants\ntrue\nExclude variants from the response\nBoolean\nNo\n\nuserId\na1b2c3d4\nUser identifier that is assigned by Insider One\nString\nNo\n\nexcludeViewDay\n30\nAfter how many days should viewed products be excluded\nInteger\nNo (Can be used only with userId)\n\nexcludeViewItem\n100\nHow many viewed products should be excluded\nInteger\nNo (Can be used only with userId)\n\nexcludePurchaseDay\n30\nAfter how many days should purchased products be excluded\nInteger\nNo (Can be used only with userId)\n\nexcludePurchaseItem\n100\nHow many purchased products should be excluded\nInteger\nNo (Can be used only with userId)\n\nhp\nfalse\nMakes affinities affect the products of the response\nBoolean\nNo\n\nproductId\nABC123CBA\nCurrent product ID\nString\nNo\n\nSample Request\nThe sample below displays a request to Most Valuable Products, an algorithm that recommends items based on their contribution to total revenue:\n\nhttps://recommendation.api.useinsider.com/v2/most-valuable?locale={Locale}¤cy={Currenct}&partnerName={PartnerName}\n\nSample Response\n{\n    \"success\": true,\n    \"total\": 10,\n    \"types\": {\n        \"mpop\": 10\n    },\n    \"data\": [\n        \"QAZ-7890\",\n        \"XYZ-1234\",\n        \"QAZ-7899\",\n        \"XYZ-1233\",\n        \"QAZ-7898\",\n        \"XYZ-1243\",\n        \"QAZ-7891\",\n        \"XYZ-1223\",\n        \"QAZ-7892\",\n        \"XYZ-1342\"\n    ]\n}\n\nFallback Algorithms\nIf the products from Most Valuable Products are not enough to fill the response data, some fallback algorithms below fill it:\n\nMost valuable products of the category, including the rightmost item in the categoryList.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "most-valuable"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-REQUEST-TOKEN"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "976016b6-0bd9-44cd-80ff-9633ccfe3c70",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "most-valuable"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-REQUEST-TOKEN",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "afa3f003-c3db-41b0-ba4f-2033d759aab9",
+          "name": "New Arrivals",
+          "request": {
+            "name": "New Arrivals",
+            "description": {
+              "content": "The New Arrivals algorithm displays products that have been newly added to the website. It directly accesses the catalog and sorts products by creation date. Changing the integration type doesn't affect the results if the product is already in the database. You can use the New Arrivals algorithm on the main page to showcase new products.\n\nFor the Publisher vertical, the updated time applies to newly released articles.\n\nEndpoint\n\nGET https://recommendation.api.useinsider.com/v2/new-arrivals\n\nQuery Parameters\n\nParameter\nSample Value\nDescription\nData Type\nRequired\n\npartnerName\nmybrand\nPartner Identifier assigned by Insider One. You can use PartnerID as well.\nString\nYes\n\nlocale\nus_US\nLocale of requested product catalog\nString\nYes\n\nplatform\nweb\nRequested platform. Web comes by default.\nEnum\nNo\n\ncurrency\nUSD\nRequested currency of the products. If no value is set, the default currency in your settings is used.\nString\nNo\n\nsize\n50\nRequired number of items in response. Valid values are 0 to 100.\nInteger\nNo\n\ncategoryList\n[“Clothes”, “Skirts”]\nCategory filter of the products\nArray (of string)\nNo\n\nfilter\n\nSmart Recommender filtering. There can be more than one filter parameter.\nString\nNo\n\ndetails\ntrue\nAdds details to the products of the response\nBoolean\nNo\n\nshuffle\nfalse\nShuffles the products of the response\nBoolean\nNo\n\ngetGroupProducts\nfalse\nShows variant products under the products of the response\nBoolean\nNo\n\ngroupProductsFields\n\nAdds these fields to the variant products’ details\nString\nNo\n\nexcludeVariants\ntrue\nExclude variants from the response\nBoolean\nNo\n\nuserId\ntestUser\nUser ID\nString\nNo\n\nhp\ntrue, false or 0, 1\nMakes affinities affect products of the response. The default is false.\nBoolean\nNo\n\nexcludeViewDay\n30\nAfter how many days viewed products should be excluded\nInteger\nNo (Can only be used with userId)\n\nexcludeViewItem\n10\nHow many viewed products should be excluded. The default is -1.\nInteger\nNo (Can only be used with userId)\n\nexcludePurchaseDay\n30\nAfter how many days purchased products should be excluded. The default is -1.\nInteger\nNo (Can only be used with userId)\n\nexcludePurchaseItem\n10\nHow many purchased products should be excluded. The default is -1.\nInteger\nNo (Can only be used with userId)\n\nproductId\nABC123CBA\nCurrent product ID\nString\nNo\n\nAlgorithm Customization\nThe New Arrivals algorithm can also provide users with discounted product recommendations within the desired category.\n\nVariant Name\nCondition\nParameter(s)\n\nNew Arrivals of Partner\nNo category filter\nDefault (no categoryList)\n\nNew Arrivals of Category\nCategory filter provided\ncategoryList=[cat1, cat2, ...]\n\nWhen categoryList is provided, only newly added products within the specified categories are recommended, ordered by publish date. Recommendations served in the API response will be abbreviated as naoc for the New Arrivals of Category recommendations.\n\nSample Request\nThe sample below displays a request to New Arrivals, an algorithm that recommends products newly added to the website.\n\nhttps://recommendation.api.useinsider.com/v2/new-arrivals?locale={Locale}&partnerName={PartnerName}\n\nSample Response\n{\n    \"success\": true,\n    \"total\": 1,\n    \"types\": {\n        \"naop\": 1\n    },\n    \"data\": [\n{\n            \"image_url\": \"test.image_url.com\",\n            \"name\": \"Original Air-dried Beef recipe for dogs\",\n            \"item_id\": \"46177313784082\",\n            \"url\": \"test.url.com\",\n            \"description\": \"Having access to lush fields of grass year-round makes New Zealand free-range, grass-fed beef among the best in the world.\",\n            \"in_stock\": 1,\n            \"price\": {\n                \"USD\": 29.58\n            },\n            \"groupcode\": \"8528988209426\",\n            \"locale\": \"en_US\",\n            \"product_attributes\": {\n                \"activation_date\": \"2023-08-11\",\n                \"shopify_tag\": [\n                    \"air-dried\",\n                    \"beef\",\n                    \"dog\"\n                ]\n            },\n            \"stock_count\": 99,\n            \"category\": [\n                \"Dog Food\",\n                \"Pets Collection\"\n            ],\n            \"discount\": {\n                \"USD\": 0.0\n            },\n            \"original_price\": {\n                \"USD\": 29.58\n            }\n        }\n    ]\n}\n\nSample Request for New Arrivals of Category\nhttps://recommendation.api.useinsider.com/v2/new-arrivals?locale={Locale}&partnerName={PartnerName}¤cy={Currency}&categoryList=[“Dog Food”]\n\nSample Response\n{\n    \"success\": true,\n    \"total\": 1,\n    \"types\": {\n        \"naoc\": 1\n    },\n    \"data\": [\n{\n            \"image_url\": \"test.image_url.com\",\n            \"name\": \"Original Air-dried Beef recipe for dogs\",\n            \"item_id\": \"46177313784082\",\n            \"url\": \"test.url.com\",\n            \"description\": \"Having access to lush fields of grass year-round makes New Zealand free-range, grass-fed beef among the best in the world.\",\n            \"in_stock\": 1,\n            \"price\": {\n                \"USD\": 29.58\n            },\n            \"groupcode\": \"8528988209426\",\n            \"locale\": \"en_US\",\n            \"product_attributes\": {\n                \"activation_date\": \"2023-08-11\",\n                \"shopify_tag\": [\n                    \"air-dried\",\n                    \"beef\",\n                    \"dog\"\n                ]\n            },\n            \"stock_count\": 99,\n            \"category\": [\n                \"Dog Food\",\n                \"Pets Collection\"\n            ],\n            \"discount\": {\n                \"USD\": 0.0\n            },\n            \"original_price\": {\n                \"USD\": 29.58\n            }\n        }\n    ]\n}\n\nFallback Algorithms\nIf the products from New Arrivals are not enough to fill the response data, some fallback algorithms below fill it:\n\nNew arrivals of the category, including the rightmost item in the categoryList.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "new-arrivals"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-REQUEST-TOKEN"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "c87c4c0f-1673-4be9-a126-0bf052ee0d12",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "new-arrivals"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-REQUEST-TOKEN",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6bd29dfe-f691-4157-b765-0c96066c4b9f",
+          "name": "Purchased Together",
+          "request": {
+            "name": "Purchased Together",
+            "description": {
+              "content": "The Purchased Together algorithm recommends items by finding complementary products purchased by other users who have also purchased the user's items. It generates recommendations based on products purchased in the same sessions and in the same locale over the past 30 days. After generating recommendations, the Purchased Together algorithm orders the results according to purchase frequency. With the Purchased Together algorithm, you can apply your users' purchase patterns to your strategies. This type of algorithm works best on product and cart pages.\n\nEndpoint\n\nGET https://recommendation.api.useinsider.com/v2/purchased-together\n\nWhen this algorithm is used on the cart page, its endpoint differs for multiple products. For example, three products (X, Y, Z) are in the cart. The recommendation API will return the complementary products for each product in the cart as X1, Y1, Z1, X2, Y2, Z2... respectively.\n\nQuery Parameters\n\nParameter\nSample Value\nDescription\nData Type\nRequired\n\npartnerName\nmybrand\nPartner Identifier assigned by Insider One. You can use PartnerID as well.\nString\nYes\n\nlocale\nus_US\nLocale of the requested product catalog\nString\nYes\n\nplatform\nweb\nRequested platform. Web comes by default.\nEnum\nNo\n\ncurrency\nUSD\nRequested currency of the products. If no value is set, the default currency in your settings is used.\nString\nNo\n\nproductId\nABC1234\nThe ID of the product whose complementary is requested\nString\nYes\n\nsize\n50\nRequired number of items in response. Valid values are 0 to 100.\nInteger\nNo\n\ncategoryList\n[“Clothes”, “Skirts”]\nCategory filter of the products\nArray (of string)\nNo\n\nfilter\n\nSmart Recommender filtering. There can be more than one filter parameter.\nString\nNo\n\ndetails\ntrue\nAdds details to the products of the response\nBoolean\nNo\n\nshuffle\nfalse\nShuffles the products of the response\nBoolean\nNo\n\ngetGroupProducts\nfalse\nShows variant products under the products of the response\nBoolean\nNo\n\ngroupProductsFields\n\nAdds these fields to the variant products’ details\nString\nNo\n\nexcludeVariants\ntrue\nExclude variants from the response\nBoolean\nNo\n\nuserId\ntestUser\nUser identifier which is assigned by Insider One\nString\nNo\n\nhp\ntrue, false, or 0, 1\nMakes affinities affect products of the response. The default is false.\nBoolean\nNo\n\nexcludeViewDay\n30\nAfter how many days viewed products should be excluded. The default is -1.\nInteger\nNo (Can only be used with userId)\n\nexcludeViewItem\n10\nHow many viewed products should be excluded. The default is -1.\nInteger\nNo (Can only be used with userId)\n\nSample Request\nThe sample below displays a request to Purchased Together, an algorithm that recommends items frequently bought alongside the user’s selected product(s).\n\nhttps://recommendation.api.useinsider.com/v2/purchased-together?partnerName={PartnerName}&locale={Locale}&productId={ProductId}\n\nSample Response\n{\n    \"success\": true,\n    \"total\": 10,\n    \"types\": {\n        \"btb\": 10\n    },\n    \"data\": [\n        \"QAZ-7890\",\n        \"XYZ-1234\",\n        \"QAZ-7899\",\n        \"XYZ-1233\",\n        \"QAZ-7898\",\n        \"XYZ-1243\",\n        \"QAZ-7891\",\n        \"XYZ-1223\",\n        \"QAZ-7892\",\n        \"XYZ-1342\"\n    ]\n}\n\nFallback Algorithms\nIf the products from Purchased Together are not enough to fill the response data, some fallback algorithms below fill it:\n\nView Together\n\nMost Purchased of the Category\n\nMost Purchased of the Partner",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "purchased-together"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-REQUEST-TOKEN"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "81295601-bb02-4e9c-bcaa-2744f80142c5",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "purchased-together"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-REQUEST-TOKEN",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f4756dc2-f79d-45d8-8ff8-b37a595a6999",
+          "name": "Recently Viewed Products",
+          "request": {
+            "name": "Recently Viewed Products",
+            "description": {
+              "content": "The Recently Viewed Products algorithm is one of Insider One's personalized algorithms. It tracks the user’s product-view behavior collected from the UCD, capturing data from both Web and Mobile events. In return, the Recently Viewed Products algorithm provides recommendations based on the user’s recently viewed products. It performs best on the cart pages. It is available on Web Smart Recommender, API-based Recommender, and App Recommender.\n\nEndpoint\n\nGET https://recommendation.api.useinsider.com/v2/recently-viewed\n\nQuery Parameters\n\nParameter\nSample Value\nDescription\nData Type\nRequired\n\npartnerName\n1000001\nPartner Identifier assigned by Insider One. You can use PartnerID as well.\nString\nYes\n\nlocale\nus_US\nLanguage or region of the site\nString\nYes\n\ncurrency\nUSD\nShows products with the specified currency\nString\nNo\n\nuserId\na1b2c3d4\nUser identifier that is assigned by Insider One\nString\nYes\n\nplatform\nweb\nIts value can be web, mobile, or mobileV2. Web comes default.\nString\nNo\n\ndetails\ntrue\nAdds item details to the response\nBoolean\nNo\n\nhp\nfalse\nHyper-personalization activation\nBoolean\nNo\n\nsize\n50\nRequired number of items in response. The maximum allowed size is 100.\nInteger\nNo\n\nshuffle\nfalse\nShuffle the products in the response.\nBoolean\nNo\n\nexcludeVariants\ntrue\nExclude variants by the same group ID. If the panel setting is true for this feature, the parameter will always be true. Otherwise, it depends on the parameter. The default value is false.\nBoolean\nNo\n\nexcludePurchaseDay\n30\nExclude items the user purchased in X days\nInteger\nNo\n\nexcludePurchaseItem\n100\nThe number of purchased products to exclude\nInteger\nNo\n\nfilter\n\nSmart Recommender filtering. There can be more than one filter parameter.\nString\nNo\n\ncategoryList\n[“Clothes”, “Skirts”]\nCategory filter of the products\nArray (of string)\nNo\n\ndayLimit\n7\nThreshold last update day value for Publisher partners (The default is 2 days.)\nInteger\nNo\n\ngetGroupProducts\ntrue, false\nShows variant products under the products of the response\nBoolean\nNo\n\ngroupProductsFields\nname, category\nAdds these fields to the variant products’ details\nString\nNo\n\nFallback Algorithms\nBecause of its nature, the Recently Viewed Algorithm doesn’t have a fallback. However, you can always tune it by configuring the minimum number of products displayed in the recommendation carousel in the Recommendation Strategies.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "recently-viewed"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-REQUEST-TOKEN"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "29941573-a6d6-43c6-b664-ddb5c7f96b93",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "recently-viewed"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-REQUEST-TOKEN",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6132acee-e32d-4eb8-b532-96c3cdeb9000",
+          "name": "Similar Products",
+          "request": {
+            "name": "Similar Products",
+            "description": {
+              "content": "The Similar Products algorithm surfaces products that share descriptive characteristics with the product a shopper is currently viewing. It compares product name, category, and textual metadata, such as material_type, tags, gender, or any custom attribute you have defined. Up to 5 additional attributes can be included and configured on the Product Attributes page.\n\nIt performs optimally on product detail and cart pages where the written description carries most of the decision weight (electronics, books, grocery, health, cosmetics, accessories).\n\nEndpoint\nGET https://recommendation.api.useinsider.com/v2/similar\n\nQuery Parameters\n\nParameter\nSample Value\nDescription\nData Type\nRequired\n\npartnerName\nmybrand\nPartner Identifier assigned by Insider One. You can use PartnerID as well.\nString\nYes\n\nlocale\nus_US\nLocale of requested product catalog\nString\nYes\n\nproductId\n1068\nThe reference product for which the complement is computed\nString\nYes\n\ncurrency\nUSD\nProduct currency. If no value is set, the default currency in your settings is used.\nString\nNo\n\nsize\n10\nResponse items. Valid values are 0 to 100.\nInteger\nNo\n\ncategoryList\n[“Clothes”]\nCategory filter of the products\nArray\nNo\n\nuserId\na1b2c3d4\nUser identifier; enables personalization boosts when provided\nString\nNo\n\nplatform\nweb\nRequested platform (default: web)\nEnum\nNo\n\ndetails\ntrue\nAdds details to the products of the response\nBoolean\nNo\n\nexcludeVariants\ntrue\nHides color/size variants of the same base product\nBoolean\nNo\n\nshuffle\nfalse\nShuffles the products of the response\nBoolean\nNo\n\nfilter\n[in_stock][=][true]\nRestricts results by fields such as price, brand, color, gender, in_stock, or category\nString\nNo\n\nhp\ntrue\nHyper-personalization flag. Re-ranks results using the shopper's attribute preferences\nBoolean\nNo\n\ngetGroupProducts\ntrue\nReturns all color/size variants grouped under each recommended product\nBoolean\nNo\n\ngroupProductsFields\nproduct_attributes.color,price\nComma-separated list of fields to include in the grouped variants; products missing any listed field are dropped\nString\nNo\n\ngetAllGroupProductsFields\ntrue\nReturns all variant fields without dropping products for missing fields; automatically enables getGroupProducts\nBoolean\nNo\n\nexcludeViewDay\n30\nDays before excluding previously viewed products\nInteger\nNo\n\nexcludeViewItem\n100\nNumber of viewed products to exclude\nInteger\nNo\n\nexcludePurchaseDay\n30\nDays before excluding previously purchased products\nInteger\nNo\n\nexcludePurchaseItem\n100\nNumber of purchased products to exclude\nInteger\nNo\n\nSample Request\nThe sample below shows a request to Similar Products, the algorithm that suggests items frequently bought or viewed alongside the anchor product.\n\nhttps://recommendation.api.useinsider.com/v2/similar?partnerName={PartnerName}&locale={Locale}&productId={ABC123}&size=3\n\nSample Response\n{\n  \"success\": true,\n  \"total\": 3,\n  \"types\": { \"sim\": 3 },\n  \"data\": [\n    \"649517_49890\",\n    \"568334_49053\",\n    \"639714_49677\"\n  ]\n}\n\nFallback Algorithms\nWhen not enough products can be matched by their textual fields (additional product attributes can be activated from Product Catalog Management > Product Attributes > Similarity, by default, name and category are used), the system falls back to:\n\nViewed Together\n\nMost Popular Items in Category\n\nMost Popular Items",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "similar"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-REQUEST-TOKEN"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "de4e3116-1e94-4f65-8e9f-fe5289fdf01f",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "similar"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-REQUEST-TOKEN",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e9c70c5a-6433-4616-b8dd-a7c9cbec5b51",
+          "name": "Substitute Products",
+          "request": {
+            "name": "Substitute Products",
+            "description": {
+              "content": "The Substitute Products algorithm provides users with suggestions for products that can serve as replacements for items they have interacted with. The goal is to enhance user satisfaction and engagement by presenting products that align with their functional preferences and interests. This algorithm generates recommendations based on factors such as product name similarity, view-to-view statistics, and view-to-purchase statistics.\n\nEndpoint\n\nGET https://recommendation.api.useinsider.com/v2/substitute\n\nQuery Parameters\n\nParameter\nSample Value\nDescription\nData Type\nRequired\n\npartnerName\nmybrand\nPartner Identifier assigned by Insider One. You can use PartnerID as well.\nString\nYes\n\nlocale\nus_US\nLocale of the requested product catalog\nString\nYes\n\nplatform\nweb\nRequested platform. Web comes by default.\nEnum\nNo\n\ncurrency\nUSD\nRequested currency of the products. If no value is set, the default currency in your settings is used.\nString\nNo\n\nsize\n50\nRequired number of items in response. Valid values are 0 to 100.\nInteger\nNo\n\ncategoryList\n[“Clothes”, “Skirts”]\nCategory filter of the products\nArray (of string)\nNo\n\nfilter\n\nSmart Recommender filtering. There can be more than one filter parameter.\nString\nNo\n\ndetails\ntrue\nAdds details to the products of the response\nBoolean\nNo\n\nshuffle\nfalse\nShuffles the products of the response\nBoolean\nNo\n\ngetGroupProducts\nfalse\nShows variant products under the products of the response\nBoolean\nNo\n\ngroupProductsFields\n\nAdds these fields to the variant products’ details\nString\nNo\n\nexcludeVariants\ntrue\nExclude variants from the response\nBoolean\nNo\n\nuserId\ntestUser\nUser identifier which is assigned by Insider One.\nString\nNo\n\nhp\ntrue, false or 0, 1\nMakes affinities affect products of the response. The default is false.\nBoolean\nNo\n\nexcludePurchaseDay\n30\nAfter how many days purchased products should be excluded.\nInteger\nNo (Can only be used with userId)\n\nexcludePurchaseItem\n10\nHow many purchased products should be excluded. The default is -1.\nInteger\nNo (Can only be used with userId)\n\nproductId\nABC123CBA\nCurrent product ID\nString\nYes\n\nSample Request\nThe sample below displays a request to Substitute Recommendation, an algorithm that suggests alternative products to items a user has interacted with.\n\nhttps://recommendation.api.useinsider.com/v2/substitute?partnerName={PartnerName}&locale={Locale}&productId={ABC123CBA}&size=5\n\nSample Response\n{\n    \"success\": true,\n    \"total\": 5,\n    \"types\": {\n        \"sp\": 5\n    },\n    \"data\": [\n        \"ABC-123654\",\n        \"ABC-123321\",\n        \"ABC-123789\",\n        \"ABC-123987\",\n        \"ABC-123456\"\n    ]\n}\n\nFallback Algorithms\nIf the products come from Substitute Products are not enough to fill the response data, some fallback algorithms below fill it:\n\nViewed Together\n\nMost Viewed of Category",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "substitute"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-REQUEST-TOKEN"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "94d62606-d532-4a3f-a42d-02cb0f80c337",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "substitute"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-REQUEST-TOKEN",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7c19f436-da26-4259-a4ba-e76d68ab2648",
+          "name": "Top Sellers",
+          "request": {
+            "name": "Top Sellers",
+            "description": {
+              "content": "The Top Sellers algorithm recommends products based on their purchase counts over the last 30 days. It works best on the main page. \n\nEndpoint\n\nGET https://recommendation.api.useinsider.com/v2/top-sellers\n\nQuery Parameters\n\nParameter\nSample Value\nDescription\nData Type\nRequired\n\npartnerName\nmybrand\nPartner Identifier assigned by Insider One. You can use PartnerID as well.\nString\nYes\n\nlocale\nus_US\nLocale of the requested product catalog\nString\nYes\n\nplatform\nweb\nRequested platform. Web comes by default.\nEnum\nNo\n\ncurrency\nUSD\nRequested currency of the products. If no value is set, the default currency in your settings is used.\nString\nNo\n\nsize\n50\nRequired number of items in response. Valid values are 0 to 100.\nInteger\nNo\n\ncategoryList\n[“Clothes”, “Skirts”]\nCategory filter of the products\nArray (of string)\nNo\n\nfilter\n\nSmart Recommender filtering. There can be more than one filter parameter.\nString\nNo\n\ndetails\ntrue\nAdds details to the products of the response\nBoolean\nNo\n\nshuffle\nfalse\nShuffles the products of the response\nBoolean\nNo\n\ngetGroupProducts\nfalse\nShows variant products under the products of the response\nBoolean\nNo\n\ngroupProductsFields\n\nAdds these fields to the variant products’ details\nString\nNo\n\nexcludeVariants\ntrue\nExclude variants from the response\nBoolean\nNo\n\nuserId\na1b2c3d4\nUser identifier which is assigned by Insider One\nString\nNo\n\nexcludeViewDay\n30\nAfter how many days viewed products should be excluded\nInteger\nNo (Can be used only with userId)\n\nexcludeViewItem\n100\nHow many viewed products should be excluded\nInteger\nNo (Can be used only with userId)\n\nexcludePurchaseDay\n30\nAfter how many days purchased products should be excluded\nInteger\nNo (Can be used only with userId)\n\nexcludePurchaseItem\n100\nHow many purchased products should be excluded\nInteger\nNo (Can be used only with userId)\n\nhp\nfalse\nMakes affinities affect products of the response\nBoolean\nNo\n\ncity\nMilan\nRequested city information\nString\nNo\n\ncountry\nItaly\nRequested country information\nString\nNo\n\nproductId\nABC123CBA\nCurrent product ID\nString\nNo\n\nAlgorithm Customizations\nThe Top Sellers algorithm also provides users with product recommendations based on categories and locations.\n\nTo retrieve category-based best-selling products, the API endpoint should include the categoryList parameter with valid category values from the Product Catalog.\n\nTo obtain the best-selling products based on location, country, and city information, the API endpoint should include these parameters.\n\nPlease refer to the table below for the conditions and parameters to customize the Top Sellers algorithm.\n\nVariant\nCondition\nParameter(s)\n\nTop Sellers\nNo filters\nDefault (no country, no categoryList)\n\nTop Sellers of Category\nCategory filter provided\ncategoryList=[cat1, cat2, ...]\n\nTop Sellers of Location\nGeographic filter provided\ncountry=&city=\n\nWhen categoryList is provided, recommendations are filtered to show only the Top Seller products within the specified categories. Recommendations served in the API response will be abbreviated as mpoc for Top Sellers of Category recommendations.\n\nWhen Top Sellers of Location recommendations are requested, the API endpoint will present recommendations with the mpol abbreviation.\n\nSample Request\nThe sample below displays a request to Top Sellers, an algorithm that recommends products with the highest purchase counts over the last 30 days.\n\nhttps://recommendation.api.useinsider.com/v2/top-sellers?locale={Locale}&partnerName={PartnerName}\n\nSample Response\n{\n    \"success\": true,\n    \"total\": 1,\n    \"types\": {\n        \"mpop\": 1\n    },\n    \"data\": [\n{\n            \"image_url\": \"test.image_url.com\",\n            \"name\": \"Original Air-dried Beef recipe for dogs\",\n            \"item_id\": \"46177313784082\",\n            \"url\": \"test.url.com\",\n            \"description\": \"Having access to lush fields of grass year-round makes New Zealand free-range, grass-fed beef among the best in the world.\",\n            \"in_stock\": 1,\n            \"price\": {\n                \"USD\": 29.58\n            },\n            \"groupcode\": \"8528988209426\",\n            \"locale\": \"en_US\",\n            \"product_attributes\": {\n                \"activation_date\": \"2023-08-11\",\n                \"shopify_tag\": [\n                    \"air-dried\",\n                    \"beef\",\n                    \"dog\"\n                ]\n            },\n            \"stock_count\": 99,\n            \"category\": [\n                \"Dog Food\",\n                \"Pets Collection\"\n            ],\n            \"discount\": {\n                \"USD\": 0.0\n            },\n            \"original_price\": {\n                \"USD\": 29.58\n            }\n        }\n    ]\n}\n\nSample Request for Top Sellers of Category\nhttps://recommendation.api.useinsider.com/v2/most-popular?locale={Locale}&partnerName={PartnerName}¤cy={Currency}&categoryList=[“Dog Food”]\n\nSample Response\n{\n    \"success\": true,\n    \"total\": 1,\n    \"types\": {\n        \"mpoc\": 1\n    },\n    \"data\": [\n{\n            \"image_url\": \"test.image_url.com\",\n            \"name\": \"Original Air-dried Beef recipe for dogs\",\n            \"item_id\": \"46177313784082\",\n            \"url\": \"test.url.com\",\n            \"description\": \"Having access to lush fields of grass year-round makes New Zealand free-range, grass-fed beef among the best in the world.\",\n            \"in_stock\": 1,\n            \"price\": {\n                \"USD\": 29.58\n            },\n            \"groupcode\": \"8528988209426\",\n            \"locale\": \"en_US\",\n            \"product_attributes\": {\n                \"activation_date\": \"2023-08-11\",\n                \"shopify_tag\": [\n                    \"air-dried\",\n                    \"beef\",\n                    \"dog\"\n                ]\n            },\n            \"stock_count\": 99,\n            \"category\": [\n                \"Dog Food\",\n                \"Pets Collection\"\n            ],\n            \"discount\": {\n                \"USD\": 0.0\n            },\n            \"original_price\": {\n                \"USD\": 29.58\n            }\n        }\n    ]\n}\n\nSample Request for Top Sellers of Location\nhttps://recommendation.api.useinsider.com/v2/most-popular?locale={Locale}&partnerName={PartnerName}¤cy={Currency}&country={country}&city={city}\n\nSample Response\n{\n    \"success\": true,\n    \"total\": 1,\n    \"types\": {\n        \"mpol\": 1\n    },\n    \"data\": [\n{\n            \"image_url\": \"test.image_url.com\",\n            \"name\": \"Original Air-dried Beef recipe for dogs\",\n            \"item_id\": \"46177313784082\",\n            \"url\": \"test.url.com\",\n            \"description\": \"Having access to lush fields of grass year-round makes New Zealand free-range, grass-fed beef among the best in the world.\",\n            \"in_stock\": 1,\n            \"price\": {\n                \"USD\": 29.58\n            },\n            \"groupcode\": \"8528988209426\",\n            \"locale\": \"en_US\",\n            \"product_attributes\": {\n                \"activation_date\": \"2023-08-11\",\n                \"shopify_tag\": [\n                    \"air-dried\",\n                    \"beef\",\n                    \"dog\"\n                ]\n            },\n            \"stock_count\": 99,\n            \"category\": [\n                \"Dog Food\",\n                \"Pets Collection\"\n            ],\n            \"discount\": {\n                \"USD\": 0.0\n            },\n            \"original_price\": {\n                \"USD\": 29.58\n            }\n        }\n    ]\n}\n\nFallback Algorithms\nIf the products from Top Sellers are not enough to fill the response data, some fallback algorithms below fill it:\n\nMost purchased of the category without excluding the rightmost item in the categoryList\n\nIf the city or country is given in as a query parameter, the fallback algorithms that fill it are:\n\nMost purchased of the category\n\nMost purchased of the category, without excluding the right-most item in the categoryList\n\nMost purchased of the Partner",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "top-sellers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-REQUEST-TOKEN"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "b850b44b-736f-423e-ab06-496dc213c20b",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "top-sellers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-REQUEST-TOKEN",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9b6db10c-5d07-48b5-ba06-472f5f244ca7",
+          "name": "Trending Products",
+          "request": {
+            "name": "Trending Products",
+            "description": {
+              "content": "The Trending Products algorithm recommends items using a scoring system. It scores items based on weekly views and purchases to determine this week's trending items compared to those in the previous week. This type of algorithm works best on the main and category pages.\n\nEndpoint\n\nGET https://recommendation.api.useinsider.com/v2/trending\n\nQuery Parameters\n\nParameter\nSample Value\nDescription\nData Type\nRequired\n\npartnerName\nmybrand\nPartner Identifier assigned by Insider One. You can use PartnerID as well.\nString\nYes\n\nlocale\nus_US\nLocale of requested product catalog\nString\nYes\n\nplatform\nweb\nRequested platform. Web comes by default.\nEnum\nNo\n\ncurrency\nUSD\nRequested currency of the products. If no value is set, the default currency in your settings is used.\nString\nNo\n\nsize\n50\nRequired number of items in response. Valid values are 0 to 100.\nInteger\nNo\n\ncategoryList\n[“Clothes”, “Skirts”]\nCategory filter of the products\nArray (of string)\nNo\n\nfilter\n\nSmart Recommender filtering. There can be more than one filter parameter.\nString\nNo\n\ndetails\ntrue\nAdds details to the products of the response\nBoolean\nNo\n\nshuffle\nfalse\nShuffles the products of the response\nBoolean\nNo\n\ngetGroupProducts\nfalse\nShows variant products under the products of the response\nBoolean\nNo\n\ngroupProductsFields\n\nAdds these fields to the variant products’ details\nString\nNo\n\nexcludeVariants\ntrue\nExclude variants from the response\nBoolean\nNo\n\nuserId\ntestUser\nUser identifier which is assigned by Insider One.\nString\nNo\n\nhp\ntrue, false or 0, 1\nMakes affinities affect products of the response. The default is false.\nBoolean\nNo\n\nexcludeViewDay\n30\nAfter how many days viewed products should be excluded. The default is -1.\nInteger\nNo (Can only be used with userId)\n\nexcludeViewItem\n10\nHow many viewed products should be excluded. The default is -1.\nInteger\nNo (Can only be used with userId)\n\nexcludePurchaseDay\n30\nAfter how many days purchased products should be excluded. The default is -1.\nInteger\nNo (Can only be used with userId)\n\nexcludePurchaseItem\n10\nHow many purchased products should be excluded. The default is -1.\nInteger\nNo (Can only be used with userId)\n\nproductId\nABC123CBA\nCurrent product ID\nString\nNo\n\nSample Request\nThe sample below displays a request to Trending Products, an algorithm that recommends items using a dynamic scoring system.\n\nhttps://recommendation.api.useinsider.com/v2/trending?partnerName={partnerName}&locale={Locale}&size=2\n\nSample Response\n{\n    \"success\": true,\n    \"total\": 2,\n    \"types\": {\n        \"tpop\": 2\n    },\n    \"data\": [\n        \"ASD-4983\",\n        \"TYU-3451\"\n    ]\n}\n\nFallback Algorithms\nIf the products from Trending Products are not enough to fill the response data, some fallback algorithms below fill it:\n\nTrending products of the c",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "trending"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-REQUEST-TOKEN"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "689d27ef-9a56-453b-8264-664960fa753b",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "trending"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-REQUEST-TOKEN",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5b27cd1c-23bd-4309-932c-5749fcaf7334",
+          "name": "User Based",
+          "request": {
+            "name": "User Based",
+            "description": {
+              "content": "The User Based algorithm recommends items by finding users similar to the current user. It generates recommendations based on user behavior and product popularity.\n\nIn this algorithm, product recommendations are based on the behavior of similar users (users with close similarity index scores: viewed, purchased, or added the same or similar category products to their cart) with the current user. The algorithm recommends products that similar users have encountered in the past but that the current user has not visited. The user-based algorithm also takes the user-product-rating matrix as another input. For each product a user visits, a rating is calculated based on the number of visits, purchases, and add-to-carts within the last 30 days. This type of algorithm can be used on every kind of page.\n\nEndpoint\n\nGET https://recommendation.api.useinsider.com/v2/user-based\n\nQuery Parameters\n\nParameter\nSample Value\nDescription\nData Type\nRequired\n\npartnerName\nmybrand\nPartner Identifier assigned by Insider One. You can use PartnerID as well.\nString\nYes\n\nlocale\nus_US\nLocale of requested product catalog\nString\nYes\n\nplatform\nweb\nRequested platform. Web comes by default.\nEnum\nNo\n\nuserId\na1b2c3d4\nUser identifier that is assigned by Insider One\nString\nYes\n\ncurrency\nUSD\nRequested currency of the products. If no value is set, the default currency in your settings is used.\nString\nNo\n\nsize\n50\nRequired number of items in response. Valid values are 0 to 100.\nInteger\nNo\n\ncategoryList\n[“Clothes”, “Skirts”]\nCategory filter of the products\nArray (of string)\nNo\n\nfilter\n\nSmart Recommender filtering. There can be more than one filter parameter.\nString\nNo\n\ndetails\ntrue\nAdds details to the products of the response\nBoolean\nNo\n\nshuffle\nfalse\nShuffles the products of the response\nBoolean\nNo\n\ngetGroupProducts\nfalse\nShows variant products under the products of the response\nBoolean\nNo\n\ngroupProductsFields\n\nAdds these fields to the variant products’ details\nString\nNo\n\nexcludeVariants\ntrue\nExclude variants from the response\nBoolean\nNo\n\nexcludeViewDay\n30\nAfter how many days should viewed products be excluded\nInteger\nNo (Can be used only with userId)\n\nexcludeViewItem\n100\nHow many viewed products should be excluded\nInteger\nNo (Can be used only with userId)\n\nexcludePurchaseDay\n30\nAfter how many days should purchased products be excluded\nInteger\nNo (Can be used only with userId)\n\nexcludePurchaseItem\n100\nHow many purchased products should be excluded\nInteger\nNo (Can be used only with userId)\n\nhp\nfalse\nMakes affinities affect products of the response\nBoolean\nNo\n\ndayLimit\n2\nIf FMT is published_time, it adds a day limit filter\nInteger\nNo\n\nproductId\nABC123CBA\nCurrent product ID\nString\nNo\n\nSample Request\nThe sample below displays a request to User Based, a personalized recommendation algorithm that finds users similar to the current user.\n\nhttps://recommendation.api.useinsider.com/v2/user-based?partnerName={Partner_Name}&locale={Locale}¤cy=TRY&userId={User ID}\n\nSample Response\n{\n    \"success\": true,\n    \"total\": 10,\n    \"types\": {\n        \"mvop\": 10\n    },\n    \"data\": [\n        \"QAZ-7890\",\n        \"XYZ-1234\",\n        \"QAZ-7899\",\n        \"XYZ-1233\",\n        \"QAZ-7898\",\n        \"XYZ-1243\",\n        \"QAZ-7891\",\n        \"XYZ-1223\",\n        \"QAZ-7892\",\n        \"XYZ-1342\"\n    ]\n}\n\nFallback Algorithms\nIf the products come from User Based are not enough to fill the response data, some fallback algorithms below fill it:\n\nView-to-view of the last visited product\n\nMost viewed of the category \n\nMost viewed of the category without excluding the right-most item in the categoryList\n\nMost viewed of the Partner",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "user-based"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-REQUEST-TOKEN"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ed2b0822-bdb0-4d39-85ce-c35a753452da",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "user-based"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-REQUEST-TOKEN",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a5daf442-3be7-40f6-abfa-e19265765c1a",
+          "name": "User Engagement",
+          "request": {
+            "name": "User Engagement",
+            "description": {
+              "content": "The User Engagement algorithm recommends products by analyzing the current user’s most recent interactions. It generates personalized recommendations based on real-time behaviors and evolving preferences.\n\nThe User Engagement algorithm tailors product recommendations based on the user’s most recent product-view activity, using a deep-learning transformer model that dynamically adapts to recent interactions, such as viewing or purchasing patterns. It focuses specifically on items the user has shown interest in during recent sessions. During a Recommendation API request to the user-engagement endpoint, the UCD profile endpoint is called to retrieve the last 10 products the user visited in the past 7 days. To receive User Engagement recommendations, the user must have at least one product visit in the last 7 days. If there have been no visits in that period, fallback recommendation results will be displayed instead.\n\nEndpoint\n\nGET https://recommendation.api.useinsider.com/v2/user-engagement\n\nQuery Parameters\n\nParameter\nSample Value\nDescription\nData Type\nRequired\n\npartnerName\nmybrand\nPartner Identifier assigned by Insider One. You can use PartnerID as well.\nString\nYes\n\nlocale\nus_US\nLocale of requested product catalog\nString\nYes\n\nplatform\nweb\nRequested platform. Web comes by default.\nEnum\nNo\n\nuserId\na1b2c3d4\nUser identifier which is assigned by Insider One\nString\nYes\n\ncurrency\nUSD\nRequested currency of the products. If no value is set, the default currency in your settings is used.\nString\nNo\n\nsize\n50\nRequired number of items in response. Valid values are 0 to 100.\nInteger\nNo\n\ncategoryList\n[“Clothes”, “Skirts”]\nCategory filter of the products\nArray (of string)\nNo\n\nfilter\n\nSmart Recommender filtering. There can be more than one filter parameter.\nString\nNo\n\ndetails\ntrue\nAdds details to the products of the response\nBoolean\nNo\n\nshuffle\nfalse\nShuffles the products of the response\nBoolean\nNo\n\ngetGroupProducts\nfalse\nDetermines if the products within the same groupcode should be returned in the recommendation response\nBoolean\nNo\n\ngroupProductsFields\n\nDefines the fields that should be returned for the products in the group_products section.  If requested group product fields are missing from a product, that product won't appear in the group_products section.\nString\nNo\n\nexcludeVariants\ntrue\nExclude variants from the response. The default value is false. Valid values are 1, 0, true, and false.\nBoolean\nNo\n\nexcludeViewDay\n30\nAfter how many days should viewed products be excluded\nInteger\nNo (Can be used only with userId)\n\nexcludeViewItem\n100\nHow many viewed products should be excluded\nInteger\nNo (Can be used only with userId)\n\nexcludePurchaseDay\n30\nAfter how many days should purchased products be excluded\nInteger\nNo (Can be used only with userId)\n\nexcludePurchaseItem\n100\nHow many purchased products should be excluded\nInteger\nNo (Can be used only with userId)\n\nhp\nfalse\nMakes affinities affect products of the response. The default is false.\nBoolean\nNo\n\ndayLimit\n2\nIf FMT is published_time, it adds a day limit filter. The default is 2.\nInteger\nNo\n\nproductId\nABC123CBA\nCurrent product ID\nString\nNo\n\nSample Request\nThe sample below displays a request to User Engagement, a personalized recommendation algorithm that analyzes the current user’s most recent interactions (such as product views, clicks, or cart actions) to deliver highly relevant product suggestions in real time.\n\nhttps://recommendation.api.useinsider.com/v2/user-engagement?locale={locale}&userId={userId}&partnerName={partnerName}\n\nSample Response\n{\n    \"success\": true,\n    \"total\": 10,\n    \"types\": {\n        \"ue\": 10\n    },\n    \"data\": [\n        \"649517_49890\",\n        \"568334_49053\",\n        \"639714_49677\",\n        \"651579_3255\",\n        \"614493_50094\",\n        \"614508_49668\",\n        \"568334_47380\",\n        \"641331_49914\",\n        \"621390_3255\",\n        \"646581_48990\"\n    ]\n}\n\nFallback Algorithms\nIf the current user has not visited two or more products, or if user engagement recommendations are filtered out, recommendations from the following algorithms are returned in sequence:\n\nPurchased Together\n\nMost Popular Items",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "user-engagement"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-REQUEST-TOKEN"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "98384337-96d8-4116-8ed7-088b40307c74",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "user-engagement"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-REQUEST-TOKEN",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6108f3b9-b7f0-4b76-908a-7a47b054da2e",
+          "name": "Viewed Together",
+          "request": {
+            "name": "Viewed Together",
+            "description": {
+              "content": "The Viewed Together algorithm recommends items by identifying similar products users have viewed. It generates recommendations based on products viewed in the same sessions and in the same locale over the past 30 days. After generating recommendations, the Viewed Together algorithm orders the results by visit frequency (popularity). Thus, users can find complementary or substitute products for the one they are currently viewing. This increases discovery rates and the likelihood of grabbing users’ attention when they don’t have a target product. This type of algorithm works best on product pages.\n\nEndpoint\n\nGET https://recommendation.api.useinsider.com/v2/viewed-together\n\nQuery Parameters\n\nParameter\nSample Value\nDescription\nData Type\nRequired\n\npartnerName\nmybrand\nPartner Identifier assigned by Insider One. You can use PartnerID as well.\nString\nYes\n\nlocale\nus_US\nLocale of the requested product catalog\nString\nYes\n\nplatform\nweb\nRequested platform. Web comes by default.\nEnum\nNo\n\ncurrency\nUSD\nRequested currency of the products. If no value is set, the default currency in your settings is used.\nString\nNo\n\nproductId\nABC0123\nBase product ID\nString\nYes\n\nsize\n50\nRequired number of items in response. Valid values are 0 to 100.\nInteger\nNo\n\ncategoryList\n[“Clothes”, “Skirts”]\nCategory filter of the products\nArray (of string)\nNo\n\nfilter\n\nSmart Recommender filtering. There can be more than one filter parameter.\nString\nNo\n\ndetails\ntrue\nAdds details to the products of the response\nBoolean\nNo\n\nshuffle\nfalse\nShuffles the products of the response\nBoolean\nNo\n\ngetGroupProducts\nfalse\nShows variant products under the products of the response\nBoolean\nNo\n\ngroupProductsFields\n\nAdds these fields to the variant products’ details\nString\nNo\n\nexcludeVariants\ntrue\nExclude variants from the response\nBoolean\nNo\n\nuserId\na1b2c3d4\nUser identifier that is assigned by Insider One\nString\nNo\n\nexcludeViewDay\n30\nAfter how many days should viewed products be excluded\nInteger\nNo (Can be used only with userId)\n\nexcludeViewItem\n100\nHow many viewed products should be excluded\nInteger\nNo (Can be used only with userId)\n\nexcludePurchaseDay\n30\nAfter how many days should purchased products be excluded\nInteger\nNo (Can be used only with userId)\n\nexcludePurchaseItem\n100\nHow many purchased products should be excluded\nInteger\nNo (Can be used only with userId)\n\nhp\nfalse\nMakes affinities affect products of the response\nBoolean\nNo\n\nSample Request\nThe sample below displays a request to Viewed Together, a recommendation algorithm that suggests items commonly viewed alongside the same product by other users.\n\nhttps://recommendation.api.useinsider.com/v2/viewed-together?locale={Locale}&productId={ProductID}¤cy={Currenct}&partnerName={PartnerName}\n\nSample Response\n{\n    \"success\": true,\n    \"total\": 10,\n    \"types\": {\n        \"mvop\": 10\n    },\n    \"data\": [\n        \"QAZ-7890\",\n        \"XYZ-1234\",\n        \"QAZ-7899\",\n        \"XYZ-1233\",\n        \"QAZ-7898\",\n        \"XYZ-1243\",\n        \"QAZ-7891\",\n        \"XYZ-1223\",\n        \"QAZ-7892\",\n        \"XYZ-1342\"\n    ]\n}\n\nFallback Algorithms\nIf the products from Viewed Together are not enough to fill the response data, some fallback algorithms below fill it:\n\nMost viewed of the category\n\nMost viewed of the category without excluding the right-most item in the categoryList\n\nMost viewed of the Partner",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "viewed-together"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-REQUEST-TOKEN"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "fd6e3488-0212-4b05-a05e-2432a8fadb63",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "viewed-together"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-REQUEST-TOKEN",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0cbfc711-e7c8-4bba-98de-558f9bb0f536",
+          "name": "Visually Similar Products",
+          "request": {
+            "name": "Visually Similar Products",
+            "description": {
+              "content": "The Visually Similar Products algorithm surfaces products that look like the one the shopper is currently viewing. It compares product images using a multimodal AI model, refined with light product metadata, and performs optimally on category and product detail pages in visually-driven verticals such as fashion and home décor.\n\n<p >Insider One processes your product catalog images to generate recommendation results.</p> \n\nEndpoint\nGET https://recommendation.api.useinsider.com/v2/visually-similar\n\nQuery Parameters\n\nParameter\nSample Value\nDescription\nData Type\nRequired\n\npartnerName\nmybrand\nPartner Identifier assigned by Insider One. You can use PartnerID as well.\nString\nYes\n\nlocale\nus_US\nLocale of requested product catalog\nString\nYes\n\nproductId\n1068\nThe reference product for which the complement is computed\nString\nYes\n\ncurrency\nUSD\nProduct currency. If no value is set, the default currency in your settings is used.\nString\nNo\n\nsize\n10\nResponse items. Valid values are 0 to 100.\nInteger\nNo\n\ncategoryList\n[“Clothes”]\nCategory filter of the products\nArray\nNo\n\nuserId\na1b2c3d4\nUser identifier; enables personalization boosts when provided\nString\nNo\n\nplatform\nweb\nRequested platform (default: web)\nEnum\nNo\n\ndetails\ntrue\nAdds details to the products of the response\nBoolean\nNo\n\nexcludeVariants\ntrue\nHides color/size variants of the same base product\nBoolean\nNo\n\nshuffle\nfalse\nShuffles the products of the response\nBoolean\nNo\n\nfilter\n[in_stock][=][true]\nRestricts results by fields such as price, brand, color, gender, in_stock, or category\nString\nNo\n\nhp\ntrue\nHyper-personalization flag. Re-ranks results using the shopper's attribute preferences\nBoolean\nNo\n\ngetGroupProducts\ntrue\nReturns all color/size variants grouped under each recommended product\nBoolean\nNo\n\ngroupProductsFields\nproduct_attributes.color,price\nComma-separated list of fields to include in the grouped variants; products missing any listed field are dropped\nString\nNo\n\ngetAllGroupProductsFields\ntrue\nReturns all variant fields without dropping products for missing fields; automatically enables getGroupProducts\nBoolean\nNo\n\nexcludeViewDay\n30\nDays before excluding previously viewed products\nInteger\nNo\n\nexcludeViewItem\n100\nNumber of viewed products to exclude\nInteger\nNo\n\nexcludePurchaseDay\n30\nDays before excluding previously purchased products\nInteger\nNo\n\nexcludePurchaseItem\n100\nNumber of purchased products to exclude\nInteger\nNo\n\nSample Request\nThe sample below shows a request to Visually Similar Products, the algorithm that suggests items frequently bought or viewed alongside the anchor product.\n\nhttps://recommendation.api.useinsider.com/v2/visually-similar?partnerName={PartnerName}&locale={Locale}&productId={ABC123}&size=3\n\nSample Response\n{\n  \"success\": true,\n  \"total\": 3,\n  \"types\": { \"vs\": 3 },\n  \"data\": [\n    \"649517_49890\",\n    \"568334_49053\",\n    \"639714_49677\"\n  ]\n}\n\nFallback Algorithms\nWhen the Visually Similar Products results are insufficient, these algorithms fill the response:\n\nViewed Together\n\nMost Popular Items in Category\n\nMost Popular Items",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "visually-similar"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-REQUEST-TOKEN"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f6ccd1f6-24af-4101-ab3c-86745f334e22",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "visually-similar"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-REQUEST-TOKEN",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "02c5a75f-2f24-4d1f-93dc-91bc5b1b352f",
+      "name": "Recommendations",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a9164919-5e84-413e-870b-729729eff3f0",
+          "name": "Get Recommendations",
+          "request": {
+            "name": "Get Recommendations",
+            "description": {
+              "content": "The Recommendation API (SR-API) is a RESTful service for programmatically retrieving personalized product suggestions. It serves as the interface to Insider One’s recommendation engine, utilizing machine learning models, real-time user behavior analysis, and product affinity data to return structured item sets.\n\nEndpoint\nThe Recommendation API follows a standard RESTful pattern:\n\nGET https://recommendation.api.useinsider.com/v2/{algorithm-name}\n\n{algorithm-name} is the unique identifier for the recommendation logic to be executed.\n\nExamples:\n\n/v2/most-popular - Most viewed products\n\n/v2/user-based - Personalized user recommendations\n\n/v2/purchased-together - Frequently bought together items\n\nRefer to Algorithm Descriptions for the full list.\n\nBefore making your first request, you'll need:\n\nAll requests require your API token in the request header.\n\nPartner ID/Name - Your store identifier\n\nLocale - Language and region code used for recommendation context (e.g., en_US, fr_FR)\n\nCurrency - Currency code (e.g., USD, EUR)\n\nAlgorithm Abbreviations\nEach algorithm has a short abbreviation used in response payloads:\n\nmvop = Most Popular Items\n\nub = User Based\n\nbtb = Purchased Together\n\nchef = Chef (automated strategy selector)\n\nRefer to the Algorithm Descriptions for the complete list.\n\nQuery Parameters\nAll endpoints support common parameters:\n\nParameter\nPurpose\nType\nRequired\n\npartnerName\nYour store identifier\nString\nYes\n\nlocale\nLanguage/region (e.g., en_US)\nString\nYes\n\ncurrency\nCurrency code (e.g., USD)\nString\nYes\n\nuserId\nUser identifier for personalization\nString\nNo\n\ncategoryList\nFilter by product categories\nArray\nNo\n\nfilter\nAdvanced filtering (see Filtering Guide)\nString\nNo\n\nsize\nNumber of products (0-100)\nInteger\nNo\n\ndetails\nInclude full product information\nBoolean\nNo\n\nSample Request\ncurl -X GET \"https://recommendation.api.useinsider.com/v2/most-popular?partnerName=dataforceapi&locale=tr_TR&size=1&details=true\" \\\n     -H \"X-Auth-Token: YOUR_API_TOKEN\"\n\nconst apiToken = 'YOUR_API_TOKEN';\n                    const endpoint = 'https://recommendation.api.useinsider.com/v2/most-popular';\n                    const params = {\n                    partnerName: 'yourPartnerName',\n                    locale: 'tr_TR',\n                    size: 1,\n                    details: true\n                    };\n                    const queryString = new URLSearchParams(params).toString();\n                    fetch(`${endpoint}?${queryString}`, {\n                    method: 'GET',\n                    headers: {\n                    'X-Auth-Token': apiToken\n                    }\n                    })\n                    .then(response => response.json())\n\nimport requests\n                    api_token = 'YOUR_API_TOKEN'\n                    endpoint = 'https://recommendation.api.useinsider.com/v2/most-popular'\n                    params = {\n                    'partnerName': 'yourPartnerName',\n                    'locale': 'tr_TR',\n                    'size': 1,\n                    'details': True\n                    }\n                    headers = {\n                    'X-Auth-Token': api_token\n                    }\n                    response = requests.get(endpoint, params=params, headers=headers)\n                    data = response.json()\n                    print(data)\n\nSample Response\nResponses follow a consistent JSON structure:\n\n{\n        \"success\": true,\n        \"total\": 10,\n        \"types\": {\n        \"mvop\": 10\n        },\n        \"data\": [\"productId1\", \"productId2\", ...]\n        }\n\n<p >With details=true, the data array contains full product objects including pricing, images, categories, and attributes.</p> \n\n200 / Success-OK\nA successful response looks like this:\n\n{\n        \"success\": true,\n        \"total\": 1,\n        \"types\": {\n        \"mvop\": 1\n        },\n        \"data\": [\"SKU-DK-0011\"]\n        }\n\nField\nMeaning\n\nsuccess\nBoolean indicating if the request succeeded\n\ntotal\nNumber of products returned\n\ntypes\nAlgorithm(s) used (mvop = Most Popular of Partner)\n\ndata\nArray of product IDs\n\nGetting Product Details\nBy default, the API returns only product IDs. To get full product information (images, prices, descriptions), add details=true.\n\ncurl -X GET \"https://recommendation.api.useinsider.com/v2/most-popular?partnerName=yourpartnername&locale=tr_TR&size=1&details=true\" \\\n     -H \"X-Auth-Token: YOUR_API_TOKEN\"\n\nconst params = {\n                    partnerName: 'yourpartnername',\n                    locale: 'tr_TR',\n                    size: 1,\n                    details: true\n                    };\n\nparams = {\n                    'partnerName': 'yourpartnername',\n                    'locale': 'tr_TR',\n                    'size': 1,\n                    'details': True\n                    }\n\nResponse with details=true includes:\n\nimage_url - Product image\n\nname - Product name\n\nprice - Product pricing (by currency)\n\ncategory - Product categories\n\ndiscount - Discount information\n\nin_stock - Stock status\n\nHere is a full example with details=true:\n\n{\n        \"success\": true,\n        \"total\": 1,\n        \"types\": {\n        \"mvop\": 1\n        },\n        \"data\": [\n        {\n        \"item_id\": \"SKU-HA-0011\",\n        \"name\": \"Hummingbird Decorative Cushion\",\n        \"locale\": \"en_US\",\n        \"image_url\": \"https://cdn.demo-shop.com/images/home-accessories/hummingbird-cushion-45x45.jpg\",\n        \"url\": \"https://www.demo-shop.com/en/home-accessories/hummingbird-decorative-cushion?ins_sr=eyJwcm9kdWN0SWQiOiJTS1UtSEEtMDAxMSJ9\",\n        \"in_stock\": 1,\n        \"price\": {\n        \"USD\": 24.99\n        },\n        \"original_price\": {\n        \"USD\": 29.99\n        },\n        \"discount\": {\n        \"USD\": 5.0\n        },\n        \"category\": [\n        \"Home Accessories\",\n        \"Decorative Cushions\"\n        ],\n        \"description\": \"Soft cotton decorative cushion with hummingbird pattern. Ideal for living rooms and bedrooms.\",\n        \"brand\": \"Demo Home\",\n        \"color\": \"Multicolor\",\n        \"size\": \"45x45 cm\",\n        \"tags\": [\n        \"cushion\",\n        \"home-decor\",\n        \"living-room\"\n        ],\n        \"material_type\": \"Cotton\",\n        \"washable\": \"Yes\",\n        \"room\": \"Living Room\"\n        }\n        ]\n        }\n\nThe following table demonstrates the status codes and response types from the Recommendation API. The table lists Status Codes, their descriptions, and scenarios that you can receive these status codes.\n\nStatus Code\nStatus Code Scenarios\n\n200 - Success\nSuccessful API requests receive responses with 200 status code.\n\n400 - Bad Request\nUnsuccessful API requests receive responses with 400 status code.API calls with missing endpoint parameters receive this status code.\n\n403 - Forbidden\nUnauthorized API requests receive responses with 403 status codeAPI calls that result with unsuccessful Origin/CORS Validation receive this status code.\n\n422 - Unprocessible Content\nAPI calls that have missing dynamic filter content receive this status code.Refer to the Filtering Products documentation for further details.\n\n429 - Too Many Requests\nThrottled API requests receive responses with 429 status code.\n\n200 / Success-OK\nSuccessful Recommendation API requests receive an API endpoint that contains the following fields:\n\nsuccess field that denotes the success of the API response,\n\ntotal field displays the number of recommendations returned from the API response,\n\ntypes field that lists recommendation algorithm types that returned from the endpoint,\n\ndata field lists the recommendations and their details\n\nFollowing is a successful Recommendation API request and its example response:\n\nSample Request\nhttps://recommendationv2.api.useinsider.com/v2/most-popular?details=true&partnerName=yourPartnerName&locale=en_US¤cy=USD&size=1\n\nSample Response\n{\n    \"success\": true,\n    \"total\": 1,\n    \"types\": {\n        \"mvop\": 1\n    },\n    \"data\": [\n        {\n            \"image_url\": \"http://insiderone.com/img/p/1/3/13.jpg\",\n            \"name\": \"Hummingbird cushion\",\n            \"item_id\": \"11\",\n            \"url\": \"https://insiderone.com/home-accessories/11-hummingbird-cushion.html#ins_sr=eyJwcm9kdWN0SWQiOiIxMSJ9\",\n            \"description\": \"Hummingbird cushion in category Home Accessories\",\n            \"in_stock\": 1,\n            \"price\": {\n                \"USD\": 0.57\n            },\n            \"locale\": \"en_US\",\n            \"product_attributes\": {\n                \"test\": \"productTest\",\n                \"testattributes\": \"productTest\"\n            },\n            \"category\": [\n                \"Home Accessories\"\n            ],\n            \"discount\": {\n                \"USD\": 0.0\n            },\n            \"original_price\": {\n                \"USD\": 0.57\n            }\n        }\n    ]\n}\n\n400 / Bad Request\nIn the following scenarios, the Recommendation API returns responses with a 400 status code:\n\nMissing required endpoint parameters\n\nMissing required endpoint parameter values\n\nWrong usage of endpoint parameters\n\nFollowing API requests and responses demonstrate examples of these scenarios.\n\nSample Request 1\nThe partnerName parameter is missing in the request below:\n\nhttps://recommendationv2.api.useinsider.com/v2/most-popular?details=true¤cy=USD&locale=en_US\n\nSample Response 1\n{\n    \"success\": false,\n    \"message\": \"Missing parameter: partnerName\",\n    \"data\": []\n}\n\nSample Request 2\nThe locale value is missing in the request below:\n\nhttps://recommendationv2.api.useinsider.com/v2/most-popular?details=true¤cy=USD&locale=&partnerName=yourPartnerName\n\nSample Response 2\n{\n    \"success\": false,\n    \"message\": \"Locale is invalid.\",\n    \"data\": []\n}\n\n403 / Forbidden\nThe Recommendation API performs sender origin validation for partners that enable the Origin/CORS Validation feature. When the feature is enabled, the Recommendation API only provides successful recommendation content to callers from the allowed domains. Requests from domains that are not listed as allowed domains will receive failures with a 403 status code.\n\nFollowing is the Recommendation API response for unsuccessful validations:\n\n{\n    \"success\": false,\n    \"message\": \"Origin validation error.\",\n    \"data\": []\n}\n\n422 / Unprocessible Content\nThis endpoint response status code is often received when the partner page that hosts the recommendation campaign cannot provide the details that the Recommendation API endpoint needs to use.\n\nAs an example scenario;\n\nYou create and activate a Web Smart Recommender campaign on Product Pages that has Dynamic Filtering usage on the color field.\n\nIn Dynamic Filtering, the attribute values of fields used in filters are fetched from the Recommendation API.\n\nThus, web clients are not informed whether the requested attribute is present for the current product.\n\nIn cases where the attribute value that is used in the Dynamic Filter is missing, the Recommendation API cannot perform the Dynamic Filter.\n\nThe API returns with a 422 status code for those cases.\n\nSample Request\nhttps://recommendationv2.api.useinsider.com/v2/most-popular?details=true&filter=([color][=][${value}])¤cy=TRY&locale=tr_TR&partnerName=yourPartnerName&productId=11\n\nSample Response\nThe color attribute was missing for the given item with ID “11”. When this attribute is requested with dynamic filtering, the Recommendation API responds with a 422 status code (denoting that an unprocessible content is present)\n\n{\n    \"success\": false,\n    \"message\": \"The field 'color' in dynamic filter was not found in the product.\",\n    \"data\": []\n}\n\n429 / Too Many Requests\nWhen you exceed the rate limit, the Recommendation API will temporarily throttle your requests. Rate limits are calculated using a rolling one-minute window, so if you're throttled, you'll regain access once the current window resets (at most one minute).\n\n{\n    \"success\": false,\n    \"message\": \"Rate exceeded.\",\n    \"data\": []\n}\n\nFiltering Recommendation Responses\nFiltering allows you to refine recommendation results to match your users' needs and preferences. Common use cases include:\n\nExclude already-viewed products - Don't recommend products the user has seen\n\nPrice range filtering - Show only products within budget\n\nCategory/brand filtering - Focus on specific product types\n\nStock filtering - Only recommend in-stock items\n\nAttribute filtering - Filter by custom product attributes (color, size, rating, etc.)\n\nThis increases relevance, improves user experience, and boosts conversion rates.\n\nBasic Syntax\nhttps://recommendation.api.useinsider.com/v2/{algorithm}?...\\&filter=[{field}][{operator}][{value}]\n\nHere is an example with a single filter that returns  products with prices greater than 100 USD:\n\n?filter=[price.USD][>][100]\n\nMultiple Filters\nYou can pass multiple filter parameters to combine conditions. Each condition is chained together via an asterisk (*).\n\nSyntax\n?filter=[field1][operator1][value1]*[field2][operator2][value2]\n\nHow Multiple Filters work\nMultiple filters are combined with AND logic - products must match ALL conditions to be included.\n\nExample 1: Exclude current product + filter by category\n?filter=[item_id][!=][PRODUCT_ID]*[category][~][Shoes]\n\nThis filter returns products that are NOT PRODUCT_ID AND contain \"Shoes\" in the category.\n\nExample 2: Price range + in stock\n?filter=[price.USD][>][50]*[price.USD][<][200]*[in_stock][=][1]\n\nThis filter returns products between $50-$200 AND in stock.\n\nOperator Reference\n\nOperator Name\nSymbol\nAlias\nDescription\nExample\n\nEqual To\n=\nis\nExact match on field value\n[color][=][Blue] or [brand][=][Niki]\n\nNot Equal To\n!=\nnis\nExcludes products with matching field value\n[color][!=][Red] (exclude red products)\n\nGreater Than\n>\ngt\nField value greater than the specified value\n[price.USD][>][100] or [rating][>][3.5]\n\nGreater Than or Equal\n>=\ngte\nField value greater than or equal to the specified value\n[price.EUR][>=][150] or [rating][>=][4]\n\nLess Than\n<\nlt\nField value less than the specified value\n[price.EUR][<][150] or [stock_count][<][5]\n\nLess Than or Equal\n<=\nlte\nField value less than or equal to the specified value\n[price.EUR][<=][150] or [created_at][<=][now-7d]\n\nContains\n~\nctn\nField contains the specified value (text search)\n[category][~][Shoes] or [name][~][Niki Air]\n\nDoes Not Contain\n!~\nnctn\nField does not contain the specified value\n[category][!~][Clearance]\n\nBetween\n><\nbtw\nField value falls within a range. Format: [field][><][lower_bound:upper_bound]\n[price.USD][><][50:200]\n\nNot Between\n>!<\nnbtw\nField value falls outside a range\n[price.USD][>!<][50:200] (exclude $50-$200 range)\n\nExists\n?\nxst\nCheck if a field exists (value=1) or does not exist (value=0)\n[price.USD][?][1] (products have USD price)\n\nDate Field Values\nInsider One is designed to parse every filter value provided for date fields. If a simplified date expression fails to parse, the system will use it as a raw literal value. This allows you to use literal dates (e.g., \"2022-09-30 15:45:00\") directly in your date filters.\n\nThe date fields available for filtering are: created_at and modified_at.\n\nOperator Compatibility\nDate fields are supported by every operator except for Between (><) and Not Between (>!<). This limitation is due to the Between operator using a colon (:) to separate the lower and upper bounds, which conflicts with the colon present in standard date/time formats (e.g., 2022-09-30 15:45:00).\n\nThe most appropriate operators for date fields are:\n\nAfter (>)\n\nBefore (<)\n\nIs (=)\n\nIs Not (!=)\n\nRelative Date Filtering\nDate filters also support relative unit values, allowing you to easily filter based on time relative to the current moment (now).\n\nAnchor: now\n\nUnits: w (week), d (day), h (hour)\n\nModifiers: Use + to add units or - to subtract units.\n\nYou can see the examples below:\n\nScenario\nFilter Expression\n\nGet products that were created last week\n[created_at][>][now-1w]\n\nGet products created up to 2 days ago\n[created_at][<=][now-2d]\n\nMultiple Value Filtering (In / Not-In Filter Behavior)\nMatch fields against multiple values by separating them with:\n\n||\n\nSupported by all operators except between and not between.\n\nExamples:\n\nGet products from multiple brands:\n\n?filter=[brand][=][Niki||Abiba||Pamu]\n\nExclude multiple colors:\n\n?filter=[color][!=][Red||Green||Blue]\n\nGet products with categories containing any of these terms:\n\n?filter=[category][~][Shoes||Boots||Sneakers]\n\nAdvanced Filtering with AND/OR\nCombine multiple filters using logical operators within a single filter parameter.\n\nAnd (*) = both conditions must be true\n\nOr (|) = either condition can be true\n\nExamples\n\nAND Example: Price range AND brand\n\n?filter=([price.USD][>][100]*[brand][=][Niki]) \n\nOR Example: Multiple categories\n\n?filter=([category][~][Shoes]|[category][~][Boots])\n\nComplex: (A AND B) OR C\n\nGet products that are either (cheap AND in stock) OR highly rated:\n\n?filter=((price.USD][<][50]*[in_stock][=][1])|[rating][>=][5])\n\nYou can also use multiple parameters to achieve AND logic more simply:\n\n?filter=[price.USD][<][50]&filter=[in_stock][=][1]&filter=[rating][>=][5]\n\nThis is often clearer than using complex parentheses.\n\nDynamic Filters\nUse ${value} to reference the source product's field value in your filter. The expression is computed at request time using the actual product data.\n\nSupported Expressions\n\n${value} - Use the product's field value as-is\n\n${value*1.2} - Multiply by 1.2 (20% increase)\n\n${value*0.8} - Multiply by 0.8 (20% decrease)\n\n${value*0.8}:${value*1.3} - Range with dynamic bounds\n\nExamples\n\nMatch the product's category dynamically:\n\n?categoryList=${value}&productId=PRODUCT_ID\n\nIf the product has a category \"Shoes\", recommendations are filtered to \"Shoes\" only.\n\nShow products in a similar price range (±30%):\n\n?productId=PRODUCT_ID&filter=[price.EUR][><][${value}:${value*1.3}]\n\nIf the product costs €100, it shows products priced €100-€130.\n\nFilter Validation Errors\nWhen filters are invalid, the API returns specific error messages with HTTP status codes:\n\nFormat & Syntax Errors (400)\n\nError\nCause\n\n\"Filter is not in correct format.\"\nMissing brackets, unmatched parentheses, invalid syntax\n\n\"Depth of nested filters is greater than 4.\"\nToo many nesting levels: ((((filter))))\n\n\"Number of filters is greater than 40.\"\nToo many filter conditions total\n\nField Errors (400 or 422)\n\nError\nHTTP\nCause\n\n\"Entered field name is invalid.\"\n400\nField doesn't exist in product data\n\n\"The field '%s' in dynamic filter was not found in the product.\"\n422\nField missing in source product (dynamic filters only)\n\n\"Field $$$ is not filterable product attribute.\"\n400\nField marked non-filterable in configuration\n\nOperator Errors (400)\n\nError\nCause\n\n\"operator field is invalid.\"\nUnknown operator (use: =, !=, >, <, >=, <=, ~, !~, ><, >!<, ?)\n\n\"For the $$$ field, operator field is not valid by field type.\"\nOperator incompatible with field type (e.g., ~ on numeric field)\n\n\"Operator $$$ is not allowed for dynamic filters.\"\nEXIST/EXIST_ALIAS not allowed with ${value}\n\nValue Errors (400 or 422)\n\nError\nHTTP\nCause\n\n\"For the $$$ field, entered value is empty.\"\n422\nBlank or null value\n\n\"For the $$$ field, value length is invalid.\"\n400\nExceeds limits (100 chars for text search, 340 for others)\n\n\"Value for the field $$$ is invalid.\"\n400\nInvalid range format (use lower:upper for >< operator)\n\n\"For the $$$ field, value type is invalid.\"\n400\nType mismatch (non-numeric on numeric field)\n\nField-Specific Validations (400)\n\nField\nError\nCause\n\nin_stock\n\"Value is invalid for in_stock filter...\"\n0 or 1 only\n\nDynamic Filter Errors (400)\n\nError\nCause\n\n\"Parameters productId and locale must be provided when dynamic value is used.\"\nUsing ${value} without providing productId or locale\n\n\"Product not found\"\nSpecified productId doesn't exist\n\nLimitations\n\nConstraint\nLimit\nNotes\n\nFilter depth\n4 levels\nMaximum nesting depth for parentheses\n\nTotal filters\n40 filters\nTotal number of filter conditions in one request\n\nN-gram value length\n100 characters\nFor text search on item_id, name, image_url\n\nOther field value length\n340 characters\nFor text search on other fields\n\nPersonalized Recommendation Features\nThe Recommendation API provides a range of personalization capabilities that tailor product recommendations to individual users. By leveraging user behavior, such as browsing history, purchase activity, and real-time interactions, the API delivers more relevant product suggestions that increase engagement and conversion rates.\n\nTo enable personalization, you must include the Insider ID in your Recommendation API requests. This allows the system to associate incoming requests with existing user profiles and apply behavior-driven logic.\n\nCurrently, the Recommendation API supports the following personalization features:\n\nPersonalized Recommendation Algorithms\nThe following recommendation algorithms inherently deliver personalized product suggestions based on user behavior and interaction data.\n\nUser-Based Recommendations\n\nGenerate personalized recommendations by analyzing a user’s historical interactions and the behavior patterns of similar users.\n\nReal-Time User Engagement Recommendations\n\nProvide real-time personalized suggestions based on the user’s current session activity and live interactions.\n\nRecently Viewed Products\n\nRecommend products based on the user’s most recent product page views, helping reinforce recent browsing intent.\n\nPurchased with Last Purchased\n\nSuggest products that are frequently purchased together with the user’s most recent purchase, supporting effective cross-sell scenarios.\n\nThese algorithms leverage both historical and real-time data to ensure recommendations remain relevant, timely, and aligned with individual user preferences.\n\nPersonalization with the User’s Last Visited Item\nThe Recommendation API can personalize results using the last product page a user visited. This behavior applies to both User-Based Recommendations and Real-Time User Engagement algorithms.\n\nWhen the API does not have sufficient user-level data to generate a fully personalized recommendation, it automatically falls back to Viewed Together recommendations based on the user’s most recently viewed product.\n\nThis fallback mechanism ensures that recommendations remain relevant and context-aware, even when historical user data is limited.\n\nPersonalization with Users Recent Interactions\nThe Recommendation API can automatically exclude products a user has already interacted with, so they won't see recommendations for items they've viewed, purchased, or otherwise engaged with.\n\nUse the following parameters to enable these exclusions:\n\nAPI Endpoint Parameter\nDescription\n\nexcludeViewItem\nExcludes the last X Product Visits of the user from the API response\n\nexcludeViewDay\nExcludes Product Page views of the user in the last X days from the API response\n\nexcludePurchaseItem\nExcludes the last X Product Purchases of the user from the API response\n\nexcludePurchaseDay\nExcludes Product Purchases of the user in the last X days from the API response\n\nThe following Recommendation API requests illustrate these personalization features:\n\nThe request below instructs the Recommendation API to exclude the last ten products the user viewed in Product Detail pages from the API response:\n\nhttps://recommendationv2.api.useinsider.com/v2/most-popular?details=true¤cy=TRY&locale=tr_TR&partnerName=dataforceapi&userId=testUser&excludeViewItem=10\n\nThe request below instructs the Recommendation API to exclude the products that the user purchased in the last three days.\n\nhttps://recommendationv2.api.useinsider.com/v2/most-popular?details=true¤cy=TRY&locale=tr_TR&partnerName=dataforceapi&userId=testUser&excludePurchaseDay=3\n\nAttribute Affinity\nAttribute affinity scores represent a user’s preference for specific product attributes based on their interaction behavior, including product views, add-to-cart actions, and purchases. Purchases carry a higher weight than views, as they indicate stronger intent. Affinity scores are normalized by a user’s total activity. As a result, a user with a high purchase-to-view ratio demonstrates a stronger affinity than a user who browses frequently but converts rarely.\n\nThe Recommendation API uses attribute affinity to personalize product recommendations according to each user’s demonstrated interests. Affinity data is refreshed daily, ensuring recommendations reflect recent and relevant user behavior.\n\nWithin the Recommendation API, the hp endpoint parameter controls whether the Attribute Affinity feature is applied. When enabled, the API incorporates a user’s attribute affinity scores into the recommendation logic, prioritizing products that align with the user’s strongest preferences.\n\nThe following Recommendation API request demonstrates how the Attribute Affinity feature is applied when the hp parameter is enabled:\n\nhttps://recommendationv2.api.useinsider.com/v2/most-popular?details=true¤cy=TRY&locale=tr_TR&partnerName=yourPartnerName&userId=testUser&hp=1\n\nAPI Rate Limits\nThe rate limit for direct API calls is set to 1000 calls per minute, applied across all endpoints of the Recommendation API. Exceeding this rate limit causes additional requests to return 429 status codes.\n\n<p >If your technical architecture requires a higher throughput, contact the Insider One team.</p> \n\nBest Practices for Recommendation API\nCategory List Format\nWhen filtering by categories, pass categoryList as a URL-encoded JSON array:\n\ncategoryList=[\"shoes\",\"boots\"]\n\nIn cURL, encode the brackets properly:\n\n?categoryList=[\"shoes\",\"boots\"]\n\nHyperpersonalization (hp)\nEnable hyperpersonalization by adding hp=1 or hp=true:\n\n?userId=user123&hp=1\n\nThis uses customer affinities to further personalize results.\n\nMixed Strategy\nCombine multiple recommendation algorithms in a single request to get diverse results.\n\nGET /mixed?partnerName=X&locale=en_US&userId=user1¤cy=USD&strategy=[...]\n\nStrategy array format:\n[\n  {\"recommendationType\": \"ub\", \"size\": 4},\n  {\"recommendationType\": \"vtv\", \"size\": 3, \"productId\": \"prod1\"},\n  {\"recommendationType\": \"mvop\", \"size\": 3, \"filters\": [\"\\[category\\]\\[=\\]\\[shoes\\]\"]}\n]\n\nAvailable types: ub, ue, vtv, btb, cp, sp, mvoc, mvop, mpoc, mpop, mpol, naoc, naop, tpoc, tpop, mvpoc, mvpop, mm, hdop, hdoc, rvp, lpt\n\nEach strategy specifies its algorithm type, the number of products to return, and, optionally, its own filters.\n\nManual Merchandising in Mixed\nUse mm to include specific products you want to promote. The productId field is required.\n\n{\"recommendationType\": \"mm\", \"size\": 3, \"productId\": \"featured1,featured2,featured3\"}\n\nFull example:\n\nGET /mixed?partnerName=X&locale=en_US¤cy=TRY&strategy=[{\"recommendationType\":\"ub\",\"size\":5},{\"recommendationType\":\"mm\",\"size\":3,\"productId\":\"promo1,promo2,promo3\"},{\"recommendationType\":\"mvop\",\"size\":2}]\n\nPass product IDs as comma-separated values.\n\nProducts are returned in the order you specify.\n\nOnly in-stock products are returned.\n\nMultiple Item IDs in Item-Based Algorithms\nGet recommendations based on multiple products at once by passing comma-separated IDs:\n\nGET /vtv?partnerName=X&locale=en_US&productId=item1,item2,item3&size=10¤cy=USD\n\nSupported endpoints are /vtv, /btb, /cp, /sp. It is useful when you want recommendations based on multiple items in a cart or wishlist.\n\nGroup Products\nInclude product variants (e.g., different sizes/colors) in the response using getGroupProducts.\n\nGET /ub?partnerName=X&locale=en_US&userId=user1&getGroupProducts=true&groupProductsFields=price,in_stock,product_attributes.color\n\nParameters\n\ngetGroupProducts=true — Enable variant products in response\n\ngroupProductsFields — Additional fields to include (comma-separated)\n\nResponse structure\n{\n  \"item_id\": \"shoe-blue-m\",\n  \"group_products\": [\n    {\"item_id\": \"shoe-blue-s\", \"price\": {\"USD\": 99}, \"in_stock\": 1},\n    {\"item_id\": \"shoe-blue-l\", \"price\": {\"USD\": 99}, \"in_stock\": 1}\n  ]\n}\n\nVariants are grouped by groupcode. You can request nested fields, such as product_attributes.color.\n\nFilter Chaining with asteriks (*)\nTo combine multiple filters with AND logic, use *.  Here is an example of applying multiple filters:\n\nGET \n...&filter=[category][=][shoes]*[brand][=][nike]*[price][<][100]",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                ":algorithm-name"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "algorithm-name",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-REQUEST-TOKEN"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a43aa20c-bed4-47f3-a7d6-1fa170ec00f7",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    ":algorithm-name"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "algorithm-name",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-REQUEST-TOKEN",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://recommendation.api.useinsider.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "92f25ad7-c08c-4271-b72a-ec646162e785",
+    "name": "Insider One Recommendation API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Smart Recommender algorithms served over HTTP: similar, complementary, trending, top sellers, user-based and more.\n\nDerived by API Evangelist from Insider One's own public Postman collection (\"Insider One APIs\", published at https://developers.insiderone.com/). Paths, methods, headers, query parameters and request/response examples are verbatim from that collection; nothing is invented. The 429 response is documented for all Insider One APIs on https://academy.insiderone.com/docs/api-rate-limits-1 .\n\nContact Support:\n Name: Insider One Support\n Email: support@useinsider.com",
+      "type": "text/plain"
+    }
+  }
+}

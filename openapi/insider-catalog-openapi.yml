@@ -1,0 +1,807 @@
+openapi: 3.1.0
+info:
+  title: Insider One Catalog API
+  version: 1.0.0
+  description: 'Product catalog ingestion and update in flat and nested formats, plus locale configuration.
+
+
+    Derived by API Evangelist from Insider One''s own public Postman collection ("Insider One APIs", published at
+    https://developers.insiderone.com/). Paths, methods, headers, query parameters and request/response examples
+    are verbatim from that collection; nothing is invented. The 429 response is documented for all Insider One APIs
+    on https://academy.insiderone.com/docs/api-rate-limits-1 .'
+  contact:
+    name: Insider One Support
+    email: support@useinsider.com
+    url: https://academy.insiderone.com/docs/insider-one-apis-1
+  termsOfService: https://insiderone.com/terms-of-use/
+externalDocs:
+  description: Insider One API reference
+  url: https://academy.insiderone.com/docs/api-reference-welcome
+servers:
+- url: https://catalog.api.useinsider.com
+tags:
+- name: Catalog APIs
+paths:
+  /v2/ingest:
+    post:
+      operationId: addNewProductsInAFlatFormat
+      summary: Add New Products in a Flat Format
+      tags:
+      - Catalog APIs
+      description: "The Catalog API allows you to insert new products in a flat format into your product catalog.\
+        \ It creates new product records. If a product with the same item_id + locale already exists, it will be\
+        \ overwritten.\n\nEndpoint and Headers\nPOST https://catalog.api.useinsider.com/v2/ingest\n\nBody Parameters\n\
+        Default Product Attributes\nThe following product fields should be sent as parameters in the object, along\
+        \ with their field name and data type, as stated. If any required fields are not sent through the Catalog\
+        \ API, the product is not updated or inserted.\n\nField Name\nDescription\nData Type\nRequired\n\nitem_id\n\
+        Unique product identifier. Max 128 characters.\nString\nYes\n\nlocale\nISO locale code (e.g., en_US, pt_BR).\
+        \ Max 64 characters.\nString\nYes\n\nname\nProduct name. Max 512 characters.\nString\nYes\n\nurl\nProduct\
+        \ page URL. Must include protocol (e.g., https://). Max 512 characters.\nString\nYes\n\nimage_url\nProduct\
+        \ image URL. Must start with http://, https://, or //.\nString\nYes\n\nprice\nCurrent selling price per\
+        \ currency. e.g., {\"USD\": 100, \"BRL\": 500}.\nObject\nRequired for Stock & Revenue Feed Management Type\n\
+        \noriginal_price\nOriginal/list price per currency. Same structure as price.\nObject\nRequired for Stock\
+        \ & Revenue Feed Management Type\n\nomnibus_price\nOmnibus directive price per currency. Same structure\
+        \ as price.\nObject\nNo\n\nin_stock\n1 = in stock, 0 = out of stock.\nNumber\nRequired for Stock & Revenue\
+        \ and Availability Feed Management Types\n\nstock_count\nAvailable quantity. Must be >= 0.\nNumber\nNo\n\
+        \nitem_update_date\nLast update timestamp. Format: YYYY-MM-DD hh:mm:ss\nString\nRequired for Published Time\
+        \ Feed Management Type\n\nitem_start_date\nAvailability start date. Format: YYYY-MM-DD hh:mm:ss\nString\n\
+        Required for Start & End Time Feed Management Type\n\nitem_end_date\nAvailability end date. Format: YYYY-MM-DD\
+        \ hh:mm:ss\nString\nRequired for Start & End Time Feed Management Type\n\ndescription\nProduct description.\
+        \ Max 1024 characters.\nString\nNo\n\nbrand\nBrand name. Max 512 characters.\nString\nNo\n\nsku\nStock keeping\
+        \ unit. Max 512 characters.\nString\nNo\n\ncolor\nProduct color. Max 512 characters.\nString\nNo\n\nsize\n\
+        Product size. Max 512 characters.\nString\nNo\n\ngender\nGender classification. Max 512 characters.\nString\n\
+        No\n\ncategory\nCategory as an array\nString[]\nNo\n\ntags\nProduct tags\nString[]\nNo\n\ngroupcode\nProduct\
+        \ group identifier\nString\nNo\n\nvariants\nProduct variants. Max 512 characters per item.\nString[]\nNo\n\
+        \nrating\nProduct rating, 0–10\nNumber\nNo\n\nproduct_attributes\nCustom attributes defined in your account.\n\
+        Object {key:value}\nNo\n\nis_status_passive\n1 = passive/hidden in Smart Recommender and Eureka results,\
+        \ 0 = active.\nNumber\nNo\n\nCustom Product Attributes\nCustom Product Attributes allow you to define additional\
+        \ details specific to your business. These attributes enrich your catalog with data that supports your unique\
+        \ use cases, personalization logic, and recommendation filters.\n\nBefore sending Custom Product Attributes\
+        \ in your payload, you must define them in your account.\n\nIf a Default Product Attribute already exists\
+        \ for the information you want to include, use the default one instead of creating a custom one. This keeps\
+        \ your catalog structure consistent.\n\nCustom attributes are sent inside the product_attributes object:\n\
+        \n{\n        \"item_id\": \"velocity-runner-pro-white\",\n        \"locale\": \"en_US\",\n        \"name\"\
+        : \"Velocity Runner Pro - White\",\n        \"product_attributes\": {\n        \"material_type\": \"Leather\"\
+        ,\n        \"season\": \"Winter\",\n        \"eco_friendly\": true,\n        \"collection\": \"Winter Collection\
+        \ 2025\",\n        \"delivery_type\": \"Express\"\n        }\n\nFeed Management Types\nYour feed management\
+        \ type determines which pricing and stock attributes are required.\n\nStock and Revenue Based Feed Management\
+        \ Type\nThe Stock and Revenue Based Feed Management Type is the most common type. It requires pricing and\
+        \ stock information.\n\ncurl -X POST \"https://catalog.api.useinsider.com/v2/ingest\" \\\n  -H \"Content-Type:\
+        \ application/json\" \\\n  -H \"X-PARTNER-NAME: your-partner-name\" \\\n  -H \"X-REQUEST-TOKEN: your-api-token\"\
+        \ \\\n  -d '[\n    {\n      \"item_id\": \"velocity-runner-pro-white\",\n      \"locale\": \"en_US\",\n\
+        \      \"name\": \"Velocity Runner Pro - White\",\n      \"url\": \"https://www.example-insiderone.com/shoes/velocity-runner-pro-white\"\
+        ,\n      \"image_url\": \"https://cdn.example-insiderone.com/images/velocity-runner-pro-white.jpg\",\n \
+        \     \"category\": [\"Shoes\", \"Running\", \"Velox\"],\n      \"brand\": \"Velox\",\n      \"price\":\
+        \ { \"USD\": 129.99 },\n      \"original_price\": { \"USD\": 149.99 },\n      \"in_stock\": 1\n    }\n \
+        \ ]'\n\nAvailability Based Feed Management Type\nFor the Availability Based Feed Management Type, only the\
+        \ stock status is required. Pricing is optional.\n\ncurl -X POST \"https://catalog.api.useinsider.com/v2/ingest\"\
+        \ \\\n  -H \"Content-Type: application/json\" \\\n  -H \"X-PARTNER-NAME: your-partner-name\" \\\n  -H \"\
+        X-REQUEST-TOKEN: your-api-token\" \\\n  -d '[\n    {\n      \"item_id\": \"velocity-runner-pro-white\",\n\
+        \      \"locale\": \"en_US\",\n      \"name\": \"Velocity Runner Pro - White\",\n      \"url\": \"https://www.example-insiderone.com/shoes/velocity-runner-pro-white\"\
+        ,\n      \"image_url\": \"https://cdn.example-insiderone.com/images/velocity-runner-pro-white.jpg\",\n \
+        \     \"in_stock\": 1\n    }\n  ]'\n\nPublished Time Based Feed Management Type\nThe Published Time Based\
+        \ Feed Management Type requires an update timestamp instead of pricing.\n\ncurl -X POST \"https://catalog.api.useinsider.com/v2/ingest\"\
+        \ \\\n  -H \"Content-Type: application/json\" \\\n  -H \"X-PARTNER-NAME: your-partner-name\" \\\n  -H \"\
+        X-REQUEST-TOKEN: your-api-token\" \\\n  -d '[\n    {\n      \"item_id\": \"blog-top-running-shoes-2025\"\
+        ,\n      \"locale\": \"en_US\",\n      \"name\": \"Top 10 Running Shoes for 2025\",\n      \"url\": \"https://www.example-insiderone.com/blog/top-running-shoes-2025\"\
+        ,\n      \"image_url\": \"https://cdn.example-insiderone.com/images/blog/running-shoes-2025.jpg\",\n   \
+        \   \"item_update_date\": \"2025-01-15 10:30:00\"\n    }\n  ]'\n\nStart & End Time Based Feed Management\
+        \ Type\nThe Start & End Time Based Feed Management Type requires date range attributes for time-bound content.\n\
+        \ncurl -X POST \"https://catalog.api.useinsider.com/v2/ingest\" \\\n  -H \"Content-Type: application/json\"\
+        \ \\\n  -H \"X-PARTNER-NAME: your-partner-name\" \\\n  -H \"X-REQUEST-TOKEN: your-api-token\" \\\n  -d '[\n\
+        \    {\n      \"item_id\": \"promo-summer-clearance-2025\",\n      \"locale\": \"en_US\",\n      \"name\"\
+        : \"Summer Clearance Sale - Up to 50% Off\",\n      \"url\": \"https://www.example-insiderone.com/campaigns/summer-clearance-2025\"\
+        ,\n      \"image_url\": \"https://cdn.example-insiderone.com/images/campaigns/summer-clearance.jpg\",\n\
+        \      \"item_start_date\": \"2025-06-01 00:00:00\",\n      \"item_end_date\": \"2025-08-31 23:59:59\"\n\
+        \    }\n  ]'\n\nProduct Availability by Feed Management Type\nA product is considered available based on\
+        \ criteria that vary by feed management type:\n\nFeed Type\nAvailability Condition\n\nStock & Revenue Based\n\
+        in_stock must be 1\n\nAvailability Based\nin_stock must be 1\n\nPublished Time Based\nitem_update_date must\
+        \ be within the last 2 days (default 2 days, adjustable in Smart Recommender campaigns)\n\nStart & End Time\
+        \ Based\nitem_end_date must not be in the past\n\nCurrencies\nPricing attributes accept an object mapping\
+        \ currency codes to amounts. You can include multiple currencies in a single record.\n\n{\n  \"price\":\
+        \ {\n    \"USD\": 129.99,\n    \"EUR\": 119.99,\n    \"GBP\": 104.99,\n    \"BRL\": 899.90\n  },\n  \"original_price\"\
+        : {\n    \"USD\": 149.99,\n    \"EUR\": 139.99,\n    \"GBP\": 119.99,\n    \"BRL\": 999.90\n  }\n}\n\nCategories\n\
+        The category attribute accepts an array of strings. How the array is interpreted depends on your account's\
+        \ category type, which is configured during onboarding. You must choose one of the two types:\n\nHierarchical\
+        \ Category Type\n\nUse this if your categories follow a parent-child structure, with subcategories nested\
+        \ under broader categories. Each element in the array represents a level in the hierarchy, ordered from\
+        \ broadest to most specific.\n\n{\n \"category\": [\"Clothing\", \"Men\", \"Shirts\", \"Casual Shirts\"\
+        ]\n}\n\nThis creates the hierarchy: Clothing → Men → Shirts → Casual Shirts.\n\nThe order matters; the first\
+        \ element is the top-level category and each subsequent element is a child of the previous one.\n\nFlat\
+        \ Category Type\n\nUse this if your categories are independent and don't follow a parent-child hierarchy.\
+        \ Each element is a standalone category label at the same level.\n\n{\n \"category\": [\"Men's Shirts\"\
+        , \"Women's Dresses\", \"Kids' Shoes\"]\n}\n\nIn flat mode, all categories are treated equally; there is\
+        \ no implied nesting or ordering relationship between elements.\n\nLimits:\n\nCombined length of all category\
+        \ elements: max 1024 characters\n\nEach element: max 512 characters\n\nTags & Merchandising\nTags are used\
+        \ for product grouping and merchandising rules within the Insider One platform.\n\n{\n \"tags\": [\"new-arrival\"\
+        , \"bestseller\", \"summer-collection\", \"free-shipping\"]\n}\n\nYou can use tags to:\n\nCreate product\
+        \ segments for personalization\n\nTrigger merchandising rules\n\nFilter products in recommendation widgets\n\
+        \nDefine campaign audiences\n\nLimits:\n\nCombined length of all tags: max 4096 characters\n\nEach tag:\
+        \ max 512 characters\n\nGroup Code\nThe groupcode attribute links product variants together as a single\
+        \ product group. Products sharing the same groupcode are treated as variations of the same product (e.g.,\
+        \ different sizes or colors).\n\n[\n  {\n    \"item_id\": \"velocity-runner-pro-white\",\n    \"groupcode\"\
+        : \"velocity-runner-pro\",\n    \"color\": \"White\",\n    \"size\": \"10\"\n  },\n  {\n    \"item_id\"\
+        : \"velocity-runner-pro-black\",\n    \"groupcode\": \"velocity-runner-pro\",\n    \"color\": \"Black\"\
+        ,\n    \"size\": \"10\"\n  }\n]\n\nSample Request\nThe sample below displays a request to insert new products\
+        \ into the catalog using a flat format. Each product is a separate JSON object with all fields inline. Every\
+        \ locale/store combination is a separate object.\n\ncurl -X POST \"https://catalog.api.useinsider.com/v2/ingest\"\
+        \ \\\n        -H \"Content-Type: application/json\" \\\n        -H \"X-PARTNER-NAME: yourPartnerName\" \\\
+        \n        -H \"X-REQUEST-TOKEN: your-api-token\" \\\n        -d '[\n        {\n        \"item_id\": \"velocity-runner-pro-white\"\
+        ,\n        \"locale\": \"en_US\",\n        \"name\": \"Velocity Runner Pro - White\",\n        \"url\":\
+        \ \"https://www.example-insiderone.com/shoes/velocity-runner-pro-white\",\n        \"image_url\": \"https://cdn.example-insiderone.com/images/velocity-runner-pro-white.jpg\"\
+        ,\n        \"category\": [\"Shoes\", \"Running\", \"Velox\"],\n        \"brand\": \"Velox\",\n        \"\
+        color\": \"White\",\n        \"groupcode\": \"velocity-runner-pro\",\n        \"price\": { \"USD\": 129.99\
+        \ },\n        \"original_price\": { \"USD\": 149.99 },\n        \"in_stock\": 1,\n        \"stock_count\"\
+        : 50\n        },\n        {\n        \"item_id\": \"velocity-runner-pro-white\",\n        \"locale\": \"\
+        en_US:newyork\",\n        \"name\": \"Velocity Runner Pro - White\",\n        \"url\": \"https://www.example-insiderone.com/shoes/velocity-runner-pro-white\"\
+        ,\n        \"image_url\": \"https://cdn.example-insiderone.com/images/velocity-runner-pro-white.jpg\",\n\
+        \        \"category\": [\"Shoes\", \"Running\", \"Velox\"],\n        \"brand\": \"Velox\",\n        \"color\"\
+        : \"White\",\n        \"groupcode\": \"velocity-runner-pro\",\n        \"price\": { \"USD\": 119.99 },\n\
+        \        \"original_price\": { \"USD\": 149.99 },\n        \"in_stock\": 1,\n        \"stock_count\": 12\n\
+        \        },\n        {\n        \"item_id\": \"velocity-runner-pro-white\",\n        \"locale\": \"en_US:losangeles\"\
+        ,\n        \"name\": \"Velocity Runner Pro - White\",\n        \"url\": \"https://www.example-insiderone.com/shoes/velocity-runner-pro-white\"\
+        ,\n        \"image_url\": \"https://cdn.example-insiderone.com/images/velocity-runner-pro-white.jpg\",\n\
+        \        \"category\": [\"Shoes\", \"Running\", \"Velox\"],\n        \"brand\": \"Velox\",\n        \"color\"\
+        : \"White\",\n        \"groupcode\": \"velocity-runner-pro\",\n        \"price\": { \"USD\": 129.99 },\n\
+        \        \"original_price\": { \"USD\": 149.99 },\n        \"in_stock\": 0,\n        \"stock_count\": 0\n\
+        \        },\n        {\n        \"item_id\": \"velocity-runner-pro-white\",\n        \"locale\": \"pt_BR\"\
+        ,\n        \"name\": \"Velocity Runner Pro - Branco\",\n        \"url\": \"https://www.example-insiderone.com/shoes/velocity-runner-pro-white\"\
+        ,\n        \"image_url\": \"https://cdn.example-insiderone.com/images/velocity-runner-pro-white.jpg\",\n\
+        \        \"category\": [\"Calçados\", \"Corrida\", \"Velox\"],\n        \"brand\": \"Velox\",\n        \"\
+        color\": \"White\",\n        \"groupcode\": \"velocity-runner-pro\",\n        \"price\": { \"BRL\": 899.90\
+        \ },\n        \"original_price\": { \"BRL\": 999.90 },\n        \"in_stock\": 1,\n        \"stock_count\"\
+        : 30\n        }\n        ]'\n\nSample Response\nAll ingest endpoints return the same response structure:\n\
+        \n{\n        \"success\": true,\n        \"message\": {\n        \"valid\": {\n        \"count\": 95\n \
+        \       },\n        \"invalid\": {\n        \"count\": 5,\n        \"details\": [\n        {\n        \"\
+        field\": \"original_price\",\n        \"message\": \"Field is invalidated: 'original_price' is required\"\
+        ,\n        \"count\": 2,\n        \"document_ids\": [\"item-1\", \"item-2\"]\n        },\n        {\n  \
+        \      \"field\": \"url\",\n        \"message\": \"Field is invalidated: 'url' must match pattern\",\n \
+        \       \"count\": 3,\n        \"document_ids\": [\"item-3\", \"item-4\", \"item-5\"]\n        }\n     \
+        \   ]\n        },\n        \"warnings\": {\n        \"count\": 1,\n        \"details\": [\n        {\n \
+        \       \"field\": \"image_url\",\n        \"message\": \"Image URL could not be validated\",\n        \"\
+        count\": 1,\n        \"document_ids\": [\"item-6\"]\n        }\n        ]\n        },\n        \"invalidRatio\"\
+        : 0.05\n        }\n        }\n\nWarnings are informational and do not prevent records from being processed.\
+        \ \n\nLimitations\nFor all the limits applied, refer to Limitations."
+      security:
+      - PartnerName: []
+      - RequestToken: []
+      requestBody:
+        content:
+          application/json:
+            example:
+            - item_id: velocity-runner-pro-white
+              locale: en_US
+              name: Velocity Runner Pro - White
+              url: https://www.example-insiderone.com/shoes/velocity-runner-pro-white
+              image_url: https://cdn.example-insiderone.com/images/velocity-runner-pro-white.jpg
+              category:
+              - Shoes
+              - Running
+              - Velox
+              brand: Velox
+              color: White
+              groupcode: velocity-runner-pro
+              price:
+                USD: 129.99
+              original_price:
+                USD: 149.99
+              in_stock: 1
+              stock_count: 50
+            - item_id: velocity-runner-pro-white
+              locale: en_US:newyork
+              name: Velocity Runner Pro - White
+              url: https://www.example-insiderone.com/shoes/velocity-runner-pro-white
+              image_url: https://cdn.example-insiderone.com/images/velocity-runner-pro-white.jpg
+              category:
+              - Shoes
+              - Running
+              - Velox
+              brand: Velox
+              color: White
+              groupcode: velocity-runner-pro
+              price:
+                USD: 119.99
+              original_price:
+                USD: 149.99
+              in_stock: 1
+              stock_count: 12
+            - item_id: velocity-runner-pro-white
+              locale: en_US:losangeles
+              name: Velocity Runner Pro - White
+              url: https://www.example-insiderone.com/shoes/velocity-runner-pro-white
+              image_url: https://cdn.example-insiderone.com/images/velocity-runner-pro-white.jpg
+              category:
+              - Shoes
+              - Running
+              - Velox
+              brand: Velox
+              color: White
+              groupcode: velocity-runner-pro
+              price:
+                USD: 129.99
+              original_price:
+                USD: 149.99
+              in_stock: 0
+              stock_count: 0
+            - item_id: velocity-runner-pro-white
+              locale: pt_BR
+              name: Velocity Runner Pro - Branco
+              url: https://www.example-insiderone.com/shoes/velocity-runner-pro-white
+              image_url: https://cdn.example-insiderone.com/images/velocity-runner-pro-white.jpg
+              category:
+              - Calçados
+              - Corrida
+              - Velox
+              brand: Velox
+              color: White
+              groupcode: velocity-runner-pro
+              price:
+                BRL: 899.9
+              original_price:
+                BRL: 999.9
+              in_stock: 1
+              stock_count: 30
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /v2/ingest/nested:
+    post:
+      operationId: addNewProductsInANestedFormat
+      summary: Add New Products in a Nested Format
+      tags:
+      - Catalog APIs
+      description: "The Catalog API allows you to insert new items into your product catalog in a nested format.\
+        \ It creates new product records. If a product with the same item_id + locale already exists, it will be\
+        \ overwritten.\n\nEndpoint and Headers\nPOST https://catalog.api.useinsider.com/v2/ingest/nested\n\nBody\
+        \ Parameters\nDefault Product Attributes\nThe following product fields should be sent as parameters in the\
+        \ object, along with their field name and data type, as stated. If any required fields are not sent through\
+        \ the Catalog API, the product is not updated or inserted.\n\nField Name\nDescription\nData Type\nRequired\n\
+        \nitem_id\nUnique product identifier. Max 128 characters.\nString\nYes\n\nlocale\nISO locale code (e.g.,\
+        \ en_US, pt_BR). Max 64 characters.\nString\nYes\n\nname\nProduct name. Max 512 characters.\nString\nYes\n\
+        \nurl\nProduct page URL. Must include protocol (e.g., https://). Max 512 characters.\nString\nYes\n\nimage_url\n\
+        Product image URL. Must start with http://, https://, or //.\nString\nYes\n\nprice\nCurrent selling price\
+        \ per currency. e.g., {\"USD\": 100, \"BRL\": 500}.\nObject\nRequired for Stock & Revenue Feed Management\
+        \ Type\n\noriginal_price\nOriginal/list price per currency. Same structure as price.\nObject\nRequired for\
+        \ Stock & Revenue Feed Management Type\n\nomnibus_price\nOmnibus directive price per currency. Same structure\
+        \ as price.\nObject\nNo\n\nin_stock\n1 = in stock, 0 = out of stock.\nNumber\nRequired for Stock & Revenue\
+        \ and Availability Feed Management Types\n\nstock_count\nAvailable quantity. Must be >= 0.\nNumber\nNo\n\
+        \nitem_update_date\nLast update timestamp. Format: YYYY-MM-DD hh:mm:ss\nString\nRequired for Published Time\
+        \ Feed Management Type\n\nitem_start_date\nAvailability start date. Format: YYYY-MM-DD hh:mm:ss\nString\n\
+        Required for Start & End Time Feed Management Type\n\nitem_end_date\nAvailability end date. Format: YYYY-MM-DD\
+        \ hh:mm:ss\nString\nRequired for Start & End Time Feed Management Type\n\ndescription\nProduct description.\
+        \ Max 1024 characters.\nString\nNo\n\nbrand\nBrand name. Max 512 characters.\nString\nNo\n\nsku\nStock keeping\
+        \ unit. Max 512 characters.\nString\nNo\n\ncolor\nProduct color. Max 512 characters.\nString\nNo\n\nsize\n\
+        Product size. Max 512 characters.\nString\nNo\n\ngender\nGender classification. Max 512 characters.\nString\n\
+        No\n\ncategory\nCategory as an array\nString[]\nNo\n\ntags\nProduct tags\nString[]\nNo\n\ngroupcode\nProduct\
+        \ group identifier\nString\nNo\n\nvariants\nProduct variants. Max 512 characters per item.\nString[]\nNo\n\
+        \nrating\nProduct rating, 0–10\nNumber\nNo\n\nproduct_attributes\nCustom attributes defined in your account.\n\
+        Object {key:value}\nNo\n\nis_status_passive\n1 = passive/hidden in Smart Recommender and Eureka results,\
+        \ 0 = active.\nNumber\nNo\n\nCustom Product Attributes\nCustom Product Attributes allow you to define additional\
+        \ details specific to your business. These attributes enrich your catalog with data that supports your unique\
+        \ use cases, personalization logic, and recommendation filters.\n\nBefore sending Custom Product Attributes\
+        \ in your payload, you must define them in your account.\n\nIf a Default Product Attribute already exists\
+        \ for the information you want to include, use the default one instead of creating a custom one. This keeps\
+        \ your catalog structure consistent.\n\nCustom attributes are sent inside the product_attributes object:\n\
+        \n{\n        \"item_id\": \"velocity-runner-pro-white\",\n        \"locale\": \"en_US\",\n        \"name\"\
+        : \"Velocity Runner Pro - White\",\n        \"product_attributes\": {\n        \"material_type\": \"Leather\"\
+        ,\n        \"season\": \"Winter\",\n        \"eco_friendly\": true,\n        \"collection\": \"Winter Collection\
+        \ 2025\",\n        \"delivery_type\": \"Express\"\n        }\n\nFeed Management Types\nYour feed management\
+        \ type determines which pricing and stock attributes are required.\n\nStock and Revenue Based Feed Management\
+        \ Type\nThe Stock and Revenue Based Feed Management Type is the most common type. It requires pricing and\
+        \ stock information.\n\ncurl -X POST \"https://catalog.api.useinsider.com/v2/ingest\" \\\n  -H \"Content-Type:\
+        \ application/json\" \\\n  -H \"X-PARTNER-NAME: your-partner-name\" \\\n  -H \"X-REQUEST-TOKEN: your-api-token\"\
+        \ \\\n  -d '[\n    {\n      \"item_id\": \"velocity-runner-pro-white\",\n      \"locale\": \"en_US\",\n\
+        \      \"name\": \"Velocity Runner Pro - White\",\n      \"url\": \"https://www.example-insiderone.com/shoes/velocity-runner-pro-white\"\
+        ,\n      \"image_url\": \"https://cdn.example-insiderone.com/images/velocity-runner-pro-white.jpg\",\n \
+        \     \"category\": [\"Shoes\", \"Running\", \"Velox\"],\n      \"brand\": \"Velox\",\n      \"price\":\
+        \ { \"USD\": 129.99 },\n      \"original_price\": { \"USD\": 149.99 },\n      \"in_stock\": 1\n    }\n \
+        \ ]'\n\nAvailability Based Feed Management Type\nFor the Availability Based Feed Management Type, only the\
+        \ stock status is required. Pricing is optional.\n\ncurl -X POST \"https://catalog.api.useinsider.com/v2/ingest\"\
+        \ \\\n  -H \"Content-Type: application/json\" \\\n  -H \"X-PARTNER-NAME: your-partner-name\" \\\n  -H \"\
+        X-REQUEST-TOKEN: your-api-token\" \\\n  -d '[\n    {\n      \"item_id\": \"velocity-runner-pro-white\",\n\
+        \      \"locale\": \"en_US\",\n      \"name\": \"Velocity Runner Pro - White\",\n      \"url\": \"https://www.example-insiderone.com/shoes/velocity-runner-pro-white\"\
+        ,\n      \"image_url\": \"https://cdn.example-insiderone.com/images/velocity-runner-pro-white.jpg\",\n \
+        \     \"in_stock\": 1\n    }\n  ]'\n\nPublished Time Based Feed Management Type\nThe Published Time Based\
+        \ Feed Management Type requires an update timestamp instead of pricing.\n\ncurl -X POST \"https://catalog.api.useinsider.com/v2/ingest\"\
+        \ \\\n  -H \"Content-Type: application/json\" \\\n  -H \"X-PARTNER-NAME: your-partner-name\" \\\n  -H \"\
+        X-REQUEST-TOKEN: your-api-token\" \\\n  -d '[\n    {\n      \"item_id\": \"blog-top-running-shoes-2025\"\
+        ,\n      \"locale\": \"en_US\",\n      \"name\": \"Top 10 Running Shoes for 2025\",\n      \"url\": \"https://www.example-insiderone.com/blog/top-running-shoes-2025\"\
+        ,\n      \"image_url\": \"https://cdn.example-insiderone.com/images/blog/running-shoes-2025.jpg\",\n   \
+        \   \"item_update_date\": \"2025-01-15 10:30:00\"\n    }\n  ]'\n\nStart & End Time Based Feed Management\
+        \ Type\nThe Start & End Time Based Feed Management Type requires date range attributes for time-bound content.\n\
+        \ncurl -X POST \"https://catalog.api.useinsider.com/v2/ingest\" \\\n  -H \"Content-Type: application/json\"\
+        \ \\\n  -H \"X-PARTNER-NAME: your-partner-name\" \\\n  -H \"X-REQUEST-TOKEN: your-api-token\" \\\n  -d '[\n\
+        \    {\n      \"item_id\": \"promo-summer-clearance-2025\",\n      \"locale\": \"en_US\",\n      \"name\"\
+        : \"Summer Clearance Sale - Up to 50% Off\",\n      \"url\": \"https://www.example-insiderone.com/campaigns/summer-clearance-2025\"\
+        ,\n      \"image_url\": \"https://cdn.example-insiderone.com/images/campaigns/summer-clearance.jpg\",\n\
+        \      \"item_start_date\": \"2025-06-01 00:00:00\",\n      \"item_end_date\": \"2025-08-31 23:59:59\"\n\
+        \    }\n  ]'\n\nProduct Availability by Feed Management Type\nA product is considered available based on\
+        \ criteria that vary by feed management type:\n\nFeed Type\nAvailability Condition\n\nStock & Revenue Based\n\
+        in_stock must be 1\n\nAvailability Based\nin_stock must be 1\n\nPublished Time Based\nitem_update_date must\
+        \ be within the last 2 days (default 2 days, adjustable in Smart Recommender campaigns)\n\nStart & End Time\
+        \ Based\nitem_end_date must not be in the past\n\nCurrencies\nPricing attributes accept an object mapping\
+        \ currency codes to amounts. You can include multiple currencies in a single record.\n\n{\n  \"price\":\
+        \ {\n    \"USD\": 129.99,\n    \"EUR\": 119.99,\n    \"GBP\": 104.99,\n    \"BRL\": 899.90\n  },\n  \"original_price\"\
+        : {\n    \"USD\": 149.99,\n    \"EUR\": 139.99,\n    \"GBP\": 119.99,\n    \"BRL\": 999.90\n  }\n}\n\nCategories\n\
+        The category attribute accepts an array of strings. How the array is interpreted depends on your account's\
+        \ category type, which is configured during onboarding. You must choose one of the two types:\n\nHierarchical\
+        \ Category Type\n\nUse this if your categories follow a parent-child structure, with subcategories nested\
+        \ under broader categories. Each element in the array represents a level in the hierarchy, ordered from\
+        \ broadest to most specific.\n\n{\n \"category\": [\"Clothing\", \"Men\", \"Shirts\", \"Casual Shirts\"\
+        ]\n}\n\nThis creates the hierarchy: Clothing → Men → Shirts → Casual Shirts.\n\nThe order matters; the first\
+        \ element is the top-level category and each subsequent element is a child of the previous one.\n\nFlat\
+        \ Category Type\n\nUse this if your categories are independent and don't follow a parent-child hierarchy.\
+        \ Each element is a standalone category label at the same level.\n\n{\n \"category\": [\"Men's Shirts\"\
+        , \"Women's Dresses\", \"Kids' Shoes\"]\n}\n\nIn flat mode, all categories are treated equally; there is\
+        \ no implied nesting or ordering relationship between elements.\n\nLimits:\n\nCombined length of all category\
+        \ elements: max 1024 characters\n\nEach element: max 512 characters\n\nTags & Merchandising\nTags are used\
+        \ for product grouping and merchandising rules within the Insider One platform.\n\n{\n \"tags\": [\"new-arrival\"\
+        , \"bestseller\", \"summer-collection\", \"free-shipping\"]\n}\n\nYou can use tagsto:\n\nCreate product\
+        \ segments for personalization\n\nTrigger merchandising rules\n\nFilter products in recommendation widgets\n\
+        \nDefine campaign audiences\n\nLimits:\n\nCombined length of all tags: max 4096 characters\n\nEach tag:\
+        \ max 512 characters\n\nGroup Code\nThe groupcode attribute links product variants together as a single\
+        \ product group. Products sharing the same groupcode are treated as variations of the same product (e.g.,\
+        \ different sizes or colors).\n\n[\n  {\n    \"item_id\": \"velocity-runner-pro-white\",\n    \"groupcode\"\
+        : \"velocity-runner-pro\",\n    \"color\": \"White\",\n    \"size\": \"10\"\n  },\n  {\n    \"item_id\"\
+        : \"velocity-runner-pro-black\",\n    \"groupcode\": \"velocity-runner-pro\",\n    \"color\": \"Black\"\
+        ,\n    \"size\": \"10\"\n  }\n]\n\nSample Request\nThe sample below displays a request to insert new products\
+        \ using a nested format. Shared fields go in base, locale-specific fields go in locales, and store overrides\
+        \ go in stores.\n\nUse nested format when you have multiple locales or stores per product. Shared fields\
+        \ like url, image_url, and brand are defined once and inherited by all locales/stores, reducing payload\
+        \ size and repetition.\n\nThe following example is equivalent to the flat format: the same product, locales,\
+        \ and stores, but expressed as a single nested object instead of 4 separate records:\n\ncurl --request POST\
+        \ \"https://catalog.api.useinsider.com/v2/ingest/nested\" \\\n        --header \"Content-Type: application/json\"\
+        \ \\\n        --header \"X-PARTNER-NAME: yourPartnerName\" \\\n        --header \"X-REQUEST-TOKEN: your-api-token\"\
+        \ \\\n        --data '[\n        {\n        \"item_id\": \"velocity-runner-pro-white\",\n        \"base\"\
+        : {\n        \"url\": \"https://www.example-insiderone.com/shoes/velocity-runner-pro-white\",\n        \"\
+        image_url\": \"https://cdn.example-insiderone.com/images/velocity-runner-pro-white.jpg\",\n        \"brand\"\
+        : \"Velox\",\n        \"groupcode\": \"velocity-runner-pro\",\n        \"color\": \"White\"\n        },\n\
+        \        \"locales\": {\n        \"en_US\": {\n        \"name\": \"Velocity Runner Pro - White\",\n    \
+        \    \"category\": [\n        \"Shoes\",\n        \"Running\",\n        \"Velox\"\n        ],\n        \"\
+        price\": {\n        \"USD\": 129.99\n        },\n        \"original_price\": {\n        \"USD\": 149.99\n\
+        \        },\n        \"stores\": {\n        \"main\": {\n        \"in_stock\": 1,\n        \"stock_count\"\
+        : 50\n        },\n        \"newyork\": {\n        \"price\": {\n        \"USD\": 119.99\n        },\n  \
+        \      \"in_stock\": 1,\n        \"stock_count\": 12\n        },\n        \"losangeles\": {\n        \"\
+        in_stock\": 0,\n        \"stock_count\": 0\n        }\n        }\n        },\n        \"pt_BR\": {\n   \
+        \     \"name\": \"Velocity Runner Pro - Branco\",\n        \"category\": [\n        \"Calçados\",\n    \
+        \    \"Corrida\",\n        \"Velox\"\n        ],\n        \"price\": {\n        \"BRL\": 899.90\n      \
+        \  },\n        \"original_price\": {\n        \"BRL\": 999.90\n        },\n        \"stores\": {\n     \
+        \   \"main\": {\n        \"in_stock\": 1,\n        \"stock_count\": 30\n        }\n        }\n        }\n\
+        \        }\n        }\n        ]'\n\nUnderstanding the field inheritance\nIn nested format, the same field\
+        \ can be defined at multiple levels (base, locale, store). The Catalog API merges these into a final record\
+        \ using this priority:\n\nstore fields > locale fields > base fields\n\nThis allows you to define shared\
+        \ values once in the base and only override the differences at each level.\n\nExample: In the request above,\
+        \ en_US defines price: USD 129.99 at the locale level. The newyork store overrides this with price: USD\
+        \ 119.99, while losangeles inherits the locale price since it doesn't define its own:\n\nlocale\nname\n\
+        price\nin_stock\nstock_count\n\nen_US\nVelocity Runner Pro - White\nUSD 129.99\n1\n50\n\nen_US:newyork\n\
+        Velocity Runner Pro - White\nUSD 119.99 (overridden)\n1\n12\n\nen_US:losangeles\nVelocity Runner Pro - White\n\
+        USD 129.99 (inherited)\n0\n0\n\npt_BR\nVelocity Runner Pro - Branco\nBRL 899.90\n1\n30\n\nRestrictions\n\
+        Store Attributes\nIn the nested payload structure, fields can be defined at three levels:\n\nbase → Shared\
+        \ across all locales and stores\n        locales → Locale-specific (name, category, etc.)\n        └─ stores\
+        \ → Store-specific overrides (pricing and stock only)\n\nOnly the following fields are allowed at the store\
+        \ level:\n\nprice\n\noriginal_price\n\nomnibus_price\n\nin_stock\n\nstock_count\n\nIncluding any other field\
+        \ at the store level returns a 400 error.\n\nExample: A valid nested payload with store-level overrides:\n\
+        \n{\n        \"item_id\": \"SKU-123\",\n        \"base\": {\n        \"url\": \"https://example.com/product/SKU-123\"\
+        ,\n        \"image_url\": \"https://cdn.example.com/SKU-123.jpg\",\n        \"brand\": \"Acme\"\n      \
+        \  },\n        \"locales\": {\n        \"en_US\": {\n        \"name\": \"Example Product\",\n        \"\
+        category\": [\"Electronics\"],\n        \"price\": { \"USD\": 99.99 },\n        \"original_price\": { \"\
+        USD\": 119.99 },\n        \"in_stock\": 1,\n        \"stores\": {\n        \"main\": {\n        \"stock_count\"\
+        : 100\n        },\n        \"outlet\": {\n        \"price\": { \"USD\": 79.99 },\n        \"in_stock\":\
+        \ 1,\n        \"stock_count\": 25\n        }\n        }\n        }\n        }\n        }\n\nThis produces\
+        \ two records:\n\nen_US with price USD 99.99 and stock_count 100\n\nen_US:outlet with price USD 79.99 and\
+        \ stock_count 25\n\nMain Store\nThe main key is a reserved store identifier that represents the default/locale-level\
+        \ record. Unlike other store keys, it does not append a suffix to the locale string. For example, \"main\"\
+        \ under en_US produces a record with locale en_US, while \"newyork\" produces en_US:newyork.\n\n<p >This\
+        \ is useful when you want to define a base price/stock for the locale itself alongside store-specific overrides.\
+        \ If you use main without any other stores, the result is the same as not using stores at all.</p> \n\n\
+        Sample Response\nAll ingest endpoints return the same response structure:\n\n{\n        \"success\": true,\n\
+        \        \"message\": {\n        \"valid\": {\n        \"count\": 95\n        },\n        \"invalid\": {\n\
+        \        \"count\": 5,\n        \"details\": [\n        {\n        \"field\": \"original_price\",\n    \
+        \    \"message\": \"Field is invalidated: 'original_price' is required\",\n        \"count\": 2,\n     \
+        \   \"document_ids\": [\"item-1\", \"item-2\"]\n        },\n        {\n        \"field\": \"url\",\n   \
+        \     \"message\": \"Field is invalidated: 'url' must match pattern\",\n        \"count\": 3,\n        \"\
+        document_ids\": [\"item-3\", \"item-4\", \"item-5\"]\n        }\n        ]\n        },\n        \"warnings\"\
+        : {\n        \"count\": 1,\n        \"details\": [\n        {\n        \"field\": \"image_url\",\n     \
+        \   \"message\": \"Image URL could not be validated\",\n        \"count\": 1,\n        \"document_ids\"\
+        : [\"item-6\"]\n        }\n        ]\n        },\n        \"invalidRatio\": 0.05\n        }\n        }\n\
+        \nWarnings are informational and do not prevent records from being processed.\n\nLimitations\nFor all the\
+        \ limits applied, refer to Limitations."
+      security:
+      - PartnerName: []
+      - RequestToken: []
+      requestBody:
+        content:
+          application/json:
+            example:
+            - item_id: velocity-runner-pro-white
+              base:
+                url: https://www.example-insiderone.com/shoes/velocity-runner-pro-white
+                image_url: https://cdn.example-insiderone.com/images/velocity-runner-pro-white.jpg
+                brand: Velox
+                groupcode: velocity-runner-pro
+                color: White
+              locales:
+                en_US:
+                  name: Velocity Runner Pro - White
+                  category:
+                  - Shoes
+                  - Running
+                  - Velox
+                  price:
+                    USD: 129.99
+                  original_price:
+                    USD: 149.99
+                  stores:
+                    main:
+                      in_stock: 1
+                      stock_count: 50
+                    newyork:
+                      price:
+                        USD: 119.99
+                      in_stock: 1
+                      stock_count: 12
+                    losangeles:
+                      in_stock: 0
+                      stock_count: 0
+                pt_BR:
+                  name: Velocity Runner Pro - Branco
+                  category:
+                  - Calçados
+                  - Corrida
+                  - Velox
+                  price:
+                    BRL: 899.9
+                  original_price:
+                    BRL: 999.9
+                  stores:
+                    main:
+                      in_stock: 1
+                      stock_count: 30
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /v2/locales/batch:
+    post:
+      operationId: createLocaleConfigurations
+      summary: Create Locale Configurations
+      tags:
+      - Catalog APIs
+      description: "The Catalog API allows you to create locale configurations. For larger or more complex setups,\
+        \ the Create Locale endpoint enables faster and more scalable locale management.\n\nRefer to Locales for\
+        \ further information.\n\nEndpoint and Headers\nPOST https://catalog.api.useinsider.com/v2/locales/batch\n\
+        \nHeader\nSample Value\nDescription\n\nX-PARTNER-NAME\nmyParterName\nThis is your partner name. Navigate\
+        \ to InOne > Inone Settings > Account Settings to copy your partner name. The partner name should be lowercase.\n\
+        \nX-REQUEST-TOKEN\n1a2b3c4d5e6f\nThis key is required to authorize your request. Refer to API Authentication\
+        \ Tokens to generate your Catalog API token.\n\nSample Request\nThe sample below displays a request to create\
+        \ locale configurations:\n\ncurl --request POST \\\n  --url https://catalog.api.useinsider.com/v2/locales/batch\
+        \ \\\n  --header 'Content-Type: application/json' \\\n  --header 'X-PARTNER-NAME: your-partner-name' \\\n\
+        \  --header 'X-REQUEST-TOKEN: your-api-token' \\\n  --data '[\n    {\n        \"language_and_country_code\"\
+        : \"tr_TR\",\n        \"store_id\": \"Ankara\"\n    },\n    {\n        \"language_and_country_code\": \"\
+        en_US\",\n        \"store_id\": \"Portland\"\n    }\n]'\n\nSample Response\n{\n  \"success\": true,\n  \"\
+        created_locale_count\": 2\n}\n\nLimitations\nFor all the limits applied, refer to Limitations."
+      security:
+      - PartnerName: []
+      - RequestToken: []
+      requestBody:
+        content:
+          text/plain:
+            example: "'[\n    {\n        \"language_and_country_code\": \"tr_TR\",\n        \"store_id\": \"Ankara\"\
+              \n    },\n    {\n        \"language_and_country_code\": \"en_US\",\n        \"store_id\": \"Portland\"\
+              \n    }\n]'"
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /v2/update:
+    post:
+      operationId: updateExistingProductsInAFlatFormat
+      summary: Update Existing Products in a Flat Format
+      tags:
+      - Catalog APIs
+      description: "The Catalog API allows you to update existing products in your product catalog. You can send\
+        \ only the fields you want to change, and it supports partial updates. You can send only the fields you\
+        \ want to change, or send all fields if that's easier for your integration. Both approaches work.\n\nEndpoint\
+        \ and Headers\nPOST https://catalog.api.useinsider.com/v2/update\n\nBody Parameters\nDefault Product Attributes\n\
+        The following product fields should be sent as parameters in the object, along with their field name and\
+        \ data type, as stated. If any required fields are not sent through the Catalog API, the product is not\
+        \ updated or inserted.\n\nField Name\nDescription\nData Type\nRequired\n\nitem_id\nUnique product identifier.\
+        \ Max 128 characters.\nString\nYes\n\nlocale\nISO locale code (e.g., en_US, pt_BR). Max 64 characters.\n\
+        String\nYes\n\nname\nProduct name. Max 512 characters.\nString\nNo\n\nurl\nProduct page URL. Must include\
+        \ protocol (e.g., https://). Max 512 characters.\nString\nNo\n\nimage_url\nProduct image URL. Must start\
+        \ with http://, https://, or //.\nString\nNo\n\nprice\nCurrent selling price per currency. e.g., {\"USD\"\
+        : 100, \"BRL\": 500}.\nObject\nNo\n\noriginal_price\nOriginal/list price per currency. Same structure as\
+        \ price.\nObject\nNo\n\nomnibus_price\nOmnibus directive price per currency. Same structure as price.\n\
+        Object\nNo\n\nin_stock\n1 = in stock, 0 = out of stock.\nNumber\nNo\n\nstock_count\nAvailable quantity.\
+        \ Must be >= 0.\nNumber\nNo\n\nitem_update_date\nLast update timestamp. Format: YYYY-MM-DD hh:mm:ss\nString\n\
+        No\n\nitem_start_date\nAvailability start date. Format: YYYY-MM-DD hh:mm:ss\nString\nNo\n\nitem_end_date\n\
+        Availability end date. Format: YYYY-MM-DD hh:mm:ss\nString\nNo\n\ndescription\nProduct description. Max\
+        \ 1024 characters.\nString\nNo\n\nbrand\nBrand name. Max 512 characters.\nString\nNo\n\nsku\nStock keeping\
+        \ unit. Max 512 characters.\nString\nNo\n\ncolor\nProduct color. Max 512 characters.\nString\nNo\n\nsize\n\
+        Product size. Max 512 characters.\nString\nNo\n\ngender\nGender classification. Max 512 characters.\nString\n\
+        No\n\ncategory\nCategory as an array\nString[]\nNo\n\ntags\nProduct tags\nString[]\nNo\n\ngroupcode\nProduct\
+        \ group identifier\nString\nNo\n\nvariants\nProduct variants. Max 512 characters per item.\nString[]\nNo\n\
+        \nrating\nProduct rating, 0–10\nNumber\nNo\n\nproduct_attributes\nCustom attributes defined in your account.\n\
+        Object {key:value}\nNo\n\nis_status_passive\n1 = passive/hidden in Smart Recommender and Eureka results,\
+        \ 0 = active.\nNumber\nNo\n\nCustom Product Attributes\nCustom Product Attributes allow you to define additional\
+        \ details specific to your business. These attributes enrich your catalog with data that supports your unique\
+        \ use cases, personalization logic, and recommendation filters.\n\nBefore sending Custom Product Attributes\
+        \ in your payload, you must define them in your account.\n\nIf a Default Product Attribute already exists\
+        \ for the information you want to include, use the default one instead of creating a custom one. This keeps\
+        \ your catalog structure consistent.\n\nCustom attributes are sent inside the product_attributes object:\n\
+        \n{\n        \"item_id\": \"velocity-runner-pro-white\",\n        \"locale\": \"en_US\",\n        \"name\"\
+        : \"Velocity Runner Pro - White\",\n        \"product_attributes\": {\n        \"material_type\": \"Leather\"\
+        ,\n        \"season\": \"Winter\",\n        \"eco_friendly\": true,\n        \"collection\": \"Winter Collection\
+        \ 2025\",\n        \"delivery_type\": \"Express\"\n        }\n\nFeed Management Types\nYour feed management\
+        \ type determines which pricing and stock attributes are required.\n\nStock and Revenue Based Feed Management\
+        \ Type\nThe Stock and Revenue Based Feed Management Type is the most common type. It requires pricing and\
+        \ stock information.\n\ncurl -X POST \"https://catalog.api.useinsider.com/v2/ingest\" \\\n  -H \"Content-Type:\
+        \ application/json\" \\\n  -H \"X-PARTNER-NAME: your-partner-name\" \\\n  -H \"X-REQUEST-TOKEN: your-api-token\"\
+        \ \\\n  -d '[\n    {\n      \"item_id\": \"velocity-runner-pro-white\",\n      \"locale\": \"en_US\",\n\
+        \      \"name\": \"Velocity Runner Pro - White\",\n      \"url\": \"https://www.example-insiderone.com/shoes/velocity-runner-pro-white\"\
+        ,\n      \"image_url\": \"https://cdn.example-insiderone.com/images/velocity-runner-pro-white.jpg\",\n \
+        \     \"category\": [\"Shoes\", \"Running\", \"Velox\"],\n      \"brand\": \"Velox\",\n      \"price\":\
+        \ { \"USD\": 129.99 },\n      \"original_price\": { \"USD\": 149.99 },\n      \"in_stock\": 1\n    }\n \
+        \ ]'\n\nAvailability Based Feed Management Type\nFor the Availability Based Feed Management Type, only the\
+        \ stock status is required. Pricing is optional.\n\ncurl -X POST \"https://catalog.api.useinsider.com/v2/ingest\"\
+        \ \\\n  -H \"Content-Type: application/json\" \\\n  -H \"X-PARTNER-NAME: your-partner-name\" \\\n  -H \"\
+        X-REQUEST-TOKEN: your-api-token\" \\\n  -d '[\n    {\n      \"item_id\": \"velocity-runner-pro-white\",\n\
+        \      \"locale\": \"en_US\",\n      \"name\": \"Velocity Runner Pro - White\",\n      \"url\": \"https://www.example-insiderone.com/shoes/velocity-runner-pro-white\"\
+        ,\n      \"image_url\": \"https://cdn.example-insiderone.com/images/velocity-runner-pro-white.jpg\",\n \
+        \     \"in_stock\": 1\n    }\n  ]'\n\nPublished Time Based Feed Management Type\nThe Published Time Based\
+        \ Feed Management Type requires an update timestamp instead of pricing.\n\ncurl -X POST \"https://catalog.api.useinsider.com/v2/ingest\"\
+        \ \\\n  -H \"Content-Type: application/json\" \\\n  -H \"X-PARTNER-NAME: your-partner-name\" \\\n  -H \"\
+        X-REQUEST-TOKEN: your-api-token\" \\\n  -d '[\n    {\n      \"item_id\": \"blog-top-running-shoes-2025\"\
+        ,\n      \"locale\": \"en_US\",\n      \"name\": \"Top 10 Running Shoes for 2025\",\n      \"url\": \"https://www.example-insiderone.com/blog/top-running-shoes-2025\"\
+        ,\n      \"image_url\": \"https://cdn.example-insiderone.com/images/blog/running-shoes-2025.jpg\",\n   \
+        \   \"item_update_date\": \"2025-01-15 10:30:00\"\n    }\n  ]'\n\nStart & End Time Based Feed Management\
+        \ Type\nThe Start & End Time Based Feed Management Type requires date range attributes for time-bound content.\n\
+        \ncurl -X POST \"https://catalog.api.useinsider.com/v2/ingest\" \\\n  -H \"Content-Type: application/json\"\
+        \ \\\n  -H \"X-PARTNER-NAME: your-partner-name\" \\\n  -H \"X-REQUEST-TOKEN: your-api-token\" \\\n  -d '[\n\
+        \    {\n      \"item_id\": \"promo-summer-clearance-2025\",\n      \"locale\": \"en_US\",\n      \"name\"\
+        : \"Summer Clearance Sale - Up to 50% Off\",\n      \"url\": \"https://www.example-insiderone.com/campaigns/summer-clearance-2025\"\
+        ,\n      \"image_url\": \"https://cdn.example-insiderone.com/images/campaigns/summer-clearance.jpg\",\n\
+        \      \"item_start_date\": \"2025-06-01 00:00:00\",\n      \"item_end_date\": \"2025-08-31 23:59:59\"\n\
+        \    }\n  ]'\n\nProduct Availability by Feed Management Type\nA product is considered available based on\
+        \ criteria that vary by feed management type:\n\nFeed Type\nAvailability Condition\n\nStock & Revenue Based\n\
+        in_stock must be 1\n\nAvailability Based\nin_stock must be 1\n\nPublished Time Based\nitem_update_date must\
+        \ be within the last 2 days (default 2 days, adjustable in Smart Recommender campaigns)\n\nStart & End Time\
+        \ Based\nitem_end_date must not be in the past\n\nCurrencies\nPricing attributes accept an object mapping\
+        \ currency codes to amounts. You can include multiple currencies in a single record.\n\n{\n  \"price\":\
+        \ {\n    \"USD\": 129.99,\n    \"EUR\": 119.99,\n    \"GBP\": 104.99,\n    \"BRL\": 899.90\n  },\n  \"original_price\"\
+        : {\n    \"USD\": 149.99,\n    \"EUR\": 139.99,\n    \"GBP\": 119.99,\n    \"BRL\": 999.90\n  }\n}\n\nCategories\n\
+        The category attribute accepts an array of strings. How the array is interpreted depends on your account's\
+        \ category type, which is configured during onboarding. You must choose one of the two types:\n\nHierarchical\
+        \ Category Type\n\nUse this if your categories follow a parent-child structure, with subcategories nested\
+        \ under broader categories. Each element in the array represents a level in the hierarchy, ordered from\
+        \ broadest to most specific.\n\n{\n \"category\": [\"Clothing\", \"Men\", \"Shirts\", \"Casual Shirts\"\
+        ]\n}\n\nThis creates the hierarchy: Clothing → Men → Shirts → Casual Shirts.\n\nThe order matters; the first\
+        \ element is the top-level category and each subsequent element is a child of the previous one.\n\nFlat\
+        \ Category Type\n\nUse this if your categories are independent and don't follow a parent-child hierarchy.\
+        \ Each element is a standalone category label at the same level.\n\n{\n \"category\": [\"Men's Shirts\"\
+        , \"Women's Dresses\", \"Kids' Shoes\"]\n}\n\nIn flat mode, all categories are treated equally; there is\
+        \ no implied nesting or ordering relationship between elements.\n\nLimits:\n\nCombined length of all category\
+        \ elements: max 1024 characters\n\nEach element: max 512 characters\n\nTags & Merchandising\nTags are used\
+        \ for product grouping and merchandising rules within the Insider One platform.\n\n{\n \"tags\": [\"new-arrival\"\
+        , \"bestseller\", \"summer-collection\", \"free-shipping\"]\n}\n\nYou can use tags to:\n\nCreate product\
+        \ segments for personalization\n\nTrigger merchandising rules\n\nFilter products in recommendation widgets\n\
+        \nDefine campaign audiences\n\nLimits:\n\nCombined length of all tags: max 4096 characters\n\nEach tag:\
+        \ max 512 characters\n\nGroup Code\nThe groupcode attribute links product variants together as a single\
+        \ product group. Products sharing the same groupcode are treated as variations of the same product (e.g.,\
+        \ different sizes or colors).\n\n[\n  {\n    \"item_id\": \"velocity-runner-pro-white\",\n    \"groupcode\"\
+        : \"velocity-runner-pro\",\n    \"color\": \"White\",\n    \"size\": \"10\"\n  },\n  {\n    \"item_id\"\
+        : \"velocity-runner-pro-black\",\n    \"groupcode\": \"velocity-runner-pro\",\n    \"color\": \"Black\"\
+        ,\n    \"size\": \"10\"\n  }\n]\n\nSample Request\nThe sample below displays a request to insert new products\
+        \ into the catalog using a flat format. Each product is a separate JSON object with all fields inline. Every\
+        \ locale/store combination is a separate object.\n\ncurl -X POST \"https://catalog.api.useinsider.com/v2/update\"\
+        \ \\\n        -H \"Content-Type: application/json\" \\\n        -H \"X-PARTNER-NAME: your-partner-name\"\
+        \ \\\n        -H \"X-REQUEST-TOKEN: your-api-token\" \\\n        -d '[\n        {\n        \"item_id\":\
+        \ \"velocity-runner-pro-white\",\n        \"locale\": \"en_US\",\n        \"price\": { \"USD\": 109.99 },\n\
+        \        \"in_stock\": 0\n        }\n        ]'\n\nSample Response\nAll ingest endpoints return the same\
+        \ response structure:\n\n{\n        \"success\": true,\n        \"message\": {\n        \"valid\": {\n \
+        \       \"count\": 95\n        },\n        \"invalid\": {\n        \"count\": 5,\n        \"details\": [\n\
+        \        {\n        \"field\": \"original_price\",\n        \"message\": \"Field is invalidated: 'original_price'\
+        \ is required\",\n        \"count\": 2,\n        \"document_ids\": [\"item-1\", \"item-2\"]\n        },\n\
+        \        {\n        \"field\": \"url\",\n        \"message\": \"Field is invalidated: 'url' must match pattern\"\
+        ,\n        \"count\": 3,\n        \"document_ids\": [\"item-3\", \"item-4\", \"item-5\"]\n        }\n  \
+        \      ]\n        },\n        \"warnings\": {\n        \"count\": 1,\n        \"details\": [\n        {\n\
+        \        \"field\": \"image_url\",\n        \"message\": \"Image URL could not be validated\",\n       \
+        \ \"count\": 1,\n        \"document_ids\": [\"item-6\"]\n        }\n        ]\n        },\n        \"invalidRatio\"\
+        : 0.05\n        }\n        }\n\nWarnings are informational and do not prevent records from being processed.\
+        \ \n\nLimitations\nFor all the limits applied, refer to Limitations."
+      security:
+      - PartnerName: []
+      - RequestToken: []
+      requestBody:
+        content:
+          application/json:
+            example:
+            - item_id: velocity-runner-pro-white
+              locale: en_US
+              price:
+                USD: 109.99
+              in_stock: 0
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /v2/update/nested:
+    post:
+      operationId: updateExistingProductsInANestedFormat
+      summary: Update Existing Products in a Nested Format
+      tags:
+      - Catalog APIs
+      description: "The Catalog API allows you to update existing products in your product catalog using a nested\
+        \ format. You can send only the fields you want to change, and it supports partial updates. You can send\
+        \ only the fields you want to change, or send all fields if that's easier for your integration. Both approaches\
+        \ work.\n\nEndpoint and Headers\nPOST https://catalog.api.useinsider.com/v2/update/nested\n\nBody Parameters\n\
+        Default Product Attributes\nThe following product fields should be sent as parameters in the object, along\
+        \ with their field name and data type, as stated. If any required fields are not sent through the Catalog\
+        \ API, the product is not updated or inserted.\n\nThe following product fields should be sent as parameters\
+        \ in the object, along with their field name and data type, as stated. If any required fields are not sent\
+        \ through the Catalog API, the product is not updated or inserted.\n\nField Name\nDescription\nData Type\n\
+        Required\n\nitem_id\nUnique product identifier. Max 128 characters.\nString\nYes\n\nlocale\nISO locale code\
+        \ (e.g., en_US, pt_BR). Max 64 characters.\nString\nYes\n\nname\nProduct name. Max 512 characters.\nString\n\
+        No\n\nurl\nProduct page URL. Must include protocol (e.g., https://). Max 512 characters.\nString\nNo\n\n\
+        image_url\nProduct image URL. Must start with http://, https://, or //.\nString\nNo\n\nprice\nCurrent selling\
+        \ price per currency. e.g., {\"USD\": 100, \"BRL\": 500}.\nObject\nNo\n\noriginal_price\nOriginal/list price\
+        \ per currency. Same structure as price.\nObject\nNo\n\nomnibus_price\nOmnibus directive price per currency.\
+        \ Same structure as price.\nObject\nNo\n\nin_stock\n1 = in stock, 0 = out of stock.\nNumber\nNo\n\nstock_count\n\
+        Available quantity. Must be >= 0.\nNumber\nNo\n\nitem_update_date\nLast update timestamp. Format: YYYY-MM-DD\
+        \ hh:mm:ss\nString\nNo\n\nitem_start_date\nAvailability start date. Format: YYYY-MM-DD hh:mm:ss\nString\n\
+        No\n\nitem_end_date\nAvailability end date. Format: YYYY-MM-DD hh:mm:ss\nString\nNo\n\ndescription\nProduct\
+        \ description. Max 1024 characters.\nString\nNo\n\nbrand\nBrand name. Max 512 characters.\nString\nNo\n\n\
+        sku\nStock keeping unit. Max 512 characters.\nString\nNo\n\ncolor\nProduct color. Max 512 characters.\n\
+        String\nNo\n\nsize\nProduct size. Max 512 characters.\nString\nNo\n\ngender\nGender classification. Max\
+        \ 512 characters.\nString\nNo\n\ncategory\nCategory as an array\nString[]\nNo\n\ntags\nProduct tags\nString[]\n\
+        No\n\ngroupcode\nProduct group identifier\nString\nNo\n\nvariants\nProduct variants. Max 512 characters\
+        \ per item.\nString[]\nNo\n\nrating\nProduct rating, 0–10\nNumber\nNo\n\nproduct_attributes\nCustom attributes\
+        \ defined in your account.\nObject {key:value}\nNo\n\nis_status_passive\n1 = passive/hidden in Smart Recommender\
+        \ and Eureka results, 0 = active.\nNumber\nNo\n\nCustom Product Attributes\nCustom Product Attributes allow\
+        \ you to define additional details specific to your business. These attributes enrich your catalog with\
+        \ data that supports your unique use cases, personalization logic, and recommendation filters.\n\nBefore\
+        \ sending Custom Product Attributes in your payload, you must define them in your account.\n\nIf a Default\
+        \ Product Attribute already exists for the information you want to include, use the default one instead\
+        \ of creating a custom one. This keeps your catalog structure consistent.\n\nCustom attributes are sent\
+        \ inside the product_attributes object:\n\n{\n        \"item_id\": \"velocity-runner-pro-white\",\n    \
+        \    \"locale\": \"en_US\",\n        \"name\": \"Velocity Runner Pro - White\",\n        \"product_attributes\"\
+        : {\n        \"material_type\": \"Leather\",\n        \"season\": \"Winter\",\n        \"eco_friendly\"\
+        : true,\n        \"collection\": \"Winter Collection 2025\",\n        \"delivery_type\": \"Express\"\n \
+        \       }\n\nFeed Management Types\nYour feed management type determines which pricing and stock attributes\
+        \ are required.\n\nStock and Revenue Based Feed Management Type\nThe Stock and Revenue Based Feed Management\
+        \ Type is the most common type. It requires pricing and stock information.\n\ncurl -X POST \"https://catalog.api.useinsider.com/v2/ingest\"\
+        \ \\\n  -H \"Content-Type: application/json\" \\\n  -H \"X-PARTNER-NAME: your-partner-name\" \\\n  -H \"\
+        X-REQUEST-TOKEN: your-api-token\" \\\n  -d '[\n    {\n      \"item_id\": \"velocity-runner-pro-white\",\n\
+        \      \"locale\": \"en_US\",\n      \"name\": \"Velocity Runner Pro - White\",\n      \"url\": \"https://www.example-insiderone.com/shoes/velocity-runner-pro-white\"\
+        ,\n      \"image_url\": \"https://cdn.example-insiderone.com/images/velocity-runner-pro-white.jpg\",\n \
+        \     \"category\": [\"Shoes\", \"Running\", \"Velox\"],\n      \"brand\": \"Velox\",\n      \"price\":\
+        \ { \"USD\": 129.99 },\n      \"original_price\": { \"USD\": 149.99 },\n      \"in_stock\": 1\n    }\n \
+        \ ]'\n\nAvailability Based Feed Management Type\nFor the Availability Based Feed Management Type, only the\
+        \ stock status is required. Pricing is optional.\n\ncurl -X POST \"https://catalog.api.useinsider.com/v2/ingest\"\
+        \ \\\n  -H \"Content-Type: application/json\" \\\n  -H \"X-PARTNER-NAME: your-partner-name\" \\\n  -H \"\
+        X-REQUEST-TOKEN: your-api-token\" \\\n  -d '[\n    {\n      \"item_id\": \"velocity-runner-pro-white\",\n\
+        \      \"locale\": \"en_US\",\n      \"name\": \"Velocity Runner Pro - White\",\n      \"url\": \"https://www.example-insiderone.com/shoes/velocity-runner-pro-white\"\
+        ,\n      \"image_url\": \"https://cdn.example-insiderone.com/images/velocity-runner-pro-white.jpg\",\n \
+        \     \"in_stock\": 1\n    }\n  ]'\n\nPublished Time Based Feed Management Type\nThe Published Time Based\
+        \ Feed Management Type requires an update timestamp instead of pricing.\n\ncurl -X POST \"https://catalog.api.useinsider.com/v2/ingest\"\
+        \ \\\n  -H \"Content-Type: application/json\" \\\n  -H \"X-PARTNER-NAME: your-partner-name\" \\\n  -H \"\
+        X-REQUEST-TOKEN: your-api-token\" \\\n  -d '[\n    {\n      \"item_id\": \"blog-top-running-shoes-2025\"\
+        ,\n      \"locale\": \"en_US\",\n      \"name\": \"Top 10 Running Shoes for 2025\",\n      \"url\": \"https://www.example-insiderone.com/blog/top-running-shoes-2025\"\
+        ,\n      \"image_url\": \"https://cdn.example-insiderone.com/images/blog/running-shoes-2025.jpg\",\n   \
+        \   \"item_update_date\": \"2025-01-15 10:30:00\"\n    }\n  ]'\n\nStart & End Time Based Feed Management\
+        \ Type\nThe Start & End Time Based Feed Management Type requires date range attributes for time-bound content.\n\
+        \ncurl -X POST \"https://catalog.api.useinsider.com/v2/ingest\" \\\n  -H \"Content-Type: application/json\"\
+        \ \\\n  -H \"X-PARTNER-NAME: your-partner-name\" \\\n  -H \"X-REQUEST-TOKEN: your-api-token\" \\\n  -d '[\n\
+        \    {\n      \"item_id\": \"promo-summer-clearance-2025\",\n      \"locale\": \"en_US\",\n      \"name\"\
+        : \"Summer Clearance Sale - Up to 50% Off\",\n      \"url\": \"https://www.example-insiderone.com/campaigns/summer-clearance-2025\"\
+        ,\n      \"image_url\": \"https://cdn.example-insiderone.com/images/campaigns/summer-clearance.jpg\",\n\
+        \      \"item_start_date\": \"2025-06-01 00:00:00\",\n      \"item_end_date\": \"2025-08-31 23:59:59\"\n\
+        \    }\n  ]'\n\nProduct Availability by Feed Management Type\nA product is considered available based on\
+        \ criteria that vary by feed management type:\n\nFeed Type\nAvailability Condition\n\nStock & Revenue Based\n\
+        in_stock must be 1\n\nAvailability Based\nin_stock must be 1\n\nPublished Time Based\nitem_update_date must\
+        \ be within the last 2 days (default 2 days, adjustable in Smart Recommender campaigns)\n\nStart & End Time\
+        \ Based\nitem_end_date must not be in the past\n\nCurrencies\nPricing attributes accept an object mapping\
+        \ currency codes to amounts. You can include multiple currencies in a single record.\n\n{\n  \"price\":\
+        \ {\n    \"USD\": 129.99,\n    \"EUR\": 119.99,\n    \"GBP\": 104.99,\n    \"BRL\": 899.90\n  },\n  \"original_price\"\
+        : {\n    \"USD\": 149.99,\n    \"EUR\": 139.99,\n    \"GBP\": 119.99,\n    \"BRL\": 999.90\n  }\n}\n\nCategories\n\
+        The category attribute accepts an array of strings. How the array is interpreted depends on your account's\
+        \ category type, which is configured during onboarding. You must choose one of the two types:\n\nHierarchical\
+        \ Category Type\n\nUse this if your categories follow a parent-child structure, with subcategories nested\
+        \ under broader categories. Each element in the array represents a level in the hierarchy, ordered from\
+        \ broadest to most specific.\n\n{\n \"category\": [\"Clothing\", \"Men\", \"Shirts\", \"Casual Shirts\"\
+        ]\n}\n\nThis creates the hierarchy: Clothing → Men → Shirts → Casual Shirts.\n\nThe order matters; the first\
+        \ element is the top-level category and each subsequent element is a child of the previous one.\n\nFlat\
+        \ Category Type\n\nUse this if your categories are independent and don't follow a parent-child hierarchy.\
+        \ Each element is a standalone category label at the same level.\n\n{\n \"category\": [\"Men's Shirts\"\
+        , \"Women's Dresses\", \"Kids' Shoes\"]\n}\n\nIn flat mode, all categories are treated equally; there is\
+        \ no implied nesting or ordering relationship between elements.\n\nLimits:\n\nCombined length of all category\
+        \ elements: max 1024 characters\n\nEach element: max 512 characters\n\nTags & Merchandising\nTags are used\
+        \ for product grouping and merchandising rules within the Insider One platform.\n\n{\n \"tags\": [\"new-arrival\"\
+        , \"bestseller\", \"summer-collection\", \"free-shipping\"]\n}\n\nYou can use tags to:\n\nCreate product\
+        \ segments for personalization\n\nTrigger merchandising rules\n\nFilter products in recommendation widgets\n\
+        \nDefine campaign audiences\n\nLimits:\n\nCombined length of all tags: max 4096 characters\n\nEach tag:\
+        \ max 512 characters\n\nGroup Code\nThe groupcode attribute links product variants together as a single\
+        \ product group. Products sharing the same groupcode are treated as variations of the same product (e.g.,\
+        \ different sizes or colors).\n\n[\n  {\n    \"item_id\": \"velocity-runner-pro-white\",\n    \"groupcode\"\
+        : \"velocity-runner-pro\",\n    \"color\": \"White\",\n    \"size\": \"10\"\n  },\n  {\n    \"item_id\"\
+        : \"velocity-runner-pro-black\",\n    \"groupcode\": \"velocity-runner-pro\",\n    \"color\": \"Black\"\
+        ,\n    \"size\": \"10\"\n  }\n]\n\nSample Request\nThe sample below displays a request to update products\
+        \ in the product catalog using a nested format. Each product is a separate JSON object with all fields inline.\n\
+        \ncurl -X POST \"https://catalog.api.useinsider.com/v2/update/nested\" \\\n        -H \"Content-Type: application/json\"\
+        \ \\\n        -H \"X-PARTNER-NAME: yourPartnerName\" \\\n        -H \"X-REQUEST-TOKEN: your-api-token\"\
+        \ \\\n        -d '[\n        {\n        \"item_id\": \"velocity-runner-pro-white\",\n        \"locales\"\
+        : {\n        \"en_US\": {\n        \"price\": { \"USD\": 109.99 },\n        \"stores\": {\n        \"newyork\"\
+        : {\n        \"in_stock\": 0,\n        \"stock_count\": 0\n        }\n        }\n        }\n        }\n\
+        \        }\n        ]'\n\nUnderstanding the field inheritance\nIn nested format, the same field can be defined\
+        \ at multiple levels (base, locale, store). The Catalog API merges these into a final record using this\
+        \ priority:\n\nstore fields > locale fields > base fields\n\nThis allows you to define shared values once\
+        \ in the base and only override the differences at each level.\n\nExample: In the request above, en_US defines\
+        \ price: USD 129.99 at the locale level. The newyork store overrides this with price: USD 119.99, while\
+        \ losangeles inherits the locale price since it doesn't define its own:\n\nlocale\nname\nprice\nin_stock\n\
+        stock_count\n\nen_US\nVelocity Runner Pro - White\nUSD 129.99\n1\n50\n\nen_US:newyork\nVelocity Runner Pro\
+        \ - White\nUSD 119.99 (overridden)\n1\n12\n\nen_US:losangeles\nVelocity Runner Pro - White\nUSD 129.99 (inherited)\n\
+        0\n0\n\npt_BR\nVelocity Runner Pro - Branco\nBRL 899.90\n1\n30\n\nRestrictions\nStore Attributes\nIn the\
+        \ nested payload structure, fields can be defined at three levels:\n\nbase → Shared across all locales and\
+        \ stores\n        locales → Locale-specific (name, category, etc.)\n        └─ stores → Store-specific overrides\
+        \ (pricing and stock only)\n\nOnly the following fields are allowed at the store level:\n\nprice\n\noriginal_price\n\
+        \nomnibus_price\n\nin_stock\n\nstock_count\n\nIncluding any other field at the store level returns a 400\
+        \ error.\n\nExample: A valid nested payload with store-level overrides:\n\n{\n        \"item_id\": \"SKU-123\"\
+        ,\n        \"base\": {\n        \"url\": \"https://example.com/product/SKU-123\",\n        \"image_url\"\
+        : \"https://cdn.example.com/SKU-123.jpg\",\n        \"brand\": \"Acme\"\n        },\n        \"locales\"\
+        : {\n        \"en_US\": {\n        \"name\": \"Example Product\",\n        \"category\": [\"Electronics\"\
+        ],\n        \"price\": { \"USD\": 99.99 },\n        \"original_price\": { \"USD\": 119.99 },\n        \"\
+        in_stock\": 1,\n        \"stores\": {\n        \"main\": {\n        \"stock_count\": 100\n        },\n \
+        \       \"outlet\": {\n        \"price\": { \"USD\": 79.99 },\n        \"in_stock\": 1,\n        \"stock_count\"\
+        : 25\n        }\n        }\n        }\n        }\n        }\n\nThis produces two records:\n\nen_US with\
+        \ price USD 99.99 and stock_count 100\n\nen_US:outlet with price USD 79.99 and stock_count 25\n\nMain Store\n\
+        The main key is a reserved store identifier that represents the default/locale-level record. Unlike other\
+        \ store keys, it does not append a suffix to the locale string. For example, \"main\" under en_US produces\
+        \ a record with locale en_US, while \"newyork\" produces en_US:newyork.\n\nThis is useful when you want\
+        \ to define a base price/stock for the locale itself alongside store-specific overrides. If you use main\
+        \ without any other stores, the result is the same as not using stores at all. \n\nLimitations\nFor all\
+        \ the limits applied, refer to Limitations."
+      security:
+      - PartnerName: []
+      - RequestToken: []
+      requestBody:
+        content:
+          application/json:
+            example:
+            - item_id: velocity-runner-pro-white
+              locales:
+                en_US:
+                  price:
+                    USD: 109.99
+                  stores:
+                    newyork:
+                      in_stock: 0
+                      stock_count: 0
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+components:
+  securitySchemes:
+    PartnerName:
+      type: apiKey
+      in: header
+      name: X-PARTNER-NAME
+      description: Insider One partner (account) name, lowercase.
+    RequestToken:
+      type: apiKey
+      in: header
+      name: X-REQUEST-TOKEN
+      description: Insider One API key (request token) generated in the InOne panel.
+  responses:
+    TooManyRequests:
+      description: Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring
+        Retry-After when present.
+      content:
+        application/json:
+          example:
+            message: Too Many Requests
+            status: 429
+x-provenance:
+  generated: '2026-08-13'
+  method: derived
+  source: postman/insider-one-apis.postman_collection.json
+  source_url: https://documenter.gw.postman.com/api/collections/24851117/2sB3dSR9bM
+  publisher_page: https://developers.insiderone.com/
+  note: Insider One publishes a single public Postman collection covering every REST API. This document is the subset
+    of that collection served from catalog.api.useinsider.com.

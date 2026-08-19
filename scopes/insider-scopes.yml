@@ -1,0 +1,51 @@
+generated: '2026-08-13'
+method: searched
+source: https://academy.insiderone.com/docs/set-up-insider-one-mcp
+docs: https://academy.insiderone.com/docs/set-up-insider-one-mcp
+sources:
+- https://academy.insiderone.com/docs/set-up-insider-one-mcp
+- https://academy.insiderone.com/docs/insider-one-mcp-functions
+- https://gw.useinsider.com/.well-known/oauth-authorization-server
+- https://mcp.insiderone.com/.well-known/oauth-protected-resource
+- openapi/insider-gateway-openapi.yml
+authorization_server: https://gw.useinsider.com
+protected_resource: https://gw.useinsider.com
+scope_model: >-
+  Insider One issues OAuth 2.0 credentials from the InOne panel (Settings > InOne Settings >
+  Integration Settings > OAuth 2.0 Credentials) and the operator SELECTS SCOPES AT GENERATION TIME,
+  one per channel. Insider One states plainly that "a tool is available only if the corresponding
+  scope is included in the credential", so the scope set is the access-control boundary for both the
+  gateway API and the MCP server.
+published_scope_names: false
+published_scope_names_note: >-
+  The RFC 9728 protected-resource document advertises scopes_supported: ["*"] — a wildcard, not a
+  list. Insider One does not publish the concrete scope strings anywhere public; they are only
+  visible in the credential-generation screen. The channel-level GRANULARITY below is documented in
+  the MCP setup and functions pages; the literal scope tokens are NOT, and are deliberately not
+  guessed here.
+
+schemes:
+- name: OAuth2
+  source: openapi/insider-gateway-openapi.yml
+  flows:
+  - {flow: clientCredentials, tokenUrl: 'https://gw.useinsider.com/oauth2/token'}
+  - {flow: authorizationCode, authorizationUrl: 'https://gw.useinsider.com/oauth2/authorize', tokenUrl: 'https://gw.useinsider.com/oauth2/token'}
+  pkce: [S256]
+  revocation_endpoint: https://gw.useinsider.com/oauth2/revoke
+
+scopes: []
+
+scope_dimensions:
+- {dimension: channel, values: [Email, SMS, WhatsApp, Web Push, Mobile App, Architect], evidence: 'MCP setup page: "Select the scopes you want to grant. For full MCP functionality, enable all available channels."'}
+- {dimension: access, values: [read, write], evidence: 'MCP functions page: 28 read-only tools and 7 write tools, with write tools defaulting to needs-approval.'}
+- {dimension: excluded, values: [OnSite], evidence: 'MCP functions page: "On-site is currently unsupported."'}
+
+guidance:
+- Create a dedicated OAuth 2.0 credential for each client (Insider One explicitly recommends against
+  reusing credentials for MCP).
+- The Client Secret is displayed once.
+- Access tokens live up to 90 minutes; the refresh_token grant is supported.
+
+gaps:
+- No public scope reference page; scopes_supported is a wildcard.
+- No OpenID Connect discovery document, so no scopes_supported from that direction either.

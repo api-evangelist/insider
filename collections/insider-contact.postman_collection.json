@@ -1,0 +1,2142 @@
+{
+  "item": [
+    {
+      "id": "92fe7312-1747-443b-a64e-c3e816445913",
+      "name": "Email",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "eb632fc9-16b6-49c3-8aa2-6aa7b06d2576",
+          "name": "Resubscribe email users",
+          "request": {
+            "name": "Resubscribe email users",
+            "description": {
+              "content": "This API allows you to set an unreachable email status as reachable on Insider's email platform.\n\nBody Parameters\nEvery request made to the request endpoint requires a request body formatted in JSON and containing your email's content and metadata. This includes the subscriber's email address.\n\nParameter\nDescription\nData Type\nRequired\n\nemail\nUser's email address\nString\nYes\n\nSample Body\nThe following is a sample body to resubscribe a user to the Email platform.\n\n{\n    \"email\": \"sample@mail.com\"\n}\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\n  \"statusMessage\": \"OK\"\n}\n\n400 Bad Request\n{\n  \"statusMessage\": \"Bad request\"\n}\n\n401 Unauthorized\nThe following response returns if the request is not authorized.\n\n{\n  \"statusMessage\": \"Unauthorized\"\n}\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nOnly emails can be sent via this API. No data can be retrieved.\n\nThe API Key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nThe value of X-PARTNER-NAME header should be lowercase.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "email",
+                "v1",
+                "subscribe"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-PARTNER-NAME"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"sample@useinsider.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "23e9584a-8452-4d1a-a1f3-03a1d8d9a4a4",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "email",
+                    "v1",
+                    "subscribe"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-PARTNER-NAME",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"sample@useinsider.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusMessage\": \"OK\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "818647ad-2965-45b8-83bb-79d6071dad28",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "email",
+                    "v1",
+                    "subscribe"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-PARTNER-NAME",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"sample@useinsider.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0a1f87e2-12e8-4595-aff1-cbaf8022ffcd",
+          "name": "Unsubscribe email users from database",
+          "request": {
+            "name": "Unsubscribe email users from database",
+            "description": {
+              "content": "This API enables you to unsubscribe users from Insider's email platform.\n\nBody Parameters\nEvery request made to the request endpoint requires a request body formatted in JSON and containing your email's content and metadata. This includes the subscriber's email address.\n\nParameter\nDescription\nData Type\nRequired\n\nemail\nUser's email address\nString\nYes\n\nSample Body\nThe following is a sample body to unsubscribe a user from Email platform.\n\n{\n    \"email\": \"sample@mail.com\"\n}\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\n  \"statusMessage\": \"OK\"\n}\n\n400 Bad Request\n{\n  \"statusMessage\": \"Bad request\"\n}\n\n401 Unauthorized\nThe following response returns if the request is not authorized.\n\n{\n  \"statusMessage\": \"Unauthorized\"\n}\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nOnly global unsubscribers can be sent via this API. No data can be retrieved.\n\nThe API Key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nThe value of X-PARTNER-NAME header should be lowercase.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "email",
+                "v1",
+                "unsubscribe"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-PARTNER-NAME"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"sample@useinsider.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "fbf7901a-d045-4e1d-94d6-40a88e4a0995",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "email",
+                    "v1",
+                    "unsubscribe"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-PARTNER-NAME",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"sample@useinsider.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusMessage\": \"OK\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bfa11467-512a-4774-9722-8a9a10ec5c3b",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "email",
+                    "v1",
+                    "unsubscribe"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-PARTNER-NAME",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"sample@useinsider.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3155afb9-de07-439a-be86-ef77544cbb67",
+          "name": "Resubscribe Email Users for Email Global Subscribe",
+          "request": {
+            "name": "Resubscribe Email Users for Email Global Subscribe",
+            "description": {
+              "content": "The Email Resubscribe API allows you to set an unreachable email status as reachable on the Insider's Email platform.\n\nThe Resubscribe API v2 is the latest version of the Email Resubscribe API, which supports bulk data ingestion. If you're still using the previous version (v1), we strongly recommend migrating to this updated version to benefit from bulk updates and enhanced functionality. Please note that new integrations with v1 are no longer supported.\n\nAPI usage changes depending on the identifier format you're using. Please refer to the relevant section based on your identifier configuration.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\nemails\nUser's email address(es)\nString Array\nes (normal and email-based)\n\nuuids\nUsers unique user identifier\nString Array\nYes (only if you are not using email as an identifier and using profile-based)\n\nSample Requests\nWhen Email is the Identifier or Email-Based Flow is Enabled\nEvery request made to the request endpoint requires a request body formatted in JSON and containing your email's content and metadata.\n\nFor the email-based flow, the same request is used; however, it will only update the status of existing users and will not create new users.\n\nThe emails field is required for resubscribe requests.\n\ncurl --location --request POST 'http://contact.useinsider.com/email/v2/subscribe' \\\n--header 'Content-Type: application/json' \\\n--header 'X-PARTNER-NAME: mybrand' \\\n--header 'X-REQUEST-TOKEN: a1b2c3d4e5f6' \\\n--data-raw '{\n     \"emails\": [\n        \"sample1@useinsider.com\",\n        \"sample2@useinsider.com\"\n    ]\n}'\n\nWhen UUID is the Identifier and Profile-Based Flow is Enabled\nEvery request made to the request endpoint requires a request body formatted in JSON and containing your email's content and metadata.\n\nIf the profile-based flow is enabled for your account:- If the user in the request exists, their status will be updated.- If the user does not exist, a new user will be created.\n\nThe uuid, and uploader_email fields are required for resubscribe requests.\n\ncurl --location 'https://contact.useinsider.com/email/v2/subscribe' \\\n--header 'Content-Type: application/json' \\\n--header 'x-request-token: mybrand' \\\n--header 'x-partner-name: a1b2c3d4e5f6' \\\n--data-raw '{\n    \"uuids\": [\n        \"test-uuid-1\",\n        \"test-uuid-2\",\n        \"test-uuid-3\",\n        \"test-uuid-7\"\n    ],\n    \"emails\": [\n        \"samlpe1@useinsider.com\",\n        \"sample2@useinsider.com\",\n        \"sample3@useinsider.com\",\n        \"sample4@useinsider.com\"\n    ]\n}'\n\nSample Responses\n200 OK\n{\n  \"statusMessage\": \"OK\"\n}\n\n400 Bad Request\n{\n  \"statusMessage\": \"Bad request\"\n}\n\n401 Unauthorized\n{\n  \"statusMessage\": \"Unauthorized\"\n}\n\nLimitations\n\nAll functions must be executed with a simple HTTPS POST request.\n\nA maximum of 500 emails or UUIDs can be consumed in one request.\n\nThe API Key should be provided as the authorization key in the request header. If the key is incorrect, the operation will not be executed, and an authorization error will return in the response.\n\nThe value of X-PARTNER-NAME header should be lowercase.\n\n<p >The default limit shown here is a standard baseline. If your use case requires higher capacity, feel free to reach out to the Insider team — we can adjust it to fit your needs.</p>",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "email",
+                "v2",
+                "subscribe"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-PARTNER-NAME"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"emails\": [\n    \"sample1@useinsider.com\",\n    \"sample2@useinsider.com\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "164f0c2e-0fbc-46a6-a7b1-be7e14b5abfe",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "email",
+                    "v2",
+                    "subscribe"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-PARTNER-NAME",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"emails\": [\n    \"sample1@useinsider.com\",\n    \"sample2@useinsider.com\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "010209c7-ed89-4427-ab57-3702639255bd",
+          "name": "Unsubscribe email users for email global unsubscription",
+          "request": {
+            "name": "Unsubscribe email users for email global unsubscription",
+            "description": {
+              "content": "The Email Unsubscribe API allows you to ingest email addresses into either the global unsubscribe list or a specific unsubscribe group you created in InOne.\n\nThe Email Unsubscribe API v2 is the latest version of the Email Unsubscribe API, which supports bulk data ingestion. If you're still using the previous version (v1), we strongly recommend migrating to this updated version to benefit from bulk updates and enhanced functionality. Please note that new integrations with v1 are no longer supported.\n\nAPI usage changes depending on the identifier format you're using. Please refer to the relevant section based on your identifier configuration.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\nemails\nUser's email addresses\nString Array\nYes (normal and email based)\n\nuuids\nUser's unique user identifier\nString Array\nYes (only if you are not using email as an identifier and using profile based)\n\nSample Requests\nWhen Email is the Identifier or Email-Based Flow is Enabled\nEvery request made to the request endpoint requires a request body formatted in JSON and containing your email's content and metadata.\n\nIn cases where the email is used as the identifier, if the user exists, their status will be updated; if the user does not exist, a new user will be created.For the email-based flow, the same request is used; however, it will only update the status of existing users and will not create new users.\n\nThe emails field is required for global unsubscribe requests.\n\ncurl --location 'contact.useinsider.com/email/v2/unsubscribe' \\\n--header 'X-PARTNER-NAME: mybrand' \\\n--header 'X-REQUEST-TOKEN: a1b2c3d4e5f6' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"emails\": [\n        \"sample1@useinsider.com\",\n        \"sample2@useinsider.com\",\n        \"sample3@useinsider.com\"\n    ]\n}'\n\nWhen UUID is the Identifier and Profile-Based Flow is Enabled\nEvery request made to the request endpoint requires a request body formatted in JSON and containing your email's content and metadata.\n\nIf the profile-based flow is enabled for your account,- If the user in the request exists, their status will be updated.- If the user does not exist, a new user will be created.\n\nThe uuid and email fields are required for global unsubscribe requests.\n\ncurl --location 'http://contact.useinsider.com/email/v2/unsubscribe' \\\n--header 'Content-Type: application/json' \\\n--header 'x-request-token: a1b2c3d4e5f6' \\\n--header 'x-partner-name: mybrand' \\\n--data-raw '{\n    \"users\": [\n        {\n            \"uuid\": \"test-uuid-1\",\n            \"email\": \"sample1@useinsider.com\"\n        },\n        {\n            \"uuid\": \"test-uuid-2\",\n            \"email\": \"sample2@useinsider.com\"\n        },\n        {\n            \"uuid\": \"test-uuid-3\",\n            \"email\": \"sample3@useinsider.com\"\n        },\n        {\n            \"uuid\": \"test-uuid-4\",\n            \"email\": \"sample4@useinsider.com\"\n        }\n    ]\n}'\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\n  \"statusMessage\": \"OK\"\n}\n\n400 Bad Request\n{\n  \"statusMessage\": \"Bad request\"\n}\n\n401 Unauthorized\nThe following response returns if the request is not authorized.\n\n{\n  \"statusMessage\": \"Unauthorized\"\n}\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nA maximum of 500 emails or UUIDs can be consumed in one request.\n\nThe API Key should be provided as the authorization key in the request header. If the key is incorrect, the operation will not be executed, and an authorization error will return in the response.\n\nThe value of X-PARTNER-NAME header should be lowercase.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "email",
+                "v2",
+                "unsubscribe"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-PARTNER-NAME"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"emails\": [\n    \"sample1@useinsider.com\",\n    \"sample2@useinsider.com\",\n    \"sample3@useinsider.com\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "996b2f93-d9e5-4202-ad3d-bc0463824764",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "email",
+                    "v2",
+                    "unsubscribe"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-PARTNER-NAME",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"emails\": [\n    \"sample1@useinsider.com\",\n    \"sample2@useinsider.com\",\n    \"sample3@useinsider.com\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusMessage\": \"OK\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fcfcc6ae-b9c7-4c8c-8076-67f3c563184f",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "email",
+                    "v2",
+                    "unsubscribe"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-PARTNER-NAME",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"emails\": [\n    \"sample1@useinsider.com\",\n    \"sample2@useinsider.com\",\n    \"sample3@useinsider.com\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "7b898a74-661f-4ea3-a822-de160acaadca",
+      "name": "SMS",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "6b5d5d73-44d3-44e9-8465-eab7410b1573",
+          "name": "Resubscribe SMS users",
+          "request": {
+            "name": "Resubscribe SMS users",
+            "description": {
+              "content": "This API allows you to set an unreachable phone number status as reachable on Insider's SMS platform.\n\nA newer version of the Resubscribe API is available with support for bulk data ingestion. While the older version is still supported, we recommend using the latest version for improved functionality and future compatibility.\n\nBody Parameters\nEvery request made to the request endpoint requires a request body formatted in JSON and containing your phone number’s content and metadata. This includes the subscriber’s phone number.\n\nParameter\nDescription\nData Type\nRequired\n\nphone_number\nUser's phone number in E.164 format (e.g. +6598765432)\nString\nYes\n\nSample Body\nThe following is a sample body to resubscribe users to the SMS platform.\n\n{\n     \"phone_number\": \"+905012345678\"\n}\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\n  \"statusMessage\": \"OK\"\n}\n\n400 Bad Request\n{\n  \"statusMessage\": \"Bad request\"\n}\n\n401 Unauthorized\nThe following response returns if the request is not authorized.\n\n{\n  \"statusMessage\": \"Unauthorized\"\n}\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nOnly phone numbers can be sent via this API. No data can be retrieved.\n\nThe API Key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nThe value of X-PARTNER-NAME header should be lowercase.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "sms",
+                "v1",
+                "subscribe"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-PARTNER-NAME"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone_number\": \"+655012345678\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "90268e86-87cc-4633-a6fe-c507ed84db81",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sms",
+                    "v1",
+                    "subscribe"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-PARTNER-NAME",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"phone_number\": \"+655012345678\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusMessage\": \"OK\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "efef0525-c214-431a-84ce-8bbd159b8818",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sms",
+                    "v1",
+                    "subscribe"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-PARTNER-NAME",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"phone_number\": \"+655012345678\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "69aba129-c33f-4393-8456-dbe931c89b96",
+          "name": "Unsubscribe SMS users from database",
+          "request": {
+            "name": "Unsubscribe SMS users from database",
+            "description": {
+              "content": "This API enables you to unsubscribe users from Insider's SMS platform.\n\nA newer version of the Unsubscribe API is available with support for bulk data ingestion. While the older version is still supported, we recommend using the latest version for improved functionality and future compatibility.\n\nBody Parameters\nEvery request made to the request endpoint requires a request body formatted in JSON and containing your phone number’s content and metadata. This includes the subscriber’s phone number.\n\nParameter\nDescription\nData Type\nRequired\n\nphone_number\nUser's phone number in E.164 format (e.g. +6598765432)\nString\nYes\n\nSample Body\nThe following is a sample body to unsubscribe users from the SMS platform.\n\n{\n    \"phone_number\": \"+905012345678\"\n}\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\n  \"statusMessage\": \"OK\"\n}\n\n400 Bad Request\n{\n  \"statusMessage\": \"Bad request\"\n}\n\n401 Unauthorized\nThe following response returns if the request is not authorized.\n\n{\n  \"statusMessage\": \"Unauthorized\"\n}\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nOnly global unsubscribers can be sent via this API. No data can be retrieved.\n\nThe API Key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nThe value of X-PARTNER-NAME header should be lowercase.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "sms",
+                "v1",
+                "unsubscribe"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-PARTNER-NAME"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone_number\": \"+65012345678\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "83886d1f-d72c-486d-aec5-be2801d8c8dc",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sms",
+                    "v1",
+                    "unsubscribe"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-PARTNER-NAME",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"phone_number\": \"+65012345678\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusMessage\": \"OK\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "13b1edce-6f1a-4811-bdc6-38f9bfe495af",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sms",
+                    "v1",
+                    "unsubscribe"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-PARTNER-NAME",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"phone_number\": \"+65012345678\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "03d1f7d2-3bac-43e8-b664-6da94ab4e247",
+          "name": "Resubscribe SMS users / v2",
+          "request": {
+            "name": "Resubscribe SMS users / v2",
+            "description": {
+              "content": "The SMS Resubscribe API enables you to update an unreachable phone number status to reachable on Insider's SMS platform.\n\nIf a user exists with the provided phone number, the user's subscription status will be updated. If no user exists and the phone number is used as an identifier, a new user will be created.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\nphone_numbers\nUsers' phone numbers in E.164 format (e.g. +6598765432)\nString Array\nYes\n\nSample Request\nEvery request made to the request endpoint requires a request body formatted in JSON containing your phone number’s content and metadata, including the subscriber’s phone number.\n\nThe phone_numbers field is required for resubscribe requests.\n\ncurl --location --request POST 'http://contact.useinsider.com/sms/v2/subscribe' \\\n--header 'Content-Type: application/json' \\\n--header 'X-PARTNER-NAME: mybrand' \\\n--header 'X-REQUEST-TOKEN: a1b2c3d4e5f6' \\\n--data-raw '{\n     \"phone_numbers\": [\n        \"+900000000000\",\n        \"+900000000000\",\n        \"+900000000000\",\n        \"+900000000000\",\n        \"+900000000000\",\n        \"+900000000000\"\n    ]\n}'\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\n  \"statusMessage\": \"OK\"\n}\n\n400 Bad Request\n{\n  \"statusMessage\": \"Bad request\"\n}\n\n401 Unauthorized\nThe following response returns if the request is not authorized.\n\n{\n  \"statusMessage\": \"Unauthorized\"\n}\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nOnly phone numbers can be sent via this API. No data can be retrieved.\n\nA maximum of 500 phone numbers can be consumed in one request.\n\nThe API Key should be provided as the authorization key in the request header. If the key is incorrect, the operation will not be executed, and an authorization error will return in the response.\n\nThe value of the X-PARTNER-NAME header should be lowercase.\n\nThe default limit shown here is a standard baseline. If your use case requires higher capacity, feel free to reach out to the Insider team — we can adjust it to fit your needs.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "sms",
+                "v2",
+                "subscribe"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-PARTNER-NAME"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone_numbers\": [\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "067ad6b8-f329-4d38-904b-40b400898078",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sms",
+                    "v2",
+                    "subscribe"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-PARTNER-NAME",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"phone_numbers\": [\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusMessage\": \"OK\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1830a6de-97bf-4981-9a21-be91588194f7",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sms",
+                    "v2",
+                    "subscribe"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-PARTNER-NAME",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"phone_numbers\": [\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ac34cf1b-e5ef-4150-be0a-aeaef4eac656",
+          "name": "Unsubscribe SMS users from database / v2",
+          "request": {
+            "name": "Unsubscribe SMS users from database / v2",
+            "description": {
+              "content": "The SMS Unsubscribe API enables you to unsubscribe users from Insider's SMS platform.\n\nIf a user exists with the provided phone number, the user's subscription status will be updated. If no user exists and the phone number is used as an identifier, a new user will be created.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\nphone_numbers\nUsers' phone numbers in E.164 format (e.g. +6598765432)\nString Array\nYes\n\nSample Request\nEvery request made to the request endpoint requires a request body formatted in JSON containing your phone number’s content and metadata, including the subscriber’s phone number.\n\nThe phone_numbers field is required for resubscribe requests.\n\ncurl --location --request POST 'http://contact.useinsider.com/sms/v2/unsubscribe' \\\n--header 'Content-Type: application/json' \\\n--header 'X-PARTNER-NAME: mybrand' \\\n--header 'X-REQUEST-TOKEN: a1b2c3d4e5f6' \\\n--data-raw '{\n     \"phone_numbers\": [\n        \"+900000000000\",\n        \"+900000000000\",\n        \"+900000000000\",\n        \"+900000000000\",\n        \"+900000000000\",\n        \"+900000000000\"\n    ]\n}'\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\n  \"statusMessage\": \"OK\"\n}\n\n400 Bad Request\n{\n  \"statusMessage\": \"Bad request\"\n}\n\n401 Unauthorized\nThe following response returns if the request is not authorized.\n\n{\n  \"statusMessage\": \"Unauthorized\"\n}\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nOnly phone numbers can be sent via this API. No data can be retrieved.\n\nA maximum of 500 phone numbers can be consumed in one request.\n\nThe API Key should be provided as the authorization key in the request header. If the key is incorrect, the operation will not be executed, and an authorization error will return in the response.\n\nThe value of the X-PARTNER-NAME header should be lowercase.\n\nThe default limit shown here is a standard baseline. If your use case requires higher capacity, feel free to reach out to the Insider team — we can adjust it to fit your needs.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "sms",
+                "v2",
+                "unsubscribe"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-PARTNER-NAME"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone_numbers\": [\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2d0bc2ed-4e7a-4a47-8f4a-1c54c449b7f3",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sms",
+                    "v2",
+                    "unsubscribe"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-PARTNER-NAME",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"phone_numbers\": [\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusMessage\": \"OK\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "93c1e1c7-9e80-4e21-978b-7b3ecd2490a1",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sms",
+                    "v2",
+                    "unsubscribe"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-PARTNER-NAME",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"phone_numbers\": [\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "3f80d6be-7f9d-4de7-bb59-5333cf2a4ef3",
+      "name": "User Data APIs",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "918b22a0-5cef-484f-9bdd-93c52f82c011",
+          "name": "Upload first-party segments",
+          "request": {
+            "name": "Upload first-party segments",
+            "description": {
+              "content": "The First-Party Segment API allows you to easily create a first-party segment through an API. When the uploading process is completed, the segment is automatically created on your First-Party Segment page under Saved Segments. In addition, you can see the results of the segment creation on the callback.\n\nThe FPS segments don't generate new users; instead, they group existing users into segments based on their attribute values.\n\nUse Cases\n\nAssume that you want to pass your custom segment(s) via API to Insider but do not want to create a segment on Insider's InOne panel. Thanks to the FPS API, you can maintain the entire segment creation process through the API from beginning to end.\n\nLet's say you want to target a set of specific user attributes that contain “Store ID” on UCD. You can basically create a .csv file and name its column as Store ID with the store ID values. To make these attribute values produce a segment, you can pass this file’s URL to the payload, and at the end of the request, you can get the number of users who have these values.\n\nStore ID\n\nid1\n\nid2\n\nAssume that you have 17k store owners as your customers. Instead of multi-selecting 17k values under the segmentation filter, you can list those store_id values on a sheet and upload them to the FPS segment upload field. This way, a snapshot of the people with those store ID values is generated.\n\nYou do not need to include a header row in the CSV file. The attribute name (e.g., \"Store ID\") has already been specified in the API payload. The values in the CSV file should be listed without a header.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\nsegmentName\nIt is the name of the segment.\nString\nYes\n\nfileUrl\nIt is the URL where CSV is hosted. This URL should be downloadable.\nString\nYes\n\ncallbackUrl\nCallback URL is to receive the result of segment creation. This URL should accept POST request.\nString\nYes\n\nattributeName\nIt is the name of the user attribute on which the segment is created. It refers to the attribute names on UCD. This field basically enables you to match your users who have the given attribute.  Attribute names should be in accordance with Attribute Name field on Default Attributes page.  It can be either an identifier or any attribute.\nString\nYes\n\nSample Example\nSample Request\nEvery request made to the request endpoint requires a request body formatted in JSON containing the required body parameters.\n\ncurl --location --request POST 'https://contact.useinsider.com/fps/v1/upload' \\\n--header 'X-REQUEST-TOKEN: acb123' \\\n--header 'X-PARTNER-NAME: mybrand' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n  \"segmentName\": \"My Segment Name\",\n  \"fileUrl\": \"https://s3.amazonaws.com/sample_csv_file.csv\",\n  \"callbackUrl\": \"https://localhost/12345\",\n  \"attributeName\": \"em\"\n}'\n\nThe attribute em stands for email address in Insider's system.\n\nSample Responses\n200 OK\n{\n  \"statusMessage\": \"OK\"\n}\n\n400 BAD REQUEST\n{\n  \"statusMessage\": \"segment name already in use\"\n}\n\n401 UNAUTHORIZED\n{\n  \"statusMessage\": \"Unauthorized\"\n}\n\n405 INVALID PAYLOAD\n{\n    \"error\": \"Invalid Payload.\"\n}\n\nError Messages\n\nError\nDescription\n\nsegment name already in use\nThe segment name in the request already exists on your panel. You should name your segment with a different name.\n\nthe file URL is invalid. The URL should include .csv extension\nThe CSV URL is invalid. The URL should include .csv extension.\n\nfile size is more than the limit\nFile size cannot be more than 10MB.\n\npartner name is missing\nX-PARTNER-NAME needs to be available.\n\nSample Callback Responses\n200 OK\n{\n    \"segment_name\": \"My unique segment\",\n    \"valid_values_count\": 5,\n    \"invalid_values_count\": 7,\n    \"total_entered_values\": 12\n}\n\nvalid_values_count: The number of valid row values for the given attribute in the body.\n\ninvalid_values_count: The number of invalid row values for the given attribute in the body. For example, you tried to map the CSV file given below with the age attribute. Since age attribute is a number, the invalid_values_count will be 2 in this case.\n\ntotal_entered_values: the total number of rows in the .csv file.\n\nLimitations\n\nAll functions must be executed with a simple HTTPS POST request.\n\nThe API Key should be provided as the authorization key in the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nThe value of the X-PARTNER-NAME header should be lowercase.\n\ncallbackUrl needs to accept POST response\n\nFile size cannot be more than 50MB.\n\nSegmentName can have a maximum of 40 characters.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "fps",
+                "v1",
+                "upload"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-PARTNER-NAME"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"segmentName\": \"My Segment Name\",\n  \"fileUrl\": \"https://s3.amazonaws.com/sample_csv_file.csv\",\n  \"callbackUrl\": \"https://localhost/12345\",\n  \"attributeName\": \"em\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7ad34d0b-a571-4fd0-bbd7-982142bac614",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fps",
+                    "v1",
+                    "upload"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-PARTNER-NAME",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"segmentName\": \"My Segment Name\",\n  \"fileUrl\": \"https://s3.amazonaws.com/sample_csv_file.csv\",\n  \"callbackUrl\": \"https://localhost/12345\",\n  \"attributeName\": \"em\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "5dd13b77-2409-4140-ac01-419dd2c63a11",
+      "name": "WhatsApp",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "0637dd8c-6938-4643-b73e-4190b8321273",
+          "name": "Resubscribe WhatsApp users",
+          "request": {
+            "name": "Resubscribe WhatsApp users",
+            "description": {
+              "content": "This API allows you to set an unreachable phone number status as reachable on Insider's WhatsApp platform.\n\nA newer version of the Resubscribe API is available with support for bulk data ingestion. While the older version is still supported, we recommend using the latest version for improved functionality and future compatibility.\n\nBody Parameters\nEvery request made to the request endpoint requires a request body formatted in JSON and containing your phone number’s content and metadata. This includes the subscriber’s phone number.\n\nParameter\nDescription\nData Type\nRequired\n\nphone_number\nUser's phone number in E.164 format (e.g. +6598765432)\nString\nYes\n\nSample Body\nThe following is a sample body to resubsribe users to Insider's WhatsApp platform.\n\n{\n     \"phone_number\": \"+905012345678\"\n}\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\n  \"statusMessage\": \"OK\"\n}\n\n400 Bad Request\n{\n  \"statusMessage\": \"Bad request\"\n}\n\n401 Unauthorized\nThe following response returns if the request is not authorized.\n\n{\n  \"statusMessage\": \"Unauthorized\"\n}\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nOnly phone numbers can be sent via this API. No data can be retrieved.\n\nThe API Key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nThe value of X-PARTNER-NAME header should be lowercase.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "whatsapp",
+                "v1",
+                "subscribe"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-PARTNER-NAME"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone_number\": \"+655012345678\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5fc3d603-9b01-45ba-a491-05389fb826c5",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "whatsapp",
+                    "v1",
+                    "subscribe"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-PARTNER-NAME",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"phone_number\": \"+655012345678\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusMessage\": \"OK\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c7b40442-a5be-42e5-a599-80fd054a44fa",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "whatsapp",
+                    "v1",
+                    "subscribe"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-PARTNER-NAME",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"phone_number\": \"+655012345678\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5fa175eb-6bcd-4d48-b7b6-5e5f381f56db",
+          "name": "Unsubscribe WhatsApp users from database",
+          "request": {
+            "name": "Unsubscribe WhatsApp users from database",
+            "description": {
+              "content": "This API enables you to unsubscribe users from Insider's WhatsApp platform.\n\nA newer version of the Unsubscribe API is available with support for bulk data ingestion. While the older version is still supported, we recommend using the latest version for improved functionality and future compatibility.\n\nBody Parameters\nEvery request made to the request endpoint requires a request body formatted in JSON and containing your phone number’s content and metadata. This includes the subscriber’s phone number.\n\nParameter\nDescription\nData Type\nRequired\n\nphone_number\nUser's phone number in E.164 format (e.g. +6598765432)\nString\nYes\n\nSample Body\nThe following is a sample body to unsubscribe users from WhatsApp platform.\n\n{\n    \"phone_number\": \"+905012345678\"\n}\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\n  \"statusMessage\": \"OK\"\n}\n\n400 Bad Request\n{\n  \"statusMessage\": \"Bad request\"\n}\n\n401 Unauthorized\nThe following response returns if the request is not authorized.\n\n{\n  \"statusMessage\": \"Unauthorized\"\n}\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nOnly global unsubscribers can be sent via this API. No data can be retrieved.\n\nThe API Key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nThe value of X-PARTNER-NAME header should be lowercase.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "whatsapp",
+                "v1",
+                "unsubscribe"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-PARTNER-NAME"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone_number\": \"+6512345678\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d1edfeca-d741-4892-9a7d-120145a99daf",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "whatsapp",
+                    "v1",
+                    "unsubscribe"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-PARTNER-NAME",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"phone_number\": \"+6512345678\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusMessage\": \"OK\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "475f53a9-2d35-47d4-a365-f43d3f88f236",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "whatsapp",
+                    "v1",
+                    "unsubscribe"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-PARTNER-NAME",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"phone_number\": \"+6512345678\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "30a7d387-5efe-4122-ad68-32ba08a65c4c",
+          "name": "Resubscribe WhatsApp users / v2",
+          "request": {
+            "name": "Resubscribe WhatsApp users / v2",
+            "description": {
+              "content": "The WhatsApp Resubscribe API enables you to update an unreachable phone number status to reachable on Insider's WhatsApp platform.\n\nIf a user exists with the provided phone number, the user's subscription status will be updated. If no user exists and the phone number is used as an identifier, a new user will be created.\n\nBody Parameters\nEvery request made to the request endpoint requires a request body formatted in JSON and containing your phone number’s content and metadata. This includes the subscriber’s phone number.\n\nParameter\nDescription\nData Type\nRequired\n\nphone_numbers\nUsers' phone numbers in E.164 format (e.g. +6598765432)\nString Array\nYes\n\nSample Request\nEvery request made to the request endpoint requires a request body formatted in JSON containing your phone number’s content and metadata, including the subscriber’s phone number.\n\nThe phone_numbers field is required for resubscribe requests.\n\ncurl --location --request POST 'http://contact.useinsider.com/whatsapp/v2/subscribe' \\\n--header 'Content-Type: application/json' \\\n--header 'X-PARTNER-NAME: mybrand' \\\n--header 'X-REQUEST-TOKEN: a1b2c3d4e5f6' \\\n--data-raw '{\n     \"phone_numbers\": [\n        \"+900000000000\",\n        \"+900000000000\",\n        \"+900000000000\",\n        \"+900000000000\",\n        \"+900000000000\",\n        \"+900000000000\"\n    ]\n}'\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\n  \"statusMessage\": \"OK\"\n}\n\n400 Bad Request\n{\n  \"statusMessage\": \"Bad request\"\n}\n\n401 Unauthorized\nThe following response returns if the request is not authorized.\n\n{\n  \"statusMessage\": \"Unauthorized\"\n}\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nOnly phone numbers can be sent via this API. No data can be retrieved.\n\nA maximum of 500 phone numbers can be consumed in one request.\n\nThe API Key should be provided as the authorization key in the request header. If the key is incorrect, the operation will not be executed, and an authorization error will return in the response.\n\nThe value of the X-PARTNER-NAME header should be lowercase.\n\nThe default limit shown here is a standard baseline. If your use case requires higher capacity, feel free to reach out to the Insider team — we can adjust it to fit your needs.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "whatsapp",
+                "v2",
+                "subscribe"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-PARTNER-NAME"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone_numbers\": [\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3eb37d96-8d00-4b16-84f5-ce4e11ee04f2",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "whatsapp",
+                    "v2",
+                    "subscribe"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-PARTNER-NAME",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"phone_numbers\": [\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "356a5b7b-6bf8-450f-9667-a7e99cea1bfd",
+          "name": "Unsubscribe WhatsApp users from database / v2",
+          "request": {
+            "name": "Unsubscribe WhatsApp users from database / v2",
+            "description": {
+              "content": "The WhatsApp Unsubscribe API enables you to unsubscribe users from Insider's WhatsApp platform.\n\nIf a user exists with the provided phone number, the user's subscription status will be updated. If no user exists and the phone number is used as an identifier, a new user will be created.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\nphone_numbers\nUsers' phone number in E.164 format (e.g. +6598765432)\nString Array\nYes\n\nSample Request\nEvery request made to the request endpoint requires a request body formatted in JSON containing your phone number’s content and metadata, including the subscriber’s phone number.\n\nThe phone_numbers field is required for resubscribe requests.\n\ncurl --location --request POST 'http://contact.useinsider.com/whatsapp/v2/unsubscribe' \\\n--header 'Content-Type: application/json' \\\n--header 'X-PARTNER-NAME: mybrand' \\\n--header 'X-REQUEST-TOKEN: a1b2c3d4e5f6' \\\n--data-raw '{\n     \"phone_numbers\": [\n        \"+900000000000\",\n        \"+900000000000\",\n        \"+900000000000\",\n        \"+900000000000\",\n        \"+900000000000\",\n        \"+900000000000\"\n    ]\n}'\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\n  \"statusMessage\": \"OK\"\n}\n\n400 Bad Request\n{\n  \"statusMessage\": \"Bad request\"\n}\n\n401 Unauthorized\nThe following response returns if the request is not authorized.\n\n{\n  \"statusMessage\": \"Unauthorized\"\n}\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nOnly phone numbers can be sent via this API. No data can be retrieved.\n\nA maximum of 500 phone numbers can be consumed in one request.\n\nThe API Key should be provided as the authorization key in the request header. If the key is incorrect, the operation will not be executed, and an authorization error will return in the response.\n\nThe value of the X-PARTNER-NAME header should be lowercase.\n\nThe default limit shown here is a standard baseline. If your use case requires higher capacity, feel free to reach out to the Insider team — we can adjust it to fit your needs.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "whatsapp",
+                "v2",
+                "unsubscribe"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-PARTNER-NAME"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone_numbers\": [\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ab9faa42-3c9c-4324-bacc-b93963ab3b49",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "whatsapp",
+                    "v2",
+                    "unsubscribe"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-PARTNER-NAME",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"phone_numbers\": [\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusMessage\": \"OK\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "356a2d01-f429-4dac-84b7-6634e4815099",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "whatsapp",
+                    "v2",
+                    "unsubscribe"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-PARTNER-NAME",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"phone_numbers\": [\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\",\n    \"+900000000000\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://contact.useinsider.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "e5d60c43-11df-4616-bf35-acee3b5338e1",
+    "name": "Insider One Contact API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "First-party segment upload and per-channel subscription management (subscribe/unsubscribe) for Email, SMS and WhatsApp.\n\nDerived by API Evangelist from Insider One's own public Postman collection (\"Insider One APIs\", published at https://developers.insiderone.com/). Paths, methods, headers, query parameters and request/response examples are verbatim from that collection; nothing is invented. The 429 response is documented for all Insider One APIs on https://academy.insiderone.com/docs/api-rate-limits-1 .\n\nContact Support:\n Name: Insider One Support\n Email: support@useinsider.com",
+      "type": "text/plain"
+    }
+  }
+}

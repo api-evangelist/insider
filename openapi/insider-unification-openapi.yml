@@ -1,0 +1,1014 @@
+openapi: 3.1.0
+info:
+  title: Insider One Unification API
+  version: 1.0.0
+  description: 'Unified Customer Database (UCD): upsert user profiles, attributes and events, export raw user data,
+    manage identifiers, and run GDPR delete/anonymize operations.
+
+
+    Derived by API Evangelist from Insider One''s own public Postman collection ("Insider One APIs", published at
+    https://developers.insiderone.com/). Paths, methods, headers, query parameters and request/response examples
+    are verbatim from that collection; nothing is invented. The 429 response is documented for all Insider One APIs
+    on https://academy.insiderone.com/docs/api-rate-limits-1 .'
+  contact:
+    name: Insider One Support
+    email: support@useinsider.com
+    url: https://academy.insiderone.com/docs/insider-one-apis-1
+  termsOfService: https://insiderone.com/terms-of-use/
+externalDocs:
+  description: Insider One API reference
+  url: https://academy.insiderone.com/docs/api-reference-welcome
+servers:
+- url: https://unification.useinsider.com
+tags:
+- name: Data Governance APIs
+- name: User Data APIs
+paths:
+  /api/contact/v1/anonymize:
+    post:
+      operationId: deleteUserPiiDataUsingProfileId
+      summary: Delete user's PII data using profile ID
+      tags:
+      - Data Governance APIs
+      description: "This API is used to delete users' PII data. Insider does not allow the deletion of the user's\
+        \ last remaining identifier. In addition, if this value is a PII (Personally Identifiable Information) data\
+        \ such as email, phone number, it would not be deleted. Thanks to this endpoint, you can delete these values\
+        \ associated with users; if they are a known user and their only identifier is email or phone number, then,\
+        \ the user becomes anonymous. For example, you can delete all PII data of registered users when they revoke\
+        \ their data-sharing permissions.\n\nThe user attributes marked as PII are unconditionally deleted with\
+        \ this API.\n\nNote: This action cannot be undone. Please carefully consider before proceeding.\n\nBody\
+        \ Parameters\n\nParameter\nDescription\nData Type\nRequired\n\nemail\nUser's email address.\nString\nNo\n\
+        \nphone_number\nUser's phone number in E.164 format (e.g. +6598765432)\nString\nNo\n\nuuid\nUser's unique\
+        \ user identifier.\nString\nNo\n\nname\nAttribute. User's name.\nString\nNo\n\nsurname\nAttribute. User's\
+        \ surname.\nString\nNo\n\nbirthday\nAttribute. User's birthday in RFC 3339 format (e.g. 1993-03-12T00:00:00Z).\
+        \ Note: Send the birthdays without the time offset\nDatetime\nNo\n\ngender\nAttribute. Gender of the user.\n\
+        String\nNo\n\nage\nAttribute. Age of the user\nNumber\nNo\n\ncountry\nAttribute. Country information of\
+        \ the user in ISO 3166-1 alpha-2 format.\nString\nNo\n\ncity\nAttribute. City information of the user.\n\
+        String\nNo\n\nSample Body\n{\n          “insider_id”: “111ab184-f66d-4cba-123e-9abca4332211\"\n}\n\nSample\
+        \ Responses\n200 OK\nThis response returns if the request is successful.\n\nSample Responses\n200 OK\nThis\
+        \ response returns when the request is successful.\n\n404 NOT FOUND\nThe below response returns when you\
+        \ send the wrong identifiers.\n\n{\"error\":\"no such user for these identifiers: no data\"}\n\nLimitations\n\
+        \nAll functions must be executed with a simple HTTPS POST request.\n\nOnly PII data delete requests can\
+        \ be sent via this API. No data can be retrieved.\n\nThe request token should be provided on the request\
+        \ header. If the token is incorrect, the operation will not be executed\n\nThe rate limit is 500 requests per\
+        \ minute.\n\nA single HTTPS POST request can pass only 1 record (users).\n\nThe value of X-PARTNER-NAME\
+        \ header should be lowercase."
+      security:
+      - PartnerName: []
+      - RequestToken: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              partner: mybrand
+              insider_id: '1122334455'
+              api_key: 1a2b3c4d5e6f
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /api/raw/v1/export:
+    post:
+      operationId: exportRawUserData
+      summary: Export raw user data
+      tags:
+      - User Data APIs
+      description: "This API prepares the raw user data, exports it into Insider's AWS S3 Bucket, and returns a\
+        \ link to your webhook endpoint as a response. This link enables you to access the raw user data and transfer\
+        \ it to your end.\n\nThe API prepares the raw user data for all users for all requested attributes and for\
+        \ a list of events and their event parameters. You can filter to narrow down the user set (e.g., the raw\
+        \ user data can return the users who made a purchase on the last day).\n\nThe API can prepare the raw data\
+        \ for attributes and events together. You can choose the events you will receive and the attributes that\
+        \ will be added to each event entry.\n\nSuggested Reading: Understanding Events and Attributes\n\nYou should\
+        \ provide a webhook endpoint in the request to be notified when the export link is ready. After sending\
+        \ a request, your webhook endpoint receives an export link as follows to have access to the raw user data.\n\
+        \nhttps://insider-data-export.useinsider.com/{partner name}/p/{file name}\n\nYou can export raw user data\
+        \ to analyze user information using a business intelligence tool and sync the data that you want via daily\
+        \ jobs.\n\nUsing the Export API, Insider sends the file as a link via Webhook to your endpoint. Export files\
+        \ are sent from specific Insider IP addresses. To enhance security, whitelist Insider IP addresses on your\
+        \ system to restrict access to your endpoint. Remember that whitelisting our IP addresses is about restricting\
+        \ access to your endpoint, which ensures only approved sources can access your endpoint. To add our IP addresses\
+        \ to your approved list for whitelisting, reach out to the Insider team.\n\nIt might take several hours\
+        \ to receive the file after you get the 200 response. If there is an issue with the file size while exporting,\
+        \ you will be notified. In this case, try exporting the data in a smaller range. If you still do not receive\
+        \ the export link, we highly suggest checking if your endpoint is publicly accessible and functioning properly.\n\
+        \nThe Raw Export logs events based on their actual timestamp, regardless of when they are recorded in the\
+        \ User Content Database (UCD). In contrast, the S3 Export captures events within specific intervals, like\
+        \ the past hour, according to their UCD entry time. For example, the event counts displayed on the Metadata\
+        \ Analytics page represent all transmissions sent to UCD. Sending the same event 100 times results in only\
+        \ one entry in the database but shows a transmission count of 100 on the page, while Raw Export will show\
+        \ only 1. If an event was timestamped three days ago but sent today, it will appear in S3 Export based on\
+        \ the current transmission timeframe, like the last hour.\n\nBody Parameters\nBefore starting the implementation,\
+        \ make sure to share the following information with your Insider Technical Account Manager:\n\nA webhook\
+        \ endpoint that will be notified when the export link is ready\n\nA preferred format: CSV or Parquet\n\n\
+        A list of attributes, events, and event parameters that you want to export\n\nA dynamic segment that you\
+        \ want to export\n\nYou can consult the Insider team on which parameters to add to the request.\n\nThe date\
+        \ range of the segments in requests to the Raw Export API must align with the date range of the requested\
+        \ events. For example, if you're requesting data for the last 5 days of a segment, the event date range\
+        \ should also cover that same period. If the event date range is set to only 2 days, data for users who\
+        \ entered the segment in the last 3 days will not appear in the export.\n\nEach request must have attributes\
+        \ or events object to return the respective user profiles. If you are using an events object, its keys are\
+        \ required, as stated in the table below.\n\nParameter\nDescription\nData Type\nRequired\n\nsegment\nSegment\
+        \ ID of the user filter. Refer here to find your Dynamic Segment ID.\nObject\nYes\n\nattributes\nArray of\
+        \ attributes\nArray (of string)\nYes (if the body does not have the events object)\n\nevents\nArray of events\n\
+        Object\nYes (if the body does not have the attributes object)\n\nstart_date\nBeginning of the date range\
+        \ for the wanted events\nNumber\nYes (if the body has the events object)\n\nend_date\nEnd of the date range\
+        \ for the wanted events\nNumber\nYes (if the body has the events object)\n\nwanted\nObject of the wanted\
+        \ events\nArray\nYes (if the body has the events object)\n\nevent_name\nName of the event\nString\nYes (if\
+        \ the body has the events object)\n\nparams\nEvent parameters of the event\nArray (of string)\nYes (if the\
+        \ body has the events object)\n\nformat\nThe export format\nString\nYes\n\nhook\nYour webhook endpoint\n\
+        String\nYes\n\nSample Body\nThe sample below displays a request to get the raw user data with all attributes.\n\
+        \n{\n  \"segment\": {\n    \"segment_id\": 123456789\n  },\n  \"attributes\": [\n    \"*\"\n  ],\n  \"events\"\
+        : {\n    \"start_date\": 1606311893,\n    \"end_date\": 1611582293,\n    \"wanted\": [\n      {\n      \
+        \  \"event_name\": \"email_click\",\n        \"params\": [\n          \"email_campaign_id\",\n         \
+        \ \"timestamp\"\n        ]\n      },\n      {\n        \"event_name\": \"item_added_to_cart\",\n       \
+        \ \"params\": [\n          \"product_id\",\n          \"name\",\n          \"timestamp\"\n        ]\n  \
+        \    },\n      {\n        \"event_name\": \"journey_entered\",\n        \"params\": [\n          \"journey_id\"\
+        ,\n          \"timestamp\"\n        ]\n      }\n    ]\n  },\n  \"format\": \"parquet\",\n  \"hook\": \"\
+        xyz.test.com\"\n}\n\nThe sample below displays a request to get the raw user data with selected attributes.\n\
+        \n{\n   \"segment\": {\n        \"segment_id\": 123456789\n    },\n   \"attributes\": [\n      \"last_visited_product\"\
+        ,\n      \"email\",\n      \"name\",\n      \"c_custom_attribute\"\n   ],\n   \"events\": {\n      \"start_date\"\
+        : 1606311893,\n      \"end_date\": 1611582293,\n      \"wanted\": [\n         {\n            \"event_name\"\
+        : \"custom_event\",\n            \"params\": [\n               \"c_custom_parameter\",\n               \"\
+        timestamp\"\n            ],\n            \"filters\": [\n               {\n                  \"key\": \"\
+        email_campaign_id\",\n                  \"operator\": \"eq\",\n                  \"values\": [369, 877]\n\
+        \               }\n            ]\n         },\n         {\n            \"event_name\": \"item_added_to_cart\"\
+        ,\n            \"params\": [\n               \"product_id\",\n               \"name\",\n               \"\
+        timestamp\"\n            ]\n         },\n         {\n            \"event_name\": \"journey_entered\",\n\
+        \            \"params\": [\n               \"journey_id\",\n               \"timestamp\"\n            ]\n\
+        \         }\n      ]\n   },\n   \"format\": \"parquet\",\n   \"hook\": \"https://xyz.test.com\"\n}\n\nSample\
+        \ Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\"url\":\"https://insider-data-export.useinsider.com/{partner\
+        \ name}/p/{file name}\"}\n\n429 Too Many Requests\nThe following response returns if you exceed the rate\
+        \ limit.\n\n{\n    \"error\": \"rejected: too many requests\"\n}\n\nLimitations\nWhen sending your request,\
+        \ make sure to follow these limitations:\n\nAll functions must be executed with a simple HTTPS POST request.\n\
+        \nOnly a response that states whether the request is successful or failed can be received via this API.\
+        \ No data can be inserted.\n\nThe request token should be provided in the request header. If the token is\
+        \ incorrect, the operation will not be executed.\n\nThe exported data can be in CSV, Parquet (version 1.0),\
+        \ or JSON formats.\n\nThe export link expires in 24 hours after it is ready.\n\nThe rate limit for raw export\
+        \ is 1 request per day. Failed requests don't count. Based on the UTC zone, the API can be called only once\
+        \ in 24 hours. The limitation timeline resets at UTC 00:00.\n\nThe value of X-PARTNER-NAME header should\
+        \ be lowercase.\n\nSince https://webhook.site blocks Insider, you cannot retrieve hooks containing download\
+        \ links with URLs belonging here. We will make efforts to address this issue; however, there are currently\
+        \ limitations to resolving it."
+      security:
+      - PartnerName: []
+      - RequestToken: []
+      requestBody:
+        content:
+          application/json:
+            examples:
+              default:
+                value:
+                  segment:
+                    segment_id: 123456789
+                  attributes:
+                  - '*'
+                  events:
+                    start_date: 1606311893
+                    end_date: 1611582293
+                    wanted:
+                    - event_name: email_click
+                      params:
+                      - campaign_id
+                      - timestamp
+                    - event_name: item_added_to_cart
+                      params:
+                      - product_id
+                      - name
+                      - timestamp
+                    - event_name: journey_entered
+                      params:
+                      - journey_id
+                      - timestamp
+                  format: parquet
+                  hook: xyz.test.com
+              export-app-push-results-with-raw-user-data:
+                summary: Export app push results with raw user data
+                value:
+                  segment:
+                    segment_id: 123456789
+                  attributes:
+                  - iid
+                  - udid
+                  - pn
+                  - uuid
+                  - em
+                  - app_version
+                  - mo
+                  - ov
+                  events:
+                    start_date: 1693907940
+                    end_date: 1693994340
+                    wanted:
+                    - event_name: push_delivered
+                      params:
+                      - timestamp
+                      - camp_id
+                      - camp_type
+                      - variant_id
+                    - event_name: push_session
+                      params:
+                      - timestamp
+                      - camp_id
+                      - camp_type
+                      - variant_id
+                  format: csv
+                  hook: xyz.test.com
+              export-app-template-results-with-raw-user-data:
+                summary: Export app template results with raw user data
+                value:
+                  segment:
+                    segment_id: 123456789
+                  attributes:
+                  - iid
+                  - udid
+                  - pn
+                  - uuid
+                  - em
+                  - app_version
+                  - mo
+                  - ov
+                  events:
+                    start_date: 1693907940
+                    end_date: 1693994340
+                    wanted:
+                    - event_name: inapp_seen
+                      params:
+                      - timestamp
+                      - inapp_id
+                      - variant_id
+                      - dismiss_type
+                  format: csv
+                  hook: xyz.test.com
+              export-app-survey-results-with-raw-user-data:
+                summary: Export app survey results with raw user data
+                value:
+                  segment:
+                    segment_id: 123456789
+                  attributes:
+                  - iid
+                  - udid
+                  - pn
+                  - uuid
+                  - em
+                  - app_version
+                  - mo
+                  - ov
+                  events:
+                    start_date: 1606311893
+                    end_date: 1611582293
+                    wanted:
+                    - event_name: survey_result
+                      params:
+                      - timestamp
+                      - answer
+                      - camp_id
+                      - question
+                      - variant_id
+                  format: parquet
+                  hook: xyz.test.com
+      responses:
+        '200':
+          description: OK
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /api/user/v1/anonymize:
+    post:
+      operationId: deleteUserPiiDataUsingIdentifier
+      summary: Delete user's PII data using identifier
+      tags:
+      - Data Governance APIs
+      description: "This API is used to delete users' PII data. Insider does not allow the deletion of the user's\
+        \ last remaining identifier. In addition, if this value is a PII (Personally Identifiable Information) data\
+        \ such as email, phone number, it would not be deleted. Thanks to this endpoint, you can delete these values\
+        \ associated with users; if they are a known user and their only identifier is email or phone number, then,\
+        \ the user becomes anonymous. For example, you can delete all PII data of registered users when they revoke\
+        \ their data-sharing permissions.\n\nThe user attributes marked as PII are unconditionally deleted with\
+        \ this API.\n\nNote: This action cannot be undone. Please carefully consider before proceeding.\n\nBody\
+        \ Parameters\n\nParameter\nDescription\nData Type\nRequired\n\nemail\nUser's email address.\nString\nNo\n\
+        \nphone_number\nUser's phone number in E.164 format (e.g. +6598765432)\nString\nNo\n\nuuid\nUser's unique\
+        \ user identifier.\nString\nNo\n\nname\nAttribute. User's name.\nString\nNo\n\nsurname\nAttribute. User's\
+        \ surname.\nString\nNo\n\nbirthday\nAttribute. User's birthday in RFC 3339 format (e.g. 1993-03-12T00:00:00Z).\
+        \    Note: Send the birthdays without the time offset.\nDatetime\nNo\n\ngender\nAttribute. Gender of the\
+        \ user.\nString\nNo\n\nage\nAttribute. Age of the user\nNumber\nNo\n\ncountry\nAttribute. Country information\
+        \ of the user in ISO 3166-1 alpha-2 format.\nString\nNo\n\ncity\nAttribute. City information of the user.\n\
+        String\nNo\n\nSample Body\n{\n  \"identifiers\": {\n    \"email\": \"sample@useinsider.com\"\n  }\n}\n\n\
+        Sample Responses\n200 OK\nThis response returns if the request is successful.\n\n404 NOT FOUND\nThe response\
+        \ below returns when you send the wrong identifiers.\n\n{\"error\":\"no such user for these identifiers:\
+        \ no data\"}\n\nLimitations\n\nAll functions must be executed with a simple HTTPS POST request.\n\nOnly\
+        \ PII data delete requests can be sent via this API. No data can be retrieved.\n\nThe request token should\
+        \ be provided on the request header. If the token is incorrect, the operation will not be executed\n\nThe\
+        \ rate limit is 500 requests per minute.\n\nA single HTTPS POST request can pass only 1 record (users).\n\
+        \nThe value of X-PARTNER-NAME header should be lowercase."
+      security:
+      - PartnerName: []
+      - RequestToken: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              identifiers:
+                email: sample@useinsider.com
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /api/user/v1/attribute/delete:
+    post:
+      operationId: deleteUserAttribute
+      summary: Delete user attribute
+      tags:
+      - User Data APIs
+      description: "This API enables you to delete your customer attributes when you need to. You can either delete\
+        \ the whole attribute from the user, or delete a specific value from an array typed attribute.\n\nFor example,\
+        \ your customer might have selected GDPR’s “right-to-be-forgotten” option and you need to delete some attributes\
+        \ that capture such customer information.\n\nThis deletion action cannot be undone. Please carefully consider\
+        \ before proceeding.\n\nAn attribute defined as an identifier cannot be deleted with this request. To delete\
+        \ this type of attribute (since it functions as an identifier), you must use the Delete Identifiers API.\n\
+        \nBody Parameters\nEach POST body must have a unifier field under identifiers object. You can use the default\
+        \ identifiers such as email, phone number, or uuid and also the custom identifier to define a unifier.\n\
+        \nParameter\nDescription\nData Type\nRequired\n\nusers\nArray of user information such as identifiers, attributes\
+        \ and values to be deleted\nArray\nYes\n\nidentifiers\nUser's identifier information.\nObject\nYes\n\ncustom\n\
+        User's custom identifier information.\nObject\nNo\n\nwhole\nArray of attributes that are going to be deleted\
+        \ fully from the corresponding user\nArray\nNo\n\npartial\nAttributes that are going to be deleted partially.\
+        \ (Ex. removing one of the values from an array attribute)\nObject\nNo\n\ncustom\nCustom attributes that\
+        \ are going to be deleted either whole or partially\nObject\nNo\n\nemail\nUser's email address.\nString\n\
+        No\n\nphone_number\nUser's phone number in E.164 format (e.g. +6598765432)\nString\nNo\n\nuuid\nUser's unique\
+        \ user identifier.\nString\nNo\n\nemail_optin\nAttribute. User's permission for marketing emails:    True\
+        \ = emails allowed;    False = email not allowed\nBoolean\nNo\n\ngdpr_optin\nAttribute. User's permission\
+        \ for Insider campaigns, data collection and processing:    False = user will not see any Insider campaign\
+        \ or receive any message from any channel;    True or empty = Insider may interact with the user through\
+        \ personalization campaigns\nBoolean\nNo\n\nsms_optin\nAttribute. User's permission for SMS:    True = SMS\
+        \ allowed;    False = SMS not allowed\nBoolean\nNo\n\nname\nAttribute. User's name.\nString\nNo\n\nsurname\n\
+        Attribute. User's surname.\nString\nNo\n\nbirthday\nAttribute. User's birthday in RFC 3339 format (e.g.\
+        \ 1993-03-12T00:00:00Z).    Note: Send the birthdays without the time offset.\nDatetime\nNo\n\ngender\n\
+        Attribute. Gender of the user.\nString\nNo\n\nage\nAttribute. Age of the user\nNumber\nNo\n\nlanguage\n\
+        Language information of the user.\nString\nNo\n\ncountry\nAttribute. Country information of the user in\
+        \ ISO 3166-1 alpha-2 format.\nString\nNo\n\ncity\nAttribute. City information of the user.\nString\nNo\n\
+        \nlist_id\nAttribute. Newsletter contact list IDs (users are added directly).\nNumbers (Number array)\n\
+        No\n\nSample Body\nThe following is a sample JSON to delete user attributes.\n\ncurl --location --request\
+        \ POST 'https://unification.useinsider.com/api/user/v1/attribute/delete' \\\n--header 'X-PARTNER-NAME: mybrand'\
+        \ \\\n--header 'X-REQUEST-TOKEN: 1a2b3c4d5e6f' \\\n--header 'Content-Type: application/json' \\\n--data-raw\
+        \ '{\n    \"users\": [\n        {\n            \"identifiers\": {\n                \"email\": \"sample@useinsider.com\"\
+        ,\n                \"uuid\": \"1x2y3z\",\n                \"custom\": {\n                    \"custom_identifier\"\
+        : \"xyz123\"\n                }\n            },\n            \"whole\": [\n                \"name\",\n \
+        \               \"surname\",\n                \"email_optin\"\n            ],\n            \"partial\":\
+        \ {\n                \"list_id\": [\n                    1,\n                    2\n                ]\n\
+        \            },\n            \"custom\": {\n                \"whole\": [\n                    \"custom_string_attribute\"\
+        ,\n                    \"custom_array_attribute\"\n                ],\n                \"partial\": {\n\
+        \                    \"custom_array_attribute\": [\n                        \"value1\",\n              \
+        \          \"value2\",\n                        \"value3\"\n                    ]\n                }\n \
+        \           }\n        }\n    ]\n}'\n\nThe sample below displays a request to get user data with insider_id.\n\
+        \ninsider_id is an internal ID maintained by the Insider for each user. To find the insider_id, you can\
+        \ refer to the Profile ID on the User Profile.\n\ncurl --location --request POST 'https://unification.useinsider.com/api/user/v1/attribute/delete'\
+        \ \\\n--header 'X-PARTNER-NAME: mybrand' \\\n--header 'X-REQUEST-TOKEN: 1a2b3c4d5e6f' \\\n--header 'Content-Type:\
+        \ application/json' \\\n--data-raw '{\n  \"users\": [\n    {\n      \"insider_id\": \"sampleinsiderid\"\
+        ,\n      \"whole\": [\n        \"name\",\n        \"surname\",\n        \"email_optin\"\n      ],\n    \
+        \  \"partial\": {\n        \"list_id\": [\n          1,\n          2\n        ]\n      },\n      \"custom\"\
+        : {\n        \"whole\": [\n          \"custom_string_attribute\",\n          \"custom_array_attribute\"\n\
+        \        ],\n        \"partial\": {\n          \"custom_array_attribute\": [\n            \"value1\",\n\
+        \            \"value2\",\n            \"value3\"\n          ]\n        }\n      }\n    }\n  ]\n}'\n\nSample\
+        \ Responses\n200 OK\nThe following response returns if the request is successful.\n\n{}\n\n403 Forbidden\n\
+        The following response returns in case of an authentication error.\n\n{\n    \"success\": false,\n    \"\
+        message\": \"Access Denied. You do not have sufficient access to perform this action.\"\n}\n\n429 Too Many\
+        \ Requests\nThe following response returns if you exceed the rate limit.\n\n{\n    \"error\": \"rejected:\
+        \ too many requests\"\n}\n\n500 Internal Server Error\n{\n    \"success\": false,\n    \"message\": \"The\
+        \ request processing has failed because of an unknown error.\"\n}\n\nLimitations\nWhen sending your request,\
+        \ make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\
+        \nOnly delete requests can be sent via this API. No data can be retrieved.\n\nThe request token should be\
+        \ provided in the request header. If the token is incorrect, the operation will not be executed.\n\nA single\
+        \ HTTPS POST request can pass a maximum of 1,000 records (users).\n\nRate limit is shared with User Upsert\
+        \ API with a total of 25,000 requests per minute.\n\nThe entire request must not exceed 5 MB.\n\nThe value\
+        \ of X-PARTNER-NAME header should be lowercase."
+      security:
+      - PartnerName: []
+      - RequestToken: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              users:
+              - identifiers:
+                  email: sample@mail.com
+                  uuid: 1x2y3z
+                  custom:
+                    custom_identifier: xyz123
+                whole:
+                - name
+                - surname
+                - email_optin
+                partial:
+                  list_id:
+                  - 1
+                  - 2
+                custom:
+                  whole:
+                  - custom_string_attribute
+                  - custom_array_attribute
+                  partial:
+                    custom_array_attribute:
+                    - value1
+                    - value2
+                    - value3
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+                data:
+                  successful:
+                    count: 1
+                  fail: {}
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /api/user/v1/delete:
+    post:
+      operationId: deleteUserProfile
+      summary: Delete user profile
+      tags:
+      - Data Governance APIs
+      description: "This API enables you to delete your customer and their data when you need to.\n\nFor example,\
+        \ one of your users might have selected GDPR’s “right-to-be-forgotten” option and you need to delete that\
+        \ user's data. You can call this API with the related identifier for Insider to find that user's data, and\
+        \ delete it.\n\nBody Parameters\nEach POST body must have a unifier field under identifiers object. You\
+        \ can use the default identifiers such as email, phone number, or uuid and also the new custom identifier\
+        \ to define a unifier. For example, you use the email field as a unifier, any data without email field will\
+        \ not be accepted.\n\nParameter\nDescription\nData Type\nRequired\n\nidentifiers\nUser's identifier information.\n\
+        Object\nYes\n\ncustom\nUser's custom identifier information.\nObject\nNo\n\nemail\nUser's email address.\n\
+        String\nNo\n\nphone_number\nUser's phone number in E.164 format (e.g. +6598765432)\nString\nNo\n\nuuid\n\
+        User's unique user identifier.\nString\nNo\n\nSample Body\nThe following is a sample JSON without a custom\
+        \ object.\n\n{\n   \"identifiers\":{\n      \"email\":\"example@useinsider.com\"\n   }\n}\n\nYou can also\
+        \ send a request with a custom object:\n\n{\n   \"identifiers\":{\n      \"custom\":{\"custom_identifier\"\
+        :\"xyz123\"}\n   }\n}\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\
+        \n{}\n\n403 Forbidden\nThe following response returns in case of an authentication error.\n\n{\n    \"success\"\
+        : false,\n    \"message\": \"Access Denied. You do not have sufficient access to perform this action.\"\n\
+        }\n\n500 Internal Server Error\n{\n    \"success\": false,\n    \"message\": \"The request processing has\
+        \ failed because of an unknown error.\"\n}\n\nLimitations\nWhen sending your request, make sure to follow\
+        \ these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nOnly delete\
+        \ request can be sent via this API. No data can be retrieved.\n\nThe request token should be provided on\
+        \ the request header. If the token is incorrect, the operation will not be executed.\n\nA single HTTPS POST\
+        \ request can pass only 1 record (user).\n\nMaximum 10,000 requests can be sent per minute.\n\nThe entire\
+        \ request must not exceed 5 MB.\n\nThe value of X-PARTNER-NAME header should be lowercase."
+      security:
+      - PartnerName: []
+      - RequestToken: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              identifiers:
+                email: sample@useinsider.com
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example: {}
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /api/user/v1/identity:
+    patch:
+      operationId: updateIdentifiers
+      summary: Update identifiers
+      tags:
+      - User Data APIs
+      description: "This API enables you to update the value of the identifiers that are already associated with\
+        \ users.\n\nFor example, an existing user that is already a known user to Insider may have updated their\
+        \ email address in your system. Accordingly, you may need to change the identifier(s) of this user. With\
+        \ this API, you can change the value of an existing identifier to a new value.\n\nBody Parameters\nEach\
+        \ PATCH request must have an identifier type, old value, and new value specified in it. You can use either\
+        \ one of the default identifiers which are uuid, email, and phone_number, or any one of the custom identifiers\
+        \ you are using.\n\nParameter\nDescription\nData Type\nRequired\n\nold_identifier\nUser’s current identifier\
+        \ value\nObject\nYes\n\nnew_identifier\nUser’s next identifier value\nObject\nYes\n\ncustom\nUser’s custom\
+        \ identifiers information\nObject\nNo\n\nemail\nUser's email address\nString\nNo\n\nphone_number\nUser's\
+        \ phone number in E.164 format (e.g. +6598765432)\nString\nNo\n\nuuid\nUser's unique user identifier\nString\n\
+        No\n\nSample Body\nBelow is a sample body with default identifiers.\n\n{\n    \"old_identifier\": {\n  \
+        \      \"email\": \"sample@mail.com\"\n    },\n    \"new_identifier\": {\n        \"email\": \"sample2@mail.com\"\
+        \n    }\n}\n\nBelow is a sample body with custom identifiers.\n\n{\n  \"old_identifier\": {\n    \"custom\"\
+        : {\n      \"user_loyalty_id\": \"xyz123\"\n    }\n  },\n  \"new_identifier\": {\n    \"custom\": {\n  \
+        \    \"user_loyalty_id\": \"xyz123\"\n    }\n  }\n}\n\nSample Responses\n400 Bad Request\nThe following\
+        \ response returns if the identifier values are the same.\n\n{\n  \"error\": \"identifier values are the\
+        \ same: bad request\"\n}\n\n400 Bad Request\nThe following response returns if you do not have 1 entry for\
+        \ both new and old identifiers.\n\n{\n  \"error\": \"there must be exactly 1 entry for both new and old\
+        \ identifiers: bad request\"\n}\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\
+        \nAll functions must be executed with a simple HTTPS PATCH request.\n\nThe request token should be provided\
+        \ in the request header. If the token is incorrect, no operation will be executed.\n\nA single HTTPS PATCH\
+        \ request can pass only one record (user).\n\nA maximum of 2000 requests can be sent per minute.\n\nIdentifiers\
+        \ that are to be replaced should be of the same type.\n\nThe entire request must not exceed 5 MB.\n\nThe\
+        \ value of X-PARTNER-NAME header should be lowercase."
+      security:
+      - PartnerName: []
+      - RequestToken: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              old_identifier:
+                email: sample@mail.com
+              new_identifier:
+                email: sample2@mail.com
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example: {}
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    delete:
+      operationId: deleteIdentifiers
+      summary: Delete identifiers
+      tags:
+      - User Data APIs
+      description: "This API enables you to delete the value of the identifiers that are already associated with\
+        \ users.\n\nFor example, an existing user that is already a known user to Insider may have deleted their\
+        \ phone number from your system. Accordingly, you may need to delete the phone number of this user. With\
+        \ this API, you can delete the value of an existing identifier.\n\nThis deletion action cannot be undone.\
+        \ Please carefully consider before proceeding.\n\nBody Parameters\nEach DELETE request must have an identifier\
+        \ type, and the value specified in it. You can use either one of the default identifiers, which are uuid,\
+        \ email, and phone_number, or any one of the custom identifiers you are using.\n\nIf the user is associated\
+        \ with only one identifier, you cannot delete it.\n\nParameter\nDescription\nData Type\nRequired\n\nidentifiers\n\
+        User’s current identifier in use\nObject\nYes\n\ncustom\nUser’s custom identifiers information\nObject\n\
+        No\n\nemail\nUser's email address\nString\nNo\n\nphone_number\nUser's phone number in E.164 format (e.g.\
+        \ +6598765432)\nString\nNo\n\nuuid\nUser's unique user identifier\nString\nNo\n\nSample Body\nBelow is a\
+        \ sample body with a default identifier.\n\n{\n    \"identifiers\": {\n        \"email\": \"sample@mail.com\"\
+        \n    }\n}\n\nBelow is a sample body with a custom identifier.\n\n{\n  \"identifiers\": {\n    \"custom\"\
+        : {\n      \"user_loyalty_id\": \"xyz123\"\n    }\n  }\n}\n\nSample Responses\n400 Bad Request\nThe following\
+        \ response returns if the user has only one identifier.\n\n{\n  \"error\": \"you cannot delete the sole\
+        \ identifier specified for a user: bad request\"\n}\n\n429 Too Many Requests\nIf you exceed the rate limits,\
+        \ you receive an error shown below:\n\n{\n    \"error\": \"rejected: too many requests\"\n}\n\nLimitations\n\
+        When sending your request, make sure to follow these limitations.\n\nAll functions must be executed with\
+        \ a simple HTTPS DELETE request.\n\nThe request token should be provided in the request header. If the token\
+        \ is incorrect, no operation will be executed.\n\nA single HTTPS DELETE request can pass only 1 record (user).\n\
+        \nA maximum of 25,000 requests can be sent per minute.\n\nIdentifier that are to be deleted cannot be the\
+        \ only identifier associated with the corresponding user profile.\n\nThe entire request must not exceed\
+        \ 5 MB.\n\nThe value of X-PARTNER-NAME header should be lowercase."
+      security:
+      - PartnerName: []
+      - RequestToken: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              identifiers:
+                email: sample@mail.com
+      responses:
+        '200':
+          description: Delete identifiers
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /api/user/v1/profile:
+    post:
+      operationId: getUserProfiles
+      summary: Get user profiles
+      tags:
+      - User Data APIs
+      description: "This API returns the attributes and events you request for a single user that you specify by\
+        \ an identifier. It takes identifier, attribute list, and event list within the date range. In its response,\
+        \ it provides the data you choose.\n\nYou can get user profiles for various use cases. For example, you\
+        \ can personalize the content for your other providers, or connect user profiles to your services like call\
+        \ centers.\n\nBody Parameters\nEach POST body must have an identifiers object.\n\nEach request must have\
+        \ attributes or events object to return the respective user profiles. In the event of using events object,\
+        \ its keys are required as stated in the table below.\n\nParameter\nDescription\nData Type\nRequired\n\n\
+        identifiers\nIdentifier key\nObject\nRequired\n\nattributes\nArray of wanted attributes\nArray (of string)\n\
+        Yes (if the body does not have the events object)\n\nevents\nObject of events\nObject\nYes (if the body\
+        \ does not have the attributes object)\n\nstart_date\nBeginning of the date range for the wanted events\n\
+        Number\nYes (if the body has the events object)\n\nend_date\nEnd of the date range for the wanted events\n\
+        Number\nYes (if the body has the events object)\n\nwanted\nObject of the wanted events\nArray\nYes (if the\
+        \ body has the events object)\n\nevent_name\nName of the event\nString\nYes (if the body has the events\
+        \ object)\n\nparams\nWanted event parameters of the event\nArray (of string)\nYes (if the body has the events\
+        \ object)\n\nquota\nFlag to display quota usage\nBoolean\nNo\n\nSpecifically for this API, to select the\
+        \ journey event's name parameter, use journey_campaign_name as the event parameter key.\n\nSample Body\n\
+        The sample below displays a request to get user data with an identifier.\n\nYou can refer to Default Events\
+        \ & Attributes to see the list of events and attributes. If an event or attribute name consists of more\
+        \ than one word, you can use an underscore (_) between the words. E.g. email_optin, homepage_view, etc.\n\
+        \n{\n  \"identifiers\": {\n    \"email\": \"sample@useinsider.com\"\n  },\n  \"attributes\": [\n    \"email\"\
+        ,\n    \"name\",\n    \"surname\"\n  ],\n  \"events\": {\n    \"start_date\": 1606311893,\n    \"end_date\"\
+        : 1611582293,\n    \"wanted\": [\n      {\n        \"event_name\": \"email_click\",\n        \"params\"\
+        : [\n          \"campaign_id\",\n          \"timestamp\"\n        ]\n      },\n      {\n        \"event_name\"\
+        : \"item_added_to_cart\",\n        \"params\": [\n          \"product_id\",\n          \"name\",\n     \
+        \     \"timestamp\"\n        ]\n      },\n      {\n        \"event_name\": \"journey_entered\",\n      \
+        \  \"params\": [\n          \"journey_id\",\n          \"timestamp\"\n        ]\n      }\n    ]\n  },\n\
+        \  \"quota\": true\n}\n\nThe sample below displays a request to get user data with a custom attribute. For\
+        \ custom attributes, you need to add a “_c__” prefix.\n\ncurl --location --request POST 'https://unification.useinsider.com/api/user/v1/profile'\
+        \ \\\n--header 'X-REQUEST-TOKEN: 1a2b3c4d5e6f' \\\n--header 'X-PARTNER-NAME: mybrand' \\\n--header 'Content-Type:\
+        \ application/json' \\\n--header 'Cookie: __cfduid=d1a0bc0c8335c7fecbd3485839787329b1615112066' \\\n--data-raw\
+        \ '{\n    \"identifiers\": {\n        \"email\": \"example@useinsider.com\"\n    },\n    \"attributes\"\
+        : [\n        \"email\",\n        \"name\",\n        \"surname\",\n        \"c_member_code\"\n    ],\n  \
+        \  \"events\": {\n        \"start_date\": 1606311893,\n        \"end_date\": 1611582293,\n        \"wanted\"\
+        : [\n            {\n                \"event_name\": \"email_click\",\n                \"params\": [\n  \
+        \                  \"campaign_id\",\n                    \"timestamp\"\n                ]\n            },\n\
+        \            {\n                \"event_name\": \"item_added_to_cart\",\n                \"params\": [\n\
+        \                    \"product_id\",\n                    \"name\",\n                    \"timestamp\"\n\
+        \                ]\n            },\n            {\n                \"event_name\": \"journey_entered\",\n\
+        \                \"params\": [\n                    \"journey_id\",\n                    \"timestamp\"\n\
+        \                ]\n            }\n        ]\n    },\n    \"quota\": true\n}'  \n\nThe sample below displays\
+        \ a request to get user data with insider_id.\n\ninsider_id is an internal ID maintained by the Insider\
+        \ for each user. To find the insider_id, you can refer to the Profile ID on the User Profile.\n\ncurl --location\
+        \ --request POST 'https://unification.useinsider.com/api/user/v1/profile' \\\n--header 'X-REQUEST-TOKEN:\
+        \ 1a2b3c4d5e6f' \\\n--header 'X-PARTNER-NAME: mybrand' \\\n--header 'Content-Type: application/json' \\\n\
+        --header 'Cookie: __cfduid=d1a0bc0c8335c7fecbd3485839787329b1615112066' \\\n--data-raw '{\n  \"insider_id\"\
+        : \"sampleinsiderid\",\n  \"attributes\": [\n    \"email\",\n    \"name\",\n    \"surname\"\n  ],\n  \"\
+        events\": {\n    \"start_date\": 1606311893,\n    \"end_date\": 1611582293,\n    \"wanted\": [\n      {\n\
+        \        \"event_name\": \"email_click\",\n        \"params\": [\n          \"campaign_id\",\n         \
+        \ \"timestamp\"\n        ]\n      },\n      {\n        \"event_name\": \"item_added_to_cart\",\n       \
+        \ \"params\": [\n          \"product_id\",\n          \"name\",\n          \"timestamp\"\n        ]\n  \
+        \    },\n      {\n        \"event_name\": \"journey_entered\",\n        \"params\": [\n          \"journey_id\"\
+        ,\n          \"timestamp\"\n        ]\n      }\n    ]\n  },\n  \"quota\": true\n}'\n\nSample Responses\n\
+        200 OK\nThe following response returns if the request is successful.\n\n{\n  \"attributes\": {\n    \"email\"\
+        : \"example@useinsider.com\",\n    \"name\": \"John\",\n    \"surname\": \"Doe\"\n    \"iid\": \"insider-id-user-1\"\
+        \n  },\n  \"events\": {\n    \"email_click\": [\n      {\n        \"campaign_id\": 1456,\n        \"created_date\"\
+        : \"2021-01-06T23:34:09Z\"\n      },\n      {\n        \"campaign_id\": 1245,\n        \"created_date\"\
+        : \"2021-01-01T12:56:21Z\"\n      }\n    ],\n    \"item_added_to_cart\": [\n      {\n        \"product_id\"\
+        : \"3254634\",\n        \"name\": \"Blue Shirt\",\n        \"created_date\": \"2021-01-04T15:04:34Z\"\n\
+        \      }\n    ],\n    \"journey_entered\": [\n      {\n        \"journey_id\": 12,\n        \"created_date\"\
+        : \"2021-01-02T09:35:46Z\"\n      }\n    ]\n  },\n  \"quota\": {\n        \"cost\": 2.5,\n        \"used\"\
+        : 2.5,\n        \"total\": 1000\n    }\n}\n\n404 Not Found\nThe following response returns if no user is\
+        \ found for the respective identifier.\n\n{\"error\":\"no such user for these identifiers: no data\"}\n\n\
+        Limitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be\
+        \ executed with a simple HTTPS POST request.\n\nOnly new data can be retrieved via this API. No data can\
+        \ be inserted.\n\nThe request token should be provided on the request header. If the token is incorrect,\
+        \ the operation will not be executed.\n\nThe API can prepare the data only for one user that is specified\
+        \ by the identifier.\n\nIf the limit_per_source value is set, then only that many events are assigned from\
+        \ every source. For example, if the limit_per_source value is set to 1 for the purchase event, then 1 purchase\
+        \ event is acquired from email, web, and other sources as well.\n\nIf you wish to see the quota usage for\
+        \ the payload then set Quota=true.\n\nThe quota is limited to 1000 units per minute.\n\nThe user base size\
+        \ and the number of types of events define the quota usage. The attribute number or set of attributes doesn't\
+        \ matter.\n\nThe value of X-PARTNER-NAME header should be lowercase."
+      security:
+      - PartnerName: []
+      - RequestToken: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              identifiers:
+                email: johndoe@email.com
+              attributes:
+              - email
+              - name
+              - surname
+              - custom
+              events:
+                start_date: 1606311893
+                end_date: 1611582293
+                wanted:
+                - event_name: email_click
+                  params:
+                  - campaign_id
+                  - timestamp
+                - event_name: item_added_to_cart
+                  params:
+                  - product_id
+                  - name
+                  - timestamp
+                - event_name: journey_entered
+                  params:
+                  - journey_id
+                  - timestamp
+              quota: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+                attributes:
+                  email_optin: true
+                events:
+                  homepage_view:
+                  - referrer: https://posh.useinsider.com/customer/account/login/referer/aHR0cHM6Ly9wb3NoLnVzZWluc2lkZXIuY29tL2Ntcy9ub3JvdXRlL2luZGV4Lw%2C%2C/
+                    source: web
+                  - referrer: https://posh.useinsider.com/bess-yoga-short.html
+                    source: web
+                  - referrer: https://posh.useinsider.com/customer/account/login/referer/aHR0cHM6Ly9wb3NoLnVzZWluc2lkZXIuY29tL2Ntcy9ub3JvdXRlL2luZGV4Lw%2C%2C/
+                    source: web
+                  - referrer: https://posh.useinsider.com/customer/account/login/referer/aHR0cHM6Ly9wb3NoLnVzZWluc2lkZXIuY29tL2Ntcy9ub3JvdXRlL2luZGV4Lw%2C%2C/
+                    source: web
+                  - referrer: https://posh.useinsider.com/bess-yoga-short.html
+                    source: web
+                  - referrer: https://posh.useinsider.com/bess-yoga-short.html
+                    source: web
+                  - referrer: https://posh.useinsider.com/bess-yoga-short.html
+                    source: web
+                  - referrer: https://posh.useinsider.com/apps/insider/insider-sw-sdk.js
+                    source: web
+                  - referrer: https://posh.useinsider.com/?SID=gtqfg0af2g3fopr1qio4hsjdso
+                    source: web
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /api/user/v1/upsert:
+    post:
+      operationId: upsertUserData
+      summary: Upsert user data
+      tags:
+      - User Data APIs
+      description: "Upsert API enables you to send users' attributes and events to Insider. It allows you to insert\
+        \ and update user data whenever you need it.\n\nYou can possibly use the Upsert User Data for the following\
+        \ use cases:\n\nSending offline purchases or any other events\n\nSending leads that are collected from any\
+        \ other platform\n\nSending segments that are prepared in-house\n\nIf you want to limit access to the Upsert\
+        \ API for users with a UCD API Key or control data transmission through this API, you can implement IP restrictions.\
+        \ This ensures that only Upsert API requests from approved IP addresses will be accepted. If you want to\
+        \ make such a custom adjustment, please contact the Insider team.\n\nYou should use the Identifier Update\
+        \ API if you want to update an identifier listed in your Identity Resolution Management Settings.\n\nBody\
+        \ Parameters\nYou can send two data types to our data ingestion API: attributes and events.\n\nAn attribute\
+        \ is a single, static piece of information about a user, such as gender, age, or loyalty class. When you\
+        \ send data to an array attribute for a user, the new values are added to the existing ones by default.\
+        \ If you don't want to append values but overwrite the array attributes, you need to add \"not_append\"\
+        : true or \"append\": false to the request. If you use both together, the value you provide for \"append\"\
+        \ will be accepted.\n\nAn event is a collection of information, such as purchased products or visited stores.\
+        \ Any update request for an existing user with the same event name will append it to the collection.\n\n\
+        Each user object must have at least one attributes object or one events object. No default attribute is\
+        \ mandatory. If you use attributes object in the request, you need to have at least one attribute in your\
+        \ object.You can use event group ID to group the events of the same type if you send multiple events of\
+        \ this type.When sending events via the Upsert API, ensure that the values fall within the TTL (Time-to-Live)\
+        \ of the events. Events with timestamps exceeding the TTL will not be written. You can refer to the Data\
+        \ Retention for further information.\n\nUsing Upsert API, you can import historical data. While importing\
+        \ historical data, if there is an active Architect On Event element or the data stream is set, and the imported\
+        \ data meets the conditions of the journey and the data stream, the Architect On Event element or data stream\
+        \ can be triggered.\n\nFor example, you send the purchase events from one year ago to users with Upsert\
+        \ API. At the same time, if an active Architect journey is set with a purchase condition using the On Event\
+        \ element, users will enter this journey because they meet the condition based on their data from a year\
+        \ ago.\n\nA boolean flag called “skip_hook” is available in the Upsert request body to prevent historical\
+        \ data from entering the current journey. Thanks to this flag, you can choose whether to trigger the data\
+        \ stream or use the Architect On Event starter for the imported data.\n\nThis flag is not mandatory. If\
+        \ not specified, it is taken as skip_hook: false by default. If you do not want to trigger the data stream,\
+        \ it should be skip_hook: true.\n\nIdentifiers must be placed under the identifiers object only. They should\
+        \ not be sent within attributes, events, or any other part of the payload. This structure ensures accurate\
+        \ identity resolution and consistent data processing across the platform.\n\nInsider allows these parameters\
+        \ to send:\n\nParameter\nDescription\nData Type\nRequired\n\nusers\nArray of user information such as identifiers,\
+        \ attributes and events.\nArray\nYes\n\nidentifiers\nUser's identifier information.\nObject\nYes\n\nattributes\n\
+        Attributes object of user information such as gender, age.\nObject\nNo\n\nemail\nAttribute. User's email\
+        \ address, can be used as an identifier.\nString\nNo\n\nphone_number\nAttribute. User's phone number in\
+        \ E.164 format (e.g. +6598765432), can be used as an identifier.\nString\nNo\n\nemail_optin\nAttribute.\
+        \ User's permission for marketing emails:  True = emails allowed;  False = email not allowed\nBoolean\n\
+        No\n\ngdpr_optin\nAttribute. User's permission for Insider campaigns, data collection and processing:  False\
+        \ = user will not see any Insider campaign or receive any message from any channel;  True or empty = Insider\
+        \ may interact with the user through personalization campaigns\nBoolean\nNo\n\nsms_optin\nAttribute. User's\
+        \ permission for SMS:  True = SMS allowed;  False = SMS not allowed\nBoolean\nNo\n\nwhatsapp_optin\nAttribute.\
+        \ User's permission for WhatsApp Message:  True = WhatsApp Message allowed  False = WhatsApp Message not\
+        \ allowed\nBoolean\nNo\n\nname\nAttribute. User's name.\nString\nNo\n\nsurname\nAttribute. User's surname.\n\
+        String\nNo\n\nbirthday\nAttribute. User's birthday in RFC 3339 format (e.g. 1993-03-12T00:00:00Z).  Note:\
+        \ Ensure the birthday ends with Z to indicate UTC time; no other time offset is included.\nDate/Time\nNo\n\
+        \ngender\nAttribute. Gender of the user\nString\nNo\n\nage\nAttribute. Age of the user\nNumber\nNo\n\nlanguage\n\
+        Language information of the user\nString\nNo\n\ncountry\nAttribute. The user's country information in ISO\
+        \ 3166-1 alpha-2 format.\nString\nNo\n\ncity\nAttribute. City information of the user.\nString\nNo\n\nstatic_segment_id\n\
+        Attribute. Newsletter contact list IDs (users are added directly).\nNumbers (Number array)\nNo\n\nuuid\n\
+        Attribute. User’s UUID, can be used as an identifier.\nString\nNo\n\nerror_callback_endpoint\nAn endpoint\
+        \ to notify you if your upsert request fails on our side because of a unification error.\nURL\nNo\n\nlo\n\
+        User's locale information\nString\nNo\n\nevents\nList of events\nArray\nNo\n\nevent_name\nName of the event\n\
+        String\nYes\n\ntimestamp\nEvent. Event time, the purchase date for the purchase event in RFC3339 format.\n\
+        Datetime\nYes\n\nevent_params\nEvent parameters for purchase-related properties.\nObject\nNo\n\ncustom\n\
+        Object consisting of custom event parameters\nObject\nNo\n\nevent_group_id\nEvent group ID\nString\nNo (Yes\
+        \ only when the event_name is purchase or cart_page_view)\n\nproduct_id\nEvent parameter. Unique product\
+        \ ID.\nString\nNo\n\nname\nEvent parameter. Name of the product.\nString\nNo\n\ntaxonomy\nEvent parameter.\
+        \ Category tree of the product.\nArray\nNo\n\nurl\nEvent parameter. Product URL for purchase events\nURL\n\
+        No\n\ncurrency\nEvent parameter. Currency used for product pricing, in ISO 4217 format (e.g. USD).\nString\n\
+        No (Yes only when the event_name is purchase or cart_page_view)\n\nquantity\nEvent parameter. Quantity of\
+        \ the product.\nInteger\nNo (Yes only when the event_name is purchase)\n\nunit_price\nEvent parameter. Price\
+        \ of the product without any discount(s).\nFloat\nNo\n\nunit_sale_price\nEvent parameter. Unit price of\
+        \ the product.\nFloat\nNo (Yes only when the event_name is purchase or cart_page_view)\n\nlocale\nEvent\
+        \ parameter. Locale of the user.\nString\nNo\n\ncolor\nEvent parameter. Color of the product (selected by\
+        \ user).\nString\nNo\n\nsize\nEvent parameter. Size of the product (selected by user).\nString\nNo\n\nshipping_cost\n\
+        Event parameter. Shipping cost of the items in basket.\nString\nNo\n\npromotion_name\nEvent parameter. Name\
+        \ of the promotion.\nString\nNo\n\npromotion_discount\nEvent parameter. Total amount of discount applied\
+        \ by promotions.\nFloat\nNo\n\nIf your company obtains your users' consent in compliance with the local\
+        \ regulations, make sure to pass the GDPR opt-in field to Insider. If you want to stop collecting and processing\
+        \ the data of an identified user, GDPR opt-in field should have the false value. Insider cannot be held\
+        \ liable if these obligations are not fulfilled and reserves the right to seek compensation from your company.\n\
+        \nSample Example\nSample Request\nPlease be aware of the limitations while sending your request.\n\nThe\
+        \ request body consists of a users array. Each user must have an identifiers object.\n\nThe sample request\
+        \ below sends the default purchase event. To see the other default events and event parameters that you\
+        \ can use in your requests, refer to Default Events & Attributes.\n\ncurl --location --request POST 'https://unification.useinsider.com/api/user/v1/upsert'\
+        \ \\\n--header 'X-PARTNER-NAME: mybrand' \\\n--header 'X-REQUEST-TOKEN: 1a2b3c4e5d6f' \\\n--header 'Content-Type:\
+        \ application/json' \\\n--data-raw '{\n  \"skip_hook\": false,\n  \"users\": [\n    {\n      \"identifiers\"\
+        : {\n        \"email\": \"sample@useinsider.com\",\n        \"uuid\": \"1x2y3z\",\n        \"custom\": {\n\
+        \          \"user_loyalty_id\": \"xyz123\"\n        }\n      },\n      \"attributes\": {\n        \"email_optin\"\
+        : true,\n        \"age\": 30,\n        \"language\": \"en_US\",\n        \"static_segment_id\": [\n    \
+        \      1,\n          2\n        ],\n        \"birthday\": \"1980-01-01T00:00:00Z\",\n        \"custom\"\
+        : {\n          \"favorite_color\": [\n            \"green\"\n          ]\n        }\n      },\n      \"\
+        events\": [\n        {\n          \"event_name\": \"purchase\",\n          \"timestamp\": \"2021-01-10T21:35:20Z\"\
+        ,\n          \"event_params\": {\n            \"product_id\": \"ABC21000\",\n            \"name\": \"Your\
+        \ Product Name\",\n            \"unit_price\": 990.9,\n            \"unit_sale_price\": 890.9,\n       \
+        \     \"event_group_id\": \"ORDER123\",\n            \"taxonomy\": [\n              \"Electronic\",\n  \
+        \            \"Phone\"\n            ],\n            \"currency\": \"USD\",\n            \"quantity\": 1\n\
+        \          }\n        },\n        {\n          \"event_name\": \"account_created\",\n          \"timestamp\"\
+        : \"2021-01-17T14:41:21+03:00\",\n          \"event_params\": {\n            \"custom\": {\n           \
+        \   \"customer_type\": \"trial\",\n              \"trial_start_date\": \"2021-01-17T14:39:21+03:00\",\n\
+        \              \"trial_end_date\": \"2021-01-24T14:41:21+03:00\"\n            }\n          }\n        }\n\
+        \      ]\n    }\n  ]\n}'\n\nThe request body below contains insider_id.\n\ninsider id is an internal ID\
+        \ maintained by Insider for each user. To find the insider_id, you can refer to the Profile ID on the User\
+        \ Profiles. \n\nerror_callback_endpoint is an endpoint that will notify you if your upset request fails\
+        \ on the Insider's side due to a unification error.\n\ncurl --location --request POST 'https://unification.useinsider.com/api/user/v1/upsert'\
+        \ \\\n--header 'X-PARTNER-NAME: mybrand' \\\n--header 'X-REQUEST-TOKEN: 1a2b3c4e5d6f' \\\n--header 'Content-Type:\
+        \ application/json' \\\n--data-raw '{\n  \"skip_hook\": false,\n  \"error_callback_endpoint\":\"http://your-error-callback-endpoint.yourdomain.com\"\
+        ,\n  \"users\": [\n    {\n      \"insider_id\": \"sampleinsiderid\",\n      \"attributes\": {\n        \"\
+        email_optin\": true,\n        \"age\": 30,\n        \"language\": \"en_US\",\n        \"list_id\": [\n \
+        \         1,\n          2\n        ],\n        \"birthday\": \"1980-01-01T00:00:00Z\",\n        \"custom\"\
+        : {\n          \"favorite_color\": [\n            \"green\"\n          ]\n        }\n      },\n      \"\
+        not_append\": true,\n      \"events\": [\n        {\n          \"event_name\": \"purchase\",\n         \
+        \ \"timestamp\": \"2021-01-10T21:35:20Z\",\n          \"event_params\": {\n            \"product_id\": \"\
+        ABC21000\",\n            \"name\": \"Your Product Name\",\n            \"unit_price\": 990.9,\n        \
+        \    \"unit_sale_price\": 890.9,\n            \"event_group_id\": \"ORDER123\",\n            \"taxonomy\"\
+        : [\n              \"Electronic\",\n              \"Phone\"\n            ],\n            \"currency\": \"\
+        USD\",\n            \"quantity\": 1\n          }\n        },\n        {\n          \"event_name\": \"account_created\"\
+        ,\n          \"timestamp\": \"2021-01-17T14:41:21+03:00\",\n          \"event_params\": {\n            \"\
+        custom\": {\n              \"customer_type\": \"trial\",\n              \"trial_start_date\": \"2021-01-17T14:39:21+03:00\"\
+        ,\n              \"trial_end_date\": \"2021-01-24T14:41:21+03:00\"\n            }\n          }\n       \
+        \ }\n      ]\n    }\n  ]\n}'\n\nThe request below sends data for two users, each with their own attributes,\
+        \ events, and custom parameters.\n\ncurl --location --request POST 'https://unification.useinsider.com/api/user/v1/upsert'\
+        \ \\\n  --header 'X-PARTNER-NAME: mybrand' \\\n  --header 'X-REQUEST-TOKEN: 1a2b3c4e5d6f' \\\n  --header\
+        \ 'Content-Type: application/json' \\\n  --data-raw '{\n    \"skip_hook\": false,\n    \"error_callback_endpoint\"\
+        :\"http://your-error-callback-endpoint.yourdomain.com\",\n    \"users\": [\n      {\n        \"insider_id\"\
+        : \"sampleinsiderid\",\n        \"attributes\": {\n          \"email_optin\": true,\n          \"age\":\
+        \ 30,\n          \"language\": \"en_US\",\n          \"list_id\": [\n            1,\n            2\n   \
+        \       ],\n          \"birthday\": \"1980-01-01T00:00:00Z\",\n          \"custom\": {\n            \"favorite_color\"\
+        : [\n              \"green\"\n            ]\n          }\n        },\n        \"not_append\": true,\n  \
+        \      \"events\": [\n          {\n            \"event_name\": \"purchase\",\n            \"timestamp\"\
+        : \"2021-01-10T21:35:20Z\",\n            \"event_params\": {\n              \"product_id\": \"ABC21000\"\
+        ,\n              \"name\": \"Your Product Name\",\n              \"unit_price\": 990.9,\n              \"\
+        unit_sale_price\": 890.9,\n              \"event_group_id\": \"ORDER123\",\n              \"taxonomy\":\
+        \ [\n                \"Electronic\",\n                \"Phone\"\n              ],\n              \"currency\"\
+        : \"USD\",\n              \"quantity\": 1\n            }\n          },\n          {\n            \"event_name\"\
+        : \"account_created\",\n            \"timestamp\": \"2021-01-17T14:41:21+03:00\",\n            \"event_params\"\
+        : {\n              \"custom\": {\n                \"customer_type\": \"trial\",\n                \"trial_start_date\"\
+        : \"2021-01-17T14:39:21+03:00\",\n                \"trial_end_date\": \"2021-01-24T14:41:21+03:00\"\n  \
+        \            }\n            }\n          }\n        ]\n      },\n      {\n        \"insider_id\": \"sampleinsiderid_2\"\
+        ,\n        \"attributes\": {\n          \"email_optin\": true,\n          \"age\": 23,\n          \"language\"\
+        : \"en_US\",\n          \"list_id\": [\n            1,\n            2\n          ],\n          \"birthday\"\
+        : \"1996-08-08T00:00:00Z\",\n          \"custom\": {\n            \"favorite_color\": [\n              \"\
+        blue\"\n            ]\n          }\n        },\n        \"not_append\": true,\n        \"events\": [\n \
+        \         {\n            \"event_name\": \"purchase\",\n            \"timestamp\": \"2024-01-10T21:35:20Z\"\
+        ,\n            \"event_params\": {\n              \"product_id\": \"CYD21000\",\n              \"name\"\
+        : \"Your Product Name\",\n              \"unit_price\": 990.9,\n              \"unit_sale_price\": 890.9,\n\
+        \              \"event_group_id\": \"ORDER123\",\n              \"taxonomy\": [\n                \"Electronic\"\
+        ,\n                \"Phone\"\n              ],\n              \"currency\": \"USD\",\n              \"quantity\"\
+        : 1\n            }\n          },\n          {\n            \"event_name\": \"account_created\",\n      \
+        \      \"timestamp\": \"2022-02-17T14:41:21+03:00\",\n            \"event_params\": {\n              \"\
+        custom\": {\n                \"customer_type\": \"trial\",\n                \"trial_start_date\": \"2021-04-17T14:39:21+03:00\"\
+        ,\n                \"trial_end_date\": \"2021-04-24T14:41:21+03:00\"\n              }\n            }\n \
+        \         }\n        ]\n      }\n    ]\n  }'\n\nIf some attributes or parameters are not reflected, the\
+        \ issue is likely related to the request structure or the data being sent. As a solution, check the request\
+        \ structure using a sample payload and ensure that the data types match the values you are trying to send.\
+        \ If the problem persists, feel free to contact the Insider team.\n\nIf none of the attributes, events,\
+        \ or parameters are reflected, or if the user profile is not created after a few hours of sending the request,\
+        \ please reach out to the Insider team.\n\nSample Responses\n200 OK\nThis response indicates that the event_group_id\
+        \ and unit_sale_price parameters are included together in the request for the purchase event.\n\n{\n   \
+        \ \"data\": {\n        \"successful\": {},\n        \"fail\": {\n            \"count\": 1,\n           \
+        \ \"errors\": {\n                \"users.0.events.0.event_params.*.required\": [\n                    \"\
+        event_group_id parameter is required on purchase event\",\n                    \"unit_sale_price parameter\
+        \ is required on purchase event\"\n                ]\n            }\n        }\n    }\n}\n\n200 OK\nFor\
+        \ the request below, you need to use an identifier for the user, which can be either insider_id or UUID,\
+        \ email or phone number, or a custom attribute. Besides, you can also send these attributes as attributes\
+        \ if any one of them is not an identifier.\n\n{\n    \"data\": {\n        \"successful\": {},\n        \"\
+        fail\": {\n            \"count\": 1,\n            \"errors\": {\n                \"users.0.events.0.event_params.*.required\"\
+        : [\n                    \"event_group_id parameter is required on purchase event\",\n                 \
+        \   \"unit_sale_price parameter is required on purchase event\"\n                ],\n                \"\
+        users.0.identifiers.required\": [\n                    \"either insider_id or idenifiers must be specified\"\
+        \n                ],\n                \"users.0.insider_id.required\": [\n                    \"either insider_id\
+        \ or idenifiers must be specified\"\n                ]\n            }\n        }\n    }\n}\n\n200 OK\nFor\
+        \ the request below, you need to have a valid email address in the format stated in the parameters table.\n\
+        \n{\n    \"data\": {\n        \"successful\": {},\n        \"fail\": {\n            \"count\": 1,\n    \
+        \        \"errors\": {\n                \"users.0.events.0.event_params.*.required\": [\n              \
+        \      \"event_group_id parameter is required on purchase event\",\n                    \"unit_sale_price\
+        \ parameter is required on purchase event\"\n                ],\n                \"users.0.identifiers.*.regexp(^.+@.+\\\
+        \\..+$)\": [\n                    \"not a valid email address: sample\"\n                ]\n           \
+        \ }\n        }\n    }\n}\n\n200 OK\nFor the request below, you need to have the valid UUID in the format\
+        \ stated in the parameters table.\n\n{\n    \"data\": {\n        \"successful\": {},\n        \"fail\":\
+        \ {\n            \"count\": 1,\n            \"errors\": {\n                \"users.0.events.0.event_params.*.required\"\
+        : [\n                    \"event_group_id parameter is required on purchase event\",\n                 \
+        \   \"unit_sale_price parameter is required on purchase event\"\n                ],\n                \"\
+        users.0.identifiers.*.type(string)\": [\n                    \"uuid must be string: 12345\"\n          \
+        \      ]\n            }\n        }\n    }\n}\n\n200 OK\nFor the request below, you need to have the valid\
+        \ identifier in the format stated in the parameters table.\n\n{\n    \"data\": {\n        \"successful\"\
+        : {},\n        \"fail\": {\n            \"count\": 1,\n            \"errors\": {\n                \"users.0.events.0.event_params.*.required\"\
+        : [\n                    \"event_group_id parameter is required on purchase event\",\n                 \
+        \   \"unit_sale_price parameter is required on purchase event\"\n                ],\n                \"\
+        users.0.identifiers.*.in(defaults_column)\": [\n                    \"key must be one of phone_number(pn),\
+        \ email(em) or uuid\"\n                ]\n            }\n        }\n    }\n}\n\n200 OK\nFor the request\
+        \ below, you need to have a valid phone number in the format stated in the parameters table.\n\n{\n    \"\
+        data\": {\n        \"successful\": {},\n        \"fail\": {\n            \"count\": 1,\n            \"errors\"\
+        : {\n                \"users.0.events.0.event_params.*.required\": [\n                    \"event_group_id\
+        \ parameter is required on purchase event\",\n                    \"unit_sale_price parameter is required\
+        \ on purchase event\"\n                ],\n                \"users.0.identifiers.*.regexp(^\\\\+[1-9]\\\\\
+        d{6,14}$)\": [\n                    \"user has an invalid phone number: 12345\"\n                ]\n   \
+        \         }\n        }\n    }\n}\n\n400 Bad Request\nIf you do not include user in your request, you receive\
+        \ an error shown below:\n\n{\"error\":\"users must be defined: bad request\"}\n\n429 Too Many Requests\n\
+        If you exceed the rate limits, you receive an error shown below:\n\n{\n    \"error\": \"rejected: too many\
+        \ requests\"\n}\n\nIf this error occurs, consider implementing retries and reviewing your connection configuration\
+        \ to remain within the Upsert API's rate limits. Not retrying may prevent some data from being successfully\
+        \ applied.\n\nError Codes\n\n400 Bad Request\n\n500 Internal Server Error\n\n403 Forbidden\n\nIf you receive\
+        \ a 403 response instead of 200 OK, stop or pause the current data sending. Check your headers, which are\
+        \ your partner name, and token, and correct any errors. Once the issues are fixed, resume your integration\
+        \ and retry the failed requests. If your headers are correct but you continue to encounter issues, please\
+        \ create a ticket for the Insider team.\n\nLimitations\n\nAll functions must be executed with a simple HTTPS\
+        \ POST request.\n\nOnly new data can be inserted and updated with this API. No data can be retrieved.\n\n\
+        The request token should be provided in the request header. If the token is incorrect, no operation will\
+        \ be executed.\n\nThe entire request must not exceed 5 MB.\n\nEach request can upsert the data for a maximum\
+        \ of 1,000 records (user).\n\nThe rate limit is shared with the Delete User Attribute, allowing a total\
+        \ of 25,000 requests per minute, which means you can process up to 25 million user records per minute with\
+        \ full batching.\n\nThe value of X-PARTNER-NAME header should be lowercase."
+      security:
+      - PartnerName: []
+      - RequestToken: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              users:
+              - identifiers:
+                  email: sample@mail.com
+                  uuid: 1x2y3z
+                  custom:
+                    user_loyalty_id: xyz123
+                attributes:
+                  email_optin: true
+                  age: 30
+                  language: en_US
+                  list_id:
+                  - 1
+                  - 2
+                  birthday: '1980-01-01T00:00:00Z'
+                  custom:
+                    loyalty: Gold
+                events:
+                - event_name: purchase
+                  timestamp: '2021-01-10T21:35:20Z'
+                  event_params:
+                    product_id: AGH210070
+                    unit_price: 990.9
+                    unit_sale_price: 890.9
+                    event_group_id: ORDER123
+                    taxonomy:
+                    - Electronic
+                    - Phone
+                    currency: USD
+                - event_name: account_created
+                  timestamp: '2021-01-17T14:41:21+03:00'
+                  event_params:
+                    custom:
+                      customer_type: trial
+                      trial_start_date: '2021-01-17T14:39:21+03:00'
+                      trial_end_date: '2021-01-24T14:41:21+03:00'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              examples:
+                default:
+                  value:
+                    data:
+                      successful:
+                        count: 1
+                      fail: {}
+                upsert-email-and-phone-number-attributes:
+                  value:
+                    data:
+                      successful:
+                        count: 1
+                      fail: {}
+                invalid-event-name:
+                  value:
+                    data:
+                      successful: {}
+                      fail:
+                        count: 1
+                        errors:
+                          users.0.events.0.event_name.*.regexp(^[a-z0-9][a-zA-Z0-9._-]*$):
+                          - 'invalid event name: homepageView'
+              example:
+                data:
+                  successful:
+                    count: 2
+                  fail: {}
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+components:
+  securitySchemes:
+    PartnerName:
+      type: apiKey
+      in: header
+      name: X-PARTNER-NAME
+      description: Insider One partner (account) name, lowercase.
+    RequestToken:
+      type: apiKey
+      in: header
+      name: X-REQUEST-TOKEN
+      description: Insider One API key (request token) generated in the InOne panel.
+  responses:
+    TooManyRequests:
+      description: Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring
+        Retry-After when present.
+      content:
+        application/json:
+          example:
+            message: Too Many Requests
+            status: 429
+x-provenance:
+  generated: '2026-08-13'
+  method: derived
+  source: postman/insider-one-apis.postman_collection.json
+  source_url: https://documenter.gw.postman.com/api/collections/24851117/2sB3dSR9bM
+  publisher_page: https://developers.insiderone.com/
+  note: Insider One publishes a single public Postman collection covering every REST API. This document is the subset
+    of that collection served from unification.useinsider.com.

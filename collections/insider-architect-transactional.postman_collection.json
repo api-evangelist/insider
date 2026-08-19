@@ -1,0 +1,105 @@
+{
+  "item": [
+    {
+      "id": "e9fdb6ee-1e4f-49f5-a0f4-f6fc3127695a",
+      "name": "Transactional Journeys",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e8ecad4f-2327-491b-baab-d25ab557b687",
+          "name": "On API Call starter — enter a user into a transactional journey",
+          "request": {
+            "name": "On API Call starter — enter a user into a transactional journey",
+            "description": {
+              "content": "Allows backend systems to explicitly enter users into a transactional journey and send messages in real time. Launch settings for the journey define how it accepts API-triggered requests.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "transactional",
+                "send"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST"
+          },
+          "response": [
+            {
+              "id": "d17bfabc-b30e-4d5b-9719-69e149e6967b",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "transactional",
+                    "send"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://architect.useinsider.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "ac35676b-8a5f-4f32-816c-a5c3cbad88bd",
+    "name": "Insider One Architect Transactional Journey API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The On API Call starter: allow backend systems to explicitly enter users into a transactional Architect journey and send messages in real time.\n\nDerived by API Evangelist from the Insider One APIs overview table published at https://academy.insiderone.com/docs/insider-one-apis-1. This endpoint is documented by Insider One but is not part of the public Postman collection, so only the host, path and method are asserted here.\n\nContact Support:\n Name: Insider One Support\n Email: support@useinsider.com",
+      "type": "text/plain"
+    }
+  }
+}

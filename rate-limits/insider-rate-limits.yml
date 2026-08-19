@@ -1,0 +1,118 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+provider: Insider One
+providerId: insider
+generated: '2026-08-13'
+method: searched
+source: https://academy.insiderone.com/docs/api-rate-limits-1
+docs: https://academy.insiderone.com/docs/api-rate-limits-1
+sources:
+- https://academy.insiderone.com/docs/api-rate-limits-1
+- https://academy.insiderone.com/docs/status-and-error-codes-1
+- https://academy.insiderone.com/docs/insider-one-apis-1
+description: >-
+  Insider One publishes a full per-endpoint rate-limit table covering every API host. Limits are
+  enforced per API key, with several endpoints sharing a pooled limit across an account or across all
+  endpoints of an API. Exhaustion returns 429 Too Many Requests; exponential backoff is the
+  documented remedy.
+scope_model:
+  default: per-api-key
+  exceptions:
+  - Upsert User Data and Delete User Attribute share one pooled 25,000 req/min budget.
+  - All Catalog API endpoints share one pooled 60 req/min budget.
+  - All Recommendation API endpoints share one pooled 1,000 req/min budget.
+  - Web Push statistics endpoints are limited "in aggregate" at 30 req/min.
+headers:
+  retry_after: Retry-After
+  retry_after_note: >-
+    Insider One documents Retry-After "in seconds" as sometimes present on a 429. It publishes NO
+    X-RateLimit-*/RateLimit-* quota headers, so a client cannot read remaining budget before
+    exhaustion — the only runtime signal is the 429 itself plus an optional Retry-After.
+  ratelimit_headers_published: false
+responseCodes:
+  throttled: 429
+  throttled_alt: 403
+  throttled_alt_note: >-
+    The status-code reference also documents a "403 Request Limit Exceeded" response, so throttling
+    is not uniformly signalled as 429 across every host.
+backoff: exponential backoff, documented
+raise_limits: >-
+  Higher limits on transactional send endpoints (mail /mail/v1/send, sms /v1/send and
+  /v1/sendMultipleMessage, whatsapp /v1/send) can be configured on request by contacting Insider One.
+throughput_note: >-
+  Request rate limits are separate from Messaging Per Second (MPS), the rate at which the platform
+  actually delivers to the carrier/provider. A single accepted request may carry many messages;
+  over-rate traffic is queued and dispatched in the next interval rather than dropped, with
+  automation and confirmation messages prioritised ahead of campaign traffic. A 2xx on a send
+  endpoint means accepted-and-queued, not delivered.
+
+limits:
+- {api: Unification, host: unification.useinsider.com, endpoint: /api/user/v1/upsert, operation: upsertUserData, limit: 25000, timeFrame: minute, scope: api-key, shared_with: [/api/user/v1/attribute/delete], note: 'up to 25 million user records per minute with full batching'}
+- {api: Unification, host: unification.useinsider.com, endpoint: /api/raw/v1/export, operation: exportRawUserData, limit: 1, timeFrame: day, scope: api-key, note: 'UTC day; resets 00:00 UTC; failed requests do not count'}
+- {api: Unification, host: unification.useinsider.com, endpoint: /api/user/v1/attribute/delete, operation: deleteUserAttribute, limit: 25000, timeFrame: minute, scope: api-key, shared_with: [/api/user/v1/upsert]}
+- {api: Unification, host: unification.useinsider.com, endpoint: /api/user/v1/identity, operation: updateIdentifiers, method: PATCH, limit: 2000, timeFrame: minute, scope: api-key}
+- {api: Unification, host: unification.useinsider.com, endpoint: /api/user/v1/identity, operation: deleteIdentifiers, method: DELETE, limit: 1000, timeFrame: minute, scope: api-key}
+- {api: Unification, host: unification.useinsider.com, endpoint: /api/user/v1/delete, operation: deleteUserProfile, limit: 10000, timeFrame: minute, scope: api-key}
+- {api: Unification, host: unification.useinsider.com, endpoint: /api/contact/v1/anonymize + /api/user/v1/anonymize, operation: deleteUserPiiDataUsingProfileId, limit: 500, timeFrame: minute, scope: api-key}
+- {api: Contact, host: contact.useinsider.com, endpoint: /fps/v1/upload, operation: uploadFirstPartySegments, limit: 100, timeFrame: second, scope: api-key}
+- {api: Contact, host: contact.useinsider.com, endpoint: /email/v1/subscribe, operation: resubscribeEmailUsers, limit: 600, timeFrame: minute, scope: api-key}
+- {api: Contact, host: contact.useinsider.com, endpoint: /sms/v1/subscribe, operation: resubscribeSmsUsers, limit: 600, timeFrame: minute, scope: api-key}
+- {api: Contact, host: contact.useinsider.com, endpoint: /whatsapp/v1/subscribe, operation: resubscribeWhatsappUsers, limit: 600, timeFrame: minute, scope: api-key}
+- {api: Web Push, host: web-push.api.useinsider.com, endpoint: /v1/single, operation: createSingleWebPushes, limit: 30, timeFrame: minute, scope: api-key}
+- {api: Web Push, host: web-push.api.useinsider.com, endpoint: /v1/single/campaign_id, operation: launchSingleWebPushesV1, limit: 30, timeFrame: minute, scope: api-key}
+- {api: Web Push, host: web-push.api.useinsider.com, endpoint: /v2/single/campaign_id, operation: launchSingleWebPushesV2, limit: 6000, timeFrame: minute, scope: api-key}
+- {api: Web Push, host: web-push.api.useinsider.com, endpoint: /v1/single/campaign_id, operation: deleteSingleWebPushes, method: DELETE, limit: 30, timeFrame: minute, scope: api-key}
+- {api: Web Push, host: web-push.api.useinsider.com, endpoint: /v1/statistics/top-metrics, operation: getWebPushTopMetricsAnalytics, limit: 30, timeFrame: minute, scope: aggregate}
+- {api: Web Push, host: web-push.api.useinsider.com, endpoint: /v1/statistics/overall-metrics, operation: getWebPushOverallMetricsAnalytics, limit: 30, timeFrame: minute, scope: aggregate}
+- {api: Web Push, host: web-push.api.useinsider.com, endpoint: /v1/statistics/campaign-metrics, operation: getWebPushCampaignMetricsAnalytics, limit: 30, timeFrame: minute, scope: aggregate}
+- {api: Mail, host: mail.useinsider.com, endpoint: /mail/v1/send, operation: sendTransactionalEmails, limit: 9000, timeFrame: second, scope: api-key, raisable: true}
+- {api: Mail, host: mail.useinsider.com, endpoint: /content/v1/campaign/create, operation: createEmailCampaigns, limit: 1, timeFrame: second, scope: api-key}
+- {api: Mail, host: mail.useinsider.com, endpoint: '/content/v1/template-migration/{vendorname}/extract-premigration-variables', operation: null, limit: 60, timeFrame: minute, scope: api-key, note: 'Template Migrator v1 and v2; not present in the public Postman collection'}
+- {api: Mobile, host: mobile.useinsider.com, endpoint: /api/v1/push/bulk, operation: sendBulkAppPushes, limit: 1000, timeFrame: minute, scope: api-key}
+- {api: Mobile, host: mobile.useinsider.com, endpoint: /api/v2/notification/user, operation: sendTargetedAppPushes, limit: 10000, timeFrame: minute, scope: api-key}
+- {api: Mobile, host: mobile.useinsider.com, endpoint: /api/v2/notification/user, operation: sendTargetedAppPushes, limit: 1000, timeFrame: minute, scope: api-key, note: 'advanced app push variant of the same endpoint carries a lower limit'}
+- {api: Mobile, host: mobile.useinsider.com, endpoint: /api/message_center/v1, operation: getMessageCenterData, limit: 5000, timeFrame: minute, scope: api-key}
+- {api: Mobile, host: mobile.api.useinsider.com, endpoint: /v1/details/inapp, operation: getInappCampaignDetails, limit: 1000, timeFrame: minute, scope: api-key}
+- {api: Mobile, host: mobile.api.useinsider.com, endpoint: /v1/settings/certificate/firebase, operation: uploadFcmCertificate, limit: 1000, timeFrame: minute, scope: api-key}
+- {api: Verify, host: verify.useinsider.com, endpoint: /v1/channel/create, operation: createAChannel, limit: 25, timeFrame: minute, scope: api-key}
+- {api: Verify, host: verify.useinsider.com, endpoint: /v1/template/create, operation: createAnOtpTemplate, limit: 25, timeFrame: minute, scope: api-key}
+- {api: Verify, host: verify.useinsider.com, endpoint: /v1/channel/update, operation: updateAChannel, limit: 25, timeFrame: minute, scope: api-key}
+- {api: Verify, host: verify.useinsider.com, endpoint: /v1/template/list, operation: listOtpTemplatesWhatsapp, limit: 25, timeFrame: minute, scope: api-key}
+- {api: Verify, host: verify.useinsider.com, endpoint: /v1/template/update, operation: null, limit: 25, timeFrame: minute, scope: api-key, note: 'the docs name /v1/template/update while the collection maps Update OTP Templates to /v1/template/list'}
+- {api: Verify, host: verify.useinsider.com, endpoint: /v1/generate, operation: generateOtpCodesWhatsapp, limit: 750, timeFrame: minute, scope: api-key}
+- {api: Verify, host: verify.useinsider.com, endpoint: /v1/check, operation: verifyOtpCodes, limit: 750, timeFrame: minute, scope: api-key}
+- {api: SMS, host: sms.useinsider.com, endpoint: /v1/send, operation: sendTransactionalSingleSms, limit: 200, timeFrame: second, scope: api-key, raisable: true}
+- {api: SMS, host: sms.useinsider.com, endpoint: /v1/sendMultipleMessage, operation: sendTransactionalBulkSms, limit: 5, timeFrame: second, scope: api-key, raisable: true, note: 'up to 50 messages per request = 250 message parts per second'}
+- {api: SMS, host: sms.useinsider.com, endpoint: /analytics/v1/list, operation: getSmsCampaignList, limit: 100, timeFrame: minute, scope: api-key}
+- {api: SMS, host: sms.useinsider.com, endpoint: /analytics/v1/campaign, operation: getSmsCampaignAnalytics, limit: 100, timeFrame: minute, scope: api-key}
+- {api: SMS, host: sms.useinsider.com, endpoint: /analytics/v1/overall, operation: getOverallSmsCampaignAnalytics, limit: 100, timeFrame: minute, scope: api-key}
+- {api: SMS, host: sms.useinsider.com, endpoint: /analytics/v1/transactional, operation: getTransactionalSmsAnalytics, limit: 100, timeFrame: minute, scope: api-key}
+- {api: SMS, host: sms.useinsider.com, endpoint: /analytics/v1/verify, operation: getOtpVerifySmsAnalytics, limit: 100, timeFrame: minute, scope: api-key}
+- {api: WhatsApp, host: whatsapp.useinsider.com, endpoint: /v1/send, operation: sendTransactionalWhatsappTemplateMessage, limit: 1000, timeFrame: second, scope: api-key, raisable: true}
+- {api: WhatsApp, host: whatsapp.useinsider.com, endpoint: /v1/conversational/send, operation: sendConversationalWhatsappMessageTemplate, limit: 1000, timeFrame: second, scope: api-key}
+- {api: Analytics, host: analytics.api.useinsider.com, endpoint: /email/v1/campaign/list, operation: getEmailCampaignList, limit: 100, timeFrame: minute, scope: api-key}
+- {api: Analytics, host: analytics.api.useinsider.com, endpoint: /email/v1/campaign/statistics, operation: getEmailCampaignAnalytics, limit: 100, timeFrame: minute, scope: api-key}
+- {api: Analytics, host: analytics.api.useinsider.com, endpoint: /email/v1/overall, operation: getOverallAnalytics, limit: 100, timeFrame: minute, scope: api-key}
+- {api: Analytics, host: analytics.api.useinsider.com, endpoint: /email/v2/campaign/list, operation: getEmailCampaignListV2, limit: 100, timeFrame: minute, scope: api-key}
+- {api: Analytics, host: analytics.api.useinsider.com, endpoint: /email/v2/campaign/statistics, operation: getEmailCampaignAnalyticsV2, limit: 100, timeFrame: minute, scope: api-key}
+- {api: Analytics, host: analytics.api.useinsider.com, endpoint: /email/v2/overall, operation: getOverallAnalyticsV2, limit: 100, timeFrame: minute, scope: api-key}
+- {api: Analytics, host: analytics.api.useinsider.com, endpoint: /onsite/v1/all, operation: getOnsiteOverallAnalytics, limit: 100, timeFrame: minute, scope: api-key}
+- {api: Analytics, host: analytics.api.useinsider.com, endpoint: /onsite/v1/campaign, operation: getOnsiteCampaignAnalytics, limit: 100, timeFrame: minute, scope: api-key}
+- {api: Analytics, host: analytics.api.useinsider.com, endpoint: /onsite/v2/all, operation: changeFilterValues, limit: 100, timeFrame: minute, scope: api-key}
+- {api: Architect Analytics, host: architect-analytics.api.useinsider.com, endpoint: /v1/overall, operation: getArchitectOverallAnalytics, limit: 200, timeFrame: minute, scope: api-key}
+- {api: Architect Analytics, host: architect-analytics.api.useinsider.com, endpoint: '/v1/journey/{journeyId}', operation: getArchitectJourneyAnalytics, limit: 200, timeFrame: minute, scope: api-key}
+- {api: Architect Analytics, host: architect-analytics.api.useinsider.com, endpoint: '/v1/element/{campaignId}', operation: getArchitectChannelAnalytics, limit: 200, timeFrame: minute, scope: api-key}
+- {api: Architect Analytics, host: architect-analytics.api.useinsider.com, endpoint: /v1/journeys, operation: exportJourneyList, limit: 200, timeFrame: minute, scope: api-key}
+- {api: Architect Analytics, host: architect-analytics.api.useinsider.com, endpoint: /v1/goals, operation: getConversionGoalsInformation, limit: 200, timeFrame: minute, scope: api-key}
+- {api: Catalog, host: catalog.api.useinsider.com, endpoint: /v2/ingest, operation: addNewProductsInAFlatFormat, limit: 60, timeFrame: minute, scope: api, note: 'combined across all Catalog API endpoints'}
+- {api: Catalog, host: catalog.api.useinsider.com, endpoint: /v2/update, operation: updateExistingProductsInAFlatFormat, limit: 60, timeFrame: minute, scope: api, note: 'combined across all Catalog API endpoints'}
+- {api: Recommendation, host: recommendation.api.useinsider.com, endpoint: '/v2/{algorithm-name}', operation: getRecommendations, limit: 1000, timeFrame: minute, scope: api, note: 'applied across all Recommendation API endpoints'}
+
+limit_count: 59
+mcp_note: >-
+  Insider One states that existing API rate limits apply to calls made through the MCP server, so an
+  agent inherits the per-endpoint budget of whichever REST operation backs the tool it invoked.
+gaps:
+- No quota headers on successful responses; a client cannot see remaining budget.
+- No published limits for the gw.useinsider.com OAuth 2.0 WhatsApp v2 endpoints or the Eureka
+  search/event-collection hosts.

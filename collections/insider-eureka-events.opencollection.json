@@ -1,0 +1,29 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Insider One Eureka Event Collection API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Event Collection API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Collect user's search event",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://eurekaevent.api.useinsider.com/api/v1/events"
+          },
+          "docs": "The Event Collection API allows you to integrate user event collection functionality into Eureka. The API is designed to collect user events such as search queries, clicks, add to carts, and purchases. You can use the collected data to improve Eureka’s performance and user experience.\n\nThe search event should be fired when a visitor makes a search for a product or content.\n\nIt is recommended to send the search event with each request unless you are using Eureka in a search-as-you-type experience"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

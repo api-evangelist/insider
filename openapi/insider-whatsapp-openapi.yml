@@ -1,0 +1,513 @@
+openapi: 3.1.0
+info:
+  title: Insider One WhatsApp API
+  version: 1.0.0
+  description: 'Transactional and conversational WhatsApp message sending (template, text, media, location, button
+    reply, carousel, OTP).
+
+
+    Derived by API Evangelist from Insider One''s own public Postman collection ("Insider One APIs", published at
+    https://developers.insiderone.com/). Paths, methods, headers, query parameters and request/response examples
+    are verbatim from that collection; nothing is invented. The 429 response is documented for all Insider One APIs
+    on https://academy.insiderone.com/docs/api-rate-limits-1 .'
+  contact:
+    name: Insider One Support
+    email: support@useinsider.com
+    url: https://academy.insiderone.com/docs/insider-one-apis-1
+  termsOfService: https://insiderone.com/terms-of-use/
+externalDocs:
+  description: Insider One API reference
+  url: https://academy.insiderone.com/docs/api-reference-welcome
+servers:
+- url: https://whatsapp.useinsider.com
+tags:
+- name: Conversational API
+- name: Transactional API
+paths:
+  /v1/conversational/send:
+    post:
+      operationId: sendConversationalWhatsappMessageTemplate
+      summary: Send Conversational WhatsApp Message Template
+      tags:
+      - Conversational API
+      description: "The WhatsApp Marketing product provides conversational messages, allowing users to initiate\
+        \ conversations with businesses after the business has sent an initial message. To create a conversational\
+        \ flow, one of the ways is to integrate a bot to reply to users' WhatsApp messages.\n\nThe Conversational\
+        \ API is designed for WhatsApp Bot connection.\n\nBody Parameters\n\nColumn\nDescription\nData Type\nRequired\n\
+        \nmessages\nAll messages are contained in the messages key. You can send multiple messages with a single\
+        \ request.\nArray\nYes\n\nfrom\nUse only if you are using multiple phone numbers. If you have only one phone\
+        \ number, you do not need to add this.\nString\nNo\n\nphoneNumber\nPhone number for the person you want\
+        \ to send a message to.\nString\nYes\n\nmessage\nMessage object\nObject\nYes\n\ntype\nMust be a “template”\
+        \ for this message type.\nString\nYes\n\nname\nTemplate name to be sent\nString\nYes\n\nlanguage\n\nObject\n\
+        Yes\n\ncode\nTemplate language\nString\nYes\n\npolicy\nIt must be deterministic.\nString\nYes\n\nmessage\
+        \ variable components\n\nArray\nYes\n\ntype\nbody\nString\nYes\n\nbody parameters\n\nArray\nYes\n\ntype\n\
+        text\nString\nYes\n\ntext\nParameter value\nString\nYes\n\nbutton components\n\nArray\nYes\n\ntype\nbutton\n\
+        String\nYes\n\nsub_type\nQuick_reply, URL, PHONE_NUMBER\nString\nYes\n\nindex\n\nString\nYes\n\nparameters\n\
+        \nArray\nYes\n\ntype\npayload\nString\nYes\n\npayload\nPayload value\nString\nYes\n\nSample Body\nYou can\
+        \ use the below sample request if you want to use the quick reply buttons:\n\ncurl --location 'https://whatsapp.useinsider.com/v1/conversational/send'\
+        \ \\\n--header 'Content-Type: application/json' \\\n--header 'x-ins-auth-key: INS.**************************************'\
+        \ \\\n--data '{\n    \"from\": \"{{PHONE_NUMBER}}\", //Example: +112312312\n    \"messages\": [\n      \
+        \  {\n            \"phoneNumber\": \"+1**********\",\n            \"message\": {\n                \"type\"\
+        : \"template\",\n                \"template\": {\n                    \"name\": \"{{TEMPLATE_NAME}}\",\n\
+        \                    \"language\": {\n                        \"code\": \"{{TEMPLATE_LANGUAGE_CODE}}\",\n\
+        \                        \"policy\": \"deterministic\",\n                    },\n                    \"\
+        components\": [\n                        {\n                            \"type\": \"body\",\n          \
+        \                  \"parameters\": [\n                                {\n                              \
+        \      \"type\": \"text\",\n                                    \"text\": \"{{PARAMETER_VALUE}}\"\n    \
+        \                            }\n                            ]\n                        },\n            \
+        \            {\n                            \"type\": \"button\",\n                            \"sub_type\"\
+        : \"quick_reply\",\n                            \"index\": \"0\",\n                            \"parameters\"\
+        : [\n                                {\n                                    \"type\": \"payload\",\n   \
+        \                                 \"payload\": \"1\"\n                                }\n              \
+        \              ]\n                        },\n                        {\n                            \"\
+        type\": \"button\",\n                            \"sub_type\": \"quick_reply\",\n                      \
+        \      \"index\": \"1\",\n                            \"parameters\": [\n                              \
+        \  {\n                                    \"type\": \"payload\",\n                                    \"\
+        payload\": \"2\"\n                                }\n                            ]\n                   \
+        \     }\n                    ]\n                }\n            }\n        }\n    ]\n}'\n\nIf you want to\
+        \ use CTA (Call To Action), you can use the below sample request:\n\ncurl --location 'https://whatsapp.useinsider.com/v1/send'\
+        \ \\\n--header 'x-ins-auth-key: INS.kjQu-+bL4HpeZqvgr1j0.d4IVgHl9GcE+_eaKxNA3P8M3q8-emrO3-zalg9GSF29mK+Jz5k'\
+        \ \\\n--header 'Content-Type: application/json' \\\n--data '{\n    \"messages\": [\n        {\n        \
+        \    \"phoneNumber\": \"+994558964184\",\n            \"message\": {\n                \"type\": \"template\"\
+        ,\n                \"template\": {\n                    \"name\": \"mert_masterfile_media_with_button\"\
+        ,\n                    \"language\": {\n                        \"code\": \"en\",\n                    \
+        \    \"policy\": \"deterministic\"\n                    },\n                    \"components\": [\n    \
+        \                    {\n                            \"type\": \"header\",\n                            \"\
+        sub_type\": \"\",\n                            \"index\": \"\",\n                            \"parameters\"\
+        : [\n                                {\n                                    \"type\": \"image\",\n     \
+        \                               \"image\": {\n                                        \"link\": \"https://inshoppingcart.com/seleniumautomation/wp-content/uploads/2018/08/cap-2.jpg\"\
+        \n                                    }\n                                }\n                           \
+        \ ]\n                        },\n                        {\n                            \"type\": \"body\"\
+        ,\n                            \"sub_type\": \"\",\n                            \"index\": \"\",\n     \
+        \                       \"parameters\": [\n                                {\n                         \
+        \           \"type\": \"text\",\n                                    \"text\": \"https://vikingsankara.com?abc=sha\"\
+        \n                                }\n                            ]\n                        },\n       \
+        \                 {\n                            \"type\": \"button\",\n                            \"sub_type\"\
+        : \"url\",\n                            \"index\": \"0\",\n                            \"parameters\": [\n\
+        \                                {\n                                    \"type\": \"text\",\n          \
+        \                          \"text\": \"https://vikingsankara.com\"\n                                }\n\
+        \                            ]\n                        }\n                    ]\n                }\n  \
+        \          }\n        }\n    ]\n}'\n\nIf you don't want to use CTA, you can use the below sample request:\n\
+        \ncurl --location 'https://whatsapp.useinsider.com/v1/send' \\\n--header 'Content-Type: application/json'\
+        \ \\\n--header 'x-ins-auth-key: INS.tiNlcL284J8dwCpfoqdR.gpyLwFG-0fSHPS9+kZYNsI-D2IWFNjlaRDlXJrZjx2_ZPTP37I'\
+        \ \\\n--data '{\n    \"messages\": [\n        {\n            \"phoneNumber\": \"+994558964184\",\n     \
+        \       \"message\": {\n                \"type\": \"template\",\n                \"template\": {\n     \
+        \               \"name\": \"7_image_header_no_button_copy\",\n                    \"language\": {\n    \
+        \                    \"code\": \"fi\",\n                        \"policy\": \"deterministic\"\n        \
+        \            },\n                    \"components\": [\n                        {\n                    \
+        \        \"type\": \"header\",\n                            \"sub_type\": \"\",\n                      \
+        \      \"index\": \"\",\n                            \"parameters\": [\n                               \
+        \ {\n                                    \"type\": \"image\",\n                                    \"image\"\
+        : {\n                                        \"link\": \"https://image.useinsider.com/vikingsankara/media/whatsapp-business/11521/83rbBaWO7H63VmACSXiZ1716506118.jpg\"\
+        \n                                    }\n                                }\n                           \
+        \ ]\n                        },\n                        {\n                            \"type\": \"body\"\
+        ,\n                            \"sub_type\": \"\",\n                            \"index\": \"\",\n     \
+        \                       \"parameters\": [\n                                {\n                         \
+        \           \"type\": \"text\",\n                                    \"text\": \"shahla\"\n            \
+        \                    }\n                            ]\n                        }\n                    ]\n\
+        \                }\n            }\n        }\n    ]\n}'\n\nSample Responses\nOne key information will be\
+        \ returned for each message to be sent. This key will be added to all events related to the message.\n\n\
+        {\n    \"keys\": [\n        \"whatsapp-*************************\"\n    ]\n}\n\nLimitations\n\nAll functions\
+        \ must be executed with a simple HTTPS POST request.\n\nOnly new WhatsApp messages can be sent via this\
+        \ API. No data can be retrieved.\n\nThe API Key should be provided as the authorization key on the request\
+        \ header. If the key is incorrect, the operation will not be executed and an authorization error will return\
+        \ in the response.\n\nThe rate limit is 10 requests per second."
+      security:
+      - InsAuthKey: []
+      requestBody:
+        content:
+          application/json:
+            examples:
+              default:
+                value:
+                  messages:
+                  - phoneNumber: +1**********
+                    message:
+                      type: template
+                      template:
+                        name: '{{TEMPLATE_NAME}}'
+                        language:
+                          code: '{{TEMPLATE_LANGUAGE_CODE}}'
+                        components:
+                        - type: body
+                          parameters:
+                          - type: text
+                            text: '{{PARAMETER_VALUE}}'
+                        - type: button
+                          sub_type: quick_reply
+                          index: '0'
+                          parameters:
+                          - type: payload
+                            payload: '1'
+                        - type: button
+                          sub_type: quick_reply
+                          index: '1'
+                          parameters:
+                          - type: payload
+                            payload: '2'
+              send-conversational-whatsapp-carousel-template-message:
+                summary: Send Conversational WhatsApp Carousel Template Message
+                value:
+                  from: '{{FROM}}'
+                  messages:
+                  - phoneNumber: '{{TO}}'
+                    message:
+                      type: template
+                      template:
+                        name: '{{TEMPLATE_NAME}}'
+                        language:
+                          code: '{{LANG_CODE}}'
+                          policy: deterministic
+                        components:
+                        - type: body
+                          parameters:
+                          - type: text
+                            text: '{{BODY_1}}'
+                        - type: carousel
+                          cards:
+                          - card_index: 0
+                            components:
+                            - type: header
+                              parameters:
+                              - type: image
+                                image:
+                                  id: '{{IMG_ID_1}}'
+                            - type: body
+                              parameters:
+                              - type: text
+                                text: '{{CARD_TEXT_1}}'
+                            - type: button
+                              sub_type: quick_reply
+                              index: '0'
+                              parameters:
+                              - type: payload
+                                payload: '{{PAYLOAD_1}}'
+                            - type: button
+                              sub_type: url
+                              index: '1'
+                              parameters:
+                              - type: text
+                                text: '{{URL_1}}'
+                          - card_index: 1
+                            components:
+                            - type: header
+                              parameters:
+                              - type: image
+                                image:
+                                  id: '{{IMG_ID_2}}'
+                            - type: body
+                              parameters:
+                              - type: text
+                                text: '{{CARD_TEXT_2}}'
+                            - type: button
+                              sub_type: quick_reply
+                              index: '0'
+                              parameters:
+                              - type: payload
+                                payload: '{{PAYLOAD_2}}'
+                            - type: button
+                              sub_type: url
+                              index: '1'
+                              parameters:
+                              - type: text
+                                text: '{{URL_2}}'
+              send-conversational-whatsapp-text-message:
+                summary: Send Conversational WhatsApp Text Message
+                value:
+                  messages:
+                  - phoneNumber: +1**********
+                    message:
+                      type: text
+                      text:
+                        preview_url: true
+                        body: Example Message
+              send-conversational-whatsapp-media-message-image:
+                summary: Send Conversational WhatsApp Media Message (Image)
+                value:
+                  messages:
+                  - phoneNumber: +1**********
+                    message:
+                      type: image
+                      image:
+                        link: '{{IMAGE_URL}}'
+                        caption: Media Message (Image)
+              send-conversational-whatsapp-media-message-document:
+                summary: Send Conversational WhatsApp Media Message (Document)
+                value:
+                  messages:
+                  - phoneNumber: +1**********
+                    message:
+                      type: document
+                      audio:
+                        link: '{{DOCUMENT_LINK}}'
+                        caption: '{{DOCUMENT_DESCRIPTION}}'
+                        filename: '{{DOCUMENT_NAME}}'
+              send-conversational-whatsapp-media-message-location:
+                summary: Send Conversational WhatsApp Media Message (Location)
+                value:
+                  messages:
+                  - phoneNumber: +1**********
+                    message:
+                      type: location
+                      location:
+                        longitude: '11.1111111'
+                        latitude: '11.1111111'
+                        name: '{{ADDRESS_NAME}}'
+                        address: '{{FULL_ADDRESS}}'
+              send-conversational-whatsapp-message-with-button-reply:
+                summary: Send Conversational WhatsApp Message with Button Reply
+                value:
+                  messages:
+                  - phoneNumber: +1**********
+                    message:
+                      type: interactive
+                      interactive:
+                        type: button
+                        header:
+                          type: text
+                          text: HEADER_TEXT
+                        body:
+                          text: BUTTON_TEXT
+                        action:
+                          buttons:
+                          - type: reply
+                            reply:
+                              id: UNIQUE_BUTTON_ID_1
+                              title: BUTTON_TITLE_1
+                          - type: reply
+                            reply:
+                              id: UNIQUE_BUTTON_ID_2
+                              title: BUTTON_TITLE_2
+          text/plain:
+            example: "{\n    \"messages\": [\n        {\n            \"phoneNumber\": \"{{PHONE_NUMBER}}\",\n  \
+              \          \"message\": {\n                \"type\": \"template\",\n                \"template\":\
+              \ {\n                    \"name\": \"{{OTP_TEMPLATE_NAME}}\",\n                    \"language\": {\n\
+              \                        \"code\": \"en\",\n                        \"policy\": \"deterministic\"\
+              ,\n                    },\n                    \"components\": [\n                        {\n    \
+              \                        \"type\": \"body\",\n                            \"parameters\": [\n    \
+              \                            {\n                                    \"type\": \"text\",\n        \
+              \                            \"text\": \"{{OTP_CODE}}\"\n                                }\n     \
+              \                       ]\n                        },\n                        {\n               \
+              \             \"type\": \"button\",\n                            \"sub_type\": \"url\",\n        \
+              \                    \"index\": \"0\",\n                            \"parameters\": [\n          \
+              \                  {\n                                \"type\": \"text\",\n                      \
+              \          \"text\": \"{{OTP_CODE}}\"\n                            }\n                           \
+              \ ]\n                        }\n                    ]\n                }\n            }\n        }\n\
+              \    ]\n}"
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /v1/send:
+    post:
+      operationId: sendTransactionalWhatsappTemplateMessage
+      summary: Send transactional WhatsApp template message
+      tags:
+      - Transactional API
+      description: "Transactional WhatsApp API enables you to send targeted transactional WhatsApp messages to your\
+        \ users. You can trigger these WhatsApp messages once a user takes a specific action on your platform.\n\
+        \nBody Parameters\n\nColumn\nDescription\nData Type\nRequired\n\nmessages\nAll messages are contained in\
+        \ the messages key. You can send multiple messages with a single request.\nArray\nYes\n\nphoneNumber\nPhone\
+        \ number for the person you want to send a message to.\nString\nYes\n\nmessage\nMessage object\nObject\n\
+        Yes\n\ntype\nMust be a “template” for this message type.\nString\nYes\n\nname\nTemplate name to be sent\n\
+        String\nYes\n\nlanguage\n\nObject\nYes\n\ncode\nTemplate language\nString\nYes\n\nmessage variable components\n\
+        \nArray\nYes\n\ntype\nbody\nString\nYes\n\nparameters\n\nArray\nYes\n\ntype\ntext\nString\nYes\n\ntext\n\
+        Parameter value\nString\nYes\n\nbutton components\n\nArray\nYes\n\ntype\nbutton\nString\nYes\n\nsub_type\n\
+        Quick_reply, URL, PHONE_NUMBER\nString\nYes\n\nindex\n\nString\nYes\n\nparameters\n\nArray\nYes\n\ntype\n\
+        payload\nString\nYes\n\npayload\nPayload value\nString\nYes\n\nNote: Meta doesn't support adding emojis\
+        \ on button ID.\n\nSample Body\nThe following is a sample body to send transactional WhatsApp messages.\n\
+        \ncurl --location 'https://whatsapp.useinsider.com/v1/send' \\\n--header 'Content-Type: application/json'\
+        \ \\\n--header 'x-ins-auth-key: INS.*****************' \\\n--data '{\n    \"messages\": [\n        {\n \
+        \           \"phoneNumber\": \"+1**********\",\n            \"message\": {\n                \"type\": \"\
+        template\",\n                \"template\": {\n                    \"name\": \"{{TEMPLATE_NAME}}\",\n   \
+        \                 \"language\": {\n                        \"code\": \"{{TEMPLATE_LANGUAGE_CODE}}\"\n  \
+        \                  },\n                    \"components\": [\n                        {\n              \
+        \              \"type\": \"body\",\n                            \"parameters\": [\n                    \
+        \            {\n                                    \"type\": \"text\",\n                              \
+        \      \"text\": \"{{PARAMETER_VALUE}}\"\n                                }\n                          \
+        \  ]\n                        },\n                        {\n                            \"type\": \"button\"\
+        ,\n                            \"sub_type\": \"quick_reply\",\n                            \"index\": \"\
+        0\",\n                            \"parameters\": [\n                                {\n               \
+        \                     \"type\": \"payload\",\n                                    \"payload\": \"1\"\n \
+        \                               }\n                            ]\n                        },\n         \
+        \               {\n                            \"type\": \"button\",\n                            \"sub_type\"\
+        : \"quick_reply\",\n                            \"index\": \"1\",\n                            \"parameters\"\
+        : [\n                                {\n                                    \"type\": \"payload\",\n   \
+        \                                 \"payload\": \"2\"\n                                }\n              \
+        \              ]\n                        }\n                    ]\n                }\n            }\n \
+        \       }\n    ]\n}'\n\nIf you want to use CTA (Call To Action), you can use the below sample request:\n\
+        \ncurl --location 'https://whatsapp.useinsider.com/v1/send' \\\n--header 'x-ins-auth-key: INS.kjQu-+bL4HpeZqvgr1j0.d4IVgHl9GcE+_eaKxNA3P8M3q8-emrO3-zalg9GSF29mK+Jz5k'\
+        \ \\\n--header 'Content-Type: application/json' \\\n--data '{\n    \"messages\": [\n        {\n        \
+        \    \"phoneNumber\": \"+994558964184\",\n            \"message\": {\n                \"type\": \"template\"\
+        ,\n                \"template\": {\n                    \"name\": \"mert_masterfile_media_with_button\"\
+        ,\n                    \"language\": {\n                        \"code\": \"en\",\n                    \
+        \    \"policy\": \"deterministic\"\n                    },\n                    \"components\": [\n    \
+        \                    {\n                            \"type\": \"header\",\n                            \"\
+        sub_type\": \"\",\n                            \"index\": \"\",\n                            \"parameters\"\
+        : [\n                                {\n                                    \"type\": \"image\",\n     \
+        \                               \"image\": {\n                                        \"link\": \"https://inshoppingcart.com/seleniumautomation/wp-content/uploads/2018/08/cap-2.jpg\"\
+        \n                                    }\n                                }\n                           \
+        \ ]\n                        },\n                        {\n                            \"type\": \"body\"\
+        ,\n                            \"sub_type\": \"\",\n                            \"index\": \"\",\n     \
+        \                       \"parameters\": [\n                                {\n                         \
+        \           \"type\": \"text\",\n                                    \"text\": \"https://vikingsankara.com?abc=sha\"\
+        \n                                }\n                            ]\n                        },\n       \
+        \                 {\n                            \"type\": \"button\",\n                            \"sub_type\"\
+        : \"url\",\n                            \"index\": \"0\",\n                            \"parameters\": [\n\
+        \                                {\n                                    \"type\": \"text\",\n          \
+        \                          \"text\": \"https://vikingsankara.com\"\n                                }\n\
+        \                            ]\n                        }\n                    ]\n                }\n  \
+        \          }\n        }\n    ]\n}'\n\nIf you don't want to use CTA, you can use the below sample request:\n\
+        \ncurl --location 'https://whatsapp.useinsider.com/v1/send' \\\n--header 'Content-Type: application/json'\
+        \ \\\n--header 'x-ins-auth-key: INS.tiNlcL284J8dwCpfoqdR.gpyLwFG-0fSHPS9+kZYNsI-D2IWFNjlaRDlXJrZjx2_ZPTP37I'\
+        \ \\\n--data '{\n    \"messages\": [\n        {\n            \"phoneNumber\": \"+994558964184\",\n     \
+        \       \"message\": {\n                \"type\": \"template\",\n                \"template\": {\n     \
+        \               \"name\": \"7_image_header_no_button_copy\",\n                    \"language\": {\n    \
+        \                    \"code\": \"fi\",\n                        \"policy\": \"deterministic\"\n        \
+        \            },\n                    \"components\": [\n                        {\n                    \
+        \        \"type\": \"header\",\n                            \"sub_type\": \"\",\n                      \
+        \      \"index\": \"\",\n                            \"parameters\": [\n                               \
+        \ {\n                                    \"type\": \"image\",\n                                    \"image\"\
+        : {\n                                        \"link\": \"https://image.useinsider.com/vikingsankara/media/whatsapp-business/11521/83rbBaWO7H63VmACSXiZ1716506118.jpg\"\
+        \n                                    }\n                                }\n                           \
+        \ ]\n                        },\n                        {\n                            \"type\": \"body\"\
+        ,\n                            \"sub_type\": \"\",\n                            \"index\": \"\",\n     \
+        \                       \"parameters\": [\n                                {\n                         \
+        \           \"type\": \"text\",\n                                    \"text\": \"shahla\"\n            \
+        \                    }\n                            ]\n                        }\n                    ]\n\
+        \                }\n            }\n        }\n    ]\n}'\n\nSample Responses\nOne key information will be\
+        \ returned for each message to be sent. This key will be added to all events related to the message.\n\n\
+        {\n    \"keys\": [\n        \"whatsapp-*************************\"\n    ]\n}\n\n401 Unauthorized\nIf you\
+        \ use the wrong key, you will see the following error.\n\n{\n    \"message\": \"unauthorized\"\n}\n\nLimitations\n\
+        \nAll functions must be executed with a simple HTTPS POST request.\n\nOnly new WhatsApp messages can be\
+        \ sent via this API. No data can be retrieved.\n\nThe API Key should be provided as the authorization key\
+        \ on the request header. If the key is incorrect, the operation will not be executed and an authorization\
+        \ error will return in the response.\n\nTransactional API cannot be used for sending bulk/promotional WhatsApp\
+        \ messages. It is designed only to set transactional WhatsApp messages.\n\nThe rate limit is 10 requests\
+        \ per second."
+      security:
+      - InsAuthKey: []
+      requestBody:
+        content:
+          application/json:
+            examples:
+              default:
+                value:
+                  messages:
+                  - phoneNumber: +1**********
+                    message:
+                      type: template
+                      template:
+                        name: '{{TEMPLATE_NAME}}'
+                        language:
+                          code: '{{TEMPLATE_LANGUAGE_CODE}}'
+                        components:
+                        - type: body
+                          parameters:
+                          - type: text
+                            text: '{{PARAMETER_VALUE}}'
+                        - type: button
+                          sub_type: quick_reply
+                          index: '0'
+                          parameters:
+                          - type: payload
+                            payload: '1'
+                        - type: button
+                          sub_type: quick_reply
+                          index: '1'
+                          parameters:
+                          - type: payload
+                            payload: '2'
+              send-transactional-whatsapp-text-message:
+                summary: Send transactional WhatsApp text message
+                value:
+                  messages:
+                  - phoneNumber: +1**********
+                    message:
+                      type: text
+                      text:
+                        preview_url: true
+                        body: Example Message
+              send-transactional-whatsapp-media-message-image:
+                summary: Send transactional WhatsApp media message (Image)
+                value:
+                  messages:
+                  - phoneNumber: +1**********
+                    message:
+                      type: image
+                      image:
+                        link: '{{IMAGE_URL}}'
+                        caption: Media Message (Image)
+              send-transactional-whatsapp-media-message-document:
+                summary: Send transactional WhatsApp media message (Document)
+                value:
+                  messages:
+                  - phoneNumber: +1**********
+                    message:
+                      type: document
+                      audio:
+                        link: '{{DOCUMENT_LINK}}'
+                        caption: '{{DOCUMENT_DESCRIPTION}}'
+                        filename: '{{DOCUMENT_NAME}}'
+              send-transactional-whatsapp-media-message-location:
+                summary: Send transactional WhatsApp media message (Location)
+                value:
+                  messages:
+                  - phoneNumber: +1**********
+                    message:
+                      type: location
+                      location:
+                        longitude: '11.1111111'
+                        latitude: '11.1111111'
+                        name: '{{ADDRESS_NAME}}'
+                        address: '{{FULL_ADDRESS}}'
+              send-transactional-whatsapp-message-with-button-reply:
+                summary: Send transactional WhatsApp message with button reply
+                value:
+                  messages:
+                  - phoneNumber: +1**********
+                    message:
+                      type: interactive
+                      interactive:
+                        type: button
+                        header:
+                          type: text
+                          text: HEADER_TEXT
+                        body:
+                          text: BUTTON_TEXT
+                        action:
+                          buttons:
+                          - type: reply
+                            reply:
+                              id: UNIQUE_BUTTON_ID_1
+                              title: BUTTON_TITLE_1
+                          - type: reply
+                            reply:
+                              id: UNIQUE_BUTTON_ID_2
+                              title: BUTTON_TITLE_2
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+components:
+  securitySchemes:
+    InsAuthKey:
+      type: apiKey
+      in: header
+      name: X-INS-AUTH-KEY
+      description: Insider One authorization key for this API, generated in the InOne panel.
+  responses:
+    TooManyRequests:
+      description: Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring
+        Retry-After when present.
+      content:
+        application/json:
+          example:
+            message: Too Many Requests
+            status: 429
+x-provenance:
+  generated: '2026-08-13'
+  method: derived
+  source: postman/insider-one-apis.postman_collection.json
+  source_url: https://documenter.gw.postman.com/api/collections/24851117/2sB3dSR9bM
+  publisher_page: https://developers.insiderone.com/
+  note: Insider One publishes a single public Postman collection covering every REST API. This document is the subset
+    of that collection served from whatsapp.useinsider.com.

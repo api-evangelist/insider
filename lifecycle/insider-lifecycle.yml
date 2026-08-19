@@ -1,20 +1,50 @@
-generated: '2026-07-19'
+generated: '2026-08-13'
 method: searched
-source: https://academy.insiderone.com/docs/upsert-user-data-api-integration-wizard-2
+source: https://academy.insiderone.com/docs/insider-one-apis-1
+sources:
+- https://academy.insiderone.com/docs/insider-one-apis-1
+- https://academy.insiderone.com/docs/api-authentication-tokens-1
+- https://academy.insiderone.com/docs/android-sdk-changelog
+- https://academy.insiderone.com/docs/ios-sdk-changelog
+- openapi/
 versioning:
   scheme: uri-path
-  current: v1
-  docs: https://academy.insiderone.com/docs
+  observed: [v1, v2]
+  docs: https://academy.insiderone.com/docs/anatomy-of-an-api-request-1
   example: https://unification.useinsider.com/api/user/v1/upsert
+  side_by_side: true
+  notes: >-
+    v1 and v2 run concurrently on contact (subscribe/unsubscribe), web-push (launch), analytics
+    (email) and gw (WhatsApp). v2 is additive — bulk/group support, OAuth 2.0 — and v1 is never
+    marked deprecated in the reference, so consumers get no signal about which to build against.
 deprecation:
   policy_url: null
   sunset_header: false
-  notes: No public deprecation policy or RFC 8594 Sunset/Deprecation header support documented.
+  deprecation_header: false
+  rfc8594: false
+  notes: >-
+    No published API deprecation policy and no RFC 8594 Sunset/Deprecation headers. Insider One does
+    announce individual retirements inline in the docs — e.g. "Web Push API keys created in Web Push
+    Settings will be automatically disabled on October 15, 2025" — but only as a doc note on the
+    affected page, with no machine-readable signal and no central retirement log.
+  observed_retirements:
+  - {item: 'Legacy Web Push API keys (created in Web Push Settings)', date: '2025-10-15', source: 'https://academy.insiderone.com/docs/api-authentication-tokens-1'}
+deprecated_operations: []
 sla:
   url: null
   uptime_target: null
+  notes: No public SLA or uptime commitment; terms are contractual and enterprise-negotiated.
 status_page: null
 status_page_notes: >-
-  No public status page (status.useinsider.com / status.insiderone.com) was found
-  during this pass; operational health is surfaced inside the InOne panel.
-deprecated_operations: []
+  Probed 2026-08-13: status.insiderone.com, status.useinsider.com and insiderone.status.io all fail
+  to resolve. Insider One publishes no public status page; operational health is surfaced inside the
+  InOne panel only. No StatusPage pointer is asserted.
+data_retention:
+  analytics: 1 year (requests for older windows return 406)
+  inapp_details_window: 90 days per request
+sdk_release_cadence:
+  documented: true
+  channels: [Android, iOS, React Native, Expo, Flutter, Cordova]
+  ref: changelog/insider-changelog.yml
+  notes: The only dated, structured release history Insider One publishes is per-SDK; the REST APIs
+    have no changelog.

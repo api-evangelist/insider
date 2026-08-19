@@ -1,0 +1,563 @@
+openapi: 3.1.0
+info:
+  title: Insider One Live Activity API
+  version: 1.0.0
+  description: 'iOS Live Activity registration and lifecycle: register, start, update, end, and add/remove users.
+
+
+    Derived by API Evangelist from Insider One''s own public Postman collection ("Insider One APIs", published at
+    https://developers.insiderone.com/). Paths, methods, headers, query parameters and request/response examples
+    are verbatim from that collection; nothing is invented. The 429 response is documented for all Insider One APIs
+    on https://academy.insiderone.com/docs/api-rate-limits-1 .'
+  contact:
+    name: Insider One Support
+    email: support@useinsider.com
+    url: https://academy.insiderone.com/docs/insider-one-apis-1
+  termsOfService: https://insiderone.com/terms-of-use/
+externalDocs:
+  description: Insider One API reference
+  url: https://academy.insiderone.com/docs/api-reference-welcome
+servers:
+- url: https://live-activity.api.useinsider.com
+tags:
+- name: Live Activities
+paths:
+  /api/v1/live-activity/add-users:
+    post:
+      operationId: addUsers
+      summary: /add-users
+      tags:
+      - Live Activities
+      description: "This request adds new insider_ids to the segment of an activity previously created with /register:\n\
+        \nEligible devices of the added users are included in the activity segment.\n\nThese devices also receive\
+        \ the start push when /start is called.\n\nThe underlying merge flow is the same as /register. Eligibility\
+        \ filters (iOS version, push opt-in, GDPR, etc.) apply here as well.\n\nends_at is not part of the request.\
+        \ The activity TTL was fixed at /register time, and /add-users does not touch it.\n\nThis endpoint can be\
+        \ used only while the activity is in REGISTERED state. Once /start is called the segment is frozen and any\
+        \ /add-users call is rejected with 409 ALREADY_STARTED.\n\nBody parameters\nBelow are the parameters for\
+        \ the request body.\n\nParameter\nDescription\nData Type\nRequired\n\nactivity_id\nThe ID returned by /register\n\
+        String\nYes\n\nactivity_type\nMust be exactly (case-sensitive) the same as the ActivityAttributes Swift\
+        \ class name in the iOS application.\nString\nYes\n\ninsider_ids\nTarget user IDs. Must contain between\
+        \ 1 and 10,000 elements.\nString[]\nYes\n\nactivity_type cannot be empty or whitespace-only.\n\nactivity_id\
+        \ cannot be empty or whitespace-only.\n\ninsider_ids must contain between 1 and 10,000 elements.\n\nThe\
+        \ insider_ids upper bound is config-driven (REGISTER_MAX_INSIDER_IDS, default 10,000).\n\nSample body\n\
+        Below is a sample body for a request.\n\n{\n  \"activity_id\": \"550e8400-e29b-41d4-a716-446655440000\"\
+        ,\n  \"activity_type\": \"DeliveryActivityAttributes\",\n  \"insider_ids\": [\n    \"user-901\",\n    \"\
+        user-902\",\n    \"user-903\"\n  ]\n}\n\nBelow is a typical usage:\n\nT − 1 hour: /register is called for\
+        \ customers with active orders (Delivery activity_type). The activity is in the REGISTERED state.\n\nT −\
+        \ 30 min + 5 min: Freed stock is assigned to a new order → the partner calls POST /add-users and the new\
+        \ customer's insider_id is added to the segment.\n\nT + 0: The partner calls /start → the new customer receives\
+        \ the \"Your order is being prepared\" push together with the rest.\n\nSample responses\nSuccess response\
+        \ 200\n\n/add-users uses the same schema as /register. The counters reflect only the insider_ids submitted\
+        \ in this call (not the full activity segment).\n\n{\n  \"status\": \"success\",\n  \"activity_id\": \"\
+        550e8400-e29b-41d4-a716-446655440000\",\n  \"matched\": 3,\n  \"added\": 3,\n  \"refreshed\": 0,\n  \"removed\"\
+        : 0,\n  \"skipped\": {\n    \"push_permission_disabled\": 0,\n    \"unsupported_platform\": 0,\n    \"unsupported_os_version\"\
+        : 0,\n    \"push_to_start_token_missing\": 0,\n    \"user_not_found\": 0\n  }\n}\n\nBelow are the fields\
+        \ that return in the response.\n\nField\nType\nDescription\n\nstatus\nString\nAlways \"success\"\n\nactivity_id\n\
+        String\nEcho for the customer to correlate the response with the request\n\nmatched\nInt\nThe number of\
+        \ unique eligible insiders (= added + refreshed)\n\nadded\nInt\nThe number of newly added devices\n\nrefreshed\n\
+        Int\nThe number of previously registered devices whose metadata was refreshed\n\nremoved\nInt\nDevices that\
+        \ used to be eligible but no longer are\n\nskipped\nObject\nDistribution of devices filtered out by eligibility\
+        \ checks, by reason\n\nPartial response\n\nLike /register, /add-users can return a partial response if a\
+        \ portion of the profile lookup on large segments fails transiently.\n\n{\n  \"status\": \"success\",\n\
+        \  \"activity_id\": \"uuid\",\n  \"matched\": 950,\n  \"added\": 950,\n  \"refreshed\": 0,\n  \"removed\"\
+        : 0,\n  \"skipped\": { ... },\n  \"partial\": true,\n  \"unprocessed_insider_id_count\": 50\n}\n\nGDPR-filtered\
+        \ insiders may still appear in the gdpr_denied_details field.\n\nError responses\nRefer to Error Codes for\
+        \ error codes and retry strategies.\n\nLimitations\n\nThe rate limit is 1,000 requests per minute.\n\nends_at\
+        \ cannot be changed. The activity's lifetime is bound to the ends_at value set at /register time. /add-users\
+        \ does not extend it.\n\nEligibility filters apply: For newly added insider_ids, all filters (iOS version,\
+        \ push opt-in, GDPR, push-to-start token availability) are evaluated. Filtered devices show up in skipped\
+        \ and (if applicable) gdpr_denied_details.\n\nRe-adding the same insider_id: If the device is already in\
+        \ the segment, it is counted as refreshed, and its metadata is updated. No error is raised.\n\nCounters\
+        \ are scoped to this call: The matched, added, etc. values in the response are computed only over the insider_ids\
+        \ sent in this request. They are not the totals for the whole activity segment.\n\nRefer to Limitations\
+        \ and Liability for details."
+      security:
+      - ApiKey: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              activity_id: 550e8400-e29b-41d4-a716-446655440000
+              activity_type: DeliveryActivityAttributes
+              insider_ids:
+              - user-901
+              - user-902
+              - user-903
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /api/v1/live-activity/end:
+    post:
+      operationId: endLiveActivities
+      summary: /end live activities
+      tags:
+      - Live Activities
+      description: "This request ends an activity started via /start.\n\nIt sends the final push message to the\
+        \ target devices, containing content representing the final state (e.g., \"Delivered ✓\", \"Match ended\"\
+        ).\n\nIt deletes the entire activity record on Insider's side.\n\nThe activity transitions to DEAD. All\
+        \ subsequent calls with the same activity_id return a 404 NOT_FOUND response.\n\n/end does not physically\
+        \ remove the activity from the device. Insider One only delivers the final content and clears its own state.\
+        \ The activity on the device disappears according to Apple's stale-after/dismissal-date rules, or when the\
+        \ user manually swipes it away.\n\nBody parameters\nBelow are the parameters for the request body.\n\nParameter\n\
+        Description\nData Type\nRequired\n\nactivity_id\nThe ID returned by /register\nString\nYes\n\nactivity_type\n\
+        Same as in register; iOS ActivityAttributes class name\nString\nYes\n\ncontent\nLive activity content\n\
+        Object\nYes\n\ntitle\nLive activity title\nString\nYes\n\nmessage\nLive activity body/secondary message\n\
+        String\nYes\n\ncontent_state\nKey/value map that exactly matches the ContentState struct in the iOS application\n\
+        Object\nYes\n\nWhen target_devices is present, pushes are sent only to devices matching the (insider_id,\
+        \ udid) pairs in the list.\n\nactivity_id cannot be empty.\n\nactivity_type cannot be empty.\n\nSample body\n\
+        Below is a sample request body.\n\n{\n  \"activity_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n  \"\
+        activity_type\": \"OrderTrackingAttributes\",\n  \"content\": {\n    \"title\": \"Delivered ✓\",\n    \"\
+        message\": \"Your order has been delivered successfully.\",\n    \"content_state\": {\n      \"status\"\
+        : \"delivered\",\n      \"deliveredAt\": \"2026-05-20T14:32:00Z\"\n    }\n  }\n}\n\nBody examples\nSince\
+        \ /end is the final push, content represents the final state; the attributes block may be resent as well.\n\
+        \nDelivery delivered\n\n{\n  \"activity_id\": \"<activity_id>\",\n  \"activity_type\": \"DeliveryActivityAttributes\"\
+        ,\n  \"content\": {\n    \"title\": \"Order delivered\",\n    \"message\": \"Enjoy!\",\n    \"content_state\"\
+        : {\n      \"status\": \"delivered\",\n      \"etaMinutes\": 0\n    },\n    \"attributes\": {\n      \"\
+        courierName\": \"Yusuf K.\"\n    }\n  }\n}\n\nWorkout finished\n\n{\n  \"activity_id\": \"<activity_id>\"\
+        ,\n  \"activity_type\": \"WorkoutActivityAttributes\",\n  \"content\": {\n    \"title\": \"Workout completed\"\
+        ,\n    \"message\": \"30 min · 250 kcal\",\n    \"content_state\": {\n      \"phase\": \"finished\",\n \
+        \     \"elapsedSeconds\": 1800,\n      \"calories\": 250\n    },\n    \"attributes\": {\n      \"workoutType\"\
+        : \"Running\"\n    }\n  }\n}\n\nMatch ended\n\n{\n  \"activity_id\": \"<activity_id>\",\n  \"activity_type\"\
+        : \"MatchActivityAttributes\",\n  \"content\": {\n    \"title\": \"Match ended\",\n    \"message\": \"Home\
+        \ FC 2 - 1 Away FC\",\n    \"content_state\": {\n      \"homeScore\": 2,\n      \"awayScore\": 1,\n    \
+        \  \"period\": \"full_time\",\n      \"minute\": 90\n    },\n    \"attributes\": {\n      \"homeTeam\":\
+        \ \"Home FC\",\n      \"awayTeam\": \"Away FC\"\n    }\n  }\n}\n\nThe /end call sends the final push; the\
+        \ device shows this message until the stale-after period expires or the user dismisses it.\n\nCritical rules\n\
+        Irreversible: dead state\n\nAfter /end is called successfully:\n\nThe activity record on Insider One's end\
+        \ is immediately deleted.\n\nEvery subsequent call (/start, /update, /end) with the same activity_id returns\
+        \ 404 NOT_FOUND.\n\nYou cannot resurrect the activity. To start fresh, create a new activity with /register.\n\
+        \n// Response of a second /end call\n{\n  \"error\": \"activity not found\",\n  \"code\": \"NOT_FOUND\"\n\
+        }\n\nNot physically removed from the device\n\nThe /end call only delivers the final content to the device.\
+        \ On the device, the live activity:\n\nIs automatically dimmed when the stale-after period expires (Apple\
+        \ default ~4 hours).\n\nDisappears from the Dynamic Island / Lock Screen when the dismissal date is reached.\n\
+        \nVanishes immediately if the user dismisses it with a manual swipe.\n\n<p >The content you send with /end\
+        \ should represent the final state (\"Completed\", \"Finished\", \"Cancelled\"). This is the last view the\
+        \ user sees until they dismiss the activity.</p> \n\nSDK sync gate still applies\n\nLike /update, /end sends\
+        \ pushes only to synced devices:\n\nSituation\nBehavior\n\nAll target devices are synced.\nFinal push goes\
+        \ to all of them: 200 OK\n\nSome are synced, some are not.\nPushes go to the synced ones. 200 OK + skipped_not_synced:\
+        \ N. The activity is still deleted.\n\nAll target devices are unsynced.\n412 PUSH_TOKEN_NOT_SYNCED: No push\
+        \ is sent, the activity is not deleted.\n\nIf you receive 412 PUSH_TOKEN_NOT_SYNCED, the activity is still\
+        \ alive. Wait a short while and retry, or accept that the devices are offline and let the ends_at TTL force-close\
+        \ it.\n\nContent responsibility\n\nLike /start and /update, /end is a proxy:\n\ncontent passes directly\
+        \ into the Apple push.\n\ncontent_state enums must match the iOS values exactly.\n\nSample responses\nSuccess\
+        \ response 200\n\n{\n  \"status\": \"success\",\n  \"sessions_triggered\": 845,\n  \"skipped_not_synced\"\
+        : 5\n}\n\nBelow are the fields that return in the response.\n\nField\nType\nDescription\n\nstatus\nString\n\
+        Always \"success\"\n\nsessions_triggered\nInt\nThe number of final push messages delivered to Apple\n\n\
+        skipped_not_synced\nInt (omitempty)\nThe number of devices that did not receive the final message because\
+        \ their token had not synced\n\nAfter the response arrives, the activity is deleted on Insider One's end.\
+        \ A second /end call returns 404; this is expected behavior.\n\nError responses\nRefer to Error Codes for\
+        \ error codes and retry strategies.\n\nLimitations\n\nThe rate limit is 1,000 requests per minute.\n\nAlways\
+        \ call /end. When the activity's validity period (ends_at) expires, the record on Insider One's side is\
+        \ automatically deleted, but this does not send a final push to the devices. To close the user experience\
+        \ cleanly, always call /end explicitly.\n\nTargeted end: If you send the final push to specific devices\
+        \ via target_devices, the activity is still fully deleted (Insider clears its state). Targeted end is not\
+        \ a \"partial end\"; it closes the activity as a whole and only sends the push to the selected devices.\n\
+        \nMultiple /end calls: If the first one succeeded, the second returns 404. Treat it as an \"already closed\"\
+        \ signal, not an error.\n\nThe content of the /end call matters. The device shows this message until it\
+        \ is dismissed or stale-after expires; sending a half-baked or wrong final state is a poor user experience.\n\
+        \nRefer to Limitations and Liability for details."
+      security:
+      - ApiKey: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              activity_id: 550e8400-e29b-41d4-a716-446655440000
+              activity_type: OrderTrackingAttributes
+              content:
+                title: Delivered ✓
+                message: Your order has been delivered successfully.
+                content_state:
+                  status: delivered
+                  deliveredAt: '2026-05-20T14:32:00Z'
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /api/v1/live-activity/register:
+    post:
+      operationId: registerLiveActivities
+      summary: /register live activities
+      tags:
+      - Live Activities
+      description: "This request registers a group of insider_ids for a given activity_type on Insider One's end\
+        \ in advance. The activity has not started yet. This step:\n\nTriggers the collection of push-to-start tokens\
+        \ from devices (via the SDK, for eligible devices).\n\nGenerates an activity_id for the activity. This ID\
+        \ is used in all subsequent calls.\n\nFilters out devices that fail eligibility checks (e.g., iOS version,\
+        \ push opt-in, and GDPR) and prepares the remaining ones for the activity.\n\nThe actual start happens later\
+        \ via /start.\n\nIf you want to prepare an activity for \"when the time approaches,\" call /register in\
+        \ advance (e.g., 30 minutes before a match begins) and call /start at the exact start moment. This way the\
+        \ pushes go out smoothly right at the actual start. \n\nBody parameters\nBelow are the parameters for the\
+        \ request body.\n\nParameter\nDescription\nData Type\nRequired\n\nactivity_type\nMust be exactly (case-sensitive)\
+        \ the same as the ActivityAttributes Swift class name in the iOS application.\nString\nYes\n\ninsider_ids\n\
+        Target user IDs. Must contain between 1 and 10,000 elements.\nString[]\nYes\n\nends_at\nMaximum end time\
+        \ of the activity. Must be in the future, between ≥ 5 minutes and ≤ 7 days from now.\nRFC3339 timestamp\n\
+        Yes\n\nactivity_type cannot be empty or whitespace-only.\n\ninsider_ids must contain between 1 and 10,000\
+        \ elements.\n\nends_at must be in the future.\n\nends_at must be at least 5 minutes from now.\n\nends_at\
+        \ must be at most 7 days from now.\n\nThe insider_ids upper bound is config-driven (REGISTER_MAX_INSIDER_IDS,\
+        \ default 10,000). Split larger segments across multiple /register calls. Each returns its own activity_id.\n\
+        \nBody examples\nThe examples below align with Insider One’s demo app and can be used directly with the\
+        \ 3 ActivityAttributes classes available in the Insider iOS SDK demo app.\n\nOrder delivery tracking\n\n\
+        {\n  \"activity_type\": \"DeliveryActivityAttributes\",\n  \"insider_ids\": [\"user-123\", \"user-456\"\
+        ],\n  \"ends_at\": \"2026-05-19T10:00:00Z\"\n}\n\nWorkout tracking\n\n{\n  \"activity_type\": \"WorkoutActivityAttributes\"\
+        ,\n  \"insider_ids\": [\"user-789\"],\n  \"ends_at\": \"2026-05-18T20:00:00Z\"\n}\n\nLive match score\n\n\
+        {\n  \"activity_type\": \"MatchActivityAttributes\",\n  \"insider_ids\": [\"user-100\", \"user-101\", \"\
+        user-102\"],\n  \"ends_at\": \"2026-05-18T23:00:00Z\"\n}\n\nThe activity_type values must exactly match\
+        \ the Swift class names in the iOS application.\n\nSample responses\nSuccess response 200\n\n{\n  \"status\"\
+        : \"success\",\n  \"activity_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n  \"matched\": 950,\n  \"\
+        added\": 800,\n  \"refreshed\": 150,\n  \"removed\": 5,\n  \"skipped\": {\n    \"push_permission_disabled\"\
+        : 30,\n    \"unsupported_platform\": 15,\n    \"unsupported_os_version\": 5,\n    \"push_to_start_token_missing\"\
+        : 0,\n    \"user_not_found\": 0\n  }\n}\n\nBelow are the fields that return in the response.\n\nField\n\
+        Type\nDescription\n\nstatus\nString\nAlways \"success\"\n\nactivity_id\nString\nUUID v4 generated by Insider.\
+        \ Used in all subsequent calls. Store this ID.\n\nmatched\nInt\nThe number of unique eligible insiders (=\
+        \ added + refreshed)\n\nadded\nInt\nThe number of newly added devices\n\nrefreshed\nInt\nThe number of previously\
+        \ registered devices whose metadata was refreshed (e.g., the same insider_id is registered twice)\n\nremoved\n\
+        Int\nDevices that used to be eligible but no longer are (e.g., user opted out of push, old devices removed)\n\
+        \nskipped\nObject\nDistribution of devices filtered out by eligibility checks, by reason\n\nBelow are the\
+        \ fields in the skipped field.\n\nField\nFilter reason\n\npush_permission_disabled\nUser did not opt in\
+        \ to push, or the device has push disabled.\n\nunsupported_platform\nNon-iOS device (Android, web, etc.)\n\
+        \nunsupported_os_version\niOS < 17.2\n\npush_to_start_token_missing\nThe device has not yet produced a push-to-start\
+        \ token for this activity_type (SDK collection not completed)\n\nuser_not_found\nNo profile found on Insider\
+        \ One's end for this insider_id\n\nPartial response examples\nPlain success (all eligible)\n\n{\n  \"status\"\
+        : \"success\",\n  \"activity_id\": \"uuid\",\n  \"matched\": 100,\n  \"added\": 100,\n  \"refreshed\": 0,\n\
+        \  \"removed\": 0,\n  \"skipped\": {\n    \"push_permission_disabled\": 0,\n    \"unsupported_platform\"\
+        : 0,\n    \"unsupported_os_version\": 0,\n    \"push_to_start_token_missing\": 0,\n    \"user_not_found\"\
+        : 0\n  }\n}\n\nSuccess with skipped\n\nSome insiders are filtered out; the activity is still created.\n\n\
+        {\n  \"status\": \"success\",\n  \"activity_id\": \"uuid\",\n  \"matched\": 720,\n  \"added\": 720,\n  \"\
+        refreshed\": 0,\n  \"removed\": 0,\n  \"skipped\": {\n    \"push_permission_disabled\": 180,\n    \"unsupported_platform\"\
+        : 60,\n    \"unsupported_os_version\": 35,\n    \"push_to_start_token_missing\": 5,\n    \"user_not_found\"\
+        : 0\n  }\n}\n\nSuccess with GDPR Denied\n\nInsiders who haven't given GDPR consent are both counted and\
+        \ listed in a separate block.\n\n{\n  \"status\": \"success\",\n  \"activity_id\": \"uuid\",\n  \"matched\"\
+        : 945,\n  \"added\": 945,\n  \"refreshed\": 0,\n  \"removed\": 0,\n  \"skipped\": {\n    \"push_permission_disabled\"\
+        : 0,\n    \"unsupported_platform\": 0,\n    \"unsupported_os_version\": 0,\n    \"push_to_start_token_missing\"\
+        : 0,\n    \"user_not_found\": 0\n  },\n  \"gdpr_denied_details\": [\n    {\"insider_id\": \"user-12\", \"\
+        devices_count\": 2},\n    {\"insider_id\": \"user-77\", \"devices_count\": 1}\n  ]\n}\n\nInsiders with a\
+        \ missing GDPR field are treated as consenting. Only those with GDPR=false appear in this list.\n\nPartial\
+        \ result on large segments\nFor very large segments, some profile lookups on Insider One's end may fail\
+        \ transiently. In that case, the response is partially successful.\n\n{\n  \"status\": \"success\",\n  \"\
+        activity_id\": \"uuid\",\n  \"matched\": 850,\n  \"added\": 850,\n  \"refreshed\": 0,\n  \"removed\": 0,\n\
+        \  \"skipped\": { ... },\n  \"partial\": true,\n  \"unprocessed_insider_id_count\": 50\n}\n\nField\nMeaning\n\
+        \npartial\nIf true, the response is partial.\n\nunprocessed_insider_id_count\nThe number of insiders that\
+        \ could not be processed in this call\n\n<p >When you receive partial: true, identify the unprocessed insiders\
+        \ and retry them with a separate /register; the activity is still valid and you can send pushes to the successful\
+        \ devices.</p> \n\nAll filtered → 422 NO_ELIGIBLE_DEVICE\n\nIf no eligible device remains, the response\
+        \ is 422, and the body contains the filter breakdown.\n\n{\n  \"error\": \"no eligible device found for\
+        \ the given insider_ids\",\n  \"code\": \"NO_ELIGIBLE_DEVICE\",\n  \"skipped\": {\n    \"push_permission_disabled\"\
+        : 35,\n    \"unsupported_platform\": 10,\n    \"unsupported_os_version\": 5,\n    \"push_to_start_token_missing\"\
+        : 0,\n    \"user_not_found\": 0\n  },\n  \"gdpr_denied_details\": [\n    {\"insider_id\": \"user-A\", \"\
+        devices_count\": 1},\n    {\"insider_id\": \"user-B\", \"devices_count\": 1}\n  ]\n}\n\nYou can see why\
+        \ they were filtered out and adjust your segment.\n\nError responses\nRefer to Error Codes for error codes\
+        \ and retry strategies.\n\nLimitations\n\nThe rate limit is 1,000 requests per minute.\n\nactivity_id is\
+        \ opaque to the customer. It is generated by Insider One; the customer cannot send it. Store this ID. It\
+        \ is referenced in all subsequent calls.\n\nRe-registering the same insider for the same activity_type:\
+        \ A previously added device is counted as refreshed, and its metadata is renewed. No push is resent, the\
+        \ actual push starts with /start.\n\nToken collection delay: On newly downloaded apps or on apps with a\
+        \ freshly installed SDK, push-to-start token collection may take a few seconds. If you have very new users,\
+        \ it is normal to see them under the push_to_start_token_missing counter.\n\nends_at validity period: The\
+        \ ends_at value determines the validity period of the record on Insider One's end. After this period expires,\
+        \ the activity automatically becomes dead. Always call /end explicitly to deliver a final message to the\
+        \ user.\n\nRefer to Limitations and Liability for details."
+      x-source-note: Source collection has a typo in this request URL ("live-activity.api.useinsider.comapi/v1/...");
+        host and path split here as live-activity.api.useinsider.com + /api/v1/live-activity/register.
+      security:
+      - ApiKey: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              activity_type: OrderTrackingAttributes
+              insider_ids:
+              - user-123
+              - user-456
+              - user-789
+              ends_at: '2026-05-20T14:30:00Z'
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /api/v1/live-activity/remove-users:
+    post:
+      operationId: removeUsers
+      summary: /remove-users
+      tags:
+      - Live Activities
+      description: "This request bulk-removes the devices matching the given insider_ids from the segment of an\
+        \ activity previously created with /register:\n\nThe removed users do not receive the push when /start is\
+        \ called.\n\nThey are excluded from subsequent /update and /end messages.\n\nIdempotent: insider_ids that\
+        \ are not present in the segment (or already removed) are silently skipped (no error).\n\nUnlike /add-users,\
+        \ /remove-users does not perform any eligibility filtering or profile lookup; it only deletes from the segment.\
+        \ Therefore, the partial, gdpr_denied_details, and unprocessed_insider_id_count fields never appear in the\
+        \ response.\n\nThis endpoint can be used only while the activity is in REGISTERED state. Once /start is\
+        \ called the segment is frozen and any /remove-users call is rejected with 409 ALREADY_STARTED.\n\nBody\
+        \ parameters\nBelow are the parameters for the request body.\n\nParameter\nDescription\nData Type\nRequired\n\
+        \nactivity_id\nThe ID returned by /register\nString\nYes\n\nactivity_type\nMust be exactly (case-sensitive)\
+        \ the same as the ActivityAttributes Swift class name in the iOS application.\nString\nYes\n\ninsider_ids\n\
+        Target user IDs. Must contain between 1 and 10,000 elements.\nString[]\nYes\n\nactivity_type cannot be empty\
+        \ or whitespace-only.\n\nactivity_id cannot be empty or whitespace-only.\n\ninsider_ids must contain between\
+        \ 1 and 10,000 elements.\n\nSample body\nBelow is a sample body for a request.\n\n{\n  \"activity_id\":\
+        \ \"550e8400-e29b-41d4-a716-446655440000\",\n  \"activity_type\": \"DeliveryActivityAttributes\",\n  \"\
+        insider_ids\": [\n    \"user-12\",\n    \"user-77\"\n  ]\n}\n\nBelow is a typical usage:\n\nT − 1 hour:\
+        \ /register is called for customers with active orders (Delivery activity_type). The activity is in the\
+        \ REGISTERED state.\n\nT − 30 min: A customer cancels their order → the partner calls POST /remove-users\
+        \ and the devices belonging to that insider_id are removed from the segment.\n\nT + 0: The partner calls\
+        \ /start → no push is sent to the canceling customer.\n\nSample responses\nSuccess response 200\n\n/add-users\
+        \ uses the same schema as /register. In practice, only removed and activity_id carry meaningful values.\
+        \ The other counters stay zero. partial, gdpr_denied_details, and unprocessed_insider_id_count fields never\
+        \ appear in the response.\n\n{\n  \"status\": \"success\",\n  \"activity_id\": \"550e8400-e29b-41d4-a716-446655440000\"\
+        ,\n  \"matched\": 0,\n  \"added\": 0,\n  \"refreshed\": 0,\n  \"removed\": 2,\n  \"skipped\": {\n    \"\
+        push_permission_disabled\": 0,\n    \"unsupported_platform\": 0,\n    \"unsupported_os_version\": 0,\n \
+        \   \"push_to_start_token_missing\": 0,\n    \"user_not_found\": 0\n  }\n}\n\nBelow are the fields that\
+        \ return in the response.\n\nField\nType\nDescription\n\nstatus\nString\nAlways \"success\"\n\nactivity_id\n\
+        String\nEcho for the customer to correlate the response with the request\n\nremoved\nInt\nThe number of\
+        \ devices actually removed from the segment. Since a single insider may have multiple devices in the segment,\
+        \ removed can be larger than the submitted insider_ids count; IDs that are not present contribute 0.\n\n\
+        matched/added/refreshed\nInt\nAlways 0. /remove-users does not use these metrics.\n\nskipped\nObject\nAll\
+        \ fields are 0. Eligibility filtering does not run.\n\nWhen no devices are removed\n\nIf none of the submitted\
+        \ insider_ids are present in the segment, the response is still 200 OK with removed: 0.\n\n{\n  \"status\"\
+        : \"success\",\n  \"activity_id\": \"uuid\",\n  \"matched\": 0, \"added\": 0, \"refreshed\": 0, \"removed\"\
+        : 0,\n  \"skipped\": { \"push_permission_disabled\": 0, \"unsupported_platform\": 0,\n               \"\
+        unsupported_os_version\": 0, \"push_to_start_token_missing\": 0,\n               \"user_not_found\": 0 }\n\
+        }\n\nThis is not an error; the endpoint is idempotent.\n\nError responses\nRefer to Error Codes for error\
+        \ codes and retry strategies.\n\nLimitations\n\nThe rate limit is 1,000 requests per minute.\n\nIdempotent:\
+        \ insider_ids that are not present in the segment (or already removed) are silently skipped; no error is\
+        \ raised. The removed counter reflects only the devices actually deleted.\n\nNo eligibility filtering: No\
+        \ profile lookup, no GDPR/iOS version/push opt-in check. The endpoint only performs an \"ID match → delete\"\
+        \ operation.\n\nremoved may exceed the number of submitted insiders: If an insider has multiple devices\
+        \ in the segment, all of them are removed; removed is a device count, not an insider count.\n\nNot reversible:\
+        \ To put removed devices back, call /add-users (still before /start).\n\nRefer to Limitations and Liability\
+        \ for details."
+      security:
+      - ApiKey: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              activity_id: 550e8400-e29b-41d4-a716-446655440000
+              activity_type: DeliveryActivityAttributes
+              insider_ids:
+              - user-12
+              - user-77
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /api/v1/live-activity/start:
+    post:
+      operationId: startLiveActivities
+      summary: /start live activities
+      tags:
+      - Live Activities
+      description: "This request actually starts an activity that was prepared via /register.\n\nIt transitions\
+        \ the activity to the STARTED state (an atomic lock is stamped).\n\nSends the first live activity push via\
+        \ Apple to all eligible devices in the segment, or to selected devices when filtered by target_devices.\n\
+        \nThe live activity is opened and becomes visible on the device at this point.\n\nInsider One acts as a\
+        \ proxy for the content: all values in the content field are passed directly into the Apple push payload.\n\
+        \nBody parameters\nBelow are the parameters for the request body.\n\nParameter\nDescription\nData Type\n\
+        Required\n\nactivity_id\nThe ID returned by /register\nString\nYes\n\nactivity_type\nSame as in register;\
+        \ iOS ActivityAttributes class name\nString\nYes\n\ncontent\nLive activity content\nObject\nYes\n\ntitle\n\
+        Live activity title\nString\nYes\n\nmessage\nLive activity body/secondary message\nString\nYes\n\ncontent_state\n\
+        Key/value map that exactly matches the ContentState struct in the iOS application\nObject\nYes\n\nattributes\n\
+        Optional APNS attributes (advanced usage)\nObject\nNo\n\ntarget_devices\nIf left empty, broadcasts to all\
+        \ eligible devices in the segment\nArray\nNo\n\ninsider_id\nInsider ID\nString\nYes\n\nudid\nUnique device\
+        \ ID\nString\nYes\n\nWhen target_devices is present, pushes are sent only to devices matching the (insider_id,\
+        \ udid) pairs in the list. Omit this field to push to the whole segment.\n\nactivity_id cannot be empty.\n\
+        \nactivity_type cannot be empty.\n\nSample body\nBelow is a sample request body.\n\n{\n  \"activity_id\"\
+        : \"550e8400-e29b-41d4-a716-446655440000\",\n  \"activity_type\": \"OrderTrackingAttributes\",\n  \"content\"\
+        : {\n    \"title\": \"Your order is being prepared\",\n    \"message\": \"Estimated delivery: 14:30\",\n\
+        \    \"content_state\": {\n      \"status\": \"preparing\",\n      \"eta\": \"2026-05-20T14:30:00Z\"\n \
+        \   }\n  }\n}\n\n{\n  \"activity_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n  \"activity_type\": \"\
+        OrderTrackingAttributes\",\n  \"content\": {...},\n  \"target_devices\": [\n    {\n      \"insider_id\"\
+        : \"user-123\",\n      \"udid\": \"abc-device-1\"\n    },\n    {\n      \"insider_id\": \"user-456\",\n\
+        \      \"udid\": \"def-device-2\"\n    }\n  ]\n}\n\nBody examples\nBelow are /start body examples for the\
+        \ 3 activities in the SDK demo app. All enum cases and content_state field names match the iOS classes exactly.\n\
+        \nOrder is being prepared\n\n{\n  \"activity_id\": \"<activity_id from register response>\",\n  \"activity_type\"\
+        : \"DeliveryActivityAttributes\",\n  \"content\": {\n    \"title\": \"Your order is being prepared\",\n\
+        \    \"message\": \"Courier on the way — will pick up shortly\",\n    \"content_state\": {\n      \"status\"\
+        : \"pickup\",\n      \"etaMinutes\": 45\n    },\n    \"attributes\": {\n      \"courierName\": \"John D.\"\
+        \n    }\n  }\n}\n\n![](https://cdn.document360.io/c6df4583-da94-4cb2-bb8a-be0cbdd11109/Images/Documentation/start-order-activity\"\
+        \ (1).png=\"\" width=\"130\" height=\"238\">\n\nWorkout warmup phase\n\n{\n  \"activity_id\": \"<activity_id\
+        \ from register response>\",\n  \"activity_type\": \"WorkoutActivityAttributes\",\n  \"content\": {\n  \
+        \  \"title\": \"Workout started\",\n    \"message\": \"Running · warmup phase\",\n    \"content_state\"\
+        : {\n      \"phase\": \"warmup\",\n      \"elapsedSeconds\": 0,\n      \"calories\": 0\n    },\n    \"attributes\"\
+        : {\n      \"workoutType\": \"Running\"\n    }\n  }\n}\n\nThe match's first half kicked off\n\n{\n  \"activity_id\"\
+        : \"<activity_id from register response>\",\n  \"activity_type\": \"MatchActivityAttributes\",\n  \"content\"\
+        : {\n    \"title\": \"Match started\",\n    \"message\": \"Home FC 0 - 0 Away FC\",\n    \"content_state\"\
+        : {\n      \"homeScore\": 0,\n      \"awayScore\": 0,\n      \"period\": \"first_half\",\n      \"minute\"\
+        : 1\n    },\n    \"attributes\": {\n      \"homeTeam\": \"Home FC\",\n      \"awayTeam\": \"Away FC\"\n\
+        \    }\n  }\n}\n\nCritical rules\nIdempotency: A second /start is rejected\n\nA second /start call for the\
+        \ same activity_id unconditionally returns 409 ALREADY_STARTED. Even if the first call hit a network error\
+        \ or timeout, the activity is considered \"locked\" on the server side.\n\n{\n  \"error\": \"activity already\
+        \ started\",\n  \"code\": \"ALREADY_STARTED\"\n}\n\n<p >Do not retry /start after a timeout. The activity\
+        \ may already be locked. To restart the same segment, call /end first, then run a fresh /register + /start\
+        \ flow.</p> \n\nProxy behavior\n\nContent responsibility lies with the customer. Insider One passes the\
+        \ values inside the content as-is to the Apple push payload:\n\nIt does not validate the content.\n\nIt\
+        \ does not translate/localize.\n\nIt does not modify value formats.\n\nIt does not retain it persistently.\n\
+        \nInsider is not liable for any user-experience issues caused by wrong, missing, or inappropriate content.\n\
+        \ncontent_state enum matching\n\nAll values inside content_state must be compatible with the ContentState\
+        \ struct in the iOS application. In particular for enum-typed fields:\n\nEnum case names must match exactly\
+        \ (case-sensitive).\n\nWrong cases cause silent failures in the Apple decoder. Insider One cannot detect\
+        \ the mismatch.\n\niOS side example\n\nenum OrderStatus: String, Codable {\n    case preparing\n    case\
+        \ onTheWay\n    case delivered\n}\n\nCorrect on the API side\n\n{ \"status\": \"onTheWay\" }\n\nWrong (device\
+        \ crash or silent failure)\n\n{ \"status\": \"on_the_way\" }\n{ \"status\": \"ontheway\" }\n{ \"status\"\
+        : \"OnTheWay\" }\n\nMust be registered first\n\nIf the activity is not present on Insider's side at the\
+        \ time of /start (not registered or already ended), 404 NOT_FOUND is returned. The flow must run in the\
+        \ correct order:\n\n/register → get activity_id → /start\n\nSample responses\nSuccess response 200\n\n{\n\
+        \  \"status\": \"success\",\n  \"sessions_triggered\": 850\n}\n\nBelow are the fields that return in the\
+        \ response.\n\nField\nType\nDescription\n\nstatus\nString\nAlways \"success\"\n\nsessions_triggered\nInt\n\
+        The number of push messages published to Apple (= number of devices notified)\n\nsessions_triggered indicates\
+        \ the push has been handed off to Apple.\n\nError responses\nRefer to Error Codes for error codes and retry\
+        \ strategies.\n\nLimitations\n\nThe rate limit is 1,000 requests per minute.\n\nactivity_id is opaque. Use\
+        \ only the value returned from the /register response.\n\nNo device sync is required before /start. Devices\
+        \ are ready for activation via their push-to-start tokens. The sync gate only applies to /update and /end.\n\
+        \nBroadcast vs targeted: When target_devices is empty, a broadcast is performed to all eligible devices\
+        \ in the segment. To send to a sub-segment, populate the list. In targeted mode, eligibility (sync, opt-in)\
+        \ is still checked.\n\nApple-side drops do not reflect in sessions_triggered. This counter shows successful\
+        \ handoffs; failures to reach the device (token-invalid, network) are tracked on Insider One's end and will\
+        \ be exposed in a future release.\n\nRefer to Limitations and Liability for details."
+      security:
+      - ApiKey: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              activity_id: 550e8400-e29b-41d4-a716-446655440000
+              activity_type: OrderTrackingAttributes
+              content:
+                title: Your order is being prepared
+                message: 'Estimated delivery: 14:30'
+                content_state:
+                  status: preparing
+                  eta: '2026-05-20T14:30:00Z'
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /api/v1/live-activity/update:
+    post:
+      operationId: updateLiveActivities
+      summary: /update live activities
+      tags:
+      - Live Activities
+      description: "This request updates the content of an activity that was started via /start.\n\nSends an update\
+        \ push to the target devices; the device's live activity is re-rendered with the new content.\n\nThe activity\
+        \ state does not change (STARTED → STARTED). The activity keeps living until /end is called.\n\nIt can be\
+        \ called unlimited times. You can send updates as often as your user experience requires (apart from rate\
+        \ limits).\n\nBody parameters\nBelow are the parameters for the request body.\n\nParameter\nDescription\n\
+        Data Type\nRequired\n\nactivity_id\nThe ID returned by /register\nString\nYes\n\nactivity_type\nSame as\
+        \ in register; iOS ActivityAttributes class name\nString\nYes\n\ncontent\nLive activity content\nObject\n\
+        Yes\n\ntitle\nLive activity title\nString\nYes\n\nmessage\nLive activity body/secondary message\nString\n\
+        Yes\n\ncontent_state\nKey/value map that exactly matches the ContentState struct in the iOS application\n\
+        Object\nYes\n\nWhen target_devices is present, pushes are sent only to devices matching the (insider_id,\
+        \ udid) pairs in the list. Omit this field to push to the whole segment.\n\nactivity_id cannot be empty.\n\
+        \nactivity_type cannot be empty.\n\nSample body\nBelow is a sample request body.\n\n{\n  \"activity_id\"\
+        : \"550e8400-e29b-41d4-a716-446655440000\",\n  \"activity_type\": \"OrderTrackingAttributes\",\n  \"content\"\
+        : {\n    \"title\": \"Your order is being prepared\",\n    \"message\": \"Estimated delivery: 14:30\",\n\
+        \    \"content_state\": {\n      \"status\": \"preparing\",\n      \"eta\": \"2026-05-20T14:30:00Z\"\n \
+        \   }\n  }\n}\n\nBody examples\n/update body examples are for the three activities in the SDK demo app.\
+        \ The attributes block is often omitted on /update calls. A content_state change is sufficient.\n\nDelivery\
+        \ stage transitions\n\n// Courier set off\n{\n  \"activity_id\": \"<activity_id>\",\n  \"activity_type\"\
+        : \"DeliveryActivityAttributes\",\n  \"content\": {\n    \"content_state\": { \"status\": \"in_transit\"\
+        , \"etaMinutes\": 30 }\n  }\n}\n\n// Out for delivery\n{\n  \"activity_id\": \"<activity_id>\",\n  \"activity_type\"\
+        : \"DeliveryActivityAttributes\",\n  \"content\": {\n    \"content_state\": { \"status\": \"out_for_delivery\"\
+        , \"etaMinutes\": 10 }\n  }\n}\n\n// Almost at your door\n{\n  \"activity_id\": \"<activity_id>\",\n  \"\
+        activity_type\": \"DeliveryActivityAttributes\",\n  \"content\": {\n    \"content_state\": { \"status\"\
+        : \"out_for_delivery\", \"etaMinutes\": 1 }\n  }\n}\n\nWorkout phase transitions\n\n// Warmup → active\n\
+        {\n  \"activity_id\": \"<activity_id>\",\n  \"activity_type\": \"WorkoutActivityAttributes\",\n  \"content\"\
+        : {\n    \"content_state\": { \"phase\": \"active\", \"elapsedSeconds\": 600, \"calories\": 80 }\n  }\n\
+        }\n\n// Active → paused\n{\n  \"activity_id\": \"<activity_id>\",\n  \"activity_type\": \"WorkoutActivityAttributes\"\
+        ,\n  \"content\": {\n    \"content_state\": { \"phase\": \"paused\", \"elapsedSeconds\": 900, \"calories\"\
+        : 120 }\n  }\n}\n\n// Paused → active again\n{\n  \"activity_id\": \"<activity_id>\",\n  \"activity_type\"\
+        : \"WorkoutActivityAttributes\",\n  \"content\": {\n    \"content_state\": { \"phase\": \"active\", \"elapsedSeconds\"\
+        : 1200, \"calories\": 170 }\n  }\n}\n\n// Cooldown\n{\n  \"activity_id\": \"<activity_id>\",\n  \"activity_type\"\
+        : \"WorkoutActivityAttributes\",\n  \"content\": {\n    \"content_state\": { \"phase\": \"cooldown\", \"\
+        elapsedSeconds\": 1650, \"calories\": 230 }\n  }\n}\n\nMatch’s score/period changes\n\n// 1-0 (35th minute)\n\
+        {\n  \"activity_id\": \"<activity_id>\",\n  \"activity_type\": \"MatchActivityAttributes\",\n  \"content\"\
+        : {\n    \"content_state\": { \"homeScore\": 1, \"awayScore\": 0, \"period\": \"first_half\", \"minute\"\
+        : 35 }\n  }\n}\n\n// Half time\n{\n  \"activity_id\": \"<activity_id>\",\n  \"activity_type\": \"MatchActivityAttributes\"\
+        ,\n  \"content\": {\n    \"content_state\": { \"homeScore\": 1, \"awayScore\": 0, \"period\": \"half_time\"\
+        , \"minute\": 45 }\n  }\n}\n\n// 2-1 (70th minute)\n{\n  \"activity_id\": \"<activity_id>\",\n  \"activity_type\"\
+        : \"MatchActivityAttributes\",\n  \"content\": {\n    \"content_state\": { \"homeScore\": 2, \"awayScore\"\
+        : 1, \"period\": \"second_half\", \"minute\": 70 }\n  }\n}\n\nEvery time /update is called, the live activity\
+        \ is re-rendered on the device.\n\nIf any field or enum value inside content_state does not match the ContentState\
+        \ schema in the iOS application, Apple's decoder on the device cannot update the existing activity, and\
+        \ the activity remains stuck in a loading state. For example, the field name might be misspelled, an enum\
+        \ case might be botched in camelCase/snake_case conversion, or a type might not match.\n\nInsider One does\
+        \ not detect this situation. Your API call still returns 200 OK, and the sessions_triggered counter increases,\
+        \ but the activity does not update on the device. The error only surfaces on the device, visually to the\
+        \ user.\n\nMitigations:\n\nMatch content_state field names and enum cases to the iOS classes exactly (case-sensitive).\n\
+        \nTest every possible content_state variant on a real device before going to production.\n\nCritical rules\n\
+        SDK sync gate\n\nAfter the push is sent with /start, the live activity opens on the device, and Apple produces\
+        \ a new push token for that activity. The Insider SDK synchronizes this token in the background. Until this\
+        \ rotation completes, /update messages cannot reach the device.\n\nBehavior is as follows:\n\nSituation\n\
+        Result\n\nAll target devices are synced.\nPushes go to all of them. 200 OK, skipped_not_synced is not returned.\n\
+        \nSome are synced, some are not.\nPushes go to the synced ones. 200 OK + skipped_not_synced: N\n\nAll target\
+        \ devices are unsynced.\n412 PUSH_TOKEN_NOT_SYNCED. No push is sent.\n\n// All targets unsynced\n{\n  \"\
+        error\": \"push tokens are not synced yet\",\n  \"code\": \"PUSH_TOKEN_NOT_SYNCED\"\n}\n\nTiming of /update\
+        \ after /start: Do not send /update immediately after /start. Apple's token rotation and the SDK's sync\
+        \ can take several seconds. Typical buffer 2-5 seconds, but it can be longer on backgrounded devices.\n\n\
+        Unlimited updates\n\nThere is no upper bound on /update calls for the same activity_id (apart from rate\
+        \ limits). As long as the activity remains in STARTED state (i.e., until /end is called), you can send as\
+        \ many updates as you like.\n\nContent responsibility\n\nSame rules as /start apply.\n\nThe content field\
+        \ is entirely under customer control; Insider One acts as a proxy.\n\ncontent_state enum case names must\
+        \ match the iOS values exactly (case-sensitive).\n\nactivity_type must match the Swift class name on the\
+        \ device exactly.\n\nThe activity keeps living\n\n/update does not end the activity. The state remains STARTED;\
+        \ the activity_id is unchanged; the record on Insider One's end is not deleted. To end the activity, call\
+        \ /end.\n\nUpdate on a non-started activity\n\nSending /update to an activity that was /register-ed but\
+        \ not yet /start-ed is not a 404. The activity exists on Insider One's end. However, because no live activity\
+        \ has been opened on the devices yet, the push does not reach them: targets that have not become visible\
+        \ on-device are counted in skipped_not_synced; if all are in this state, 412 PUSH_TOKEN_NOT_SYNCED is returned.\n\
+        \nCorrect flow: /start first, then /update. Trying /update without /start is meaningless.\n\nSample responses\n\
+        Success response 200\n\n{\n  \"status\": \"success\",\n  \"sessions_triggered\": 845,\n  \"skipped_not_synced\"\
+        : 5\n}\n\nBelow are the fields that return in the response.\n\nField\nType\nDescription\n\nstatus\nString\n\
+        Always \"success\"\n\nsessions_triggered\nInt\nThe number of push messages published to Apple (= number\
+        \ of devices notified)\n\nskipped_not_synced\nInt (omitempty)\nNumber of devices skipped because the SDK\
+        \ has not yet synced the token. Only returned when > 0.\n\nsessions_triggered indicates the push has been\
+        \ handed off to Apple.\n\nError responses\nRefer to Error Codes for error codes and retry strategies.\n\n\
+        Limitations\n\nThe rate limit is 1,000 requests per minute.\n\nUpdate frequency: Apple applies a budget\
+        \ to very frequent updates. Standard usage of a few updates per hour is ideal; sending at a very high frequency\
+        \ may be throttled by Apple.\n\nYou do not need to push this request if content_state hasn't changed. Spamming\
+        \ updates with the same content wastes your rate limit quota and triggers re-orders on the user side.\n\n\
+        Targeted updates via target_devices: To send different content to specific users, make multiple /update\
+        \ calls on the same activity_id, each with a different target_devices list.\n\nStale activity: If you call\
+        \ /update on an activity whose ends_at has expired, the validity period may be over → 404 NOT_FOUND.\n\n\
+        No wait in SDK-first flow: If the device application started the Live Activity itself and notified the Insider\
+        \ SDK (SDK-First flow, iOS 16.1+), the token is already on the device; /update requires no extra wait.\n\
+        \nRefer to Limitations and Liability for details."
+      security:
+      - ApiKey: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              activity_id: 550e8400-e29b-41d4-a716-446655440000
+              activity_type: OrderTrackingAttributes
+              content:
+                title: Your order is being prepared
+                message: 'Estimated delivery: 14:30'
+                content_state:
+                  status: preparing
+                  eta: '2026-05-20T14:30:00Z'
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+components:
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: X-Api-Key
+      description: Insider One API key for this API.
+  responses:
+    TooManyRequests:
+      description: Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring
+        Retry-After when present.
+      content:
+        application/json:
+          example:
+            message: Too Many Requests
+            status: 429
+x-provenance:
+  generated: '2026-08-13'
+  method: derived
+  source: postman/insider-one-apis.postman_collection.json
+  source_url: https://documenter.gw.postman.com/api/collections/24851117/2sB3dSR9bM
+  publisher_page: https://developers.insiderone.com/
+  note: Insider One publishes a single public Postman collection covering every REST API. This document is the subset
+    of that collection served from live-activity.api.useinsider.com.

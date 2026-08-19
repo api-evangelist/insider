@@ -1,0 +1,122 @@
+generated: '2026-08-13'
+method: derived
+source: openapi/
+sources:
+- openapi/insider-unification-openapi.yml
+- openapi/insider-catalog-openapi.yml
+- openapi/insider-contact-openapi.yml
+- openapi/insider-mail-openapi.yml
+- openapi/insider-mobile-openapi.yml
+- openapi/insider-architect-analytics-openapi.yml
+- https://academy.insiderone.com/docs/data-ingestion
+summary: >-
+  Insider One's data model has no server-generated primary keys in its public API. Everything hangs
+  off the User Profile, and the User Profile is addressed by a bag of IDENTIFIERS the customer owns
+  (email, phone, uuid, plus custom identifiers) rather than by an Insider ID. Identity resolution —
+  which identifier wins when two collide — is a panel setting, not an API parameter, which is why so
+  many documented 400s are identifier-collision errors. The second root is the Product (item_id +
+  locale). Events bind the two together.
+key_style: customer-owned natural keys
+id_prefixes: none
+server_generated_ids:
+- {name: campaign_id, entity: Campaign, seen_in: 'campaign create 201 response, analytics requests'}
+- {name: builder_id, entity: EmailCampaign, seen_in: 'campaign create 201 response'}
+- {name: journeyId, entity: Journey, seen_in: 'architect analytics path parameter'}
+- {name: segment_id, entity: Segment, seen_in: 'raw export request'}
+- {name: key, entity: WhatsAppMessage, seen_in: 'send response + every webhook event', note: 'tracking key, the only cross-surface correlation id'}
+
+entities:
+- name: UserProfile
+  root: true
+  addressed_by: identifiers
+  fields: [identifiers, attributes, events]
+  identifier_fields: [email, phone_number, uuid, custom.*]
+  attribute_model: 'default attributes at the root of the object; customer-defined attributes MUST be nested under attributes.custom'
+  operations: [upsertUserData, getUserProfiles, deleteUserProfile, deleteUserAttribute, updateIdentifiers, deleteIdentifiers, deleteUserPiiDataUsingIdentifier, deleteUserPiiDataUsingProfileId, exportRawUserData]
+  spec: openapi/insider-unification-openapi.yml
+- name: Identifier
+  belongs_to: UserProfile
+  uniqueness: globally unique per identifier value; a value cannot be attached to two profiles
+  constraints:
+  - A profile must always retain at least one identifier.
+  - old_identifier and new_identifier must be exactly one entry each and must differ.
+  operations: [updateIdentifiers, deleteIdentifiers]
+- name: Event
+  belongs_to: UserProfile
+  fields: [event_name, timestamp, event_params, event_params.custom]
+  examples_seen: [purchase, account_created, email_click, item_added_to_cart, journey_entered]
+  params_seen: [product_id, unit_price, unit_sale_price, event_group_id, taxonomy, currency, campaign_id, journey_id]
+  operations: [upsertUserData, getUserProfiles, exportRawUserData, collectUserEvent]
+- name: Product
+  root: true
+  addressed_by: [item_id, locale]
+  fields: [item_id, locale, name, url, image_url, category, brand, color, groupcode, price, original_price, in_stock, stock_count]
+  variant_key: groupcode groups variants of the same product
+  price_model: 'price and original_price are currency-keyed maps ({"USD": 129.99})'
+  operations: [addNewProductsInAFlatFormat, addNewProductsInANestedFormat, updateExistingProductsInAFlatFormat, updateExistingProductsInANestedFormat]
+  spec: openapi/insider-catalog-openapi.yml
+- name: Locale
+  fields: [language_and_country_code, store_id]
+  note: 'locale can be compound (en_US:newyork) to express a store-level catalogue.'
+  operations: [createLocaleConfigurations]
+- name: Segment
+  fields: [segment_id, segmentName, attributeName, fileUrl, callbackUrl]
+  kinds: [predefined, predictive, first-party (CSV upload), custom (mobile suite)]
+  operations: [uploadFirstPartySegments, uploadCustomSegmentsToMobileSuite, exportRawUserData]
+- name: SubscriptionState
+  belongs_to: UserProfile
+  per_channel: [email, sms, whatsapp]
+  levels: [global, group]
+  operations: [unsubscribeEmailUsersFromDatabase, unsubscribeEmailUsersForEmailGlobalUnsubscription, resubscribeEmailUsers, resubscribeEmailUsersForEmailGlobalSubscribe, unsubscribeSmsUsersFromDatabase, resubscribeSmsUsers, unsubscribeWhatsappUsersFromDatabase, resubscribeWhatsappUsers]
+  spec: openapi/insider-contact-openapi.yml
+- name: Consent
+  belongs_to: UserProfile
+  operations: [setDataProcessingConsentForAppUsers]
+  note: 'GDPR data-processing consent is set on the mobile host, separately from channel subscription state.'
+- name: Campaign
+  kinds: [email, web push, app push, InStory, on-site, SMS, WhatsApp]
+  addressed_by: campaign_id
+  operations: [createEmailCampaigns, createSingleWebPushes, launchSingleWebPushesV1, launchSingleWebPushesV2, deleteSingleWebPushes, sendBulkAppPushes, sendTargetedAppPushes, getInappCampaignDetails]
+- name: Message
+  kinds: [transactional email, transactional SMS, WhatsApp template/text/media, app push, web push]
+  fields_email: [subject, tos, from, cc, bcc, reply_to, content, dynamic_fields, unique_args, attachments]
+  correlation: 'WhatsApp sends return a tracking key; email sends carry customer-supplied unique_args as the tagging mechanism.'
+  operations: [sendTransactionalEmails, sendTransactionalSingleSms, sendTransactionalBulkSms, sendTransactionalWhatsappTemplateMessage, sendConversationalWhatsappMessageTemplate]
+- name: Journey
+  addressed_by: journeyId
+  children: [Element/Channel (campaignId), ConversionGoal]
+  operations: [exportJourneyList, getArchitectJourneyAnalytics, getArchitectChannelAnalytics, getConversionGoalsInformation, getConversionGoalsAnalytics, sendTransactionalJourney]
+- name: OtpChannel
+  children: [OtpTemplate]
+  operations: [createAChannel, updateAChannel, createAnOtpTemplate, listOtpTemplates, generateOtpCodes, verifyOtpCodes]
+  spec: openapi/insider-verify-openapi.yml
+- name: LookupTable
+  docs: https://academy.insiderone.com/docs/manage-lookup-tables-via-api
+  note: 'Customer-defined reference tables with a primary key, ingested by CSV or API and bound to
+    profile attributes. Documented in the Academy but absent from the public Postman collection.'
+
+relationships:
+- {from: UserProfile, to: Identifier, type: has_many, via: identifiers}
+- {from: UserProfile, to: Event, type: has_many, via: events}
+- {from: UserProfile, to: SubscriptionState, type: has_many, via: channel}
+- {from: UserProfile, to: Consent, type: has_one, via: gdpr consent}
+- {from: UserProfile, to: Segment, type: belongs_to_many, via: segment membership}
+- {from: Event, to: Product, type: references, via: event_params.product_id}
+- {from: Product, to: Locale, type: has_many, via: locale}
+- {from: Product, to: Product, type: has_many, via: groupcode (variant grouping)}
+- {from: Campaign, to: Message, type: has_many, via: campaign_id}
+- {from: Journey, to: Campaign, type: has_many, via: element/campaignId}
+- {from: Journey, to: ConversionGoal, type: has_many, via: goals}
+- {from: OtpChannel, to: OtpTemplate, type: has_many, via: channel}
+- {from: WhatsAppMessage, to: WebhookEvent, type: has_many, via: key}
+- {from: Recommendation, to: Product, type: references, via: item_id}
+
+integrity_rules:
+- Identifier values are globally unique; reassigning one requires deleting it from the other profile.
+- A profile cannot be left with zero identifiers.
+- Custom attributes and custom event params must be nested under `custom`; root placement silently
+  mismaps the data (Insider One calls this out as the most consequential integration mistake).
+- Catalog upserts are keyed on item_id + locale, so a product exists once per locale.
+
+render: null
+render_note: No subway/ diagram in this repo yet.

@@ -1,16 +1,55 @@
-generated: '2026-07-19'
-method: searched
-source: probed /.well-known/ on insiderone.com + useinsider.com
+generated: '2026-08-13'
+method: probed
+source: live probes of /.well-known/* on every Insider One host in apis.yml
 notes: >-
-  No /.well-known/ discovery documents are published. Every probed path returned
-  404 (or an HTML 404 page). Recorded as evidence; no WellKnown/SecurityTxt pointer
-  is wired because nothing was found.
+  Insider One serves real OAuth 2.0 discovery documents on its API gateway (gw.useinsider.com) and on
+  its MCP host (mcp.insiderone.com): RFC 8414 authorization-server metadata and RFC 9728
+  protected-resource metadata, both anonymous and both 200. The marketing site (insiderone.com,
+  useinsider.com) and the Document360 docs host (academy.insiderone.com) serve nothing under
+  /.well-known/ — every path 404s, and the 404s are HTML shells, not documents. No security.txt,
+  no api-catalog, no ai-plugin.json, no agent card anywhere.
 hosts:
+- host: https://gw.useinsider.com
+  documents:
+  - {path: /.well-known/oauth-authorization-server, status: 200, file: insider-gw-oauth-authorization-server.json, document: true}
+  - {path: /.well-known/oauth-protected-resource, status: 200, file: insider-gw-oauth-protected-resource.json, document: true}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/security.txt, status: 404}
+- host: https://mcp.insiderone.com
+  documents:
+  - {path: /.well-known/oauth-authorization-server, status: 200, document: true, note: 'byte-identical to the gw.useinsider.com document; not stored twice'}
+  - {path: /.well-known/oauth-protected-resource, status: 200, document: true, note: 'byte-identical to /.well-known/oauth-protected-resource/mcp'}
+  - {path: /.well-known/oauth-protected-resource/mcp, status: 200, file: insider-mcp-oauth-protected-resource.json, document: true}
+  - {path: /.well-known/agent-card.json, status: 404}
 - host: https://insiderone.com
   documents:
   - {path: /.well-known/security.txt, status: 404}
+  - {path: /security.txt, status: 404}
   - {path: /.well-known/openid-configuration, status: 404}
   - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404, note: 'HTML 404 page, not a document'}
+  - {path: /.well-known/agent.json, status: 404}
 - host: https://useinsider.com
   documents:
   - {path: /.well-known/security.txt, status: 404}
+- host: https://academy.insiderone.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404, note: 'Document360 HTML 404 page, not a document'}
+- host: https://developers.insiderone.com
+  documents:
+  - {path: /.well-known/agent-card.json, status: 404, note: 'Postman-hosted docs; HTML 404 page'}
+findings:
+  oauth_metadata_published: true
+  security_txt_published: false
+  api_catalog_published: false
+  agent_card_published: false
+pointers_emitted:
+- type: WellKnown
+  reason: two hosts return 200 with real, parseable RFC 8414 / RFC 9728 documents.
+pointers_withheld:
+- type: SecurityTxt
+  reason: no host serves a security.txt; every probed path 404s.
+- type: AgentCard
+  reason: no host serves an A2A agent card; nothing was authored on the provider's behalf.

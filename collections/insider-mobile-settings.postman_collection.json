@@ -1,0 +1,262 @@
+{
+  "item": [
+    {
+      "id": "93cc353c-ed00-4350-8de7-142bedc0a898",
+      "name": "Mobile App APIs",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f8522238-6f76-4920-aacd-b376ec300141",
+          "name": "Get inapp campaign details",
+          "request": {
+            "name": "Get inapp campaign details",
+            "description": {
+              "content": "This API allows you to retrieve detailed information about your app template campaigns. The campaigns in the App Templates, App Survey, App Template from Push, and Architect journeys can return in the response if available.\n\nYou can either:\n\nSearch for a specific campaign using its ID or\n\nFilter campaigns created within a specific date range.\n\nBody Parameters\nBefore sending the request, make sure to replace the values in your request body.\n\nParameter\nDescription\nData Type\n\ninapp_id\nThe ID of the app template\nInteger\n\ncreated_between\nThe dates between which the campaigns are created\nObject\n\nfrom\nThe start date of the date range\nString\n\nto\nThe end date of the date range\nString\n\nSample Body\nBefore sending the request, make sure to replace the values in your request body. Below is an example for the created_between parameter.\n\n{\n  \"created_between\": {\n    \"from\": \"2025-01-16\",\n    \"to\": \"2025-04-15\"\n  }\n}\n\nBelow is an example for the inapp_id parameter.\n\n{\n  \"inapp_id\": 1434\n}\n\nSample Responses\nThe following are some example responses you might receive for your request.\n\n200 OK\nThe following is a sample response for the created_between parameter.\n\n{\n  \"data\": [\n    {\n      \"inapp_id\": 2,\n      \"linked_push_id\": 3,\n      \"linked_push_type\": \"conversion\",\n      \"name\": \"My campaign\",\n      \"created_by\": \"test@useinsider.com\",\n      \"status\": \"passive\",\n      \"is_inapp_from_push\": true,\n      \"is_inapp_from_architect\": false,\n      \"created_at\": \"2025-01-01T15:08:55Z\",\n      \"start_date\": \"2024-01-01T15:08:56Z\",\n      \"updated_at\": \"2023-01-05T15:08:55Z\",\n      \"end_date\": \"2024-01-01T15:08:57Z\",\n      \"variations\": [\n        {\n          \"variation_id\": 1,\n          \"percentage\": 50,\n          \"variation_name\": \"Variant A\",\n          \"type\": \"wheelOfFortune\"\n        },\n        {\n          \"variation_id\": 2,\n          \"percentage\": 50,\n          \"variation_name\": \"Control Group\",\n          \"type\": \"wheelOfFortune\"\n        }\n      ],\n      \"tags\": [\n        \"tagName2\"\n      ]\n    },\n    {\n      \"inapp_id\": 3,\n      \"name\": \"Our campaign\",\n      \"created_by\": \"test@useinsider.com\",\n      \"status\": \"draft\",\n      \"is_inapp_from_push\": false,\n      \"is_inapp_from_architect\": false,\n      \"created_at\": \"2025-01-02T15:08:55Z\",\n      \"start_date\": \"2024-01-01T15:08:56Z\",\n      \"updated_at\": \"2023-01-05T15:08:55Z\",\n      \"end_date\": \"2024-01-01T15:08:57Z\",\n      \"variations\": [\n        {\n          \"variation_id\": 3,\n          \"percentage\": 50,\n          \"variation_name\": \"Variant A\",\n          \"type\": \"wheelOfFortune\"\n        },\n        {\n          \"variation_id\": 4,\n          \"percentage\": 50,\n          \"variation_name\": \"Control Group\",\n          \"type\": \"wheelOfFortune\"\n        }\n      ],\n      \"tags\": [\n        \"tagName3\"\n      ]\n    },\n    {\n      \"inapp_id\": 4,\n      \"journey_id\": 15,\n      \"name\": \"This campaign\",\n      \"created_by\": \"test@useinsider.com\",\n      \"status\": \"active\",\n      \"is_inapp_from_push\": false,\n      \"is_inapp_from_architect\": true,\n      \"created_at\": \"2025-01-03T15:08:55Z\",\n      \"start_date\": \"2024-01-01T15:08:56Z\",\n      \"updated_at\": \"2023-01-05T15:08:55Z\",\n      \"variations\": [\n        {\n          \"variation_id\": 5,\n          \"percentage\": 50,\n          \"variation_name\": \"Variant A\",\n          \"type\": \"wheelOfFortune\"\n        }\n      ]\n    }\n  ]\n}\n\nThe following is a sample response for the inapp_id parameter.\n\n{\n  \"data\": [\n    {\n      \"inapp_id\": 2,\n      \"name\": \"My campaign\",\n      \"linked_push_id\": 3,\n      \"linked_push_type\": \"conversion\",\n      \"created_at\": \"2024-01-01T15:08:55Z\",\n      \"created_by\": \"test@useinsider.com\",\n      \"status\": \"passive\",\n      \"is_inapp_from_push\": true,\n      \"is_inapp_from_architect\": false,\n      \"start_date\": \"2024-01-01T15:08:56Z\",\n      \"end_date\": \"2024-01-01T15:08:57Z\",\n      \"updated_at\": \"2023-01-05T15:08:55Z\",\n      \"variations\": [\n        {\n          \"variation_id\": 1,\n          \"percentage\": 50,\n          \"variation_name\": \"Variant A\",\n          \"type\": \"wheelOfFortune\"\n        },\n        {\n          \"variation_id\": 2,\n          \"percentage\": 50,\n          \"variation_name\": \"Control Group\",\n          \"type\": \"wheelOfFortune\"\n        }\n      ],\n      \"tags\": [\n        \"tagName2\"\n      ]\n    }\n  ]\n}\n\n400 Bad Request\nhe following is a sample response for a request where the API key is missing.\n\n{\n  \"error\": \"No api key provided\"\n}\n\n400 Bad Request\nThe following is a sample response for a request where the payload is invalid.\n\n{\n  \"error\": \"invalid request payload\"\n}\n\n400 Bad Request\nThe following is a sample response for a request where the required parameter is missing.\n\n{\n  \"error\": \"either 'inapp_id' or 'created_between' must be provided\"\n}\n\n400 Bad Request\nThe following is a sample response for a request where the payload has both parameters while it requires only one.\n\n{\n  \"error\": \"provide either 'inapp_id' or 'created_between', not both\"\n}\n\n400 Bad Request\nThe following is a sample response for a request where the date format is incorrect for the from parameter.\n\n{\n  \"error\": \"invalid date format for 'from'; expected format is YYYY-MM-DD\"\n}\n\n400 Bad Request\nThe following is a sample response for a request where the date format is incorrect for the to parameter.\n\n{\n  \"error\": \"invalid date format for 'to'; expected format is YYYY-MM-DD\"\n}\n\n400 Bad Request\nThe following is a sample response for a request where the to date is not greater than or equal to the from date.\n\n{\n  \"error\": \"'to' date must be after or equal to 'from' date\"\n}\n\n400 Bad Request\nThe following is a sample response for a request where the date range exceeds 90 days.\n\n{\n  \"error\": \"date range must not exceed 90 days\"\n}\n\n404 Not Found\nThe following is a sample response for a request where no inapp is found.\n\n{\n  \"error\": \"inapp not found\"\n}\n\n403 Forbidden\nThe following is a sample response for a request where the API key is invalid.\n\n{\n  \"error\": \"Invalid api key\"\n}\n\nLimitations\n\nAll functions must be executed with a simple HTTPS POST request.\n\nnly one of the filters (inapp_id or created_between) can be used at a time.\n\nThe date range must be 90 days or less.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "details",
+                "inapp"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-KEY"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"created_between\": {\n    \"from\": \"2025-01-16\",\n    \"to\": \"2025-04-15\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7731c175-91ca-4045-849e-d42c411718cd",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "details",
+                    "inapp"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"created_between\": {\n    \"from\": \"2025-01-16\",\n    \"to\": \"2025-04-15\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c474f820-7597-4081-b7d6-9dfb4a8020dd",
+          "name": "Upload FCM certificate",
+          "request": {
+            "name": "Upload FCM certificate",
+            "description": {
+              "content": "This API allows you to upload your FCM certificate to Insider without visiting the Inone panel. With this API, you can upload or change your certificate.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "settings",
+                "certificate",
+                "firebase"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "text/plain"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-KEY"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"service_account\",\n  \"project_id\": \"certificate-id\",\n  \"private_key_id\": \"01ab23cd45ef\",\n  \"private_key\": \"-----BEGIN PRIVATE KEY-----\\abcdef123456\\n-----END PRIVATE KEY-----\\n\",\n  \"client_email\": \"firebase-admin-abc123@insider-sdk.iam.gserviceaccount.com\",\n  \"client_id\": \"1234567890\",\n  \"auth_uri\": \"https://accounts.google.com/o/oauth2/auth\",\n  \"token_uri\": \"https://oauth2.googleapis.com/token\",\n  \"auth_provider_x509_cert_url\": \"https://www.googleapis.com/oauth2/v1/certs\",\n  \"client_x509_cert_url\": \"https://www.googleapis.com/robot/v1/metadata/x509/firebase-admin-abc123-%insider-sdk.iam.gserviceaccount.com\",\n  \"universe_domain\": \"googleapis.com\"\n}"
+            }
+          },
+          "response": [
+            {
+              "id": "ddfef104-1234-4d08-8fbb-f2a4f6562df7",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "settings",
+                    "certificate",
+                    "firebase"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"service_account\",\n  \"project_id\": \"certificate-id\",\n  \"private_key_id\": \"01ab23cd45ef\",\n  \"private_key\": \"-----BEGIN PRIVATE KEY-----\\abcdef123456\\n-----END PRIVATE KEY-----\\n\",\n  \"client_email\": \"firebase-admin-abc123@insider-sdk.iam.gserviceaccount.com\",\n  \"client_id\": \"1234567890\",\n  \"auth_uri\": \"https://accounts.google.com/o/oauth2/auth\",\n  \"token_uri\": \"https://oauth2.googleapis.com/token\",\n  \"auth_provider_x509_cert_url\": \"https://www.googleapis.com/oauth2/v1/certs\",\n  \"client_x509_cert_url\": \"https://www.googleapis.com/robot/v1/metadata/x509/firebase-admin-abc123-%insider-sdk.iam.gserviceaccount.com\",\n  \"universe_domain\": \"googleapis.com\"\n}"
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://mobile.api.useinsider.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "2e2d81ed-ba1e-4104-99bb-49216e26667f",
+    "name": "Insider One Mobile Settings API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "InApp campaign detail retrieval and FCM certificate upload for the mobile app channel.\n\nDerived by API Evangelist from Insider One's own public Postman collection (\"Insider One APIs\", published at https://developers.insiderone.com/). Paths, methods, headers, query parameters and request/response examples are verbatim from that collection; nothing is invented. The 429 response is documented for all Insider One APIs on https://academy.insiderone.com/docs/api-rate-limits-1 .\n\nContact Support:\n Name: Insider One Support\n Email: support@useinsider.com",
+      "type": "text/plain"
+    }
+  }
+}

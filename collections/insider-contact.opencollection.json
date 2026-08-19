@@ -1,0 +1,315 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Insider One Contact API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Email",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Resubscribe email users",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://contact.useinsider.com/email/v1/subscribe",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-PARTNER-NAME",
+              "value": "{{X-PARTNER-NAME}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This API allows you to set an unreachable email status as reachable on Insider's email platform.\n\nBody Parameters\nEvery request made to the request endpoint requires a request body formatted in JSON and containing your email's content and metadata. This includes the subscriber's email address.\n\nParameter\nDescription\nData Type\nRequired\n\nemail\nUser's email address\nString\nYes\n\nSample Body\nThe following is a sample body to resubscribe a user to the Email platform.\n\n{\n    \"email\": \"sample@mail.com\"\n}"
+        },
+        {
+          "info": {
+            "name": "Unsubscribe email users from database",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://contact.useinsider.com/email/v1/unsubscribe",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-PARTNER-NAME",
+              "value": "{{X-PARTNER-NAME}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This API enables you to unsubscribe users from Insider's email platform.\n\nBody Parameters\nEvery request made to the request endpoint requires a request body formatted in JSON and containing your email's content and metadata. This includes the subscriber's email address.\n\nParameter\nDescription\nData Type\nRequired\n\nemail\nUser's email address\nString\nYes\n\nSample Body\nThe following is a sample body to unsubscribe a user from Email platform.\n\n{\n    \"email\": \"sample@mail.com\"\n}\n\nSample Responses\n200 OK\n"
+        },
+        {
+          "info": {
+            "name": "Resubscribe Email Users for Email Global Subscribe",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://contact.useinsider.com/email/v2/subscribe",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-PARTNER-NAME",
+              "value": "{{X-PARTNER-NAME}}",
+              "placement": "header"
+            }
+          },
+          "docs": "The Email Resubscribe API allows you to set an unreachable email status as reachable on the Insider's Email platform.\n\nThe Resubscribe API v2 is the latest version of the Email Resubscribe API, which supports bulk data ingestion. If you're still using the previous version (v1), we strongly recommend migrating to this updated version to benefit from bulk updates and enhanced functionality. Please note that new integrations with v1 are no longer supported.\n\nAPI usage changes depending on the ident"
+        },
+        {
+          "info": {
+            "name": "Unsubscribe email users for email global unsubscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://contact.useinsider.com/email/v2/unsubscribe",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-PARTNER-NAME",
+              "value": "{{X-PARTNER-NAME}}",
+              "placement": "header"
+            }
+          },
+          "docs": "The Email Unsubscribe API allows you to ingest email addresses into either the global unsubscribe list or a specific unsubscribe group you created in InOne.\n\nThe Email Unsubscribe API v2 is the latest version of the Email Unsubscribe API, which supports bulk data ingestion. If you're still using the previous version (v1), we strongly recommend migrating to this updated version to benefit from bulk updates and enhanced functionality. Please note that new integrations with v1 are no longer support"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "User Data APIs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Upload first-party segments",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://contact.useinsider.com/fps/v1/upload",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-PARTNER-NAME",
+              "value": "{{X-PARTNER-NAME}}",
+              "placement": "header"
+            }
+          },
+          "docs": "The First-Party Segment API allows you to easily create a first-party segment through an API. When the uploading process is completed, the segment is automatically created on your First-Party Segment page under Saved Segments. In addition, you can see the results of the segment creation on the callback.\n\nThe FPS segments don't generate new users; instead, they group existing users into segments based on their attribute values.\n\nUse Cases\n\nAssume that you want to pass your custom segment(s) via A"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "SMS",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Resubscribe SMS users",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://contact.useinsider.com/sms/v1/subscribe",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-PARTNER-NAME",
+              "value": "{{X-PARTNER-NAME}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This API allows you to set an unreachable phone number status as reachable on Insider's SMS platform.\n\nA newer version of the Resubscribe API is available with support for bulk data ingestion. While the older version is still supported, we recommend using the latest version for improved functionality and future compatibility.\n\nBody Parameters\nEvery request made to the request endpoint requires a request body formatted in JSON and containing your phone number’s content and metadata. This includes"
+        },
+        {
+          "info": {
+            "name": "Unsubscribe SMS users from database",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://contact.useinsider.com/sms/v1/unsubscribe",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-PARTNER-NAME",
+              "value": "{{X-PARTNER-NAME}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This API enables you to unsubscribe users from Insider's SMS platform.\n\nA newer version of the Unsubscribe API is available with support for bulk data ingestion. While the older version is still supported, we recommend using the latest version for improved functionality and future compatibility.\n\nBody Parameters\nEvery request made to the request endpoint requires a request body formatted in JSON and containing your phone number’s content and metadata. This includes the subscriber’s phone number."
+        },
+        {
+          "info": {
+            "name": "Resubscribe SMS users / v2",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://contact.useinsider.com/sms/v2/subscribe",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-PARTNER-NAME",
+              "value": "{{X-PARTNER-NAME}}",
+              "placement": "header"
+            }
+          },
+          "docs": "The SMS Resubscribe API enables you to update an unreachable phone number status to reachable on Insider's SMS platform.\n\nIf a user exists with the provided phone number, the user's subscription status will be updated. If no user exists and the phone number is used as an identifier, a new user will be created.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\nphone_numbers\nUsers' phone numbers in E.164 format (e.g. +6598765432)\nString Array\nYes\n\nSample Request\nEvery request made to the"
+        },
+        {
+          "info": {
+            "name": "Unsubscribe SMS users from database / v2",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://contact.useinsider.com/sms/v2/unsubscribe",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-PARTNER-NAME",
+              "value": "{{X-PARTNER-NAME}}",
+              "placement": "header"
+            }
+          },
+          "docs": "The SMS Unsubscribe API enables you to unsubscribe users from Insider's SMS platform.\n\nIf a user exists with the provided phone number, the user's subscription status will be updated. If no user exists and the phone number is used as an identifier, a new user will be created.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\nphone_numbers\nUsers' phone numbers in E.164 format (e.g. +6598765432)\nString Array\nYes\n\nSample Request\nEvery request made to the request endpoint requires a reques"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "WhatsApp",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Resubscribe WhatsApp users",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://contact.useinsider.com/whatsapp/v1/subscribe",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-PARTNER-NAME",
+              "value": "{{X-PARTNER-NAME}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This API allows you to set an unreachable phone number status as reachable on Insider's WhatsApp platform.\n\nA newer version of the Resubscribe API is available with support for bulk data ingestion. While the older version is still supported, we recommend using the latest version for improved functionality and future compatibility.\n\nBody Parameters\nEvery request made to the request endpoint requires a request body formatted in JSON and containing your phone number’s content and metadata. This inc"
+        },
+        {
+          "info": {
+            "name": "Unsubscribe WhatsApp users from database",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://contact.useinsider.com/whatsapp/v1/unsubscribe",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-PARTNER-NAME",
+              "value": "{{X-PARTNER-NAME}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This API enables you to unsubscribe users from Insider's WhatsApp platform.\n\nA newer version of the Unsubscribe API is available with support for bulk data ingestion. While the older version is still supported, we recommend using the latest version for improved functionality and future compatibility.\n\nBody Parameters\nEvery request made to the request endpoint requires a request body formatted in JSON and containing your phone number’s content and metadata. This includes the subscriber’s phone nu"
+        },
+        {
+          "info": {
+            "name": "Resubscribe WhatsApp users / v2",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://contact.useinsider.com/whatsapp/v2/subscribe",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-PARTNER-NAME",
+              "value": "{{X-PARTNER-NAME}}",
+              "placement": "header"
+            }
+          },
+          "docs": "The WhatsApp Resubscribe API enables you to update an unreachable phone number status to reachable on Insider's WhatsApp platform.\n\nIf a user exists with the provided phone number, the user's subscription status will be updated. If no user exists and the phone number is used as an identifier, a new user will be created.\n\nBody Parameters\nEvery request made to the request endpoint requires a request body formatted in JSON and containing your phone number’s content and metadata. This includes the s"
+        },
+        {
+          "info": {
+            "name": "Unsubscribe WhatsApp users from database / v2",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://contact.useinsider.com/whatsapp/v2/unsubscribe",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-PARTNER-NAME",
+              "value": "{{X-PARTNER-NAME}}",
+              "placement": "header"
+            }
+          },
+          "docs": "The WhatsApp Unsubscribe API enables you to unsubscribe users from Insider's WhatsApp platform.\n\nIf a user exists with the provided phone number, the user's subscription status will be updated. If no user exists and the phone number is used as an identifier, a new user will be created.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\nphone_numbers\nUsers' phone number in E.164 format (e.g. +6598765432)\nString Array\nYes\n\nSample Request\nEvery request made to the request endpoint requires"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,126 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Insider One Mobile App API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Mobile App APIs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Upload custom segments to mobile suite",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://mobile.useinsider.com/api/custom_segment/v1/upload"
+          },
+          "docs": "Upload custom segments via a CSV file to your Insider One Mobile Suite."
+        },
+        {
+          "info": {
+            "name": "Get Message Center data",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://mobile.useinsider.com/api/message_center/v1",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-INSIDER-API-KEY",
+              "value": "{{X-INSIDER-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This API allows you to get the push notifications of any type delivered to your users during a defined time interval, including the push notifications delivered in Architect journeys.\n\nBody Parameters\nBefore sending the request, make sure to replace the values in your request body.\n\nParameter\nDescription\nData Type\nRequired\n\nidentifiers\nUser's identifier information. Identifiers can be Email, Phone Number, UUID (unique user ID), or a custom identifier. The identifiers need to be written in the me"
+        },
+        {
+          "info": {
+            "name": "Send bulk app pushes",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://mobile.useinsider.com/api/v1/push/bulk",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Bulk Push API is a service that sends push notifications to a predefined segment over the web using predefined web services.\n\nYou can reach the analytics of your bulk push notifications sent via this API through Reports > Mobile App Analytics > Push API Campaigns on Inone.\n\nBody Parameters\nThe following are the body parameters you need to use in your request.\n\nParameter\nDescription\nData Type\nRequired\n\napi_key\nYour API Key. Refer to API Authentication Tokens to get your API key.\nString\nYes\n\ncampa"
+        },
+        {
+          "info": {
+            "name": "Send targeted app pushes",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://mobile.useinsider.com/api/v2/notification/user",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "You can use the Targeted Push API in various cases such as sending status update of an order from your ecommerce platform, or informing users of a sale on an item that was in their wishlist.\n\nYou can reach the analytics of your targeted push notifications sent via this API through Reports > Mobile App Analytics > Push API Campaigns on Inone.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\napi_key\nYour API key. Refer to API Authentication Tokens to get your API key.\nString\nYes\n\nasync\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Mobile App",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get app push analytics",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://mobile.useinsider.com/api/v1/notification/get_statistics",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "You can use this service to get the analytics of the single push notifications that are sent in the current day using a predefined web service. These analytics include the campaigns created from the beginning of the day (00:00) to the time of the API request. For instance, if you send a request at 14:50, the API will return the campaigns created between 00:00-14:50.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\napi_key\nYour API key. Refer to API Authentication Tokens to get your AP"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Data Governance APIs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Set data processing consent for app users",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://mobile.useinsider.com/api/v1/privacy/gdpr/consent/set",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "EU’s General Data Protection Regulation came into force on May 25, 2018. This legislation requires Insider's customers to ask for specific consent to send their data to Insider as the Data Processor. Data Processing Consent API helps you send user consent programmatically in real-time over the web using predefined web services.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\npartner_name\nYour Insider partner name. The partner name should be lowercase.\nString\nYes\n\ngdpr_consent\nIf cons"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

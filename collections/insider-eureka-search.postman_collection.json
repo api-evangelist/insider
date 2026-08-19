@@ -1,0 +1,409 @@
+{
+  "item": [
+    {
+      "id": "676aeda0-4685-4eca-a617-a723906a5145",
+      "name": "Category Merchandising API",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "9754d048-b5f3-4b4f-9493-000f9366e5fb",
+          "name": "Category Collection",
+          "request": {
+            "name": "Category Collection",
+            "description": {
+              "content": "The Category Collection type in Eureka’s Category Merchandising API allows retrieval of all products in a specific category in the product catalog, helping narrow results by product type. For example, you can retrieve products under the \"Footwear\" category to get all shoes.\n\nStructures\nFlat Structure\nSome catalogs use a non-hierarchical or flat category structure where categories are not nested (e.g., Shoes, Footwear instead of Women > Shoes > Sneakers). In this case, you can retrieve products within specific categories, such as Shoes.\n\nMultiple Flat Category Retrieval\nOnly products belonging to both categories are returned when multiple singular categories are used in a flat category search. These categories are connected using an \"AND\" condition, meaning that a product must be classified under both to be included. For example, searching for Shoes and Footwear will return only products categorized as both Shoes and Footwear.\n\nThe cf parameter should be formatted the same way as in hierarchical structures, such as shoes or shoes~footwear\n\nMerchandising rules cannot be applied to multiple flat category retrievals.\n\nHierarchical Structure\nSome catalogs use a hierarchical category structure, where categories follow a parent-child relationship (e.g., Women > Shoes > Sneakers). In this case, searches should use the whole structure to ensure accurate results. For example, to retrieve products under Women > Shoes, use Women~Shoes.\n\nYou can select Flat or Hierarchical structure from Catalog Settings > Category Type page in the InOne panel.To use the Category Collection type, the category attribute in the product catalog must be properly populated to ensure product retrieval.\n\nRequest Parameters\nThe type path variable value must exactly match the example values provided in the request parameter table. The cf parameter value must exactly match the values defined in the product catalog.\n\nParameter\nDescription\nData Type\nRequired\nExample\n\ntype\nPath variable that specifies the desired product listing type\nString\nYes\n\"Category\"\n\ncf\nAllows filtering of products within the specified listing type\nString\nYes\ncf=Women~Shoes~Trainers\n\np\nPartner ID. Navigate to Inone Settings > Account Settings to copy your Partner ID.\nString\nYes\n\nl\nLocale is required to get your products in the current language of the website. E.g. en_US, en_GB\nString\nYes\nl=en_US\n\nc\nProducts will be displayed in the given currency (The current currency selected by the end-user on your website). E.g., USD,  AUD\nString\nYes\nc=USD\n\nsid\nStrategy ID. The unified identifier for a merchandising strategy. If Eureka Strategies(opens in new tab) are enabled for your account, you need to add this parameter to utilize the strategy. When provided, the listed products are enhanced with the merchandising rules belonging to the specified strategy. Merchandising actions such as boosting, burying, pinning, and hiding products are applied to category pages based on the rules defined within that strategy.\nString\nNo\nsid=123456\n\na\nFilter the products with the following pattern: a={field}~{value}\nList of String\nNo\na=size~38~39\n\npf\nIndex indicating from which order the products will start to be listed. It is used for pagination. The default value is pf=0.\nInteger\nNo\n\nps\nNumber of products that will be returned in the response. The default value is ps=6.\nInteger\nNo\n\nst\nSorting type of the listed products. It only takes one of the predefined sorting types. The default value is st=Relevancy.\nString\nNo\n\noi\nThe listed products will only be displayed as item IDs. The default value is oi=False\nBoolean\nNo\n\noc\nThe listed products will be displayed without their variants. The default value is false.\nBoolean\nNo\n\nu\nUser ID can be found in local storage by the key name spUID. spUID, which is a stringified object and contains data and expired properties.\nString\nNo\n\nThe sid (Strategy ID) parameter enables strategy-based merchandising. When a valid strategy ID is provided, the API applies the merchandising rules associated with that strategy to the search results. This includes product-level actions (boost, high-boost, bury, high-bury, pin, hide) and attribute-level actions (boost attribute, bury attribute, hide by attribute).- A Eureka Strategy(opens in new tab) becomes active once it is assigned to a Eureka Campaign. However, when using strategies with the Eureka Category API, a strategy can still be applied to category pages even if it is not assigned to any campaign and remains inactive. In this case, the strategy will take effect when the sid parameter is included in the API request.- **If sid is omitted, no strategy-based merchandising rules are applied to the search results.**- Additionally, if Eureka Strategies are enabled for your account, refer to the image below showing where to locate the sid:",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "web",
+                "collections"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f64d2362-3c7d-4121-b17b-5f6762384496",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "web",
+                    "collections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4817145c-2da4-4c9a-adf5-8412627f559e",
+          "name": "Manage product listing pages",
+          "request": {
+            "name": "Manage product listing pages",
+            "description": {
+              "content": "Eureka’s Category Merchandising API allows you to curate and manage your product listing pages effectively. Tailored for various list pages, such as categories, sales, new arrivals, and brands, enabling you to pin, boost, bury, or hide specific products as needed. You can set the rules using a visual merchandising editor to customize content for particular categories. Once you apply the rules, you can build the listing pages by making an API call based on the listing page type and its filters.\n\nThe initial step involves sending your data to Insider One in the correct format, typically handled by system rules defined during the website mapping process. \n\nCategory Merchandising API responses are in JSON format containing product matching criteria, configured merchandising content, and available facet options for further refinement.\n\nRequirements for Category Merchandising API\n\nFor product details, Insider One product catalog integration methods(opens in new tab) (XML, Catalog API, and Clickstream) should be created.\n\nData collection should be activated by the Insider One team.\n\nEureka should be activated by the Insider One team.\n\nIf you want to use dynamic filters (facets) and sortings in the category pages, you need to set these configurations via Eureka Settings in the Insider One's InOne panel.\n\nEndpoint\nhttps://ineureka.api.useinsider.com/api/web/collections/{type}?cf={COLLECTION_FILTER}&p={PARTNER_ID}&l={LOCALE}&c={CURRENCY}  \n\nFor requests where the total URL length exceeds 2,048 characters, a POST request must be sent to the base URL: https://ineureka.api.useinsider.com/api/web/collections. While the HTTP protocol itself does not define an explicit maximum URL length, practical limitations exist across browsers, web servers, proxies, and load balancers.To prevent compatibility issues and request failures, we enforce the length threshold as a precautionary measure. Although GET requests may yield faster responses in some cases, it is important to transition to POST when the payload size approaches or exceeds approximately 2,000 characters.This ensures compliance with common platform constraints and avoids potential truncation, rejection, or undefined behavior resulting from excessively long URLs.\n\nThe only difference between GET and POST requests is that the values sent as URL parameters in GET requests must be sent as JSON body in POST requests. For example:\n\n{\n  \"cf\": \"COLLECTION_FILTER\",\n  \"p\": \"PARTNER_ID\",\n  \"l\": \"LOCALE\",\n  \"c\": \"CURRENCY\",\n  \"sid\": \"STRATEGY_ID\"\n}\n\nWhen the request is sent, an authentication exception is thrown for security reasons. Therefore, when sending the request, you need to set the X-AUTH-TOKEN header to the token shared with you.\n\nCollection Types\nWhen retrieving products from the product catalog, three different collection types help organize and filter results based on specific criteria. These collection types are:\n\nCategory Collection\nThe Category Collection type enables the retrieval of all products in the catalog that belong to a specific category, helping to narrow down results based on product type. For example, to get all shoes, you can retrieve products under the \"Footwear\" category.\n\nBrand Collection\nThe Brand Collection(opens in new tab) type enables you to retrieve all products from a specific brand in the catalog, making it easy for users to access products from their preferred brands. For example, if you want to get all Nike products, you can use this option to retrieve only items from the \"Nike\" brand.\n\nAll Products Collection\nThe All Products Collection type allows the retrieval of all products in the catalog without any restrictions, providing access to the entire product catalog. For example, if you want to see all products, you can use this option to retrieve all products in the catalog.\n\nUsing these collection types, you can retrieve products efficiently based on your specific needs.\n\nCommon Capabilities for All Types\nSorting\nThe st parameter in the request can only have one value from the predefined sorting types. Using these types, the sorting algorithm for the listed products is selected. Depending on your data, the sorting types can be active or inactive. You can view these settings on the InOne panel.\n\nParameter\nSorting Type\n\nst\nRelevancy\n\nst\nPriceAsc\n\nst\nPriceDesc\n\nst\nMostPopularFirst\n\nst\nBestRatedFirst\n\nst\nMostRatedFirst\n\nst\nNewestFirst\n\nst\nMostFavoriteFirst\n\nst\nMostDiscountedFirst\n\nFilters\nYou can filter listed products using field names in the filter settings defined in faceting in Insider One's InOne panel.\n\nSample Faceting Regarding the Filter Config\nSample filter request:\n\n&a=category~Skin~Body Lotions&a=price~5~10\n\nIn the result of this filter request, you can see the matched facets in the related property sections of items as below:\n\n{\n  \"itemProperties\": {\n    \"item_card\": {\n      \"price\": {\n        \"EUR\": 7.75,\n        ...\n      },\n      \"category\": [\n        \"Skin\",\n        \"Body Lotions\",\n        ...\n      ],\n      \"in_stock\": 1,\n      ...\n    },\n    ...\n  },\n  ...\n}\n\nThe field values you can use for facet filtering are provided under data.aggregations in the result.\n\n[\n  {\n    \"name\": \"price\",\n    \"label\": \"Price\",\n    \"style\": \"Slider\",\n    \"items\": [\n      {\n        \"name\": \"0~5\",\n        \"min\": 0.0,\n        \"max\": 5.0\n      },\n      {\n        \"name\": \"5~10\",\n        \"min\": 5.0,\n        \"max\": 10.0\n      },\n      ...\n    ],\n    \"sequence\": 1,\n    \"itemOrderType\": \"KeyAsc\"\n  },\n  {\n    \"name\": \"category\",\n    \"label\": \"Category\",\n    \"style\": \"List\",\n    \"items\": [\n      {\n        \"name\": \"Skin\",\n        \"selected\": true,\n        \"documentCount\": 66\n      },\n      {\n        \"name\": \"Body Lotion\",\n        \"selected\": true,\n        \"documentCount\": 61\n      },\n      ...\n    ],\n    \"sequence\": 2,\n    \"itemOrderType\": \"CountDesc\"\n  },\n  {\n    \"name\": \"in_stock\",\n    \"label\": \"In Stock\",\n    \"style\": \"Checkboxes\",\n    \"items\": [\n      {\n        \"name\": \"1\",\n        \"selected\": false,\n        \"documentCount\": 12\n      },\n      ...\n    ],\n    \"sequence\": 3,\n    \"itemOrderType\": \"CountDesc\"\n  },\n  ...\n]\n\nThis table details the facet filter styles and their corresponding data types. Based on the specific filter style you want to implement, choose the appropriate data type.\n\nFilter Style\nData Type\n\nPrice\nNumeric\n\nRating\nNumeric\n\nRange\nNumeric\n\nSlider\nNumeric\n\nCheckboxes\nString\n\nList\nString\n\nToggle\nBoolean\n\nFor the filters with numeric data types, such as Slider style, there should be only two values: min and max.\n\n{field}~{minValue}~{maxValue}\n\nSample Filter Parameters\n&a=brand~Neki snippet\n\n&a=category~Birds~Cats~Dogs\n\n&a=price~50~100\n\n&a=brand~Neki&a=price~50~100\n\nSample Responses\n\nParameter\nDefinition\n\nstatus\nIt is the field that shows the result of the search. This field can be:  - Success: Category Merchandising API response is valid.  - Error: Unexpected internal server errors.  - Invalid: Eureka Category Merchandising API returns a Validation Exception. The request is invalid.  - BusinessException: Eureka Category Merchandising API returns a Business Exception. Details are shared in Validation Exceptions section.\n\ndata\nIt is the object where items, sortings, aggregations, navigations, and noResultPageText are kept as a result of a given query.\n\ndata.items\nThis field holds the list of properties for the returned items.\n\ndata.items.itemId\nIt shows the item ID.  * In case there are variants of the item, the ID refers to the item to be displayed in search results. The item details are kept under data.items.itemProperties in addition to that all the variants including the item displayed are also stored in data.items.itemVariants\n\ndata.items.itemProperties.item_card\nThis field holds all of the fields such as name, discount, product_attributes (which includes a list of fields such as flavor, color, etc.).  * In case there are price and original_price fields, they are the same unless there is a discount on this product. When there is a discount, price field is equal to discounted price.  * These fields may vary depending on your account.\n\ndata.items.itemVariants\nThis field holds all of the variants of an item. The first element of the list is the item to be displayed in search results. The format of data.items.itemVariants items is the same as the data.items.itemProperties.item_card.  * Variants are options of the same item that have different properties. For instance, yellow and red color options of the same t-shirt might be variants of the t-shirt.  * Use of variants may be active or passive depending on your account.\n\ndata.aggregations\nThis field holds a list of different aggregations.\n\ndata.aggregations.name\nThis field holds the aggregation name.\n\ndata.aggregations.label\nThis field holds the aggregation label (which is for showing the name of the aggregation to the end user).\n\ndata.aggregations.style\nThis field holds the aggregation style. Possible values:  Price, Checkboxes, Toggle, Rating, Range, Slider, List\n\ndata.aggregations.items\nThis field holds a list of item fields for the specified aggregation.\n\ndata.aggregations.items.name\nThis field holds the aggregation item name.\n\ndata.aggregations.items.label\nThis field holds the aggregation item label.\n\ndata.aggregations.items.min\nThis field holds the minimum value of the aggregation item if the aggregation style is numeric.\n\ndata.aggregations.items.max\nThis field holds the maximum value of the aggregation item if the aggregation style is numeric.\n\ndata.aggregations.items.selected\nIt is a boolean field that indicates whether the aggregation item is selected if the aggregation style is not numeric.\n\ndata.aggregations.items.documentCount\nThis field holds the total number of documents of the aggregation item if the aggregation style is not numeric.\n\ndata.aggregations.suffixUnit\nThis field holds the suffix unit for the facet values as string. For instance, for perfume_size facets, ml is the suffixUnit (50ml - 100ml)\n\ndata.aggregations.prefixUnit\nThis field holds the prefix unit for the facet values as string.\n\ndata.aggregations.sequence\nThis field holds the sequence of the aggregation for showing the aggregations to the end-user in the correct order.\n\ndata.aggregations.itemOrderType\nThis field holds the item order type of the aggregation. Possible values: KeyAsc, KeyDesc, CountDesc, CountAsc, None\n\ndata.navigation\nThis dictionary shows information such as pagination and total item count.\n\ndata.navigation.totalPages\nThis field shows how many pages are returned for a given query.\n\ndata.navigation.currentPage\nThis field specifies which page the returned result is.\n\ndata.navigation.totalItems\nThis field shows how many items are returned for a given query.\n\ndata.navigation.itemPerPage\nIt is the field that shows how many items are returned on each page.\n\ndata.noResultPageText\nIf a query does not return any results, this field is used for the empty result page. E.g., No Results found\n\ndata.sortings\nIt is the list where the details about sorting are kept.\n\ndata.sortings.type\nIt is the field where the sorting type is located. Possible sorting types: Relevancy, PriceAsc, PriceDesc, MostPopularFirst, BestRatedFirst, MostRatedFirst,  NewestFirst, MostFavoriteFirst, MostDiscountedFirst\n\ndata.sortings.label\nIt is the label of sorting that is displayed to the end user.\n\ndata.sortings.selected\nIt is a boolean field that indicates whether the relevant sorting is selected.\n\ndata.defaultSortingType\nIt is the field where the sorting type of the recommended items is located. It is null when no active sorting is found.\n\npartnerResources\nIt is the list of labels to be displayed to the end user. It provides localization flexibility based on the locale parameter sent.  *Partner resources can be set from the InOne panel.\n\nerror\nWhen there is a business exception (501), this field is filled with code and message fields.\n\nvalidations\nWhen the request is incorrect (400 Bad Request), this field is filled with an array of type and message fields.\n\n200 Success\n{ \n  \"status\": \"Success\",\n  \"data\": {\n    \"items\": [...],\n    \"aggregations\": [...],\n    \"navigation\": {...},\n    \"noResultPageText\": \"...\",\n    \"sortings\": [...]\n  },\n  \"redirection\": null,\n  \"partnerResources\": {...},\n  \"error\": null,\n  \"validations\": null\n}\n\n500 Internal Server Error\n{ \n  \"status\": \"Error\",\n  \"data\": null,\n  \"redirection\": null,\n  \"partnerResources\": null,\n  \"error\": {\n    \"code\": \"500 INTERNAL_SERVER_ERROR\",\n    \"message\": \"...\" \n  },\n  \"validations\": null\n}\n\n400 Business Exception\nYou can refer to the Fail Records Messages to troubleshoot the Business Exception errors.\n\n{ \n  \"status\": \"BusinessException\",\n  \"data\": null,\n  \"redirection\": null,\n  \"partnerResources\": null,\n  \"error\": {\n    \"code\": \"...\",\n    \"message\": \"...\" \n  },\n  \"validations\": null\n}\n\n400 Validation Exception\nYou can refer to the Fail Records Messages to troubleshoot the Validation Exception errors.\n\n{ \n  \"status\": \"Invalid\", \n  \"data\": null, \n  \"redirection\": null, \n  \"partnerResources\": null,\n  \"error\": null,\n  \"validations\": [\n    {\n      \"type\": \"...\",\n      \"message\": \"...\"\n    }\n  ]\n}\n\nFail Records Messages\n\nBusiness Exceptions\n\nMessage\nDefinition\nHTTP Code\n\nAggregationStyleNotFound\nAggregation style must be provided in the partner config.\n400\n\nAggregationConfigNotFound\nAggregation configs must be provided in the partner config.\n400\n\nSortingConfigNotFound\nSorting configs must be provided in the partner config\n400\n\nSortingFieldNotFound\nSorting field must be provided in the partner config.\n400\n\nInvalidPriceAggregationStyle\nIncorrect style for price aggregation is provided in the partner config.\n400\n\nPartnerConfigNotFound\nPartner config cannot be gathered from the cache.\n400\n\nAggregationResultNotFound\nUnexpected aggregation results were received according to aggregation configs.\n400\n\nValidation Exceptions\n\nMessage\nDefinition\nHTTP Code\n\nPartnerIdNotFound\np parameter is not provided in the request\n400\n\nLocaleNotFound\nl parameter is not provided in the request\n400\n\nLocaleInvalidFormat\nWrong locale format is provided in the request\n400\n\nCurrencyNotFound\nc parameter is not provided in the request\n400\n\nCurrencyInvalidFormat\nWrong currency format is provided in the request\n400\n\nCollectionFilterNotFound\nCollection filter cf is not provided\n400\n\nCollectionFilterInvalidFormat\nCollection filter format is invalid\n400\n\nInvalidCollectionFilter\nCollection filter must not be given with AllProducts Collection Type\n400\n\nCollectionInvalidLength\nCollection filter must contain number of characters between 2 and 280\n400\n\nPaginationFromInvalidValue\nWrong pf value is provided in the request\n400\n\nPaginationSizeInvalidValue\nWrong ps value is provided in the request\n400\n\nAggregationNameNotFound\nAggregation name must be provided in the request\n400\n\nAggregationItemsNotFound\nAggregation items must be provided in the request\n400\n\nSortingTypeInvalid\nSorting type is not valid\n400",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "web",
+                "collections",
+                ":type"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "cf",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "p",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "l",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "c",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "type",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6d1f34e4-7fc0-4d4b-8f8f-dcfb59461c61",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "web",
+                    "collections",
+                    ":type"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "cf",
+                      "value": "{COLLECTION_FILTER}"
+                    },
+                    {
+                      "key": "p",
+                      "value": "{PARTNER_ID}"
+                    },
+                    {
+                      "key": "l",
+                      "value": "{LOCALE}"
+                    },
+                    {
+                      "key": "c",
+                      "value": "{CURRENCY}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "type",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "d6d885d1-4b2a-4fb3-aaf7-303eb8b20485",
+      "name": "Search APIs",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "82360ae6-9756-4b2c-80d2-fbc047e52812",
+          "name": "Get search results",
+          "request": {
+            "name": "Get search results",
+            "description": {
+              "content": "Eureka’s Search API lets you quickly and smoothly implement our search engine within your website(s) or mobile application(s). Insider One's powerful search engine processes millions of queries monthly, delivering relevant results in under 150-400 ms, regardless of location.\n\nThe first step is to send your data in the correct format to Insider One. Eureka will return the results in JSON. The response will include products matching the search criteria, available facet options to refine the results further, and configured merchandising content.\n\nRequirements for Search API\n\nThe Insider One team should activate Eureka.\n\nProduct Catalog integration methods (XML(opens in new tab), Catalog API, and Clickstream(opens in new tab)) should be created for product details.\n\nEureka settings, such as facets, sorting options, synonyms, URL redirections, etc., should be defined on the Insider One's InOne panel.\n\nEndpoint\n\nGET https://ineureka.api.useinsider.com/api/web/search\n\nUse POST /api/web/search instead of GET in two cases: when the total URL length exceeds 2048 characters, or when any a filter value contains a comma character.For URL length, although the HTTP specification does not define a maximum, practical limits are imposed by web browsers and server software. POST moves all parameters into the request body, avoiding these limits entirely. GET requests may return faster responses, but switch to POST as your payload approaches 2000 characters.\n\nThe only difference between GET and POST requests is that the values sent as URL parameters in GET requests must be sent in the JSON body of POST requests, as you can see below:\n\n{\n  \"q\": \"SEARCH_QUERY\",\n  \"p\": \"PARTNER_ID\",\n  \"l\": \"LOCALE\",\n  \"c\": \"CURRENCY\"\n}\n\nBear in mind that, for security reasons, an authentication exception is thrown when the request is sent. To avoid this, you need to set the X-AUTH-TOKEN header with the token  when sending the request.\n\nRequest Parameters\n\nParameter\nDescription\nData Type\nRequired\nExample\n\nq\nQuery String that will be searched\nString\nYes\nq=sneakers\n\np\nThis is your partner ID. To copy your partner ID, navigate to InOne > Inone Settings > Account Settings(opens in new tab).\nString\nYes\np=10009999\n\nl\nLocale is required to receive your products on the website in the current language. Depending on this, product data will be gathered, and the settings will be applied.\nString\nYes\nl=en_US\n\nc\nThe searched products will be displayed in the given currency, as written in the catalog(the current currency the end user selects on your website).\nString\nYes\nc=USD\n\nsid\nStrategy ID. The unified identifier for a merchandising strategy. If Eureka Strategies(opens in new tab) are enabled for your account, you need to add this parameter to utilize the strategy. When provided, Merchandising actions such as boosting, burying, pinning, and hiding products are applied to search results based on the rules defined within that strategy.\nString\nNo\nsid=123456\n\nps\nPage size. The number of products will be displayed on the search results page. For example, if the phone is searched with ps=6, the API will bring the most relevant 6 phones to the current page. The default value is ps=6.\nInteger\nNo\nps=6\n\npf\nPage from. Index where the searched products will start in the response. It is used for pagination. For example, if \"phone\" is searched and the second page is clicked, the request must be sent with pf=6 if ps is set as 6. Results from the 6th product will be displayed. The default value is pf=0.\nInteger\nNo\npf=12\n\na\nFilter the products with the following pattern: a={field}~{value}. It is applied when the end-user selects a filter from the facet section.\nList of String\nNo\na=size~38~39\n\nst\nSorting type of the searched products. It only takes one of the predefined sorting types. The default value is relevancy.\nString\nNo\nst=Relevancy\n\nu\nThe User ID. It can be found in local storage under the key name spUID. This key stores a stringified object containing data (the User ID) and expiration (the expiration timestamp). The User ID or Unique User ID must be sent if the personalized search is enabled.\nString\nNo\nu=15ca72d9c3.61d3\n\nuuid\nThe Unique User ID. You define and manage the unique user ID. If u is not provided, the uuid must be sent to enable personalized search results. If both uuid and u parameters are provided, the u parameter takes priority.\nString\nNo\nuuid=26522777\n\noi\nThe searched products will only be displayed as item IDs. The default value is false.\nBoolean\nNo\noi=False\n\nqs\nApplied strategies of the search query. It only takes an encoded string auto-generated by the first query in the response.\nString\nNo\nqs=UCxQUA==\n\nThe query q parameter should contain at least 2 characters and no more than 280 characters. Otherwise, a validation exception will be thrown.\n\nThe qs parameter should not be included in the initial end-user query request. You can find it in the response body after the first result returns. However, it needs to be added in subsequent requests when applying the facet filter for the same query. Otherwise, the request is accepted as a new query, and the search results may differ.\n\nThe sid (Strategy ID) parameter enables strategy-based merchandising. When a valid strategy ID is provided, the API applies the merchandising rules associated with that strategy to the search results. This includes product-level actions (boost, high-boost, bury, high-bury, pin, hide) and attribute-level actions (boost attribute, bury attribute, hide by attribute).- A Eureka Strategy(opens in new tab) becomes active once it is assigned to a Eureka Campaign. However, when using strategies with the Eureka Search API, a strategy can still be applied to search results even if it is not assigned to any campaign and remains inactive. In this case, the strategy will take effect when the sid parameter is included in the API request.- **If sid is omitted, no strategy-based merchandising rules are applied to the search results.**- Additionally, if Eureka Strategies are enabled for your account, refer to the image below showing where to locate the sid: \n\nSorting\nThe st parameter in the request can only have one value from the predefined sorting types. These types select the sorting algorithm for the searched products. Depending on your data, the sorting types can be active or inactive. You can view these settings on the InOne panel.\n\nParameter\nSorting Type\n\nst\nRelevancy\n\nst\nPriceAsc\n\nst\nPriceDesc\n\nst\nMostPopularFirst\n\nst\nBestRatedFirst\n\nst\nMostRatedFirst\n\nst\nNewestFirst\n\nst\nMostFavoriteFirst\n\nst\nMostDiscountedFirst\n\nFilters\nSearch results can be filtered using fields in filter settings defined in faceting(opens in new tab) on the Insider One's InOne panel.\n\nSample Filter Result Regarding the Filter Config\nSample filter request:\n\n&a=category~Skin~Body Lotions&a=price~5~10\n\nAs a result of this filter request, you can see the matched facets in the related result section below\n\n{\n  \"itemProperties\": {\n    \"item_card\": {\n      \"price\": {\n        \"EUR\": 7.75,\n        ...\n      },\n      \"category\": [\n        \"Skin\",\n        \"Body Lotions\",\n        ...\n      ],\n      \"in_stock\": 1,\n      ...\n    },\n    ...\n  },\n  ...\n}\n\nThe field values you can use for facet filtering are provided under data.aggregations in the result.\n\n[\n  {\n    \"name\": \"price\",\n    \"label\": \"Price\",\n    \"style\": \"Slider\",\n    \"items\": [\n      {\n        \"name\": \"0~5\",\n        \"min\": 0.0,\n        \"max\": 5.0\n      },\n      {\n        \"name\": \"5~10\",\n        \"min\": 5.0,\n        \"max\": 10.0\n      },\n      ...\n    ],\n    \"prefixUnit\": null,\n    \"suffixUnit\": null,\n    \"sequence\": 1,\n    \"itemOrderType\": \"KeyAsc\"\n  },\n  {\n    \"name\": \"category\",\n    \"label\": \"Category\",\n    \"style\": \"List\",\n    \"items\": [\n      {\n        \"name\": \"Skin\",\n        \"selected\": true,\n        \"documentCount\": 66\n      },\n      {\n        \"name\": \"Body Lotion\",\n        \"selected\": true,\n        \"documentCount\": 61\n      },\n      ...\n    ],\n    \"prefixUnit\": null,\n    \"suffixUnit\": null,\n    \"sequence\": 2,\n    \"itemOrderType\": \"CountDesc\"\n  },\n  {\n    \"name\": \"in_stock\",\n    \"label\": \"In Stock\",\n    \"style\": \"Checkboxes\",\n    \"items\": [\n      {\n        \"name\": \"1\",\n        \"selected\": false,\n        \"documentCount\": 12\n      },\n      ...\n    ],\n    \"prefixUnit\": null,\n    \"suffixUnit\": null,\n    \"sequence\": 3,\n    \"itemOrderType\": \"CountDesc\"\n  },\n  {\n    \"name\": \"evaluation\",\n    \"label\": \"Evaluation\",\n    \"style\": \"Rating\",\n    \"items\": [\n      {\n        \"name\": \"1+\",\n        \"label\": null,\n        \"min\": 1.0,\n        \"max\": 6.0,\n        \"selected\": false,\n        \"documentCount\": 8\n      },\n      {\n        \"name\": \"2+\",\n        \"label\": null,\n        \"min\": 2.0,\n        \"max\": 6.0,\n        \"selected\": false,\n        \"documentCount\": 8\n      },\n      {\n        \"name\": \"3+\",\n        \"label\": null,\n        \"min\": 3.0,\n        \"max\": 6.0,\n        \"selected\": false,\n        \"documentCount\": 8\n      },\n      {\n        \"name\": \"4+\",\n        \"label\": null,\n        \"min\": 4.0,\n        \"max\": 6.0,\n        \"selected\": false,\n        \"documentCount\": 8\n      },\n      {\n        \"name\": \"5\",\n        \"label\": null,\n        \"min\": 5.0,\n        \"max\": 6.0,\n        \"selected\": false,\n        \"documentCount\": 8\n      }\n    ],\n    \"prefixUnit\": null,\n    \"suffixUnit\": null,\n    \"sequence\": 6,\n    \"itemOrderType\": \"CountDesc\"\n  },\n  ...\n]\n\n\"a\" parameter should be passed to the request as a query string when the request method is GET, or it should be passed as a list of strings when the request method is POST. The \"a\" can take multiple fields; each must be stated separately. Also, the field can take multiple values separated by a tilde (~). Field values should be different; if there is more than one value, they should be separated according to the filter pattern.\n\n?a={field}~{value}&a={field}~{value}\n\n{\"a\": [\"{field}~{value}\", \"{field}~{value}\"]}\n\nMarkupCopy\n\nFilter Style\nData Type\n\nPrice\nNumeric\n\nRating\nNumeric\n\nRange\nNumeric\n\nSlider\nNumeric\n\nCheckboxes\nString\n\nList\nString\n\nToggle\nBoolean\n\nFor filters with numeric data types, such as Slider style, there should be only two values: min and max.\n\n{field}~{minValue}~{maxValue}\n\nSample Filter Parameters\n&a=brand~Mybrand snippet\n\n&a=category~Birds~Cats~Dogs\n\n&a=price~50~100\n\n&a=brand~Mybrand&a=price~50~100\n\nSample Responses\n\nParameter\nDefinition\n\nstatus\nIt is the field that shows the result of the search. This field can be:  - Success: Search API response is valid.  - SuccessFallback: If Search API returns an empty item list, Eureka Search API - sends a request to Recommendation API and returns the items.  - Error: Unexpected internal server errors.  - Invalid: Eureka Search API returns a Validation Exception. The request is invalid.  - BusinessException: Eureka Search API returns a Business Exception. Details are shared in Validation Exceptions section.\n\ndata\nIt is the object where items, sortings, aggregations, navigations, and noResultPageText are kept as a result of a given query.\n\ndata.items\nThis field holds the list of properties for the returned items.\n\ndata.items.itemId\nIt shows the item ID.  * In the case of item variants, the ID refers to the item to be displayed in search results. The item details are kept under data.items.itemProperties. In addition to that, all the variants, including the item displayed, are also stored in data.items.itemVariants\n\ndata.items.itemProperties.item_card\nThis field holds all of the fields such as original_price, product_attributes (includes list of fields such as review_count, product_brand etc.).  * It includes the price and original_price fields. If this product does not have a discount, these two fields are the same. However, if there is a discount, the price field is equal to the discounted price.  * These fields might vary depending on your account.\n\ndata.items.itemVariants\nThis field holds all of the variants of an item. The first element of the list is the item to be displayed in search results. The format of data.items.itemVariants items is the same as the data.items.itemProperties.item_card.  * Variants are options of the same item that have different properties. For instance, yellow and red color options of the same t-shirt might be variants of the t-shirt.  * Use of variants may be active or passive, depending on your account.\n\ndata.aggregations\nThis field holds a list of different aggregations.\n\ndata.aggregations.name\nThis field holds the aggregation name.\n\ndata.aggregations.label\nThis field holds the aggregation label (which shows the aggregation's name to the end user).\n\ndata.aggregations.style\nThis field holds the aggregation style. Possible values:  Checkboxes, Toggle, Rating, Range, Slider, List, None\n\ndata.aggregations.items\nThis field holds a list of item fields for the specified aggregation.\n\ndata.aggregations.items.name\nThis field holds the aggregation item name.\n\ndata.aggregations.items.label\nThis field holds the aggregation item label.\n\ndata.aggregations.items.min\nThis field holds the minimum value of the aggregation item.\n\ndata.aggregations.items.max\nThis field holds the maximum value of the aggregation item.\n\ndata.aggregations.items.selected\nIt is a boolean field that indicates whether the aggregation item is selected.\n\ndata.aggregations.items.documentCount\nThis field holds the total number of documents of the aggregation item.\n\ndata.aggregations.suffixUnit\nThis field holds the suffix unit for the facet values as a string. For instance, for perfume_size facets, ml is the suffixUnit (50ml - 100ml)\n\ndata.aggregations.prefixUnit\nThis field holds the prefix unit for the facet values as a string.\n\ndata.aggregations.sequence\nThis field holds the aggregation sequence to show the aggregations to the end-user in the correct order.\n\ndata.aggregations.itemOrderType\nThis field holds the item order type of the aggregation. Possible values: KeyAsc, KeyDesc, CountDesc, CountAsc, None\n\ndata.navigation\nThis dictionary shows information such as pagination and total item count.\n\ndata.navigation.totalPages\nThis field shows how many pages are returned for a given query.\n\ndata.navigation.currentPage\nThis field specifies which page the returned result is.\n\ndata.navigation.totalItems\nThis field shows how many items are returned for a given query.\n\ndata.navigation.itemPerPage\nIt is the field that shows how many items are on a page.\n\ndata.noResultPageText\nIf a query does not return any results, this field is used for the empty result page. E.g., No Results\n\ndata.sortings\nIt is the list where the details about sorting are kept.\n\ndata.sortings.type\nIt is the field where the sorting type is located. Possible sorting types: Relevancy, PriceAsc, PriceDesc, MostPopularFirst, BestRatedFirst, MostRatedFirst,  NewestFirst, MostFavoriteFirst, MostDiscountedFirst\n\ndata.sortings.label\nIt is the sorting label that is displayed to the end user.\n\ndata.sortings.selected\nIt is a boolean field that indicates whether the relevant sorting is selected.\n\ndata.appliedSearchStrategy\nThis field holds the encoded string of applied search strategies.\n\ndata.brands\nThis field holds the list of recommended brands for the given user, if there are any.  *This field is only available when the response status is SuccessFallback.\n\ndata.categories\nThis field holds the list of recommended categories for the given user, if there are any.  *This field is only available when the response status is SuccessFallback.\n\ndata.defaultSortingType\nIt is the field where the sorting type of the recommended items is located. It is null when no active sorting is found.\n\nredirection\nRedirections can be set from the InOne panel. If the given query matches a redirection rule, this field shows the details.\n\nredirection.redirectTo\nThis field holds the URL for the redirection rule.\n\nredirection.redirectionText\nThis field holds the redirection text for the redirection banner.\n\nerror\nWhen there is a business exception (501), this field is filled with code and message fields.\n\nvalidations\nWhen the request is incorrect (400 Bad Request), this field is filled with an array of type and message fields.\n\n200 Search\n{ \n  \"status\": \"Success\",\n  \"data\": {\n    \"items\": [...],\n    \"aggregations\": [...],\n    \"navigation\": {...},\n    \"noResultPageText\": \"...\",\n    \"sortings\": [...]\n  },\n  \"redirection\": null,\n  \"partnerResources\": {...},\n  \"error\": null,\n  \"validations\": null,\n  \"appliedSearchStrategy\": \"...\"\n}\n\n200 Recommendation\n{ \n  \"status\": \"SuccessFallback\",\n  \"data\": {\n    \"items\": [...],\n    \"brands\": [...],\n    \"categories\": [...],\n    \"noResultPageText\": \"...\",\n    \"defaultSortingType\": null\n  },\n  \"redirection\": null,\n  \"partnerResources\": {...},\n  \"error\": null,\n  \"validations\": null,\n  \"appliedSearchStrategy\": \"...\"\n}\n\n400 Validation Exception\n{ \n  \"status\": \"Invalid\", \n  \"data\": null, \n  \"redirection\": null, \n  \"partnerResources\": null,\n  \"error\": null,\n  \"validations\": [\n    {\n      \"type\": \"...\",\n      \"message\": \"...\"\n    }\n  ],\n  \"appliedSearchStrategy\": null\n}\n\n400 Business Exception\n{ \n  \"status\": \"BusinessException\",\n  \"data\": null,\n  \"redirection\": null,\n  \"partnerResources\": null,\n  \"error\": {\n    \"code\": \"...\",\n    \"message\": \"...\" \n  },\n  \"validations\": null,\n  \"appliedSearchStrategy\": null \n}\n\n429 Rate Limit Exceeded Exception\n{\n    \"status\": \"RateLimitExceeded\",\n    \"data\": null,\n    \"redirection\": null,\n    \"partnerResources\": null,\n    \"error\": {\n        \"code\": \"RATE_LIMIT_EXCEEDED\",\n        \"message\": \"Rate limit exceeded. Please retry after 1 second.\"\n    },\n    \"validations\": null,\n    \"appliedSearchStrategy\": null,\n    \"merchandisingRuleBanner\": null\n}\n\n500 Internal Server Error\n{ \n  \"status\": \"Error\",\n  \"data\": null,\n  \"redirection\": null,\n  \"partnerResources\": null,\n  \"error\": {\n    \"code\": \"500 INTERNAL_SERVER_ERROR\",\n    \"message\": \"...\" \n  },\n  \"validations\": null,\n  \"appliedSearchStrategy\": null \n}\n\nFail Records Messages\n\nBusiness Exceptions\n\nMessage\nDefinition\nHTTP Code\n\nAggregationStyleNotFound\nAggregation style must be provided in the partner config.\n400\n\nAggregationConfigNotFound\nAggregation configs must be provided in the partner config.\n400\n\nSortingConfigNotFound\nSorting configs must be provided in the partner config\n400\n\nSortingFieldNotFound\nThe sorting field must be provided in the partner config.\n400\n\nUnsuccessfulSearchResult\nThe search results cannot be collected as expected.\n400\n\nInvalidPriceAggregationStyle\nThe incorrect style for price aggregation is provided in the partner config.\n400\n\nPartnerConfigNotFound\nPartner config cannot be gathered from the cache.\n400\n\nAggregationResultNotFound\nUnexpected aggregation results were received according to the aggregation configs.\n400\n\nRecommendationApiBrandFieldNameNotFound\nName for the brand field used by the Recommendation API cannot be found in the partner configuration.\n400\n\nLocalizationLanguageSettingsNotFound\nLocalization language settings are not defined.\n400\n\nQueryStrategyIsNotValid\nThe query strategy parameter passed is not valid and must be taken from the initial response.\n400\n\nValidation Exceptions\n\nMessage\nDefinition\nHTTP Code\n\nPartnerIdNotFound\np parameter is not provided in the request.\n400\n\nLocaleNotFound\nl parameter is not provided in the request.\n400\n\nLocaleInvalidFormat\nThe request provides an incorrect locale format.\n400\n\nCurrencyNotFound\nc parameter is not provided in the request.\n400\n\nCurrencyInvalidFormat\nThe request provides the wrong currency format.\n400\n\nQueryNotFound\nq parameter is not provided in the request.\n400\n\nQueryInvalidFormat\nThe request contains an incorrect query format.\n400\n\nQueryInvalidLength\nThe query must contain the number of characters between 2 and 280.\n200\n\nPaginationFromInvalidValue\nThe wrong pf value is provided in the request.\n400\n\nPaginationSizeInvalidValue\nThe wrong ps value is provided in the request.\n400\n\nPaginationMaxHitSizeExceeded\nPagination exceeds the allowed maximum size.\n400\n\nAggregationNameNotFound\nAggregation name must be provided in the request.\n400\n\nAggregationItemsNotFound\nAggregation items must be provided in the request.\n400\n\nAggregationInvalidValue\nAggregation items must be valid values.\n400\n\nAppliedSearchStrategiesAreRepeated\nApplies strategies must be unique.\n400\n\nSortingTypeInvalid\nThe wrong st value is provided in the request.\n400\n\nRate Limit Exceeded Exception\n\nMessage\nDefinition\nHTTP Code\n\nRateLimitExceeded\nIndicates that the request rate exceeded the allowed limit per account-locale pair.\n429\n\nPlease note that the Search API has a rate limit of 350 requests per second (RPS) per account-locale pair. If you would like to request a higher limit, contact the Insider One team.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "web",
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f7049a78-c37b-44c0-934c-108a9bc10018",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "web",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1abb18e0-906e-41c9-8a1c-f031a7812e6b",
+          "name": "Get search recommendations",
+          "request": {
+            "name": "Get search recommendations",
+            "description": {
+              "content": "The Suggestion API offers query recommendations as users type into a search bar. It analyzes the input text and returns a list of relevant suggestions in real time based on user history and other contextual information like category and brand. This feature notably improves the user experience, accelerating the search process and effectively directing users to their intended queries.\nRequest Parameters\n\n\n\nParameter\nDescription\nData Type\nSample\nRequired\n\n\n\n\nq\nQuery String that will be searched\nString\nq=sneakers\nYes\n\n\np\nThis is your partner ID. Navigate to InOne &gt; InOne Settings &gt; Account Preferences to copy your partner ID.\nString\n10000000\nYes\n\n\nl\nLocale is required to get partner products in the current language of the website.\nString\nl=en_US\nYes\n\n\n\nThe q parameter in the query should include a minimum of 2 characters and a maximum of 280 characters. Otherwise, a validation exception will occur.\nSample Responses\nAPI Responses\n\n\n\nParameter\nDefinition\n\n\n\n\nstatus\nIt is the field that shows the result of the suggestion. This field can be:  - Success: Suggestion API response is valid.  - Error: Unexpected internal server errors.  - Invalid: Suggestion API returns a Validation Exception. The request is invalid.  - BusinessException: Eureka Search API returns a Business Exception. Details are shared in Validation Exceptions section.\n\n\ndata\nIt is the object where suggested phrases and their types are kept as a result of the given query.\n\n\nvalidations\nWhen the request is incorrect (HTTP 4XX), this field is filled with an array of type and message details.\n\n\n\n200 Search\n{ \n  \"status\": \"Success\",\n  \"data\": [\n    {\n      \"phrase\": \"...\"\n      \"phraseType\": \"...\"\n    }, ...\n  ],\n  \"error\": null,\n  \"validations\": null\n}\n\n\n500 Internal Server Error\n{ \n  \"status\": \"Error\",\n  \"data\": null,\n  \"redirection\": null,\n  \"partnerResources\": null,\n  \"error\": {\n    \"code\": \"500 INTERNAL_SERVER_ERROR\",\n    \"message\": \"...\" \n  },\n  \"validations\": null,\n  \"appliedSearchStrategy\": null \n}\n\n\n400 Validation Exception\n{\n  \"status\": \"ValidationException\",\n  \"data\": null,\n  \"error\": null,\n  \"validations\": [\n    \"...\"\n  ]\n}\n\n\nFail Records Messages\n\nBusiness Exceptions\n\n\n\n\nMessage\nDefinition\nHTTP Code\n\n\n\n\nPartnerConfigNotFound\nPartner config cannot be gathered from the cache.\n400\n\n\n\n\nValidation Exceptions\n\n\n\n\nMessage\nDefinition\nHTTP Code\n\n\n\n\nQueryNotFound\nq parameter is not provided in the request.\n400\n\n\nQueryInvalidFormat\nThe wrong query format is provided in the request.\n400\n\n\nQueryInvalidLength\nThe query must contain the number of characters between 2 and 280.\n200",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "port": "domain_name",
+              "path": [
+                "api",
+                "web",
+                "suggestions",
+                "query"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Customer-specific Eureka host provided by Insider One.",
+                  "type": "any",
+                  "value": "ineureka.api.useinsider.com",
+                  "key": "domain_name"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "add8a2a8-b26a-4d08-b687-cdee65534684",
+              "name": "Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "port": "domain_name",
+                  "path": [
+                    "api",
+                    "web",
+                    "suggestions",
+                    "query"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Customer-specific Eureka host provided by Insider One.",
+                      "type": "any",
+                      "value": "ineureka.api.useinsider.com",
+                      "key": "domain_name"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Too Many Requests\",\n  \"status\": 429\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://ineureka.api.useinsider.com",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "cc17b318-2ea9-4624-b423-9492bf59fa36",
+    "name": "Insider One Eureka Search API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Eureka product discovery: search results, search suggestions and category/brand merchandising collections.\n\nDerived by API Evangelist from Insider One's own public Postman collection (\"Insider One APIs\", published at https://developers.insiderone.com/). Paths, methods, headers, query parameters and request/response examples are verbatim from that collection; nothing is invented. The 429 response is documented for all Insider One APIs on https://academy.insiderone.com/docs/api-rate-limits-1 .\n\nContact Support:\n Name: Insider One Support\n Email: support@useinsider.com",
+      "type": "text/plain"
+    }
+  }
+}

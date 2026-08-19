@@ -1,0 +1,212 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Insider One SMS API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "SMS",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get SMS campaign analytics",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sms.useinsider.com/analytics/v1/campaign",
+            "params": [
+              {
+                "name": "campaignId",
+                "value": "Integer",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-INS-AUTH-KEY",
+              "value": "{{X-INS-AUTH-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "SMS Campaign Analytics details will be listed as you send a request to this API.\n\nThis API does not contain Architect Analytics.\n\nHeaders\n\nHeader\nSample Value\nDescription\n\nX-INS-AUTH-KEY\n1a2b3c4d5e6f\nThis key is required to authorize your request. Refer to API Authentication Tokens to generate your token.\n\nQuery Parameters\n\nParameter\nData Type\nDescription\nRequired\n\ncampaignId\nInteger\nYour campaign ID that can be found on the campaign URL\nYes\n\nSample Query\nBefore sending the request, make sure: \n"
+        },
+        {
+          "info": {
+            "name": "Get SMS campaign list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sms.useinsider.com/analytics/v1/list",
+            "params": [
+              {
+                "name": "Page",
+                "value": "Integer",
+                "type": "query"
+              },
+              {
+                "name": "PerPage",
+                "value": "Integer",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-INS-AUTH-KEY",
+              "value": "{{X-INS-AUTH-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Insider's SMS Analytics API allows you to get the SMS campaigns list from your back-end without using the Insider's InOne panel. This API returns Active, Test, Passive, Completed, and Stopped campaigns with this endpoint.\n\nHeaders\n\nHeader\nSample Value\nDescription\n\nX-INS-AUTH-KEY\n1a2b3c4d5e6f\nThis key is required to authorize your request. Refer to API Authentication Tokens to generate your token.\n\nQuery Parameters\n\nParameter\nData Type\nDescription\nRequired\nDefault Value\n\nPage\nInteger\nSpecifies th"
+        },
+        {
+          "info": {
+            "name": "Get overall SMS campaign analytics",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sms.useinsider.com/analytics/v1/overall",
+            "params": [
+              {
+                "name": "startTime",
+                "value": "int64",
+                "type": "query"
+              },
+              {
+                "name": "endTime",
+                "value": "int64",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-INS-AUTH-KEY",
+              "value": "{{X-INS-AUTH-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "SMS Overall Campaign Analytics details will be listed for a given period as you send a request to this API.\n\nThis API does not contain Architect Analytics.\n\nHeaders\n\nHeader\nSample Value\nDescription\n\nX-INS-AUTH-KEY\n1a2b3c4d5e6f\nThis key is required to authorize your request. Refer to API Authentication Tokens to generate your token.\n\nQuery Parameters\n\nParameter\nData Type\nDescription\nRequired\n\nstartTime\nint64\nThe time campaign is being launched. Specifies a 10-digit epoch start time.\nYes\n\nendTime\n"
+        },
+        {
+          "info": {
+            "name": "Get Transactional SMS analytics",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sms.useinsider.com/analytics/v1/transactional",
+            "params": [
+              {
+                "name": "startTime",
+                "value": "Int64",
+                "type": "query"
+              },
+              {
+                "name": "endTime",
+                "value": "Int64",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-INS-AUTH-KEY",
+              "value": "{{X-INS-AUTH-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Transactional SMS Analytics details will be listed for a given time period as you send a request to this API.\n\nHeaders\n\nHeader\nSample Value\nDescription\n\nX-INS-AUTH-KEY\n1a2b3c4d5e6f\nThis key is required to authorize your request. Refer to API Authentication Tokens to generate your token.\n\nQuery Parameters\n\nParameter\nData Type\nDescription\nRequired\n\nstartTime\nint64\nThe time campaign is being launched. Specifies a 10-digit epoch start time.\nYes\n\nendTime\nint64\nThe current date (today’s date on the pa"
+        },
+        {
+          "info": {
+            "name": "Get OTP / Verify SMS analytics",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sms.useinsider.com/analytics/v1/verify",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-INS-AUTH-KEY",
+              "value": "{{X-INS-AUTH-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "SMS OTP / Verify Analytics details will be listed for a given time period as you send a request to this API.\n\nHeaders\n\nHeader\nSample Value\nDescription\n\nX-INS-AUTH-KEY\n1a2b3c4d5e6f\nThis key is required to authorize your request. Refer to API Authentication Tokens to generate your token.\n\nQuery Parameters\n\nParameter\nData Type\nDescription\nRequired\n\nstartTime\nint64\nThe time campaign is being launched. Specifies a 10-digit epoch start time.\nYes\n\nendTime\nint64\nThe current date (today’s date on the pay"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Transactional SMS",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Send transactional Single SMS",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sms.useinsider.com/v1/send",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-INS-AUTH-KEY",
+              "value": "{{X-INS-AUTH-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This API enables you to send targeted transactional SMS to your users. You can trigger these SMS messages once a user takes a specific action on your platform.\n\nYou can use transactional SMS messages to:\n\nSend a post-purchase SMS to share details about a purchase/booking,\n\nHelp your users reset their password if they forget it,\n\nConfirm an order a user places,\n\nShare delivery tracking details of a purchase (when it is shipped, on the way, and delivered) and take many other actions.\n\nUse Cases\nYo"
+        },
+        {
+          "info": {
+            "name": "Send Transactional Bulk SMS",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sms.useinsider.com/v1/sendMultipleMessage",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-INS-AUTH-KEY",
+              "value": "{{X-INS-AUTH-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This API enables you to send targeted transactional SMS to your users. You can trigger these SMS messages once a user takes a specific action on your platform.\n\nYou can use transactional SMS messages to:\n\nSend a post-purchase SMS to share details about a purchase/booking,\n\nHelp your users reset their password if they forget it,\n\nConfirm an order a user places,\n\nShare delivery tracking details of a purchase (when it is shipped, on the way, and delivered) and take many other actions.\n\nUse Cases\nYo"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

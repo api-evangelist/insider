@@ -1,0 +1,215 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Insider One Unification API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Data Governance APIs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Delete user's PII data using profile ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://unification.useinsider.com/api/contact/v1/anonymize",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-PARTNER-NAME",
+              "value": "{{X-PARTNER-NAME}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This API is used to delete users' PII data. Insider does not allow the deletion of the user's last remaining identifier. In addition, if this value is a PII (Personally Identifiable Information) data such as email, phone number, it would not be deleted. Thanks to this endpoint, you can delete these values associated with users; if they are a known user and their only identifier is email or phone number, then, the user becomes anonymous. For example, you can delete all PII data of registered user"
+        },
+        {
+          "info": {
+            "name": "Delete user's PII data using identifier",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://unification.useinsider.com/api/user/v1/anonymize",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-PARTNER-NAME",
+              "value": "{{X-PARTNER-NAME}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This API is used to delete users' PII data. Insider does not allow the deletion of the user's last remaining identifier. In addition, if this value is a PII (Personally Identifiable Information) data such as email, phone number, it would not be deleted. Thanks to this endpoint, you can delete these values associated with users; if they are a known user and their only identifier is email or phone number, then, the user becomes anonymous. For example, you can delete all PII data of registered user"
+        },
+        {
+          "info": {
+            "name": "Delete user profile",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://unification.useinsider.com/api/user/v1/delete",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-PARTNER-NAME",
+              "value": "{{X-PARTNER-NAME}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This API enables you to delete your customer and their data when you need to.\n\nFor example, one of your users might have selected GDPR’s “right-to-be-forgotten” option and you need to delete that user's data. You can call this API with the related identifier for Insider to find that user's data, and delete it.\n\nBody Parameters\nEach POST body must have a unifier field under identifiers object. You can use the default identifiers such as email, phone number, or uuid and also the new custom identif"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "User Data APIs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Export raw user data",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://unification.useinsider.com/api/raw/v1/export",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-PARTNER-NAME",
+              "value": "{{X-PARTNER-NAME}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This API prepares the raw user data, exports it into Insider's AWS S3 Bucket, and returns a link to your webhook endpoint as a response. This link enables you to access the raw user data and transfer it to your end.\n\nThe API prepares the raw user data for all users for all requested attributes and for a list of events and their event parameters. You can filter to narrow down the user set (e.g., the raw user data can return the users who made a purchase on the last day).\n\nThe API can prepare the "
+        },
+        {
+          "info": {
+            "name": "Delete user attribute",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://unification.useinsider.com/api/user/v1/attribute/delete",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-PARTNER-NAME",
+              "value": "{{X-PARTNER-NAME}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This API enables you to delete your customer attributes when you need to. You can either delete the whole attribute from the user, or delete a specific value from an array typed attribute.\n\nFor example, your customer might have selected GDPR’s “right-to-be-forgotten” option and you need to delete some attributes that capture such customer information.\n\nThis deletion action cannot be undone. Please carefully consider before proceeding.\n\nAn attribute defined as an identifier cannot be deleted with"
+        },
+        {
+          "info": {
+            "name": "Update identifiers",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://unification.useinsider.com/api/user/v1/identity",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-PARTNER-NAME",
+              "value": "{{X-PARTNER-NAME}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This API enables you to update the value of the identifiers that are already associated with users.\n\nFor example, an existing user that is already a known user to Insider may have updated their email address in your system. Accordingly, you may need to change the identifier(s) of this user. With this API, you can change the value of an existing identifier to a new value.\n\nBody Parameters\nEach PATCH request must have an identifier type, old value, and new value specified in it. You can use either"
+        },
+        {
+          "info": {
+            "name": "Delete identifiers",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://unification.useinsider.com/api/user/v1/identity",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-PARTNER-NAME",
+              "value": "{{X-PARTNER-NAME}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This API enables you to delete the value of the identifiers that are already associated with users.\n\nFor example, an existing user that is already a known user to Insider may have deleted their phone number from your system. Accordingly, you may need to delete the phone number of this user. With this API, you can delete the value of an existing identifier.\n\nThis deletion action cannot be undone. Please carefully consider before proceeding.\n\nBody Parameters\nEach DELETE request must have an identi"
+        },
+        {
+          "info": {
+            "name": "Get user profiles",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://unification.useinsider.com/api/user/v1/profile",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-PARTNER-NAME",
+              "value": "{{X-PARTNER-NAME}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This API returns the attributes and events you request for a single user that you specify by an identifier. It takes identifier, attribute list, and event list within the date range. In its response, it provides the data you choose.\n\nYou can get user profiles for various use cases. For example, you can personalize the content for your other providers, or connect user profiles to your services like call centers.\n\nBody Parameters\nEach POST body must have an identifiers object.\n\nEach request must h"
+        },
+        {
+          "info": {
+            "name": "Upsert user data",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://unification.useinsider.com/api/user/v1/upsert",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-PARTNER-NAME",
+              "value": "{{X-PARTNER-NAME}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Upsert API enables you to send users' attributes and events to Insider. It allows you to insert and update user data whenever you need it.\n\nYou can possibly use the Upsert User Data for the following use cases:\n\nSending offline purchases or any other events\n\nSending leads that are collected from any other platform\n\nSending segments that are prepared in-house\n\nIf you want to limit access to the Upsert API for users with a UCD API Key or control data transmission through this API, you can implemen"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
