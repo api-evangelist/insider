@@ -78,6 +78,11 @@ apis:
   tags:
   - CDP
   - User Data
+  - Event
+  - GDPR
+  tags_raw:
+  - CDP
+  - User Data
   - Events
   - GDPR
   properties:
@@ -109,6 +114,12 @@ apis:
   humanURL: https://academy.insiderone.com/docs/data-collection-consent-apis
   baseURL: https://contact.useinsider.com
   tags:
+  - Consent
+  - Subscription
+  - Email
+  - SMS
+  - WhatsApp
+  tags_raw:
   - Consent
   - Subscriptions
   - Email
@@ -234,6 +245,11 @@ apis:
   humanURL: https://academy.insiderone.com/docs/whatsapp-transactional-api
   baseURL: https://gw.useinsider.com
   tags:
+  - WhatsApp
+  - Authentication
+  - Webhook
+  - Messaging
+  tags_raw:
   - WhatsApp
   - OAuth
   - Webhooks
@@ -419,6 +435,10 @@ apis:
   baseURL: https://catalog.api.useinsider.com
   tags:
   - Catalog
+  - Product
+  - Commerce
+  tags_raw:
+  - Catalog
   - Products
   - Commerce
   properties:
@@ -506,6 +526,10 @@ apis:
   humanURL: https://academy.insiderone.com/docs/eureka-event-collection-api-implementation
   baseURL: https://eurekaevent.api.useinsider.com
   tags:
+  - Search
+  - Event
+  - Commerce
+  tags_raw:
   - Search
   - Events
   - Commerce
@@ -627,6 +651,11 @@ apis:
   humanURL: https://academy.insiderone.com/docs/set-up-insider-one-mcp
   baseURL: https://mcp.insiderone.com/mcp
   tags:
+  - MCP
+  - Agents
+  - Analytics
+  - Artificial Intelligence
+  tags_raw:
   - MCP
   - Agents
   - Analytics
