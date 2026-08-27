@@ -67,587 +67,12 @@ tags:
 - Consent
 - GDPR
 apis:
-- name: Insider One Unification API
-  description: >-
-    The Unified Customer Database. Upsert user profiles, attributes and behavioural events, read profiles
-    back with a sparse fieldset, manage identifiers, export raw data, and run the GDPR delete/anonymize
-    operations. Profiles are addressed by customer-owned identifiers (email, phone, uuid, custom)
-    — there is no Insider-issued user id.
-  humanURL: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
-  baseURL: https://unification.useinsider.com
-  tags:
-  - CDP
-  - User Data
-  - Event
-  - GDPR
-  tags_raw:
-  - CDP
-  - User Data
-  - Events
-  - GDPR
-  properties:
-  - type: OpenAPI
-    url: openapi/insider-unification-openapi.yml
-  - type: Overlay
-    url: overlays/insider-unification-overlay.yaml
-  - type: Documentation
-    url: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
-  - type: APIReference
-    url: https://developers.insiderone.com/
-  - type: Authentication
-    url: authentication/insider-authentication.yml
-  - type: RateLimits
-    url: rate-limits/insider-rate-limits.yml
-  - type: ErrorCatalog
-    url: errors/insider-problem-types.yml
-  - type: Conventions
-    url: conventions/insider-conventions.yml
-  - type: Postman
-    url: postman/insider-one-apis.postman_collection.json
-  - type: DataModel
-    url: data-model/insider-data-model.yml
-- name: Insider One Contact API
-  description: >-
-    Per-channel subscription state and first-party segment upload. v1 unsubscribes from the channel
-    database; v2 adds global-versus-group scope and bulk ingestion, and both versions run side by
-    side.
-  humanURL: https://academy.insiderone.com/docs/data-collection-consent-apis
-  baseURL: https://contact.useinsider.com
-  tags:
-  - Consent
-  - Subscription
-  - Email
-  - SMS
-  - WhatsApp
-  tags_raw:
-  - Consent
-  - Subscriptions
-  - Email
-  - SMS
-  - WhatsApp
-  properties:
-  - type: OpenAPI
-    url: openapi/insider-contact-openapi.yml
-  - type: Overlay
-    url: overlays/insider-contact-overlay.yaml
-  - type: Documentation
-    url: https://academy.insiderone.com/docs/data-collection-consent-apis
-  - type: APIReference
-    url: https://developers.insiderone.com/
-  - type: Authentication
-    url: authentication/insider-authentication.yml
-  - type: RateLimits
-    url: rate-limits/insider-rate-limits.yml
-  - type: ErrorCatalog
-    url: errors/insider-problem-types.yml
-  - type: Conventions
-    url: conventions/insider-conventions.yml
-  - type: Postman
-    url: postman/insider-one-apis.postman_collection.json
-  - type: DataModel
-    url: data-model/insider-data-model.yml
-- name: Insider One Mail API
-  description: >-
-    Transactional email sending (9,000 requests/second) with dynamic fields, attachments and customer-supplied
-    unique_args for correlation, plus email campaign creation.
-  humanURL: https://academy.insiderone.com/docs/email-apis-overview
-  baseURL: https://mail.useinsider.com
-  tags:
-  - Email
-  - Transactional
-  - Messaging
-  properties:
-  - type: OpenAPI
-    url: openapi/insider-mail-openapi.yml
-  - type: Overlay
-    url: overlays/insider-mail-overlay.yaml
-  - type: Documentation
-    url: https://academy.insiderone.com/docs/email-apis-overview
-  - type: APIReference
-    url: https://developers.insiderone.com/
-  - type: Authentication
-    url: authentication/insider-authentication.yml
-  - type: RateLimits
-    url: rate-limits/insider-rate-limits.yml
-  - type: ErrorCatalog
-    url: errors/insider-problem-types.yml
-  - type: Conventions
-    url: conventions/insider-conventions.yml
-  - type: Postman
-    url: postman/insider-one-apis.postman_collection.json
-- name: Insider One SMS API
-  description: >-
-    Transactional single and bulk SMS sending, plus SMS campaign, overall, transactional and OTP/Verify
-    analytics. Bulk send carries up to 50 messages per request at 5 requests/second.
-  humanURL: https://academy.insiderone.com/docs/transactional-sms-overview
-  baseURL: https://sms.useinsider.com
-  tags:
-  - SMS
-  - Transactional
-  - Messaging
-  - Analytics
-  properties:
-  - type: OpenAPI
-    url: openapi/insider-sms-openapi.yml
-  - type: Overlay
-    url: overlays/insider-sms-overlay.yaml
-  - type: Documentation
-    url: https://academy.insiderone.com/docs/transactional-sms-overview
-  - type: APIReference
-    url: https://developers.insiderone.com/
-  - type: Authentication
-    url: authentication/insider-authentication.yml
-  - type: RateLimits
-    url: rate-limits/insider-rate-limits.yml
-  - type: ErrorCatalog
-    url: errors/insider-problem-types.yml
-  - type: Conventions
-    url: conventions/insider-conventions.yml
-  - type: Postman
-    url: postman/insider-one-apis.postman_collection.json
-- name: Insider One WhatsApp API
-  description: >-
-    Transactional and conversational WhatsApp sending — template, text, media, location, button-reply
-    and carousel messages. Each send returns an Insider tracking key that is echoed in every webhook
-    event for that message.
-  humanURL: https://academy.insiderone.com/docs/whatsapp-transactional-api
-  baseURL: https://whatsapp.useinsider.com
-  tags:
-  - WhatsApp
-  - Messaging
-  - Conversational
-  properties:
-  - type: OpenAPI
-    url: openapi/insider-whatsapp-openapi.yml
-  - type: Overlay
-    url: overlays/insider-whatsapp-overlay.yaml
-  - type: Documentation
-    url: https://academy.insiderone.com/docs/whatsapp-transactional-api
-  - type: APIReference
-    url: https://developers.insiderone.com/
-  - type: Authentication
-    url: authentication/insider-authentication.yml
-  - type: RateLimits
-    url: rate-limits/insider-rate-limits.yml
-  - type: ErrorCatalog
-    url: errors/insider-problem-types.yml
-  - type: Conventions
-    url: conventions/insider-conventions.yml
-  - type: Postman
-    url: postman/insider-one-apis.postman_collection.json
-  - type: Webhooks
-    url: asyncapi/insider-whatsapp-webhooks.yml
-- name: Insider One Gateway API (OAuth 2.0)
-  description: >-
-    The OAuth 2.0 gateway: WhatsApp v2 transactional and conversational send, plus webhook settings
-    registration. gw.useinsider.com is also the OAuth 2.0 authorization server for the whole Insider
-    One platform, serving RFC 8414 and RFC 9728 discovery documents.
-  humanURL: https://academy.insiderone.com/docs/whatsapp-transactional-api
-  baseURL: https://gw.useinsider.com
-  tags:
-  - WhatsApp
-  - Authentication
-  - Webhook
-  - Messaging
-  tags_raw:
-  - WhatsApp
-  - OAuth
-  - Webhooks
-  - Messaging
-  properties:
-  - type: OpenAPI
-    url: openapi/insider-gateway-openapi.yml
-  - type: Overlay
-    url: overlays/insider-gateway-overlay.yaml
-  - type: Documentation
-    url: https://academy.insiderone.com/docs/whatsapp-transactional-api
-  - type: APIReference
-    url: https://developers.insiderone.com/
-  - type: Authentication
-    url: authentication/insider-authentication.yml
-  - type: RateLimits
-    url: rate-limits/insider-rate-limits.yml
-  - type: ErrorCatalog
-    url: errors/insider-problem-types.yml
-  - type: Conventions
-    url: conventions/insider-conventions.yml
-  - type: Postman
-    url: postman/insider-one-apis.postman_collection.json
-  - type: OAuthScopes
-    url: scopes/insider-scopes.yml
-  - type: Webhooks
-    url: asyncapi/insider-whatsapp-webhooks.yml
-- name: Insider One Web Push API
-  description: >-
-    Create, launch and delete single web push campaigns from your own backend, plus web push top-metrics,
-    overall-metrics and campaign-metrics statistics.
-  humanURL: https://academy.insiderone.com/docs/web-push-apis-overview
-  baseURL: https://web-push.api.useinsider.com
-  tags:
-  - Web Push
-  - Messaging
-  - Analytics
-  properties:
-  - type: OpenAPI
-    url: openapi/insider-web-push-openapi.yml
-  - type: Overlay
-    url: overlays/insider-web-push-overlay.yaml
-  - type: Documentation
-    url: https://academy.insiderone.com/docs/web-push-apis-overview
-  - type: APIReference
-    url: https://developers.insiderone.com/
-  - type: Authentication
-    url: authentication/insider-authentication.yml
-  - type: RateLimits
-    url: rate-limits/insider-rate-limits.yml
-  - type: ErrorCatalog
-    url: errors/insider-problem-types.yml
-  - type: Conventions
-    url: conventions/insider-conventions.yml
-  - type: Postman
-    url: postman/insider-one-apis.postman_collection.json
-- name: Insider One Mobile App API
-  description: >-
-    Bulk, targeted and advanced app push, Message Center retrieval, app push analytics, custom segment
-    upload and the mobile GDPR data-processing consent endpoint.
-  humanURL: https://academy.insiderone.com/docs/app-push-apis-overview
-  baseURL: https://mobile.useinsider.com
-  tags:
-  - Mobile
-  - App Push
-  - GDPR
-  - Analytics
-  properties:
-  - type: OpenAPI
-    url: openapi/insider-mobile-openapi.yml
-  - type: Overlay
-    url: overlays/insider-mobile-overlay.yaml
-  - type: Documentation
-    url: https://academy.insiderone.com/docs/app-push-apis-overview
-  - type: APIReference
-    url: https://developers.insiderone.com/
-  - type: Authentication
-    url: authentication/insider-authentication.yml
-  - type: RateLimits
-    url: rate-limits/insider-rate-limits.yml
-  - type: ErrorCatalog
-    url: errors/insider-problem-types.yml
-  - type: Conventions
-    url: conventions/insider-conventions.yml
-  - type: Postman
-    url: postman/insider-one-apis.postman_collection.json
-  - type: DataModel
-    url: data-model/insider-data-model.yml
-- name: Insider One Mobile Settings API
-  description: >-
-    InApp campaign detail retrieval (90-day window, YYYY-MM-DD dates) and FCM certificate upload for
-    the mobile app channel.
-  humanURL: https://academy.insiderone.com/docs/mobile-app-analytics-apis
-  baseURL: https://mobile.api.useinsider.com
-  tags:
-  - Mobile
-  - In-App
-  - Settings
-  properties:
-  - type: OpenAPI
-    url: openapi/insider-mobile-settings-openapi.yml
-  - type: Overlay
-    url: overlays/insider-mobile-settings-overlay.yaml
-  - type: Documentation
-    url: https://academy.insiderone.com/docs/mobile-app-analytics-apis
-  - type: APIReference
-    url: https://developers.insiderone.com/
-  - type: Authentication
-    url: authentication/insider-authentication.yml
-  - type: RateLimits
-    url: rate-limits/insider-rate-limits.yml
-  - type: ErrorCatalog
-    url: errors/insider-problem-types.yml
-  - type: Conventions
-    url: conventions/insider-conventions.yml
-  - type: Postman
-    url: postman/insider-one-apis.postman_collection.json
-- name: Insider One Live Activity API
-  description: >-
-    iOS Live Activity lifecycle: register, start, update and end an activity, and add or remove users
-    from a running one.
-  humanURL: https://academy.insiderone.com/docs/mobile-app-integration-guide-1
-  baseURL: https://live-activity.api.useinsider.com
-  tags:
-  - Mobile
-  - iOS
-  - Live Activity
-  properties:
-  - type: OpenAPI
-    url: openapi/insider-live-activity-openapi.yml
-  - type: Overlay
-    url: overlays/insider-live-activity-overlay.yaml
-  - type: Documentation
-    url: https://academy.insiderone.com/docs/mobile-app-integration-guide-1
-  - type: APIReference
-    url: https://developers.insiderone.com/
-  - type: Authentication
-    url: authentication/insider-authentication.yml
-  - type: RateLimits
-    url: rate-limits/insider-rate-limits.yml
-  - type: ErrorCatalog
-    url: errors/insider-problem-types.yml
-  - type: Conventions
-    url: conventions/insider-conventions.yml
-  - type: Postman
-    url: postman/insider-one-apis.postman_collection.json
-- name: Insider One Verify (OTP) API
-  description: >-
-    One-time-passcode channels and templates for SMS and WhatsApp: create and update channels, manage
-    OTP templates, generate codes and verify them.
-  humanURL: https://academy.insiderone.com/docs/otp-for-sms
-  baseURL: https://verify.useinsider.com
-  tags:
-  - OTP
-  - Verification
-  - SMS
-  - WhatsApp
-  properties:
-  - type: OpenAPI
-    url: openapi/insider-verify-openapi.yml
-  - type: Overlay
-    url: overlays/insider-verify-overlay.yaml
-  - type: Documentation
-    url: https://academy.insiderone.com/docs/otp-for-sms
-  - type: APIReference
-    url: https://developers.insiderone.com/
-  - type: Authentication
-    url: authentication/insider-authentication.yml
-  - type: RateLimits
-    url: rate-limits/insider-rate-limits.yml
-  - type: ErrorCatalog
-    url: errors/insider-problem-types.yml
-  - type: Conventions
-    url: conventions/insider-conventions.yml
-  - type: Postman
-    url: postman/insider-one-apis.postman_collection.json
-- name: Insider One Catalog API
-  description: >-
-    Product catalog ingestion and update in flat and nested formats, plus locale configuration. Products
-    are keyed on item_id + locale, with currency-keyed price maps and groupcode variant grouping.
-    All endpoints share one 60 requests/minute budget.
-  humanURL: https://academy.insiderone.com/docs/product-catalog-api-introduction
-  baseURL: https://catalog.api.useinsider.com
-  tags:
-  - Catalog
-  - Product
-  - Commerce
-  tags_raw:
-  - Catalog
-  - Products
-  - Commerce
-  properties:
-  - type: OpenAPI
-    url: openapi/insider-catalog-openapi.yml
-  - type: Overlay
-    url: overlays/insider-catalog-overlay.yaml
-  - type: Documentation
-    url: https://academy.insiderone.com/docs/product-catalog-api-introduction
-  - type: APIReference
-    url: https://developers.insiderone.com/
-  - type: Authentication
-    url: authentication/insider-authentication.yml
-  - type: RateLimits
-    url: rate-limits/insider-rate-limits.yml
-  - type: ErrorCatalog
-    url: errors/insider-problem-types.yml
-  - type: Conventions
-    url: conventions/insider-conventions.yml
-  - type: Postman
-    url: postman/insider-one-apis.postman_collection.json
-- name: Insider One Recommendation API
-  description: >-
-    Smart Recommender served over HTTP: nineteen named algorithms (similar, complementary, substitute,
-    visually-similar, purchased-together, trending, top-sellers, user-based and more) on one path
-    template, sharing a pooled 1,000 calls/minute.
-  humanURL: https://academy.insiderone.com/docs/recommendation-api
-  baseURL: https://recommendation.api.useinsider.com
-  tags:
-  - Recommendations
-  - Personalization
-  - Commerce
-  properties:
-  - type: OpenAPI
-    url: openapi/insider-recommendation-openapi.yml
-  - type: Overlay
-    url: overlays/insider-recommendation-overlay.yaml
-  - type: Documentation
-    url: https://academy.insiderone.com/docs/recommendation-api
-  - type: APIReference
-    url: https://developers.insiderone.com/
-  - type: Authentication
-    url: authentication/insider-authentication.yml
-  - type: RateLimits
-    url: rate-limits/insider-rate-limits.yml
-  - type: ErrorCatalog
-    url: errors/insider-problem-types.yml
-  - type: Conventions
-    url: conventions/insider-conventions.yml
-  - type: Postman
-    url: postman/insider-one-apis.postman_collection.json
-- name: Insider One Eureka Search API
-  description: >-
-    Eureka product discovery: search results with facets, category and brand merchandising collections,
-    and type-ahead suggestions (served from a per-customer host Insider One issues).
-  humanURL: https://academy.insiderone.com/docs/eureka-search-api-overview
-  baseURL: https://ineureka.api.useinsider.com
-  tags:
-  - Search
-  - Merchandising
-  - Commerce
-  properties:
-  - type: OpenAPI
-    url: openapi/insider-eureka-search-openapi.yml
-  - type: Overlay
-    url: overlays/insider-eureka-search-overlay.yaml
-  - type: Documentation
-    url: https://academy.insiderone.com/docs/eureka-search-api-overview
-  - type: APIReference
-    url: https://developers.insiderone.com/
-  - type: Authentication
-    url: authentication/insider-authentication.yml
-  - type: RateLimits
-    url: rate-limits/insider-rate-limits.yml
-  - type: ErrorCatalog
-    url: errors/insider-problem-types.yml
-  - type: Conventions
-    url: conventions/insider-conventions.yml
-  - type: Postman
-    url: postman/insider-one-apis.postman_collection.json
-- name: Insider One Eureka Event Collection API
-  description: >-
-    Search event collection for Eureka ranking: search, product click, product list view, add to cart
-    and purchase interactions.
-  humanURL: https://academy.insiderone.com/docs/eureka-event-collection-api-implementation
-  baseURL: https://eurekaevent.api.useinsider.com
-  tags:
-  - Search
-  - Event
-  - Commerce
-  tags_raw:
-  - Search
-  - Events
-  - Commerce
-  properties:
-  - type: OpenAPI
-    url: openapi/insider-eureka-events-openapi.yml
-  - type: Overlay
-    url: overlays/insider-eureka-events-overlay.yaml
-  - type: Documentation
-    url: https://academy.insiderone.com/docs/eureka-event-collection-api-implementation
-  - type: APIReference
-    url: https://developers.insiderone.com/
-  - type: Authentication
-    url: authentication/insider-authentication.yml
-  - type: RateLimits
-    url: rate-limits/insider-rate-limits.yml
-  - type: ErrorCatalog
-    url: errors/insider-problem-types.yml
-  - type: Conventions
-    url: conventions/insider-conventions.yml
-  - type: Postman
-    url: postman/insider-one-apis.postman_collection.json
-- name: Insider One Analytics API
-  description: >-
-    Email campaign lists, campaign statistics and overall analytics (v1 and v2 side by side), plus
-    OnSite campaign and overall analytics. Epoch-second time windows; one year of retained history.
-  humanURL: https://academy.insiderone.com/docs/email-analytics-api
-  baseURL: https://analytics.api.useinsider.com
-  tags:
-  - Analytics
-  - Email
-  - OnSite
-  - Reporting
-  properties:
-  - type: OpenAPI
-    url: openapi/insider-analytics-openapi.yml
-  - type: Overlay
-    url: overlays/insider-analytics-overlay.yaml
-  - type: Documentation
-    url: https://academy.insiderone.com/docs/email-analytics-api
-  - type: APIReference
-    url: https://developers.insiderone.com/
-  - type: Authentication
-    url: authentication/insider-authentication.yml
-  - type: RateLimits
-    url: rate-limits/insider-rate-limits.yml
-  - type: ErrorCatalog
-    url: errors/insider-problem-types.yml
-  - type: Conventions
-    url: conventions/insider-conventions.yml
-  - type: Postman
-    url: postman/insider-one-apis.postman_collection.json
-- name: Insider One Architect Analytics API
-  description: >-
-    Architect journey analytics: overall, per-journey, per-element/channel, conversion goals and journey
-    list export. Takes statDate as a dd/MM/yyyy range string.
-  humanURL: https://academy.insiderone.com/docs/architect-analytics-api
-  baseURL: https://architect-analytics.api.useinsider.com
-  tags:
-  - Analytics
-  - Journeys
-  - Architect
-  - Reporting
-  properties:
-  - type: OpenAPI
-    url: openapi/insider-architect-analytics-openapi.yml
-  - type: Overlay
-    url: overlays/insider-architect-analytics-overlay.yaml
-  - type: Documentation
-    url: https://academy.insiderone.com/docs/architect-analytics-api
-  - type: APIReference
-    url: https://developers.insiderone.com/
-  - type: Authentication
-    url: authentication/insider-authentication.yml
-  - type: RateLimits
-    url: rate-limits/insider-rate-limits.yml
-  - type: ErrorCatalog
-    url: errors/insider-problem-types.yml
-  - type: Conventions
-    url: conventions/insider-conventions.yml
-  - type: Postman
-    url: postman/insider-one-apis.postman_collection.json
-- name: Insider One Architect Transactional Journey API
-  description: >-
-    The On API Call starter: enter a user into a transactional Architect journey from your backend
-    and send in real time.
-  humanURL: https://academy.insiderone.com/docs/transactional-journeys-on-api-call-starter
-  baseURL: https://architect.useinsider.com
-  tags:
-  - Journeys
-  - Architect
-  - Transactional
-  properties:
-  - type: OpenAPI
-    url: openapi/insider-architect-transactional-openapi.yml
-  - type: Overlay
-    url: overlays/insider-architect-transactional-overlay.yaml
-  - type: Documentation
-    url: https://academy.insiderone.com/docs/transactional-journeys-on-api-call-starter
-  - type: APIReference
-    url: https://developers.insiderone.com/
-  - type: Authentication
-    url: authentication/insider-authentication.yml
-  - type: RateLimits
-    url: rate-limits/insider-rate-limits.yml
-  - type: ErrorCatalog
-    url: errors/insider-problem-types.yml
-  - type: Conventions
-    url: conventions/insider-conventions.yml
-  - type: Postman
-    url: postman/insider-one-apis.postman_collection.json
 - name: Insider One MCP Server
   description: >-
-    First-party remote Model Context Protocol server exposing 35 tools across Email, SMS, WhatsApp,
-    Web Push, Mobile App and Architect — 28 read-only and 7 that create drafts for human review. Authenticated
-    with OAuth 2.0 credentials generated in the InOne panel, with per-channel scopes. Listed in the
-    Claude Connectors directory. It never sends, schedules or publishes, and cannot modify customer
-    data or journeys.
+    First-party remote Model Context Protocol server exposing 35 tools across Email, SMS, WhatsApp, Web
+    Push, Mobile App and Architect — 28 read-only and 7 that create drafts for human review. Authenticated
+    with OAuth 2.0 credentials generated in the InOne panel, with per-channel scopes. Listed in the Claude
+    Connectors directory. It never sends, schedules or publishes, and cannot modify customer data or journeys.
   humanURL: https://academy.insiderone.com/docs/set-up-insider-one-mcp
   baseURL: https://mcp.insiderone.com/mcp
   tags:
@@ -671,12 +96,1600 @@ apis:
     url: authentication/insider-authentication.yml
   - type: OAuthScopes
     url: scopes/insider-scopes.yml
+- aid: insider:insider-algorithm-descriptions-api
+  name: Insider Algorithm Descriptions API
+  description: >-
+    The Algorithm Descriptions API from Insider — 19 operation(s) for algorithm descriptions.
+  humanURL: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  baseURL: https://unification.useinsider.com
+  tags:
+  - Algorithm Descriptions
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-algorithm-descriptions-api-openapi.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+  - type: DataModel
+    url: data-model/insider-data-model.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/data-collection-consent-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-sms-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/whatsapp-transactional-api
+  - type: Webhooks
+    url: asyncapi/insider-whatsapp-webhooks.yml
+  - type: OAuthScopes
+    url: scopes/insider-scopes.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/web-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/app-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-analytics-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-integration-guide-1
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/otp-for-sms
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/product-catalog-api-introduction
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/recommendation-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-search-api-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-event-collection-api-implementation
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/architect-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-journeys-on-api-call-starter
+- aid: insider:insider-architect-api
+  name: Insider Architect API
+  description: The Architect API from Insider — 6 operation(s) for architect.
+  humanURL: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  baseURL: https://unification.useinsider.com
+  tags:
+  - Architect
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-architect-api-openapi.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+  - type: DataModel
+    url: data-model/insider-data-model.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/data-collection-consent-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-sms-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/whatsapp-transactional-api
+  - type: Webhooks
+    url: asyncapi/insider-whatsapp-webhooks.yml
+  - type: OAuthScopes
+    url: scopes/insider-scopes.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/web-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/app-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-analytics-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-integration-guide-1
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/otp-for-sms
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/product-catalog-api-introduction
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/recommendation-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-search-api-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-event-collection-api-implementation
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/architect-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-journeys-on-api-call-starter
+- aid: insider:insider-catalog-apis-api
+  name: Insider Catalog APIs API
+  description: The Catalog APIs API from Insider — 5 operation(s) for catalog apis.
+  humanURL: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  baseURL: https://unification.useinsider.com
+  tags:
+  - Catalog APIs
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-catalog-apis-api-openapi.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+  - type: DataModel
+    url: data-model/insider-data-model.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/data-collection-consent-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-sms-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/whatsapp-transactional-api
+  - type: Webhooks
+    url: asyncapi/insider-whatsapp-webhooks.yml
+  - type: OAuthScopes
+    url: scopes/insider-scopes.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/web-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/app-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-analytics-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-integration-guide-1
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/otp-for-sms
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/product-catalog-api-introduction
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/recommendation-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-search-api-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-event-collection-api-implementation
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/architect-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-journeys-on-api-call-starter
+- aid: insider:insider-category-merchandising-api-api
+  name: Insider Category Merchandising API
+  description: >-
+    The Category Merchandising API API from Insider — 2 operation(s) for category merchandising api.
+  humanURL: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  baseURL: https://unification.useinsider.com
+  tags:
+  - Category Merchandising API
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-category-merchandising-api-api-openapi.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+  - type: DataModel
+    url: data-model/insider-data-model.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/data-collection-consent-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-sms-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/whatsapp-transactional-api
+  - type: Webhooks
+    url: asyncapi/insider-whatsapp-webhooks.yml
+  - type: OAuthScopes
+    url: scopes/insider-scopes.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/web-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/app-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-analytics-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-integration-guide-1
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/otp-for-sms
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/product-catalog-api-introduction
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/recommendation-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-search-api-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-event-collection-api-implementation
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/architect-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-journeys-on-api-call-starter
+- aid: insider:insider-conversational-api-api
+  name: Insider Conversational API
+  description: The Conversational API API from Insider — 3 operation(s) for conversational api.
+  humanURL: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  baseURL: https://unification.useinsider.com
+  tags:
+  - Conversational API
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-conversational-api-api-openapi.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+  - type: DataModel
+    url: data-model/insider-data-model.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/data-collection-consent-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-sms-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/whatsapp-transactional-api
+  - type: Webhooks
+    url: asyncapi/insider-whatsapp-webhooks.yml
+  - type: OAuthScopes
+    url: scopes/insider-scopes.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/web-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/app-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-analytics-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-integration-guide-1
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/otp-for-sms
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/product-catalog-api-introduction
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/recommendation-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-search-api-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-event-collection-api-implementation
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/architect-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-journeys-on-api-call-starter
+- aid: insider:insider-data-governance-apis-api
+  name: Insider Data Governance APIs API
+  description: The Data Governance APIs API from Insider — 4 operation(s) for data governance apis.
+  humanURL: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  baseURL: https://unification.useinsider.com
+  tags:
+  - Data Governance APIs
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-data-governance-apis-api-openapi.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+  - type: DataModel
+    url: data-model/insider-data-model.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/data-collection-consent-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-sms-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/whatsapp-transactional-api
+  - type: Webhooks
+    url: asyncapi/insider-whatsapp-webhooks.yml
+  - type: OAuthScopes
+    url: scopes/insider-scopes.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/web-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/app-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-analytics-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-integration-guide-1
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/otp-for-sms
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/product-catalog-api-introduction
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/recommendation-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-search-api-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-event-collection-api-implementation
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/architect-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-journeys-on-api-call-starter
+- aid: insider:insider-email-api
+  name: Insider Email API
+  description: The Email API from Insider — 10 operation(s) for email.
+  humanURL: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  baseURL: https://unification.useinsider.com
+  tags:
+  - Email
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-email-api-openapi.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+  - type: DataModel
+    url: data-model/insider-data-model.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/data-collection-consent-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-sms-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/whatsapp-transactional-api
+  - type: Webhooks
+    url: asyncapi/insider-whatsapp-webhooks.yml
+  - type: OAuthScopes
+    url: scopes/insider-scopes.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/web-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/app-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-analytics-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-integration-guide-1
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/otp-for-sms
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/product-catalog-api-introduction
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/recommendation-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-search-api-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-event-collection-api-implementation
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/architect-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-journeys-on-api-call-starter
+- aid: insider:insider-email-apis-api
+  name: Insider Email APIs API
+  description: The Email APIs API from Insider — 2 operation(s) for email apis.
+  humanURL: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  baseURL: https://unification.useinsider.com
+  tags:
+  - Email APIs
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-email-apis-api-openapi.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+  - type: DataModel
+    url: data-model/insider-data-model.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/data-collection-consent-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-sms-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/whatsapp-transactional-api
+  - type: Webhooks
+    url: asyncapi/insider-whatsapp-webhooks.yml
+  - type: OAuthScopes
+    url: scopes/insider-scopes.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/web-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/app-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-analytics-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-integration-guide-1
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/otp-for-sms
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/product-catalog-api-introduction
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/recommendation-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-search-api-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-event-collection-api-implementation
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/architect-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-journeys-on-api-call-starter
+- aid: insider:insider-event-collection-api-api
+  name: Insider Event Collection API
+  description: The Event Collection API API from Insider — 1 operation(s) for event collection api.
+  humanURL: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  baseURL: https://unification.useinsider.com
+  tags:
+  - Event Collection API
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-event-collection-api-api-openapi.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+  - type: DataModel
+    url: data-model/insider-data-model.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/data-collection-consent-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-sms-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/whatsapp-transactional-api
+  - type: Webhooks
+    url: asyncapi/insider-whatsapp-webhooks.yml
+  - type: OAuthScopes
+    url: scopes/insider-scopes.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/web-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/app-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-analytics-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-integration-guide-1
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/otp-for-sms
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/product-catalog-api-introduction
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/recommendation-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-search-api-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-event-collection-api-implementation
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/architect-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-journeys-on-api-call-starter
+- aid: insider:insider-live-activities-api
+  name: Insider Live Activities API
+  description: The Live Activities API from Insider — 6 operation(s) for live activities.
+  humanURL: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  baseURL: https://unification.useinsider.com
+  tags:
+  - Live Activities
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-live-activities-api-openapi.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+  - type: DataModel
+    url: data-model/insider-data-model.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/data-collection-consent-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-sms-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/whatsapp-transactional-api
+  - type: Webhooks
+    url: asyncapi/insider-whatsapp-webhooks.yml
+  - type: OAuthScopes
+    url: scopes/insider-scopes.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/web-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/app-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-analytics-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-integration-guide-1
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/otp-for-sms
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/product-catalog-api-introduction
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/recommendation-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-search-api-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-event-collection-api-implementation
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/architect-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-journeys-on-api-call-starter
+- aid: insider:insider-mobile-app-api
+  name: Insider Mobile App API
+  description: The Mobile App API from Insider — 1 operation(s) for mobile app.
+  humanURL: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  baseURL: https://unification.useinsider.com
+  tags:
+  - Mobile App
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-mobile-app-api-openapi.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+  - type: DataModel
+    url: data-model/insider-data-model.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/data-collection-consent-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-sms-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/whatsapp-transactional-api
+  - type: Webhooks
+    url: asyncapi/insider-whatsapp-webhooks.yml
+  - type: OAuthScopes
+    url: scopes/insider-scopes.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/web-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/app-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-analytics-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-integration-guide-1
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/otp-for-sms
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/product-catalog-api-introduction
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/recommendation-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-search-api-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-event-collection-api-implementation
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/architect-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-journeys-on-api-call-starter
+- aid: insider:insider-mobile-app-apis-api
+  name: Insider Mobile App APIs API
+  description: The Mobile App APIs API from Insider — 6 operation(s) for mobile app apis.
+  humanURL: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  baseURL: https://unification.useinsider.com
+  tags:
+  - Mobile App APIs
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-mobile-app-apis-api-openapi.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+  - type: DataModel
+    url: data-model/insider-data-model.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/data-collection-consent-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-sms-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/whatsapp-transactional-api
+  - type: Webhooks
+    url: asyncapi/insider-whatsapp-webhooks.yml
+  - type: OAuthScopes
+    url: scopes/insider-scopes.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/web-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/app-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-analytics-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-integration-guide-1
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/otp-for-sms
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/product-catalog-api-introduction
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/recommendation-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-search-api-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-event-collection-api-implementation
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/architect-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-journeys-on-api-call-starter
+- aid: insider:insider-onsite-api
+  name: Insider On Site API
+  description: The OnSite API from Insider — 3 operation(s) for onsite.
+  humanURL: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  baseURL: https://unification.useinsider.com
+  tags:
+  - OnSite
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-onsite-api-openapi.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+  - type: DataModel
+    url: data-model/insider-data-model.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/data-collection-consent-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-sms-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/whatsapp-transactional-api
+  - type: Webhooks
+    url: asyncapi/insider-whatsapp-webhooks.yml
+  - type: OAuthScopes
+    url: scopes/insider-scopes.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/web-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/app-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-analytics-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-integration-guide-1
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/otp-for-sms
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/product-catalog-api-introduction
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/recommendation-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-search-api-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-event-collection-api-implementation
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/architect-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-journeys-on-api-call-starter
+- aid: insider:insider-otp-for-sms-api
+  name: Insider OTP for SMS API
+  description: The OTP for SMS API from Insider — 5 operation(s) for otp for sms.
+  humanURL: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  baseURL: https://unification.useinsider.com
+  tags:
+  - OTP for SMS
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-otp-for-sms-api-openapi.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+  - type: DataModel
+    url: data-model/insider-data-model.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/data-collection-consent-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-sms-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/whatsapp-transactional-api
+  - type: Webhooks
+    url: asyncapi/insider-whatsapp-webhooks.yml
+  - type: OAuthScopes
+    url: scopes/insider-scopes.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/web-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/app-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-analytics-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-integration-guide-1
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/otp-for-sms
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/product-catalog-api-introduction
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/recommendation-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-search-api-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-event-collection-api-implementation
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/architect-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-journeys-on-api-call-starter
+- aid: insider:insider-otp-for-whatsapp-api
+  name: Insider OTP for WhatsApp API
+  description: The OTP for WhatsApp API from Insider — 3 operation(s) for otp for whatsapp.
+  humanURL: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  baseURL: https://unification.useinsider.com
+  tags:
+  - OTP for WhatsApp
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-otp-for-whatsapp-api-openapi.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+  - type: DataModel
+    url: data-model/insider-data-model.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/data-collection-consent-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-sms-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/whatsapp-transactional-api
+  - type: Webhooks
+    url: asyncapi/insider-whatsapp-webhooks.yml
+  - type: OAuthScopes
+    url: scopes/insider-scopes.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/web-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/app-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-analytics-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-integration-guide-1
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/otp-for-sms
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/product-catalog-api-introduction
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/recommendation-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-search-api-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-event-collection-api-implementation
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/architect-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-journeys-on-api-call-starter
+- aid: insider:insider-recommendations-api
+  name: Insider Recommendations API
+  description: The Recommendations API from Insider — 1 operation(s) for recommendations.
+  humanURL: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  baseURL: https://unification.useinsider.com
+  tags:
+  - Recommendations
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-recommendations-api-openapi.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+  - type: DataModel
+    url: data-model/insider-data-model.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/data-collection-consent-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-sms-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/whatsapp-transactional-api
+  - type: Webhooks
+    url: asyncapi/insider-whatsapp-webhooks.yml
+  - type: OAuthScopes
+    url: scopes/insider-scopes.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/web-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/app-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-analytics-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-integration-guide-1
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/otp-for-sms
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/product-catalog-api-introduction
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/recommendation-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-search-api-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-event-collection-api-implementation
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/architect-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-journeys-on-api-call-starter
+- aid: insider:insider-search-apis-api
+  name: Insider Search APIs API
+  description: The Search APIs API from Insider — 2 operation(s) for search apis.
+  humanURL: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  baseURL: https://unification.useinsider.com
+  tags:
+  - Search APIs
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-search-apis-api-openapi.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+  - type: DataModel
+    url: data-model/insider-data-model.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/data-collection-consent-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-sms-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/whatsapp-transactional-api
+  - type: Webhooks
+    url: asyncapi/insider-whatsapp-webhooks.yml
+  - type: OAuthScopes
+    url: scopes/insider-scopes.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/web-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/app-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-analytics-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-integration-guide-1
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/otp-for-sms
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/product-catalog-api-introduction
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/recommendation-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-search-api-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-event-collection-api-implementation
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/architect-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-journeys-on-api-call-starter
+- aid: insider:insider-sms-api
+  name: Insider SMS API
+  description: The SMS API from Insider — 9 operation(s) for sms.
+  humanURL: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  baseURL: https://unification.useinsider.com
+  tags:
+  - SMS
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-sms-api-openapi.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+  - type: DataModel
+    url: data-model/insider-data-model.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/data-collection-consent-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-sms-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/whatsapp-transactional-api
+  - type: Webhooks
+    url: asyncapi/insider-whatsapp-webhooks.yml
+  - type: OAuthScopes
+    url: scopes/insider-scopes.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/web-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/app-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-analytics-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-integration-guide-1
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/otp-for-sms
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/product-catalog-api-introduction
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/recommendation-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-search-api-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-event-collection-api-implementation
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/architect-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-journeys-on-api-call-starter
+- aid: insider:insider-transactional-api-api
+  name: Insider Transactional API
+  description: The Transactional API API from Insider — 3 operation(s) for transactional api.
+  humanURL: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  baseURL: https://unification.useinsider.com
+  tags:
+  - Transactional API
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-transactional-api-api-openapi.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+  - type: DataModel
+    url: data-model/insider-data-model.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/data-collection-consent-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-sms-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/whatsapp-transactional-api
+  - type: Webhooks
+    url: asyncapi/insider-whatsapp-webhooks.yml
+  - type: OAuthScopes
+    url: scopes/insider-scopes.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/web-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/app-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-analytics-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-integration-guide-1
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/otp-for-sms
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/product-catalog-api-introduction
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/recommendation-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-search-api-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-event-collection-api-implementation
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/architect-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-journeys-on-api-call-starter
+- aid: insider:insider-transactional-journeys-api
+  name: Insider Transactional Journeys API
+  description: The Transactional Journeys API from Insider — 1 operation(s) for transactional journeys.
+  humanURL: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  baseURL: https://unification.useinsider.com
+  tags:
+  - Transactional Journeys
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-transactional-journeys-api-openapi.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+  - type: DataModel
+    url: data-model/insider-data-model.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/data-collection-consent-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-sms-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/whatsapp-transactional-api
+  - type: Webhooks
+    url: asyncapi/insider-whatsapp-webhooks.yml
+  - type: OAuthScopes
+    url: scopes/insider-scopes.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/web-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/app-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-analytics-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-integration-guide-1
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/otp-for-sms
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/product-catalog-api-introduction
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/recommendation-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-search-api-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-event-collection-api-implementation
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/architect-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-journeys-on-api-call-starter
+- aid: insider:insider-transactional-sms-api
+  name: Insider Transactional SMS API
+  description: The Transactional SMS API from Insider — 2 operation(s) for transactional sms.
+  humanURL: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  baseURL: https://unification.useinsider.com
+  tags:
+  - Transactional SMS
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-transactional-sms-api-openapi.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+  - type: DataModel
+    url: data-model/insider-data-model.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/data-collection-consent-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-sms-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/whatsapp-transactional-api
+  - type: Webhooks
+    url: asyncapi/insider-whatsapp-webhooks.yml
+  - type: OAuthScopes
+    url: scopes/insider-scopes.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/web-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/app-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-analytics-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-integration-guide-1
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/otp-for-sms
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/product-catalog-api-introduction
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/recommendation-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-search-api-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-event-collection-api-implementation
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/architect-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-journeys-on-api-call-starter
+- aid: insider:insider-user-data-apis-api
+  name: Insider User Data APIs API
+  description: The User Data APIs API from Insider — 6 operation(s) for user data apis.
+  humanURL: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  baseURL: https://unification.useinsider.com
+  tags:
+  - User Data APIs
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-user-data-apis-api-openapi.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+  - type: DataModel
+    url: data-model/insider-data-model.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/data-collection-consent-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-sms-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/whatsapp-transactional-api
+  - type: Webhooks
+    url: asyncapi/insider-whatsapp-webhooks.yml
+  - type: OAuthScopes
+    url: scopes/insider-scopes.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/web-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/app-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-analytics-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-integration-guide-1
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/otp-for-sms
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/product-catalog-api-introduction
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/recommendation-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-search-api-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-event-collection-api-implementation
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/architect-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-journeys-on-api-call-starter
+- aid: insider:insider-web-push-api
+  name: Insider Web Push API
+  description: The Web Push API from Insider — 3 operation(s) for web push.
+  humanURL: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  baseURL: https://unification.useinsider.com
+  tags:
+  - Web Push
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-web-push-api-openapi.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+  - type: DataModel
+    url: data-model/insider-data-model.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/data-collection-consent-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-sms-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/whatsapp-transactional-api
+  - type: Webhooks
+    url: asyncapi/insider-whatsapp-webhooks.yml
+  - type: OAuthScopes
+    url: scopes/insider-scopes.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/web-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/app-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-analytics-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-integration-guide-1
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/otp-for-sms
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/product-catalog-api-introduction
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/recommendation-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-search-api-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-event-collection-api-implementation
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/architect-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-journeys-on-api-call-starter
+- aid: insider:insider-web-push-apis-api
+  name: Insider Web Push APIs API
+  description: The Web Push APIs API from Insider — 3 operation(s) for web push apis.
+  humanURL: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  baseURL: https://unification.useinsider.com
+  tags:
+  - Web Push APIs
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-web-push-apis-api-openapi.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+  - type: DataModel
+    url: data-model/insider-data-model.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/data-collection-consent-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-sms-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/whatsapp-transactional-api
+  - type: Webhooks
+    url: asyncapi/insider-whatsapp-webhooks.yml
+  - type: OAuthScopes
+    url: scopes/insider-scopes.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/web-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/app-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-analytics-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-integration-guide-1
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/otp-for-sms
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/product-catalog-api-introduction
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/recommendation-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-search-api-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-event-collection-api-implementation
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/architect-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-journeys-on-api-call-starter
+- aid: insider:insider-whatsapp-api
+  name: Insider Whats App API
+  description: The WhatsApp API from Insider — 4 operation(s) for whatsapp.
+  humanURL: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  baseURL: https://unification.useinsider.com
+  tags:
+  - WhatsApp
+  properties:
+  - type: OpenAPI
+    url: openapi/insider-whatsapp-api-openapi.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
+  - type: APIReference
+    url: https://developers.insiderone.com/
+  - type: Authentication
+    url: authentication/insider-authentication.yml
+  - type: RateLimits
+    url: rate-limits/insider-rate-limits.yml
+  - type: ErrorCatalog
+    url: errors/insider-problem-types.yml
+  - type: Conventions
+    url: conventions/insider-conventions.yml
+  - type: Postman
+    url: postman/insider-one-apis.postman_collection.json
+  - type: DataModel
+    url: data-model/insider-data-model.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/data-collection-consent-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-sms-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/whatsapp-transactional-api
+  - type: Webhooks
+    url: asyncapi/insider-whatsapp-webhooks.yml
+  - type: OAuthScopes
+    url: scopes/insider-scopes.yml
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/web-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/app-push-apis-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-analytics-apis
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/mobile-app-integration-guide-1
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/otp-for-sms
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/product-catalog-api-introduction
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/recommendation-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-search-api-overview
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/eureka-event-collection-api-implementation
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/email-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/architect-analytics-api
+  - type: Documentation
+    url: https://academy.insiderone.com/docs/transactional-journeys-on-api-call-starter
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Overlay
+  url: overlays/insider-unification-overlay.yaml
+- type: Overlay
+  url: overlays/insider-contact-overlay.yaml
+- type: Overlay
+  url: overlays/insider-mail-overlay.yaml
+- type: Overlay
+  url: overlays/insider-sms-overlay.yaml
+- type: Overlay
+  url: overlays/insider-whatsapp-overlay.yaml
+- type: Overlay
+  url: overlays/insider-gateway-overlay.yaml
+- type: Overlay
+  url: overlays/insider-web-push-overlay.yaml
+- type: Overlay
+  url: overlays/insider-mobile-overlay.yaml
+- type: Overlay
+  url: overlays/insider-mobile-settings-overlay.yaml
+- type: Overlay
+  url: overlays/insider-live-activity-overlay.yaml
+- type: Overlay
+  url: overlays/insider-verify-overlay.yaml
+- type: Overlay
+  url: overlays/insider-catalog-overlay.yaml
+- type: Overlay
+  url: overlays/insider-recommendation-overlay.yaml
+- type: Overlay
+  url: overlays/insider-eureka-search-overlay.yaml
+- type: Overlay
+  url: overlays/insider-eureka-events-overlay.yaml
+- type: Overlay
+  url: overlays/insider-analytics-overlay.yaml
+- type: Overlay
+  url: overlays/insider-architect-analytics-overlay.yaml
+- type: Overlay
+  url: overlays/insider-architect-transactional-overlay.yaml
 - type: Website
   url: https://insiderone.com
 - type: DeveloperPortal
