@@ -1,0 +1,103 @@
+openapi: 3.2.0
+info:
+  title: Insider One Web Push API
+  version: 1.0.0
+  description: 'Create, launch and delete single web push campaigns, plus web push statistics.
+
+
+    Derived by API Evangelist from Insider One''s own public Postman collection ("Insider One APIs", published at https://developers.insiderone.com/). Paths, methods, headers, query parameters and request/response examples are verbatim from that collection; nothing is invented. The 429 response is documented for all Insider One APIs on https://academy.insiderone.com/docs/api-rate-limits-1 .'
+  contact:
+    name: Insider One Support
+    email: support@useinsider.com
+    url: https://academy.insiderone.com/docs/insider-one-apis-1
+  termsOfService: https://insiderone.com/terms-of-use/
+servers:
+- url: https://web-push.api.useinsider.com
+tags:
+- name: Web Push
+paths:
+  /v1/statistics/campaign-metrics:
+    post:
+      operationId: getWebPushCampaignMetricsAnalytics
+      summary: Get web push campaign metrics analytics
+      tags:
+      - Web Push
+      description: "Insider's web push API allows you to get the campaigns analytics of your web push notifications from your own back-end without using the Insider's InOne panel. This API returns analytics specific to a single campaign in the given time interval in API request payload.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\npartner_id\nThis is your partner identification number, available from InOne Settings > Account Preferences.\nString\nYes\n\nstart_date\nThis specifies the date on which you will start requesting campaign analytics. The date format should be YYYY-MM-DD. The Start Date cannot be earlier than the Campaign Create Date.\nString\nYes\n\nend_date\nThis specifies the date on which you will stop requesting campaign analytics. The date format should be YYYY-MM-DD.\nString\nYes\n\ncampaign_id\nThis is your campaign ID. It returns in the response and is needed to send push notifications.\nString\nYes\n\nSample Example\nSample Request\nBefore sending the request, make sure:\n\nTo replace the authorization value with your own API key.\n\nTo replace the sample values in partner_id, start_date, end_date, and campaign_id with your own values in the required data type.\n\ncurl --location --POST 'https://web-push.api.useinsider.com/v1/statistics/campaign-metrics' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: {{vault:bearer-token}}' \\\n--data '{\n \"partner_id\": \"YOURPARTNERID\",\n \"start_date\" : \"2023-06-01\",\n \"end_date\" : \"2023-06-08\",\n\n\"campaign_id\" : \"11111\"\n}'\n\nSample Responses\n200 OK\n{\n  \"name\": \"08.06.2023-2100\",\n  \"primaryGoal\": \"salesFromClick\",\n  \"startDate\": \"2023-05-31T21:00:00.000000Z\",\n  \"endDate\": \"2023-06-08T20:59:59.999999Z\",\n  \"isRecurring\": false,\n  \"alias\": \"bulk\",\n  \"preferredCurrency\": \"USD\",\n  \"personalizationStatus\": \"Active\",\n  \"isTTLEnded\": true,\n  \"goalMenu\": {\n    \"camp-join\": \"Clicks\",\n    \"sales-from-click\": \"Purchases From Click...\"\n  },\n  \"overview\": {\n    \"total\": {\n      \"targeted\": \"411,840\",\n      \"deliveryRate\": \"34.08%\",\n      \"ctr\": \"0.52%\",\n      \"conversionRate\": \"0.00%\"\n    },\n    \"targeted\": {\n      \"sent\": \"411,344\",\n      \"dropped\": \"496\"\n    },\n    \"deliveryRate\": {\n      \"delivered\": \"140,183\",\n      \"undelivered\": \"271,161\"\n    },\n    \"ctr\": {\n      \"clicks\": \"723\"\n    },\n    \"conversionRate\": {\n      \"conversions\": \"0\"\n    },\n    \"revenue\": \"0 USD\"\n  },\n  \"deviceMetrics\": [\n    {\n      \"device\": \"Desktop\",\n      \"sent\": \"36,752\",\n      \"delivered\": \"3,077\",\n      \"deliveryRate\": \"8.37%\",\n      \"clicks\": \"4\",\n      \"ctr\": \"0.13%\",\n      \"conversions\": \"0\",\n      \"conversionRate\": \"0.00%\",\n      \"revenue\": \"USD\"\n    },\n    {\n      \"device\": \"Mobile\",\n      \"sent\": \"374,592\",\n      \"delivered\": \"137,106\",\n      \"deliveryRate\": \"36.60%\",\n      \"clicks\": \"719\",\n      \"ctr\": \"0.52%\",\n      \"conversions\": \"0\",\n      \"conversionRate\": \"0.00%\",\n      \"revenue\": \"0 USD\"\n    }\n  ],\n  \"clickMetrics\": [\n    {\n      \"name\": \"mainAction\",\n      \"header\": \"Main Element\",\n      \"clicks\": \"723\",\n      \"clickRatio\": \"100.00%\"\n    },\n    {\n      \"name\": \"primaryAction\",\n      \"header\": \"\",\n      \"clicks\": \"0\",\n      \"clickRatio\": \"0.00%\"\n    },\n    {\n      \"name\": \"secondaryAction\",\n      \"header\": \"\",\n      \"clicks\": \"0\",\n      \"clickRatio\": \"0.00%\"\n    }\n  ],\n  \"unsuccessfulMessages\": {\n    \"dropped\": [\n      {\n        \"label\": \"frequencyCapped\",\n        \"count\": \"0\",\n        \"percentage\": \"0.00\"\n      },\n      {\n        \"label\": \"silentHours\",\n        \"count\": \"0\",\n        \"percentage\": \"0.00\"\n      },\n      {\n        \"label\": \"unsubscriptions\",\n        \"count\": \"453\",\n        \"percentage\": \"91.33\"\n      },\n      {\n        \"label\": \"serviceProviderErrors\",\n        \"count\": \"43\",\n        \"percentage\": \"8.67\"\n      },\n      {\n        \"label\": \"internalErrors\",\n        \"count\": \"0\",\n        \"percentage\": \"0.00\"\n      }\n    ],\n    \"undelivered\": [\n      {\n        \"label\": \"offlineRecipients\",\n        \"count\": \"270,807\",\n        \"percentage\": \"99.87\"\n      },\n      {\n        \"label\": \"other\",\n        \"count\": \"354\",\n        \"percentage\": \"0.13\"\n      }\n    ]\n  },\n  \"comparisonData\": []\n}\n\n401 UNAUTHORIZED\n{\n    \"status_code\": 401\n}\n\n422 UNPROCESSABLE ENTITY\n{\n    \"status_code\": 422,\n    \"errors\": {\n        \"end_date\": [\n            \"The end date does not match the format Y-m-d.\"\n        ]\n    }\n}\n\nError Codes\n\n400: Bad request\n\n401: Unauthorized request\n\n403: Request limit exceeded\n\n422: Missing parameter\n\nLimitations\n\nAll functions must be executed with an HTTPS POST request.\n\nThe API Key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nYou can make 30 requests per minute in aggregate. Every response you receive from the API will include two additional headers specifying the number of requests that have been used and the maximum number of requests available for your account."
+      security:
+      - Authorization: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              partner_id: YOURPARTNERID
+              start_date: '2023-06-01'
+              end_date: '2023-06-08'
+              campaign_id: '11111'
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /v1/statistics/overall-metrics:
+    post:
+      operationId: getWebPushOverallMetricsAnalytics
+      summary: Get web push overall metrics analytics
+      tags:
+      - Web Push
+      description: "Insider's web push API allows you to get the campaigns analytics of your web push notifications from your own back-end without using the Insider's InOne panel. This API returns overall metric analytics with campaign information in the given time interval in API request payload.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\npartner_id\nThis is your partner identification number, available from InOne Settings > Account Preferences.\nString\nYes\n\nstart_date\nThis specifies the date on which you will start requesting campaign analytics. The date format should be YYYY-MM-DD. The Start Date cannot be earlier than the Campaign Create Date.\nString\nYes\n\nend_date\nThis specifies the date on which you will stop requesting campaign analytics. The date format should be YYYY-MM-DD.\nString\nYes\n\npage\nSpecifies the number of campaigns to be listed per page. Default value is 1.\nString\nNo\n\nper_page\nSpecifies the number of pages of campaign campaigns. Default value is 10.\nString\nNo\n\nSample Example\nSample Request\nBefore sending the request, make sure:\n\nTo replace the authorization value with your own API key.\n\nTo replace the sample values in partner_id, start_date, and end_date with your own values in the required data type.\n\ncurl --location --POST 'https://web-push.api.useinsider.com/v1/statistics/overall-metrics' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: {{vault:bearer-token}}' \\\n--data '{\n \"partner_id\": \"YOURPARTNERID\",\n \"start_date\": \"2023-12-02\",\n \"end_date\": \"2023-12-19\"\n \"page\": 1,\n \"per_page\": 10\n}'\n\nSample Responses\n200 OK\n{\n  \"page\": 1,\n  \"per_page\": 2,\n  \"total\": 48,\n  \"data\": [\n    {\n      \"id\": 12345,\n      \"tags\": [\n        \"Discount\",\n        \"Baby\",\n        \"Powder\"\n      ],\n      \"type\": \"Bulk\",\n      \"campName\": \"08.06.2023-2100-BabyCare\",\n      \"status\": \"Active\",\n      \"builderId\": 11111,\n      \"sendDate\": \"2023-06-08 21:15:10\",\n      \"startDate\": \"2023-06-08 21:15:00\",\n      \"endDate\": \"2023-06-08 21:15:00\",\n      \"daysActive\": 1,\n      \"messageLink\": \"https://sample.useinsider.com/discount/all-baby-care-products\",\n      \"firstButtonLink\": \"N/A\",\n      \"secondButtonLink\": \"N/A\",\n      \"targeted\": 411840,\n      \"sent\": 411344,\n      \"dropped\": 496,\n      \"deliveryRate\": 0.340792621261037,\n      \"delivered\": 140183,\n      \"undelivered\": 271161,\n      \"ctr\": 0.005157544067397616,\n      \"clicks\": 723,\n      \"conversionRate\": 0,\n      \"conversions\": 0,\n      \"revenue\": 0\n    },\n    {\n      \"id\": 22222,\n      \"tags\": [\n        \"Baby\"\n      ],\n      \"type\": \"Bulk\",\n      \"campName\": \"08.06.2023-Bebekcom-BabyProducts\",\n      \"status\": \"Active\",\n      \"builderId\": 10101,\n      \"sendDate\": \"2023-06-08 16:00:27\",\n      \"startDate\": \"2023-06-08 16:00:00\",\n      \"endDate\": \"2023-06-08 16:00:00\",\n      \"daysActive\": 1,\n      \"messageLink\": \"https://sample.useinsider.com/baby-products/\",\n      \"firstButtonLink\": \"N/A\",\n      \"secondButtonLink\": \"N/A\",\n      \"targeted\": 411733,\n      \"sent\": 411279,\n      \"dropped\": 454,\n      \"deliveryRate\": 0.3351933845394489,\n      \"delivered\": 137858,\n      \"undelivered\": 273421,\n      \"ctr\": 0.008399947772345456,\n      \"clicks\": 1158,\n      \"conversionRate\": 0,\n      \"conversions\": 0,\n      \"revenue\": 0\n    }\n  ]\n}\n\n401 UNAUTHORIZED\n{\n    \"status_code\": 401\n}\n\n422 UNPROCESSABLE ENTITY\n{\n    \"status_code\": 422,\n    \"errors\": {\n        \"end_date\": [\n            \"The end date does not match the format Y-m-d.\"\n        ]\n    }\n}\n\nError Codes\n\n400: Bad request\n\n401: Unauthorized request\n\n403: Request limit exceeded\n\n422: Missing parameter\n\nLimitations\n\nAll functions must be executed with an HTTPS POST request.\n\nThe API Key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nYou can make 30 requests per minute in aggregate. Every response you receive from the API will include two additional headers specifying the number of requests that have been used and the maximum number of requests available for your account."
+      security:
+      - Authorization: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              partner_id: YOURPARTNERID
+              start_date: '2023-06-01'
+              end_date: '2023-06-08'
+              per_page: '100'
+              page: '1'
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /v1/statistics/top-metrics:
+    post:
+      operationId: getWebPushTopMetricsAnalytics
+      summary: Get web push top metrics analytics
+      tags:
+      - Web Push
+      description: "Insider's web push API allows you to get the campaigns analytics of your web push notifications from your own back-end without using the Insider's InOne panel. This API returns top metric analytics (without campaign information) in the given time interval in API request payload.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\npartner_id\nThis is your partner identification number, available from InOne Settings > Account Preferences.\nString\nYes\n\nstart_date\nThis specifies the date on which you will start requesting campaign analytics. The date format should be YYYY-MM-DD. The Start Date cannot be earlier than the Campaign Create Date.\nString\nYes\n\nend_date\nThis specifies the date on which you will stop requesting campaign analytics. The date format should be YYYY-MM-DD.\nString\nYes\n\nSample Example\nSample Request\nBefore sending the request, make sure:\n\nTo replace the authorization value with your own API key.\n\nTo replace the sample values in partner_id, start_date, and end_date with your own values in the required data type.\n\ncurl --location --request POST 'https://web-push.api.useinsider.com/v1/statistics/top-metrics' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: {{vault:bearer-token}}' \\\n--data '{\n \"partner_id\": \"YOURPARTNERID\",\n \"start_date\" : \"2023-06-01\",\n \"end_date\" : \"2023-06-08\"\n}'\n\nSample Responses\n200 OK\n{\n  \"overview\": {\n    \"total\": {\n      \"targeted\": \"9,550,384\",\n      \"deliveryRate\": \"32.42%\",\n      \"ctr\": \"0.76%\",\n      \"conversionRate\": \"0.01%\"\n    },\n    \"targeted\": {\n      \"sent\": \"9,505,769\",\n      \"dropped\": \"44,615\"\n    },\n    \"deliveryRate\": {\n      \"delivered\": \"3,082,158\",\n      \"undelivered\": \"6,423,611\"\n    },\n    \"ctr\": {\n      \"clicks\": \"23,419\"\n    },\n    \"conversionRate\": {\n      \"conversions\": \"3\"\n    },\n    \"revenue\": \"2,480 TRY\"\n  },\n  \"performance\": [\n    {\n      \"label\": \"Bulk\",\n      \"campaignCount\": 22,\n      \"deliveryRate\": \"32.42\",\n      \"ctr\": \"0.76\",\n      \"conversionRate\": \"0.01\",\n      \"revenue\": \"2479.6600112915\"\n    },\n    {\n      \"label\": \"In Stock Alert\",\n      \"campaignCount\": 4,\n      \"deliveryRate\": \"0.00\",\n      \"ctr\": \"0.00\",\n      \"conversionRate\": \"0.00\",\n      \"revenue\": \"0\"\n    },\n    {\n      \"label\": \"Segment\",\n      \"campaignCount\": 2,\n      \"deliveryRate\": \"0.00\",\n      \"ctr\": \"0.00\",\n      \"conversionRate\": \"0.00\",\n      \"revenue\": \"0\"\n    },\n    {\n      \"label\": \"Cart Reminder\",\n      \"campaignCount\": 4,\n      \"deliveryRate\": \"0.00\",\n      \"ctr\": \"0.00\",\n      \"conversionRate\": \"0.00\",\n      \"revenue\": \"0\"\n    },\n    {\n      \"label\": \"Price Alert\",\n      \"campaignCount\": 6,\n      \"deliveryRate\": \"0.00\",\n      \"ctr\": \"0.00\",\n      \"conversionRate\": \"0.00\",\n      \"revenue\": \"0\"\n    },\n    {\n      \"label\": \"Trigger\",\n      \"campaignCount\": 10,\n      \"deliveryRate\": \"0.00\",\n      \"ctr\": \"0.00\",\n      \"conversionRate\": \"0.00\",\n      \"revenue\": \"0\"\n    }\n  ],\n  \"dropped\": [\n    {\n      \"label\": \"frequencyCapped\",\n      \"count\": \"0\",\n      \"percentage\": \"0.00\"\n    },\n    {\n      \"label\": \"silentHours\",\n      \"count\": \"0\",\n      \"percentage\": \"0.00\"\n    },\n    {\n      \"label\": \"unsubscriptions\",\n      \"count\": \"44,203\",\n      \"percentage\": \"99.08\"\n    },\n    {\n      \"label\": \"serviceProviderErrors\",\n      \"count\": \"412\",\n      \"percentage\": \"0.92\"\n    },\n    {\n      \"label\": \"internalErrors\",\n      \"count\": \"0\",\n      \"percentage\": \"0.00\"\n    }\n  ],\n  \"undelivered\": [\n    {\n      \"label\": \"offlineRecipients\",\n      \"count\": \"6,413,534\",\n      \"percentage\": \"99.84\"\n    },\n    {\n      \"label\": \"other\",\n      \"count\": \"10,077\",\n      \"percentage\": \"0.16\"\n    }\n  ]\n}\n\n401 UNAUTHORIZED\n{\n    \"status_code\": 401\n}\n\n422 UNPROCESSABLE ENTITY\n{\n    \"status_code\": 422,\n    \"errors\": {\n        \"end_date\": [\n            \"The end date does not match the format Y-m-d.\"\n        ]\n    }\n}\n\nError Codes\n\n400: Bad request\n\n401: Unauthorized request\n\n403: Request limit exceeded\n\n422: Missing parameter\n\nLimitations\n\nAll functions must be executed with an HTTPS POST request.\n\nThe API Key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nYou can make 30 requests per minute in aggregate. Every response you receive from the API will include two additional headers specifying the number of requests that have been used and the maximum number of requests available for your account."
+      security:
+      - Authorization: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              partner_id: YOURPARTNERID
+              start_date: '2023-06-01'
+              end_date: '2023-06-08'
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+components:
+  responses:
+    TooManyRequests:
+      description: Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.
+      content:
+        application/json:
+          example:
+            message: Too Many Requests
+            status: 429
+  securitySchemes:
+    Authorization:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Authorization header. On gw.useinsider.com this carries an OAuth 2.0 Bearer token; on other hosts it carries the API key issued for that channel.
+externalDocs:
+  description: Insider One API reference
+  url: https://academy.insiderone.com/docs/api-reference-welcome
+x-provenance:
+  generated: '2026-08-13'
+  method: derived
+  source: postman/insider-one-apis.postman_collection.json
+  source_url: https://documenter.gw.postman.com/api/collections/24851117/2sB3dSR9bM
+  publisher_page: https://developers.insiderone.com/
+  note: Insider One publishes a single public Postman collection covering every REST API. This document is the subset of that collection served from web-push.api.useinsider.com.

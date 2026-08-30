@@ -1,0 +1,149 @@
+openapi: 3.2.0
+info:
+  title: Insider Data Governance APIs API
+  version: 1.0.0
+  contact:
+    name: Insider One Support
+    email: support@useinsider.com
+    url: https://academy.insiderone.com/docs/insider-one-apis-1
+  termsOfService: https://insiderone.com/terms-of-use/
+  description: 'Operations tagged Data Governance APIs across 2 of this provider''s published API definitions: insider-mobile-openapi.yml, insider-unification-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://mobile.useinsider.com
+- url: https://unification.useinsider.com
+tags:
+- name: Data Governance APIs
+paths:
+  /api/v1/privacy/gdpr/consent/set:
+    post:
+      operationId: setDataProcessingConsentForAppUsers
+      summary: Set data processing consent for app users
+      tags:
+      - Data Governance APIs
+      description: "EU’s General Data Protection Regulation came into force on May 25, 2018. This legislation requires Insider's customers to ask for specific consent to send their data to Insider as the Data Processor. Data Processing Consent API helps you send user consent programmatically in real-time over the web using predefined web services.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\npartner_name\nYour Insider partner name. The partner name should be lowercase.\nString\nYes\n\ngdpr_consent\nIf consent given, true  Otherwise false\nBoolean\nYes\n\ntarget\nThe object that contains the unique device ID of the user, and its value. E.g. \"udid\": \"1234\"\nObject\nYes\n\nSample Body\nThe following is a sample body to pass user consent to Insider.\n\n{\n    \"partner_name\": \"{partner_name}\",\n    \"gdpr_consent\": true,\n    \"target\": {\n        \"udid\": \"1A2B3C4D5E6F7X8Y9Z\"\n    }\n}\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\n    \"status\": \"ok\"\n}\n\n400 Bad Request\nThe following response returns if the partner_name or target is empty in the request.\n\nBad Payload.\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nThe partner name should be provided in the request body. If the value is incorrect, no operation will be executed.\n\nEach request can set data processing consent for only one UDID.\n\nThe value of partner_name should be lowercase."
+      requestBody:
+        content:
+          application/json:
+            example:
+              partner_name: '{partnerName}'
+              gdpr_consent: true
+              target:
+                udid: 1A2B3C4D5E6F7X8Y9Z
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+                status: ok
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    servers:
+    - url: https://mobile.useinsider.com
+  /api/contact/v1/anonymize:
+    post:
+      operationId: deleteUserPiiDataUsingProfileId
+      summary: Delete user's PII data using profile ID
+      tags:
+      - Data Governance APIs
+      description: "This API is used to delete users' PII data. Insider does not allow the deletion of the user's last remaining identifier. In addition, if this value is a PII (Personally Identifiable Information) data such as email, phone number, it would not be deleted. Thanks to this endpoint, you can delete these values associated with users; if they are a known user and their only identifier is email or phone number, then, the user becomes anonymous. For example, you can delete all PII data of registered users when they revoke their data-sharing permissions.\n\nThe user attributes marked as PII are unconditionally deleted with this API.\n\nNote: This action cannot be undone. Please carefully consider before proceeding.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\nemail\nUser's email address.\nString\nNo\n\nphone_number\nUser's phone number in E.164 format (e.g. +6598765432)\nString\nNo\n\nuuid\nUser's unique user identifier.\nString\nNo\n\nname\nAttribute. User's name.\nString\nNo\n\nsurname\nAttribute. User's surname.\nString\nNo\n\nbirthday\nAttribute. User's birthday in RFC 3339 format (e.g. 1993-03-12T00:00:00Z). Note: Send the birthdays without the time offset\nDatetime\nNo\n\ngender\nAttribute. Gender of the user.\nString\nNo\n\nage\nAttribute. Age of the user\nNumber\nNo\n\ncountry\nAttribute. Country information of the user in ISO 3166-1 alpha-2 format.\nString\nNo\n\ncity\nAttribute. City information of the user.\nString\nNo\n\nSample Body\n{\n          “insider_id”: “111ab184-f66d-4cba-123e-9abca4332211\"\n}\n\nSample Responses\n200 OK\nThis response returns if the request is successful.\n\nSample Responses\n200 OK\nThis response returns when the request is successful.\n\n404 NOT FOUND\nThe below response returns when you send the wrong identifiers.\n\n{\"error\":\"no such user for these identifiers: no data\"}\n\nLimitations\n\nAll functions must be executed with a simple HTTPS POST request.\n\nOnly PII data delete requests can be sent via this API. No data can be retrieved.\n\nThe request token should be provided on the request header. If the token is incorrect, the operation will not be executed\n\nThe rate limit is 500 requests per minute.\n\nA single HTTPS POST request can pass only 1 record (users).\n\nThe value of X-PARTNER-NAME header should be lowercase."
+      security:
+      - PartnerName: []
+      - RequestToken: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              partner: mybrand
+              insider_id: '1122334455'
+              api_key: 1a2b3c4d5e6f
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    servers:
+    - url: https://unification.useinsider.com
+  /api/user/v1/anonymize:
+    post:
+      operationId: deleteUserPiiDataUsingIdentifier
+      summary: Delete user's PII data using identifier
+      tags:
+      - Data Governance APIs
+      description: "This API is used to delete users' PII data. Insider does not allow the deletion of the user's last remaining identifier. In addition, if this value is a PII (Personally Identifiable Information) data such as email, phone number, it would not be deleted. Thanks to this endpoint, you can delete these values associated with users; if they are a known user and their only identifier is email or phone number, then, the user becomes anonymous. For example, you can delete all PII data of registered users when they revoke their data-sharing permissions.\n\nThe user attributes marked as PII are unconditionally deleted with this API.\n\nNote: This action cannot be undone. Please carefully consider before proceeding.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\nemail\nUser's email address.\nString\nNo\n\nphone_number\nUser's phone number in E.164 format (e.g. +6598765432)\nString\nNo\n\nuuid\nUser's unique user identifier.\nString\nNo\n\nname\nAttribute. User's name.\nString\nNo\n\nsurname\nAttribute. User's surname.\nString\nNo\n\nbirthday\nAttribute. User's birthday in RFC 3339 format (e.g. 1993-03-12T00:00:00Z).    Note: Send the birthdays without the time offset.\nDatetime\nNo\n\ngender\nAttribute. Gender of the user.\nString\nNo\n\nage\nAttribute. Age of the user\nNumber\nNo\n\ncountry\nAttribute. Country information of the user in ISO 3166-1 alpha-2 format.\nString\nNo\n\ncity\nAttribute. City information of the user.\nString\nNo\n\nSample Body\n{\n  \"identifiers\": {\n    \"email\": \"sample@useinsider.com\"\n  }\n}\n\nSample Responses\n200 OK\nThis response returns if the request is successful.\n\n404 NOT FOUND\nThe response below returns when you send the wrong identifiers.\n\n{\"error\":\"no such user for these identifiers: no data\"}\n\nLimitations\n\nAll functions must be executed with a simple HTTPS POST request.\n\nOnly PII data delete requests can be sent via this API. No data can be retrieved.\n\nThe request token should be provided on the request header. If the token is incorrect, the operation will not be executed\n\nThe rate limit is 500 requests per minute.\n\nA single HTTPS POST request can pass only 1 record (users).\n\nThe value of X-PARTNER-NAME header should be lowercase."
+      security:
+      - PartnerName: []
+      - RequestToken: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              identifiers:
+                email: sample@useinsider.com
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    servers:
+    - url: https://unification.useinsider.com
+  /api/user/v1/delete:
+    post:
+      operationId: deleteUserProfile
+      summary: Delete user profile
+      tags:
+      - Data Governance APIs
+      description: "This API enables you to delete your customer and their data when you need to.\n\nFor example, one of your users might have selected GDPR’s “right-to-be-forgotten” option and you need to delete that user's data. You can call this API with the related identifier for Insider to find that user's data, and delete it.\n\nBody Parameters\nEach POST body must have a unifier field under identifiers object. You can use the default identifiers such as email, phone number, or uuid and also the new custom identifier to define a unifier. For example, you use the email field as a unifier, any data without email field will not be accepted.\n\nParameter\nDescription\nData Type\nRequired\n\nidentifiers\nUser's identifier information.\nObject\nYes\n\ncustom\nUser's custom identifier information.\nObject\nNo\n\nemail\nUser's email address.\nString\nNo\n\nphone_number\nUser's phone number in E.164 format (e.g. +6598765432)\nString\nNo\n\nuuid\nUser's unique user identifier.\nString\nNo\n\nSample Body\nThe following is a sample JSON without a custom object.\n\n{\n   \"identifiers\":{\n      \"email\":\"example@useinsider.com\"\n   }\n}\n\nYou can also send a request with a custom object:\n\n{\n   \"identifiers\":{\n      \"custom\":{\"custom_identifier\":\"xyz123\"}\n   }\n}\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{}\n\n403 Forbidden\nThe following response returns in case of an authentication error.\n\n{\n    \"success\": false,\n    \"message\": \"Access Denied. You do not have sufficient access to perform this action.\"\n}\n\n500 Internal Server Error\n{\n    \"success\": false,\n    \"message\": \"The request processing has failed because of an unknown error.\"\n}\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nOnly delete request can be sent via this API. No data can be retrieved.\n\nThe request token should be provided on the request header. If the token is incorrect, the operation will not be executed.\n\nA single HTTPS POST request can pass only 1 record (user).\n\nMaximum 10,000 requests can be sent per minute.\n\nThe entire request must not exceed 5 MB.\n\nThe value of X-PARTNER-NAME header should be lowercase."
+      security:
+      - PartnerName: []
+      - RequestToken: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              identifiers:
+                email: sample@useinsider.com
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example: {}
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    servers:
+    - url: https://unification.useinsider.com
+components:
+  responses:
+    TooManyRequests:
+      description: Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.
+      content:
+        application/json:
+          example:
+            message: Too Many Requests
+            status: 429
+  securitySchemes:
+    InsiderApiKey:
+      type: apiKey
+      in: header
+      name: X-INSIDER-API-KEY
+      description: Insider One API key for this API.
+    PartnerName:
+      type: apiKey
+      in: header
+      name: X-PARTNER-NAME
+      description: Insider One partner (account) name, lowercase.
+    RequestToken:
+      type: apiKey
+      in: header
+      name: X-REQUEST-TOKEN
+      description: Insider One API key (request token) generated in the InOne panel.
+externalDocs:
+  description: Insider One API reference
+  url: https://academy.insiderone.com/docs/api-reference-welcome
+x-refined-from:
+- insider-mobile-openapi.yml
+- insider-unification-openapi.yml
+x-provenance:
+  generated: '2026-08-13'
+  method: derived
+  source: postman/insider-one-apis.postman_collection.json
+  source_url: https://documenter.gw.postman.com/api/collections/24851117/2sB3dSR9bM
+  publisher_page: https://developers.insiderone.com/
+  note: Insider One publishes a single public Postman collection covering every REST API. This document is the subset of that collection served from analytics.api.useinsider.com.

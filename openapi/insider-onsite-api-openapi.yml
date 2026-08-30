@@ -1,0 +1,277 @@
+openapi: 3.2.0
+info:
+  title: Insider One Analytics On Site API
+  version: 1.0.0
+  description: 'Email and OnSite campaign lists, campaign statistics and overall analytics.
+
+
+    Derived by API Evangelist from Insider One''s own public Postman collection ("Insider One APIs", published at https://developers.insiderone.com/). Paths, methods, headers, query parameters and request/response examples are verbatim from that collection; nothing is invented. The 429 response is documented for all Insider One APIs on https://academy.insiderone.com/docs/api-rate-limits-1 .'
+  contact:
+    name: Insider One Support
+    email: support@useinsider.com
+    url: https://academy.insiderone.com/docs/insider-one-apis-1
+  termsOfService: https://insiderone.com/terms-of-use/
+servers:
+- url: https://analytics.api.useinsider.com
+tags:
+- name: OnSite
+paths:
+  /onsite/v1/all:
+    get:
+      operationId: getOnsiteOverallAnalytics
+      summary: Get onsite overall analytics
+      tags:
+      - OnSite
+      description: "This API enables you to change the filter values on OnSite campaign analytics from your own back-end without using Insider’s platform.\n\nQuery Parameters\nYou need to send the filters in body parameters.\n\nParameter\nData Type\nDescription\nSample Value\nRequired\n\nstartTime\nint64\nSpecifies a 10-digit epoch start time\n1606669200\nYes\n\nendTime\nint64\nSpecifies a 10-digit epoch end time\n1606755599\nNo\n\ncampaignReportType\nString\nThe campaign report type to be used\n\"ab\", \"hundred\"\nYes\n\nselectedGoalType\nString\nThe goal type of the data\n“sales”, “click”, “salesFromClick”, “custom”\nYes\n\nreportType\nString\nThe report type for data to be fetched\n“detail”, “summary”\nYes\n\nfilters\nString\nUsed for filtering campaigns\n\nYes (if you would like to get filtered results)\n\nfield\nString\nMetrics used in analytics\n“impression”, “significance”\nYes (if you add filters)\n\noperator\nString\nUsed for searching for values in a given field.\n”gte”, “gt”, “eq”, “lt”, “lte”\nYes (if you add filters)\n\nvalue\nFloat\nThe value of the field.\n0\nNo\n\nAdding filters is only valid for all campaign stats.\n\nIf you add filters parameter to body and there is no value, the request is sent with default values of the filters that you can see below:\n\n\"filters\": [\n{\n\"field\": \"impression\",\n\"operator\": \"gte\",\n\"value\": 200\n},\n{\n\"field\": \"significance\",\n\"operator\": \"gte\",\n\"value\": 0\n}\n]\n\nBefore sending the request, make sure to replace the authorization value with your own OnSite Campaign Analytics API key.\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\n    \"data\": {\n        \"details\": [\n            {\n                \"activeDays\": 239,\n                \"averageOrderValue\": 260.53068340306834,\n                \"averageOrderValueUplift\": 0.2435810228696742,\n                \"bayesianSignificance\": 0.9999,\n                \"builderType\": \"custom\",\n                \"campaignId\": 8,\n                \"campaignName\": \"My campaign\",\n                \"clickConversion\": 19598,\n                \"clickThroughRate\": 0.19069767441860466,\n                \"conversionRateUplift\": 0.4216142270861831,\n                \"goalId\": 0,\n                \"impression\": 102770,\n                \"incrementalConversion\": 1701.150115473441,\n                \"incrementalRevenue\": 649101.4595842956,\n                \"revenue\": 1494404,\n                \"revenueFromClick\": 373601,\n                \"salesConversion\": 5736,\n                \"salesConversionRate\": 0.05581395348837209,\n                \"salesFromClick\": 1434,\n                \"selectedGoalConversion\": 5736,\n                \"selectedGoalConversionRate\": 0.05581395348837209,\n                \"selectedGoalId\": 0,\n                \"significance\": 0.9999199999999999\n            },\n            {\n                \"activeDays\": 239,\n                \"averageOrderValue\": 227.98419339841934,\n                \"averageOrderValueUplift\": 0.24369133790924957,\n                \"bayesianSignificance\": 0.9999,\n                \"builderType\": \"custom\",\n                \"campaignId\": 20,\n                \"campaignName\":\"My amazing campaign\",\n                \"clickConversion\": 26768,\n                \"clickThroughRate\": 0.2196078431372549,\n                \"conversionRateUplift\": 0.39276018099547527,\n                \"goalId\": 0,\n                \"impression\": 121890,\n                \"incrementalConversion\": 1213.1695906432751,\n                \"incrementalRevenue\": 414566.7134502925,\n                \"revenue\": 980788,\n                \"revenueFromClick\": 217953,\n                \"salesConversion\": 4302,\n                \"salesConversionRate\": 0.03529411764705882,\n                \"salesFromClick\": 956,\n                \"selectedGoalConversion\": 4302,\n                \"selectedGoalConversionRate\": 0.03529411764705882,\n                \"selectedGoalId\": 0,\n                \"significance\": 0.9999199999999999\n            }\n        ],\n        \"goalIdList\": [\n            1001362,\n            1001365,\n            1001368\n        ]\n    }\n}\n\n400 Bad Request\nSorry, we’ve received an invalid request from your side. You can try again later.\n\n400 Bad Request\nSorry, we received an invalid request. The start date cannot be after the end date.\n\n406 Not Acceptable Request\nSorry, we received an invalid request. We are able to provide the analytics data for only the last 1 year.\n\n500 Internal Server Error\nSorry, we couldn’t receive any response from our server. You can try again later.\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with an HTTPSPOST request.\n\nThe x-ins-auth-key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nThis API provides data for a 1 year-range.\n\nYou can send 100 requests/per minute with the same API key. If you exceed the rate limit, you will receive a 429 error."
+      security:
+      - InsAuthKey: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+                data:
+                  details:
+                  - activeDays: 87
+                    averageOrderValue: 0
+                    averageOrderValueUplift: 0
+                    bayesianSignificance: 0.9999
+                    builderType: custom
+                    campaignId: 99
+                    campaignName: My campaign
+                    clickConversion: 364
+                    clickThroughRate: 0.023144910027341516
+                    conversionRateUplift: 0
+                    goalId: 0
+                    impression: 15727
+                    incrementalConversion: 364
+                    incrementalRevenue: 0
+                    revenue: 0
+                    revenueFromClick: 0
+                    salesConversion: 0
+                    salesConversionRate: 0
+                    salesFromClick: 0
+                    selectedGoalConversion: 364
+                    selectedGoalConversionRate: 0.023144910027341516
+                    selectedGoalId: 0
+                    significance: 0.9999
+                  - activeDays: 19
+                    averageOrderValue: 0
+                    averageOrderValueUplift: 0
+                    bayesianSignificance: 0.2214
+                    builderType: custom
+                    campaignId: 101
+                    campaignName: My amazing campaign
+                    clickConversion: 3
+                    clickThroughRate: 0.0032258064516129032
+                    conversionRateUplift: 0
+                    goalId: 0
+                    impression: 930
+                    incrementalConversion: 3
+                    incrementalRevenue: 0
+                    revenue: 0
+                    revenueFromClick: 0
+                    salesConversion: 0
+                    salesConversionRate: 0
+                    salesFromClick: 0
+                    selectedGoalConversion: 3
+                    selectedGoalConversionRate: 0.0032258064516129032
+                    selectedGoalId: 0
+                    significance: 0.3328
+                  goalIdList:
+                  - 39
+                  - 40
+                  - 32
+                  - 41
+                  - 38
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /onsite/v1/campaign:
+    get:
+      operationId: getOnsiteCampaignAnalytics
+      summary: Get onsite campaign analytics
+      tags:
+      - OnSite
+      description: "This API enables you to change the filter values on OnSite campaign analytics from your own back-end without using Insider’s platform.\n\nQuery Parameters\nYou need to send the filters in body parameters.\n\nParameter\nData Type\nDescription\nSample Value\nRequired\n\nstartTime\nint64\nSpecifies a 10-digit epoch start time\n1606669200\nYes\n\nendTime\nint64\nSpecifies a 10-digit epoch end time\n1606755599\nNo\n\ncampaignReportType\nString\nThe campaign report type to be used\n\"ab\", \"hundred\"\nYes\n\nselectedGoalType\nString\nThe goal type of the data\n“sales”, “click”, “salesFromClick”, “custom”\nYes\n\nreportType\nString\nThe report type for data to be fetched\n“detail”, “summary”\nYes\n\nfilters\nString\nUsed for filtering campaigns\n\nYes (if you would like to get filtered results)\n\nfield\nString\nMetrics used in analytics\n“impression”, “significance”\nYes (if you add filters)\n\noperator\nString\nUsed for searching for values in a given field.\n”gte”, “gt”, “eq”, “lt”, “lte”\nYes (if you add filters)\n\nvalue\nFloat\nThe value of the field.\n0\nNo\n\nAdding filters is only valid for all campaign stats.\n\nIf you add filters parameter to body and there is no value, the request is sent with default values of the filters that you can see below:\n\n\"filters\": [\n{\n\"field\": \"impression\",\n\"operator\": \"gte\",\n\"value\": 200\n},\n{\n\"field\": \"significance\",\n\"operator\": \"gte\",\n\"value\": 0\n}\n]\n\nBefore sending the request, make sure to replace the authorization value with your own OnSite Campaign Analytics API key.\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\n    \"data\": {\n        \"details\": [\n            {\n                \"activeDays\": 239,\n                \"averageOrderValue\": 260.53068340306834,\n                \"averageOrderValueUplift\": 0.2435810228696742,\n                \"bayesianSignificance\": 0.9999,\n                \"builderType\": \"custom\",\n                \"campaignId\": 8,\n                \"campaignName\": \"My campaign\",\n                \"clickConversion\": 19598,\n                \"clickThroughRate\": 0.19069767441860466,\n                \"conversionRateUplift\": 0.4216142270861831,\n                \"goalId\": 0,\n                \"impression\": 102770,\n                \"incrementalConversion\": 1701.150115473441,\n                \"incrementalRevenue\": 649101.4595842956,\n                \"revenue\": 1494404,\n                \"revenueFromClick\": 373601,\n                \"salesConversion\": 5736,\n                \"salesConversionRate\": 0.05581395348837209,\n                \"salesFromClick\": 1434,\n                \"selectedGoalConversion\": 5736,\n                \"selectedGoalConversionRate\": 0.05581395348837209,\n                \"selectedGoalId\": 0,\n                \"significance\": 0.9999199999999999\n            },\n            {\n                \"activeDays\": 239,\n                \"averageOrderValue\": 227.98419339841934,\n                \"averageOrderValueUplift\": 0.24369133790924957,\n                \"bayesianSignificance\": 0.9999,\n                \"builderType\": \"custom\",\n                \"campaignId\": 20,\n                \"campaignName\": \"My amazing campaign\",\n                \"clickConversion\": 26768,\n                \"clickThroughRate\": 0.2196078431372549,\n                \"conversionRateUplift\": 0.39276018099547527,\n                \"goalId\": 0,\n                \"impression\": 121890,\n                \"incrementalConversion\": 1213.1695906432751,\n                \"incrementalRevenue\": 414566.7134502925,\n                \"revenue\": 980788,\n                \"revenueFromClick\": 217953,\n                \"salesConversion\": 4302,\n                \"salesConversionRate\": 0.03529411764705882,\n                \"salesFromClick\": 956,\n                \"selectedGoalConversion\": 4302,\n                \"selectedGoalConversionRate\": 0.03529411764705882,\n                \"selectedGoalId\": 0,\n                \"significance\": 0.9999199999999999\n            }\n        ],\n        \"goalIdList\": [\n            1001362,\n            1001365,\n            1001368\n        ]\n    }\n}\n\n400 Bad Request\nSorry, we’ve received an invalid request from your side. You can try again later.\n\n400 Bad Request\nSorry, we received an invalid request. The start date cannot be after the end date.\n\n406 Not Acceptable Request\nSorry, we received an invalid request. We are able to provide the analytics data for only the last 1 year.\n\n500 Internal Server Error\nSorry, we couldn’t receive any response from our server. You can try again later.\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with an HTTPSPOST request.\n\nThe x-ins-auth-key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nYou can send 100 requests/per minute with the same API key. If you exceed the rate limit, you will receive a 429 error."
+      security:
+      - InsAuthKey: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+                data:
+                  detail:
+                    click:
+                      '98':
+                      - averageOrderValue: 0
+                        averageOrderValueUplift: 0
+                        bayesianSignificance: 0
+                        campaignId: 98
+                        campaignName: My campaign
+                        conversion: 0
+                        conversionRate: 0
+                        conversionRateUplift: 0
+                        goal: click
+                        goalConversion: 0
+                        goalConversionRate: 0
+                        impression: 2325
+                        incrementalConversion: 0
+                        incrementalRevenue: 0
+                        leadCount: 0
+                        platform: all
+                        revenue: 0
+                        salesConversion: 0
+                        salesConversionRate: 0
+                        significance: 0
+                      '99':
+                      - averageOrderValue: 0
+                        averageOrderValueUplift: 0
+                        bayesianSignificance: 0.9999
+                        campaignId: 99
+                        campaignName: My amazing campaign
+                        conversion: 364
+                        conversionRate: 0.023144910027341516
+                        conversionRateUplift: 0
+                        goal: click
+                        goalConversion: 364
+                        goalConversionRate: 0.023144910027341516
+                        impression: 15727
+                        incrementalConversion: 364
+                        incrementalRevenue: 0
+                        leadCount: 0
+                        platform: all
+                        revenue: 0
+                        salesConversion: 0
+                        salesConversionRate: 0
+                        significance: 0.9999
+                    sales:
+                      '98':
+                      - averageOrderValue: 0
+                        averageOrderValueUplift: 0
+                        bayesianSignificance: 0.8702
+                        campaignId: 98
+                        campaignName: My campaign
+                        conversion: 0
+                        conversionRate: 0
+                        conversionRateUplift: 0
+                        goal: sales
+                        goalConversion: 0
+                        goalConversionRate: 0
+                        impression: 2325
+                        incrementalConversion: 0
+                        incrementalRevenue: 0
+                        leadCount: 0
+                        platform: all
+                        revenue: 0
+                        salesConversion: 0
+                        salesConversionRate: 0
+                        significance: 0
+                      '99':
+                      - averageOrderValue: 0
+                        averageOrderValueUplift: 0
+                        bayesianSignificance: 0.1297
+                        campaignId: 99
+                        campaignName: My amazing campaign
+                        conversion: 0
+                        conversionRate: 0
+                        conversionRateUplift: 0
+                        goal: sales
+                        goalConversion: 0
+                        goalConversionRate: 0
+                        impression: 15727
+                        incrementalConversion: 0
+                        incrementalRevenue: 0
+                        leadCount: 0
+                        platform: all
+                        revenue: 0
+                        salesConversion: 0
+                        salesConversionRate: 0
+                        significance: 0
+                    salesFromClick:
+                      '98':
+                      - averageOrderValue: 0
+                        averageOrderValueUplift: 0
+                        bayesianSignificance: 0.8702
+                        campaignId: 98
+                        campaignName: My campaign
+                        conversion: 0
+                        conversionRate: 0
+                        conversionRateUplift: 0
+                        goal: salesFromClick
+                        goalConversion: 0
+                        goalConversionRate: 0
+                        impression: 2325
+                        incrementalConversion: 0
+                        incrementalRevenue: 0
+                        leadCount: 0
+                        platform: all
+                        revenue: 0
+                        salesConversion: 0
+                        salesConversionRate: 0
+                        significance: 0
+                      '99':
+                      - averageOrderValue: 0
+                        averageOrderValueUplift: 0
+                        bayesianSignificance: 0.1297
+                        campaignId: 99
+                        campaignName: My amazing campaign
+                        conversion: 0
+                        conversionRate: 0
+                        conversionRateUplift: 0
+                        goal: salesFromClick
+                        goalConversion: 0
+                        goalConversionRate: 0
+                        impression: 15727
+                        incrementalConversion: 0
+                        incrementalRevenue: 0
+                        leadCount: 0
+                        platform: all
+                        revenue: 0
+                        salesConversion: 0
+                        salesConversionRate: 0
+                        significance: 0
+                  summary:
+                    '98': 64
+                    '99': 87
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /onsite/v2/all:
+    post:
+      operationId: changeFilterValues
+      summary: Change filter values
+      tags:
+      - OnSite
+      description: "This API enables you to change the filter values on OnSite campaign analytics from your own back-end without using Insider’s platform.\n\nQuery Parameters\nYou need to send the filters in body parameters.\n\nParameter\nData Type\nDescription\nSample Value\nRequired\n\nstartTime\nint64\nSpecifies a 10-digit epoch start time\n1606669200\nYes\n\nendTime\nint64\nSpecifies a 10-digit epoch end time\n1606755599\nNo\n\ncampaignReportType\nString\nThe campaign report type to be used\n\"ab\", \"hundred\"\nYes\n\nselectedGoalType\nString\nThe goal type of the data\n“sales”, “click”, “salesFromClick”, “custom”\nYes\n\nreportType\nString\nThe report type for data to be fetched\n“detail”, “summary”\nYes\n\nfilters\nString\nUsed for filtering campaigns\n\nYes (if you would like to get filtered results)\n\nfield\nString\nMetrics used in analytics\n“impression”, “significance”\nYes (if you add filters)\n\noperator\nString\nUsed for searching for values in a given field.\n”gte”, “gt”, “eq”, “lt”, “lte”\nYes (if you add filters)\n\nvalue\nFloat\nThe value of the field.\n0\nNo\n\nAdding filters is only valid for all campaign stats.\n\nIf you add filters parameter to body and there is no value, the request is sent with default values of the filters that you can see below:\n\n{\n    \"startTime\": 1646611200,\n    \"endTime\": 1667222349,\n    \"campaignReportType\": \"ab\",\n    \"selectedGoalType\": \"sales\",\n    \"reportType\": \"detail\",\n    \"filters\": [\n        {\n            \"field\": \"impression\",\n            \"operator\": \"gte\",\n            \"value\": 90000\n        },\n         {\n            \"field\": \"significance\",\n            \"operator\": \"gte\",\n            \"value\": 0.9\n        }\n    ]\n}\n\nBefore sending the request, make sure to replace the authorization value with your own OnSite Campaign Analytics API key.\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\n    \"data\": {\n        \"details\": [\n            {\n                \"activeDays\": 239,\n                \"averageOrderValue\": 260.53068340306834,\n                \"averageOrderValueUplift\": 0.2435810228696742,\n                \"bayesianSignificance\": 0.9999,\n                \"builderType\": \"custom\",\n                \"campaignId\": 8,\n                \"campaignName\": \"My campaign\",\n                \"clickConversion\": 19598,\n                \"clickThroughRate\": 0.19069767441860466,\n                \"conversionRateUplift\": 0.4216142270861831,\n                \"goalId\": 0,\n                \"impression\": 102770,\n                \"incrementalConversion\": 1701.150115473441,\n                \"incrementalRevenue\": 649101.4595842956,\n                \"revenue\": 1494404,\n                \"revenueFromClick\": 373601,\n                \"salesConversion\": 5736,\n                \"salesConversionRate\": 0.05581395348837209,\n                \"salesFromClick\": 1434,\n                \"selectedGoalConversion\": 5736,\n                \"selectedGoalConversionRate\": 0.05581395348837209,\n                \"selectedGoalId\": 0,\n                \"significance\": 0.9999199999999999\n            },\n            {\n                \"activeDays\": 239,\n                \"averageOrderValue\": 227.98419339841934,\n                \"averageOrderValueUplift\": 0.24369133790924957,\n                \"bayesianSignificance\": 0.9999,\n                \"builderType\": \"custom\",\n                \"campaignId\": 20,\n                \"campaignName\": \"My amazing campaign\",\n                \"clickConversion\": 26768,\n                \"clickThroughRate\": 0.2196078431372549,\n                \"conversionRateUplift\": 0.39276018099547527,\n                \"goalId\": 0,\n                \"impression\": 121890,\n                \"incrementalConversion\": 1213.1695906432751,\n                \"incrementalRevenue\": 414566.7134502925,\n                \"revenue\": 980788,\n                \"revenueFromClick\": 217953,\n                \"salesConversion\": 4302,\n                \"salesConversionRate\": 0.03529411764705882,\n                \"salesFromClick\": 956,\n                \"selectedGoalConversion\": 4302,\n                \"selectedGoalConversionRate\": 0.03529411764705882,\n                \"selectedGoalId\": 0,\n                \"significance\": 0.9999199999999999\n            }\n        ],\n        \"goalIdList\": [\n            1001362,\n            1000090,\n            1001132,\n            1000781,\n            1001436,\n            1000768,\n            1000030,\n            1001092,\n            1000718,\n            1000594,\n            1000765,\n            1000988,\n            1000744,\n            1000742,\n            1000854,\n            1001399,\n            1000881,\n            1001088,\n            1001390,\n            1000731,\n            1001200,\n            1001121,\n            1000795,\n            1000239,\n            1000699,\n            1001389,\n            1000709,\n            1001439,\n            1001133,\n            1000852,\n            1001151,\n            1001449,\n            1001090,\n            1001120,\n            1001017,\n            1001152,\n            1001205,\n            1000948,\n            1000858,\n            1001074,\n            1000712,\n            1000774,\n            1000720,\n            1001049,\n            1000801,\n            1000786,\n            1001184,\n            1001319,\n            1000707,\n            1000743,\n            1001169,\n            1000949,\n            1000798,\n            1001019,\n            1000991,\n            1001025,\n            1000968,\n            1001323,\n            1000831,\n            1000368,\n            1000688,\n            1000713,\n            1001354,\n            1001102,\n            1000853,\n            1001172,\n            1000685,\n            1001096,\n            1000708,\n            1000797,\n            1000824,\n            1001318,\n            1001060,\n            1000916,\n            1001353,\n            1001081,\n            1001136,\n            1001016,\n            1001104,\n            1000261,\n            1000704,\n            1000755,\n            1000884,\n            1000754,\n            1000751,\n            1001029,\n            1000933,\n            1001251,\n            1000741,\n            1000244,\n            1000819,\n            1000726,\n            1001208,\n            1001440,\n            1001199,\n            1001003,\n            1001083,\n            1001437,\n            1000730,\n            1000827,\n            1000830,\n            1001113,\n            1001028,\n            1000715,\n            1000951,\n            1001014,\n            1000800,\n            1000823,\n            1001293,\n            1000820,\n            1000862,\n            1000767,\n            1001030,\n            1000193,\n            1000947,\n            1001298\n        ]\n    }\n}\n\n400 Bad Request\nSorry, we’ve received an invalid request from your side. You can try again later.\n\n400 Bad Request\nSorry, we received an invalid request. The start date cannot be after the end date.\n\n406 Not Acceptable Request\nSorry, we received an invalid request. We are able to provide the analytics data for only the last 1 year.\n\n500 Internal Server Error\nSorry, we couldn’t receive any response from our server. You can try again later.\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with an HTTPSPOST request.\n\nThe x-ins-auth-key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nYou can send 100 requests/per minute with the same API key. If you exceed the rate limit, you will receive a 429 error."
+      security:
+      - InsAuthKey: []
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+components:
+  responses:
+    TooManyRequests:
+      description: Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.
+      content:
+        application/json:
+          example:
+            message: Too Many Requests
+            status: 429
+  securitySchemes:
+    InsAuthKey:
+      type: apiKey
+      in: header
+      name: X-INS-AUTH-KEY
+      description: Insider One authorization key for this API, generated in the InOne panel.
+externalDocs:
+  description: Insider One API reference
+  url: https://academy.insiderone.com/docs/api-reference-welcome
+x-provenance:
+  generated: '2026-08-13'
+  method: derived
+  source: postman/insider-one-apis.postman_collection.json
+  source_url: https://documenter.gw.postman.com/api/collections/24851117/2sB3dSR9bM
+  publisher_page: https://developers.insiderone.com/
+  note: Insider One publishes a single public Postman collection covering every REST API. This document is the subset of that collection served from analytics.api.useinsider.com.

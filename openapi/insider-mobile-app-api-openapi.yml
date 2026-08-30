@@ -1,0 +1,92 @@
+openapi: 3.2.0
+info:
+  title: Insider One Mobile App API
+  version: 1.0.0
+  description: 'Bulk, targeted and advanced app push, Message Center retrieval, app push analytics and mobile GDPR consent.
+
+
+    Derived by API Evangelist from Insider One''s own public Postman collection ("Insider One APIs", published at https://developers.insiderone.com/). Paths, methods, headers, query parameters and request/response examples are verbatim from that collection; nothing is invented. The 429 response is documented for all Insider One APIs on https://academy.insiderone.com/docs/api-rate-limits-1 .'
+  contact:
+    name: Insider One Support
+    email: support@useinsider.com
+    url: https://academy.insiderone.com/docs/insider-one-apis-1
+  termsOfService: https://insiderone.com/terms-of-use/
+servers:
+- url: https://mobile.useinsider.com
+tags:
+- name: Mobile App
+paths:
+  /api/v1/notification/get_statistics:
+    post:
+      operationId: getAppPushAnalytics
+      summary: Get app push analytics
+      tags:
+      - Mobile App
+      description: "You can use this service to get the analytics of the single push notifications that are sent in the current day using a predefined web service. These analytics include the campaigns created from the beginning of the day (00:00) to the time of the API request. For instance, if you send a request at 14:50, the API will return the campaigns created between 00:00-14:50.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\napi_key\nYour API key. Refer to API Authentication Tokens to get your API key.\nString\nYes\n\nSample Body\nThe following is a sample body to send this request.\n\n{\n    \"api_key\": \"Your API Key goes here\"\n}\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\n    \"campaigns\": [\n        {\n            \"id\": 5125,\n            \"name\": \"My app push name\",\n            \"delivery_count\": 1640069,\n            \"session_count\": 1085,\n            \"open_rate\": \"% 0.07\",\n            \"message\": \"This is my message\",\n            \"title\": \"This is my title\",\n            \"segment_name\": \"This is my segment\",\n            \"deep_link\": {\n                \"dl_key1\": \"value1\",\n                \"dl_key2\": \"value2\"\n            },\n            \"push_image\": \"https://pushimage1.useinsider.com\"\n        },\n        {\n            \"id\": 5126,\n            \"name\": \"My app push name 2\",\n            \"delivery_count\": 683618,\n            \"session_count\": 914,\n            \"open_rate\": \"% 0.13\",\n            \"message\": \"This is my message\",\n            \"title\": \"This is my title\",\n            \"segment_name\": \"English_lang_users\",\n            \"deep_link\": {\n                \"dl_key3\": \"value3\",\n                \"dl_key4\": \"value4\"\n            },\n            \"push_image\": \"https://pushimage2.useinsider.com\"\n        }\n    ],\n    \"total_camp_count\": 2,\n    \"total_delivery_count\": 2323687,\n    \"total_session_count\": 1999,\n    \"total_open_rate\": \"% 0.09\"\n}\n\nThe successful response returns the following metrics:\n\nParameter\nDefinition\n\nid\nCampaign ID\n\nname\nCampaign name\n\ndelivery_count\nThe number of users the campaign is delivered to\n\nsession_count\nThe number of users who open the campaign\n\nopen_rate\nOpens/deliveries\n\nmessage\nThe campaign message\n\ntitle\nThe campaign title\n\nsegment_name\nThe name of the segment that is targeted in the campaign\n\ndeep_link/deep link key\nThe deep link the users are redirected to\n\npush_image\nThe image URL of the campaign\n\n401 Unauthorized\nThe following response returns if the API Key is invalid or incorrect.\n\n{\n    \"error\": \"Bad Api Key.\"\n}\n\n401 Unauthorized\nThe following response returns if the API Key is empty.\n\nApi key can not be empty.\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nThe API key should be provided in the request body. If the key is incorrect, no operation will be executed."
+      requestBody:
+        content:
+          application/json:
+            example:
+              api_key: '{mobileAppApiKey}'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+                campaigns:
+                - id: 5125
+                  name: My app push name
+                  delivery_count: 1640069
+                  session_count: 1085
+                  open_rate: '% 0.07'
+                  message: This is my message
+                  title: This is my title
+                  segment_name: This is my segment
+                  deep_link:
+                    dl_key1: value1
+                    dl_key2: value2
+                  push_image: https://pushimage1.useinsider.com
+                - id: 5126
+                  name: My app push name 2
+                  delivery_count: 683618
+                  session_count: 914
+                  open_rate: '% 0.13'
+                  message: This is my message
+                  title: This is my title
+                  segment_name: English_lang_users
+                  deep_link:
+                    dl_key3: value3
+                    dl_key4: value4
+                  push_image: https://pushimage2.useinsider.com
+                total_camp_count: 2
+                total_delivery_count: 2323687
+                total_session_count: 1999
+                total_open_rate: '% 0.09'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+components:
+  responses:
+    TooManyRequests:
+      description: Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.
+      content:
+        application/json:
+          example:
+            message: Too Many Requests
+            status: 429
+  securitySchemes:
+    InsiderApiKey:
+      type: apiKey
+      in: header
+      name: X-INSIDER-API-KEY
+      description: Insider One API key for this API.
+externalDocs:
+  description: Insider One API reference
+  url: https://academy.insiderone.com/docs/api-reference-welcome
+x-provenance:
+  generated: '2026-08-13'
+  method: derived
+  source: postman/insider-one-apis.postman_collection.json
+  source_url: https://documenter.gw.postman.com/api/collections/24851117/2sB3dSR9bM
+  publisher_page: https://developers.insiderone.com/
+  note: Insider One publishes a single public Postman collection covering every REST API. This document is the subset of that collection served from mobile.useinsider.com.

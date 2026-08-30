@@ -1,0 +1,309 @@
+openapi: 3.2.0
+info:
+  title: Insider SMS API
+  version: 1.0.0
+  contact:
+    name: Insider One Support
+    email: support@useinsider.com
+    url: https://academy.insiderone.com/docs/insider-one-apis-1
+  termsOfService: https://insiderone.com/terms-of-use/
+  description: 'Operations tagged SMS across 2 of this provider''s published API definitions: insider-contact-openapi.yml, insider-sms-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://contact.useinsider.com
+- url: https://sms.useinsider.com
+tags:
+- name: SMS
+paths:
+  /sms/v1/subscribe:
+    post:
+      operationId: resubscribeSmsUsers
+      summary: Resubscribe SMS users
+      tags:
+      - SMS
+      description: "This API allows you to set an unreachable phone number status as reachable on Insider's SMS platform.\n\nA newer version of the Resubscribe API is available with support for bulk data ingestion. While the older version is still supported, we recommend using the latest version for improved functionality and future compatibility.\n\nBody Parameters\nEvery request made to the request endpoint requires a request body formatted in JSON and containing your phone number’s content and metadata. This includes the subscriber’s phone number.\n\nParameter\nDescription\nData Type\nRequired\n\nphone_number\nUser's phone number in E.164 format (e.g. +6598765432)\nString\nYes\n\nSample Body\nThe following is a sample body to resubscribe users to the SMS platform.\n\n{\n     \"phone_number\": \"+905012345678\"\n}\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\n  \"statusMessage\": \"OK\"\n}\n\n400 Bad Request\n{\n  \"statusMessage\": \"Bad request\"\n}\n\n401 Unauthorized\nThe following response returns if the request is not authorized.\n\n{\n  \"statusMessage\": \"Unauthorized\"\n}\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nOnly phone numbers can be sent via this API. No data can be retrieved.\n\nThe API Key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nThe value of X-PARTNER-NAME header should be lowercase."
+      security:
+      - PartnerName: []
+      - RequestToken: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              phone_number: '+655012345678'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+                statusMessage: OK
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    servers:
+    - url: https://contact.useinsider.com
+  /sms/v1/unsubscribe:
+    post:
+      operationId: unsubscribeSmsUsersFromDatabase
+      summary: Unsubscribe SMS users from database
+      tags:
+      - SMS
+      description: "This API enables you to unsubscribe users from Insider's SMS platform.\n\nA newer version of the Unsubscribe API is available with support for bulk data ingestion. While the older version is still supported, we recommend using the latest version for improved functionality and future compatibility.\n\nBody Parameters\nEvery request made to the request endpoint requires a request body formatted in JSON and containing your phone number’s content and metadata. This includes the subscriber’s phone number.\n\nParameter\nDescription\nData Type\nRequired\n\nphone_number\nUser's phone number in E.164 format (e.g. +6598765432)\nString\nYes\n\nSample Body\nThe following is a sample body to unsubscribe users from the SMS platform.\n\n{\n    \"phone_number\": \"+905012345678\"\n}\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\n  \"statusMessage\": \"OK\"\n}\n\n400 Bad Request\n{\n  \"statusMessage\": \"Bad request\"\n}\n\n401 Unauthorized\nThe following response returns if the request is not authorized.\n\n{\n  \"statusMessage\": \"Unauthorized\"\n}\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nOnly global unsubscribers can be sent via this API. No data can be retrieved.\n\nThe API Key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nThe value of X-PARTNER-NAME header should be lowercase."
+      security:
+      - PartnerName: []
+      - RequestToken: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              phone_number: '+65012345678'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+                statusMessage: OK
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    servers:
+    - url: https://contact.useinsider.com
+  /sms/v2/subscribe:
+    post:
+      operationId: resubscribeSmsUsersV2
+      summary: Resubscribe SMS users / v2
+      tags:
+      - SMS
+      description: "The SMS Resubscribe API enables you to update an unreachable phone number status to reachable on Insider's SMS platform.\n\nIf a user exists with the provided phone number, the user's subscription status will be updated. If no user exists and the phone number is used as an identifier, a new user will be created.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\nphone_numbers\nUsers' phone numbers in E.164 format (e.g. +6598765432)\nString Array\nYes\n\nSample Request\nEvery request made to the request endpoint requires a request body formatted in JSON containing your phone number’s content and metadata, including the subscriber’s phone number.\n\nThe phone_numbers field is required for resubscribe requests.\n\ncurl --location --request POST 'http://contact.useinsider.com/sms/v2/subscribe' \\\n--header 'Content-Type: application/json' \\\n--header 'X-PARTNER-NAME: mybrand' \\\n--header 'X-REQUEST-TOKEN: a1b2c3d4e5f6' \\\n--data-raw '{\n     \"phone_numbers\": [\n        \"+900000000000\",\n        \"+900000000000\",\n        \"+900000000000\",\n        \"+900000000000\",\n        \"+900000000000\",\n        \"+900000000000\"\n    ]\n}'\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\n  \"statusMessage\": \"OK\"\n}\n\n400 Bad Request\n{\n  \"statusMessage\": \"Bad request\"\n}\n\n401 Unauthorized\nThe following response returns if the request is not authorized.\n\n{\n  \"statusMessage\": \"Unauthorized\"\n}\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nOnly phone numbers can be sent via this API. No data can be retrieved.\n\nA maximum of 500 phone numbers can be consumed in one request.\n\nThe API Key should be provided as the authorization key in the request header. If the key is incorrect, the operation will not be executed, and an authorization error will return in the response.\n\nThe value of the X-PARTNER-NAME header should be lowercase.\n\nThe default limit shown here is a standard baseline. If your use case requires higher capacity, feel free to reach out to the Insider team — we can adjust it to fit your needs."
+      security:
+      - PartnerName: []
+      - RequestToken: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              phone_numbers:
+              - '+900000000000'
+              - '+900000000000'
+              - '+900000000000'
+              - '+900000000000'
+              - '+900000000000'
+              - '+900000000000'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+                statusMessage: OK
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    servers:
+    - url: https://contact.useinsider.com
+  /sms/v2/unsubscribe:
+    post:
+      operationId: unsubscribeSmsUsersFromDatabaseV2
+      summary: Unsubscribe SMS users from database / v2
+      tags:
+      - SMS
+      description: "The SMS Unsubscribe API enables you to unsubscribe users from Insider's SMS platform.\n\nIf a user exists with the provided phone number, the user's subscription status will be updated. If no user exists and the phone number is used as an identifier, a new user will be created.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\nphone_numbers\nUsers' phone numbers in E.164 format (e.g. +6598765432)\nString Array\nYes\n\nSample Request\nEvery request made to the request endpoint requires a request body formatted in JSON containing your phone number’s content and metadata, including the subscriber’s phone number.\n\nThe phone_numbers field is required for resubscribe requests.\n\ncurl --location --request POST 'http://contact.useinsider.com/sms/v2/unsubscribe' \\\n--header 'Content-Type: application/json' \\\n--header 'X-PARTNER-NAME: mybrand' \\\n--header 'X-REQUEST-TOKEN: a1b2c3d4e5f6' \\\n--data-raw '{\n     \"phone_numbers\": [\n        \"+900000000000\",\n        \"+900000000000\",\n        \"+900000000000\",\n        \"+900000000000\",\n        \"+900000000000\",\n        \"+900000000000\"\n    ]\n}'\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\n  \"statusMessage\": \"OK\"\n}\n\n400 Bad Request\n{\n  \"statusMessage\": \"Bad request\"\n}\n\n401 Unauthorized\nThe following response returns if the request is not authorized.\n\n{\n  \"statusMessage\": \"Unauthorized\"\n}\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nOnly phone numbers can be sent via this API. No data can be retrieved.\n\nA maximum of 500 phone numbers can be consumed in one request.\n\nThe API Key should be provided as the authorization key in the request header. If the key is incorrect, the operation will not be executed, and an authorization error will return in the response.\n\nThe value of the X-PARTNER-NAME header should be lowercase.\n\nThe default limit shown here is a standard baseline. If your use case requires higher capacity, feel free to reach out to the Insider team — we can adjust it to fit your needs."
+      security:
+      - PartnerName: []
+      - RequestToken: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              phone_numbers:
+              - '+900000000000'
+              - '+900000000000'
+              - '+900000000000'
+              - '+900000000000'
+              - '+900000000000'
+              - '+900000000000'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+                statusMessage: OK
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    servers:
+    - url: https://contact.useinsider.com
+  /analytics/v1/campaign:
+    post:
+      operationId: getSmsCampaignAnalytics
+      summary: Get SMS campaign analytics
+      tags:
+      - SMS
+      description: "SMS Campaign Analytics details will be listed as you send a request to this API.\n\nThis API does not contain Architect Analytics.\n\nHeaders\n\nHeader\nSample Value\nDescription\n\nX-INS-AUTH-KEY\n1a2b3c4d5e6f\nThis key is required to authorize your request. Refer to API Authentication Tokens to generate your token.\n\nQuery Parameters\n\nParameter\nData Type\nDescription\nRequired\n\ncampaignId\nInteger\nYour campaign ID that can be found on the campaign URL\nYes\n\nSample Query\nBefore sending the request, make sure: \n\nTo replace the authorization value with your API key.\n\nTo replace the sample values in campaignID with your value in the required data type.\n\ncurl --location 'https://sms.useinsider.com/analytics/v1/campaign' \\\n--header 'x-ins-auth-key: 1a2b3c4d5e6f' \\\n--header 'Content-Type: application/json' \\\n--data '{\n    \"campaignId\": 11242\n}'\n\nSample Responses\n200 Ok\n{\n   \"targeted\":0,\n   \"messageParts\":0,\n   \"sent\":0,\n   \"dropped\":0,\n   \"delivery\":{\n      \"count\":{\n         \"delivered\":0,\n         \"undelivered\":0\n      },\n      \"rate\":\"0.00%\"\n   },\n   \"clickThrough\":{\n      \"clicks\":0,\n      \"rate\":\"0.00%\",\n      \"revenue\":\"0\"\n   },\n   \"conversion\":{\n      \"conversions\":0,\n      \"rate\":\"0.00%\"\n   },\n   \"unsubscribers\":{\n      \"count\":0,\n      \"rate\":\"0.00%\"\n   },\n   \"droppedMessages\":{\n      \"frequencyCapped\":{\n         \"count\":0,\n         \"rate\":\"0.00%\"\n      },\n      \"duplicates\":{\n         \"count\":0,\n         \"rate\":\"0.00%\"\n      },\n      \"internalErrors\":{\n         \"count\":0,\n         \"rate\":\"0.00%\"\n      },\n      \"countryCodeDrops\":{\n         \"count\":0,\n         \"rate\":\"0.00%\"\n      },\n      \"invalidPhoneNumbers\":{\n         \"count\":0,\n         \"rate\":\"0.00%\"\n      },\n      \"couponListDrops\":{\n         \"count\":0,\n         \"rate\":\"0.00%\"\n      },\n      \"silentHours\":{\n         \"count\":0,\n         \"rate\":\"0.00%\"\n      }\n   },\n   \"undeliveredMessages\":{\n      \"carrierViolations\":{\n         \"count\":0,\n         \"rate\":\"0.00%\",\n         \"details\":[\n         ]\n      },\n      \"hardBounces\":{\n         \"count\":0,\n         \"rate\":\"0.00%\",\n         \"details\":[\n         ]\n      },\n      \"softBounces\":{\n         \"count\":0,\n         \"rate\":\"0.00%\",\n         \"details\":[\n         ]\n      },\n      \"deliveryFailures\":{\n         \"count\":0,\n         \"rate\":\"0.00%\",\n         \"details\":[\n         ]\n      },\n      \"deliveryReportMissing\":{\n         \"count\":0,\n         \"rate\":\"0.00%\"\n      }\n   }\n}\n\n401: Unauthorized request. Please make sure of your authorization key correctness\n\n422: This campaign ID is not valid. Please be sure that your campaign ID belongs to your account.\n\nLimitations\n\nAll functions must be executed with an HTTPS POST request.\n\nThe X-INS-AUTH-KEY should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nThis API provides data for a 1-year range.\n\nYou can send 100 requests per minute with the same API Key. If you exceed the rate limit, the perPage value should be between 1-100."
+      parameters:
+      - name: campaignId
+        in: query
+        required: false
+        schema:
+          type: string
+        example: Integer
+      security:
+      - InsAuthKey: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              campaignId: 11242
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    servers:
+    - url: https://sms.useinsider.com
+  /analytics/v1/list:
+    get:
+      operationId: getSmsCampaignList
+      summary: Get SMS campaign list
+      tags:
+      - SMS
+      description: "Insider's SMS Analytics API allows you to get the SMS campaigns list from your back-end without using the Insider's InOne panel. This API returns Active, Test, Passive, Completed, and Stopped campaigns with this endpoint.\n\nHeaders\n\nHeader\nSample Value\nDescription\n\nX-INS-AUTH-KEY\n1a2b3c4d5e6f\nThis key is required to authorize your request. Refer to API Authentication Tokens to generate your token.\n\nQuery Parameters\n\nParameter\nData Type\nDescription\nRequired\nDefault Value\n\nPage\nInteger\nSpecifies the number of pages of SMS campaigns\nYes\n1\n\nPerPage\nInteger\nSpecifies the number of SMS campaigns to be listed per page\nYes\n10\n\nPlease note that the endTime field operates on a T-1 logic:- To define a time range, ensure that the endTime is set to one second before the upper limit of the range.- For example, for a time range of  11-11-2024 10:00:00 to 11-11-2024  11:00:00, set the end_date to 11-11-2024  10:59:59The minimum allowed time range for requests is 1 hour. If the requested interval is shorter, the system aggregates and returns data for the entire hour. For instance, a 30-minute request will still yield data for the full hour.\n\nSample Query\nBefore sending the request, make sure to replace the authorization value with your own API key.\n\ncurl --location 'https://sms.useinsider.com/analytics/v1/list?perPage=10&page=1' \\\n--header 'x-ins-auth-key:1a2b3c4d5e6f \\'\n\nCampaigns are listed in order from newest to oldest.\n\nSample Responses\n200 Ok\n{\n   \"current_page\":1,\n   \"data\":[\n      {\n         \"campaignId\":12692,\n         \"campaignName\":\"Sample Campaign 3\",\n         \"startTime\":1727770020,\n         \"status\":\"completed\"\n      },\n      {\n         \"campaignId\":12691,\n         \"campaignName\":\"Sample Campaign 2\",\n         \"startTime\":1727770260,\n         \"status\":\"completed\"\n      },\n      {\n         \"campaignId\":12689,\n         \"campaignName\":\"Sample Campaign 1\",\n         \"startTime\":1727770356,\n         \"status\":\"completed\"\n      },\n   ],\n   \"first_page_url\":\"https://sms.useinsider.com/analytics/v1/list?perPage=10&page=1\",\n   \"from\":1,\n   \"last_page\":160,\n   \"last_page_url\":\"https://sms.useinsider.com/analytics/v1/list?perPage=10&page=160\",\n   \"next_page_url\":\"https://sms.useinsider.com/analytics/v1/list?perPage=10&page=2\",\n   \"per_page\":10,\n   \"prev_page_url\":null,\n   \"to\":10,\n   \"totalCampaign\":1596 }\n\n401: Unauthorized request. Please make sure of your authorization key correctness\n\n422: Your data is not valid.\n\nLimitations\n\nAll functions must be executed with an HTTPS POST request.\n\nThe X-INS-AUTH-KEY should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nThis API provides data for a 1-year range.\n\nYou can send 100 requests per minute with the same API Key. If you exceed the rate limit, the perPage value should be between 1-100."
+      parameters:
+      - name: Page
+        in: query
+        required: false
+        schema:
+          type: string
+        example: Integer
+      - name: PerPage
+        in: query
+        required: false
+        schema:
+          type: string
+        example: Integer
+      security:
+      - InsAuthKey: []
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    servers:
+    - url: https://sms.useinsider.com
+  /analytics/v1/overall:
+    post:
+      operationId: getOverallSmsCampaignAnalytics
+      summary: Get overall SMS campaign analytics
+      tags:
+      - SMS
+      description: "SMS Overall Campaign Analytics details will be listed for a given period as you send a request to this API.\n\nThis API does not contain Architect Analytics.\n\nHeaders\n\nHeader\nSample Value\nDescription\n\nX-INS-AUTH-KEY\n1a2b3c4d5e6f\nThis key is required to authorize your request. Refer to API Authentication Tokens to generate your token.\n\nQuery Parameters\n\nParameter\nData Type\nDescription\nRequired\n\nstartTime\nint64\nThe time campaign is being launched. Specifies a 10-digit epoch start time.\nYes\n\nendTime\nint64\nThe current date (today’s date on the payload). It can be customizable according to your use case. Specifies a 10-digit epoch start time.\nYes\n\nPlease note that the endTime field operates on a T-1 logic:- To define a time range, ensure that the endTime is set to one second before the upper limit of the range.- For example, for a time range of 11-11-2024 10:00:00 to 11-11-2024 11:00:00, set the end_date to 11-11-2024 10:59:59The minimum allowed time range for requests is 1 hour. If the requested interval is shorter, the system aggregates and returns data for the entire hour. For instance, a 30-minute request will still yield data for the full hour.\n\nSample Query\nBefore sending the request, make sure:\n\nTo replace the authorization value with your API key.\n\nTo replace the sample values in startTime, and endTime with your values in the required data type.\n\ncurl --location 'https://sms.useinsider.com/analytics/v1/overall' \\\n--header 'x-ins-auth-key: 1a2b3c4d5e6f' \\\n--header 'Content-Type: application/json' \\\n--data '{\n    \"startTime\": 1727643600,\n    \"endTime\": 1728334799\n}'\n\nSample Responses\n200 Ok\n{\n    \"summary\": {\n        \"targeted\": 19723,\n        \"messageParts\": 39446,\n        \"sent\": 19723,\n        \"dropped\": 0,\n        \"delivery\": {\n            \"count\": {\n                \"delivered\": 19031,\n                \"undelivered\": 692\n            },\n            \"rate\": \"96.49%\"\n        },\n        \"clickThrough\": {\n            \"clicks\": 214,\n            \"rate\": \"1.12%\",\n            \"revenue\": \"151\"\n        },\n        \"conversion\": {\n            \"conversions\": 1,\n            \"rate\": \"0.01%\"\n        },\n        \"unsubscribers\": {\n            \"count\": 0,\n            \"rate\": \"0.00%\"\n        },\n        \"droppedMessages\": {\n            \"frequencyCapped\": {\n                \"count\": 0,\n                \"rate\": \"0.00%\"\n            },\n            \"duplicates\": {\n                \"count\": 0,\n                \"rate\": \"0.00%\"\n            },\n            \"internalErrors\": {\n                \"count\": 0,\n                \"rate\": \"0.00%\"\n            },\n            \"countryCodeDrops\": {\n                \"count\": 0,\n                \"rate\": \"0.00%\"\n            },\n            \"invalidPhoneNumbers\": {\n                \"count\": 0,\n                \"rate\": \"0.00%\"\n            },\n            \"couponListDrops\": {\n                \"count\": 0,\n                \"rate\": \"0.00%\"\n            },\n            \"silentHours\": {\n                \"count\": 0,\n                \"rate\": \"0.00%\"\n            }\n        },\n        \"undeliveredMessages\": {\n            \"carrierViolations\": {\n                \"count\": 70,\n                \"rate\": \"10.12%\",\n                \"details\": {\n                    \"3032\": 69,\n                    \"3034\": 1\n                }\n            },\n            \"hardBounces\": {\n                \"count\": 11,\n                \"rate\": \"1.59%\",\n                \"details\": {\n                    \"3216\": 2,\n                    \"3221\": 9\n                }\n            },\n            \"softBounces\": {\n                \"count\": 186,\n                \"rate\": \"26.88%\",\n                \"details\": {\n                    \"3300\": 186\n                }\n            },\n            \"deliveryFailures\": {\n                \"count\": 0,\n                \"rate\": \"0.00%\",\n                \"details\": {}\n            },\n            \"deliveryReportMissing\": {\n                \"count\": 425,\n                \"rate\": \"61.42%\"\n            }\n        }\n    },\n    \"detail\": [\n        {\n            \"campaignId\":1234,\n            \"campaignName\": \"Sample Campaign 1\",\n            \"status\": \"completed\",\n            \"startTime\": 1728381600,\n            \"endTime\": 1728382560,\n            \"targeted\": 19723,\n            \"messageParts\": 39446,\n            \"sent\": 19723,\n            \"dropped\": 0,\n            \"delivery\": {\n                \"count\": {\n                    \"delivered\": 19031,\n                    \"undelivered\": 692\n                },\n                \"rate\": \"96.49%\"\n            },\n            \"clickThrough\": {\n                \"clicks\": 214,\n                \"rate\": \"1.12%\",\n                \"revenue\": \"151\"\n            },\n            \"conversion\": {\n                \"conversions\": 1,\n                \"rate\": \"0.01%\"\n            },\n            \"unsubscribers\": {\n                \"count\": 0,\n                \"rate\": \"0.00%\"\n            },\n            \"droppedMessages\": {\n                \"frequencyCapped\": {\n                    \"count\": 0,\n                    \"rate\": \"0.00%\"\n                },\n                \"duplicates\": {\n                    \"count\": 0,\n                    \"rate\": \"0.00%\"\n                },\n                \"internalErrors\": {\n                    \"count\": 0,\n                    \"rate\": \"0.00%\"\n                },\n                \"countryCodeDrops\": {\n                    \"count\": 0,\n                    \"rate\": \"0.00%\"\n                },\n                \"invalidPhoneNumbers\": {\n                    \"count\": 0,\n                    \"rate\": \"0.00%\"\n                },\n                \"couponListDrops\": {\n                    \"count\": 0,\n                    \"rate\": \"0.00%\"\n                },\n                \"silentHours\": {\n                    \"count\": 0,\n                    \"rate\": \"0.00%\"\n                }\n            },\n            \"undeliveredMessages\": {\n                \"carrierViolations\": {\n                    \"count\": 70,\n                    \"rate\": \"10.12%\",\n                    \"details\": {\n                        \"3032\": 69,\n                        \"3034\": 1\n                    }\n                },\n                \"hardBounces\": {\n                    \"count\": 11,\n                    \"rate\": \"1.59%\",\n                    \"details\": {\n                        \"3216\": 2,\n                        \"3221\": 9\n                    }\n                },\n                \"softBounces\": {\n                    \"count\": 186,\n                    \"rate\": \"26.88%\",\n                    \"details\": {\n                        \"3300\": 186\n                    }\n                },\n                \"deliveryFailures\": {\n                    \"count\": 0,\n                    \"rate\": \"0.00%\",\n                    \"details\": {}\n                },\n                \"deliveryReportMissing\": {\n                    \"count\": 425,\n                    \"rate\": \"61.42%\"\n                }\n            }\n        },\n        {\n            \"campaignId\": 12345,\n            \"campaignName\": \"Sample Campaign 2\",\n            \"status\": \"passive\",\n            \"startTime\": 1690281000,\n            \"endTime\": 2050214340,\n            \"targeted\": 0,\n            \"messageParts\": 0,\n            \"sent\": 0,\n            \"dropped\": 0,\n            \"delivery\": {\n                \"count\": {\n                    \"delivered\": 0,\n                    \"undelivered\": 0\n                },\n                \"rate\": \"0.00%\"\n            },\n            \"clickThrough\": {\n                \"clicks\": 0,\n                \"rate\": \"0.00%\",\n                \"revenue\": \"0\"\n            },\n            \"conversion\": {\n                \"conversions\": 0,\n                \"rate\": \"0.00%\"\n            },\n            \"unsubscribers\": {\n                \"count\": 0,\n                \"rate\": \"0.00%\"\n            },\n            \"droppedMessages\": {\n                \"frequencyCapped\": {\n                    \"count\": 0,\n                    \"rate\": \"0.00%\"\n                },\n                \"duplicates\": {\n                    \"count\": 0,\n                    \"rate\": \"0.00%\"\n                },\n                \"internalErrors\": {\n                    \"count\": 0,\n                    \"rate\": \"0.00%\"\n                },\n                \"countryCodeDrops\": {\n                    \"count\": 0,\n                    \"rate\": \"0.00%\"\n                },\n                \"invalidPhoneNumbers\": {\n                    \"count\": 0,\n                    \"rate\": \"0.00%\"\n                },\n                \"couponListDrops\": {\n                    \"count\": 0,\n                    \"rate\": \"0.00%\"\n                },\n                \"silentHours\": {\n                    \"count\": 0,\n                    \"rate\": \"0.00%\"\n                }\n            },\n            \"undeliveredMessages\": {\n                \"carrierViolations\": {\n                    \"count\": 0,\n                    \"rate\": \"0.00%\",\n                    \"details\": {}\n                },\n                \"hardBounces\": {\n                    \"count\": 0,\n                    \"rate\": \"0.00%\",\n                    \"details\": {}\n                },\n                \"softBounces\": {\n                    \"count\": 0,\n                    \"rate\": \"0.00%\",\n                    \"details\": {}\n                },\n                \"deliveryFailures\": {\n                    \"count\": 0,\n                    \"rate\": \"0.00%\",\n                    \"details\": {}\n                },\n                \"deliveryReportMissing\": {\n                    \"count\": 0,\n                    \"rate\": \"0.00%\"\n                }\n            }\n        }\n    ]\n}\n\n401: Unauthorized request. Please make sure of your authorization key correctness\n\n422\n\nThe start time parameter must be earlier than the end time.\n\nThe start time parameter must be within the last 1 year.\n\nThe end time parameter must be earlier than the current time.\n\nThe start time parameter must be a valid integer.\n\nThe end time parameter must be a valid integer.\n\n429: Your request exceeds the limit.\n\nLimitations\n\nAll functions must be executed with an HTTPS POST request.\n\nThe X-INS-AUTH-KEY should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nThis API provides data for a 1-year range.\n\nYou can send 100 requests per minute with the same API Key. If you exceed the rate limit, the perPage value should be between 1-100."
+      parameters:
+      - name: startTime
+        in: query
+        required: false
+        schema:
+          type: string
+        example: int64
+      - name: endTime
+        in: query
+        required: false
+        schema:
+          type: string
+        example: int64
+      security:
+      - InsAuthKey: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              startTime: 1727643600
+              endTime: 1728334799
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    servers:
+    - url: https://sms.useinsider.com
+  /analytics/v1/transactional:
+    post:
+      operationId: getTransactionalSmsAnalytics
+      summary: Get Transactional SMS analytics
+      tags:
+      - SMS
+      description: "Transactional SMS Analytics details will be listed for a given time period as you send a request to this API.\n\nHeaders\n\nHeader\nSample Value\nDescription\n\nX-INS-AUTH-KEY\n1a2b3c4d5e6f\nThis key is required to authorize your request. Refer to API Authentication Tokens to generate your token.\n\nQuery Parameters\n\nParameter\nData Type\nDescription\nRequired\n\nstartTime\nint64\nThe time campaign is being launched. Specifies a 10-digit epoch start time.\nYes\n\nendTime\nint64\nThe current date (today’s date on the payload). It can be customizable according to your use case. Specifies a 10-digit epoch start time.\nYes\n\nPlease note that the endTime field operates on a T-1 logic:- To define a time range, ensure that the endTime is set to one second before the upper limit of the range.- For example, for a time range of 11-11-2024 10:00:00 to 11-11-2024 11:00:00, set the end_date to 11-11-2024 10:59:59The minimum allowed time range for requests is 1 hour. If the requested interval is shorter, the system aggregates and returns data for the entire hour. For instance, a 30-minute request will still yield data for the full hour.\n\nSample Query\nBefore sending the request, make sure:\n\nTo replace the authorization value with your API key.\n\nTo replace the sample values in startTime, and endTime with your values in the required data type.\n\ncurl --location 'https://sms.useinsider.com/analytics/v1/transactional' \\\n--header 'x-ins-auth-key: 1a2b3c4d5e6f' \\\n--header 'Content-Type: application/json' \\\n--data '{\n    \"startTime\": 1727643600,\n    \"endTime\": 1728334799\n}'\n\nSample Responses\n200 Ok\n{\n    \"messageParts\": 0,\n    \"sent\": 0,\n    \"dropped\": 0,\n    \"delivery\": {\n        \"count\": {\n            \"delivered\": 0,\n            \"undelivered\": 0\n        },\n        \"rate\": \"0.00%\"\n    },\n    \"clickThrough\": {\n        \"clicks\": 0,\n        \"rate\": \"0.00%\"\n    },\n    \"droppedMessages\": {\n        \"internalErrors\": {\n            \"count\": 0,\n            \"rate\": \"0.00%\"\n        },\n        \"countryCodeDrops\": {\n            \"count\": 0,\n            \"rate\": \"0.00%\"\n        },\n        \"invalidPhoneNumbers\": {\n            \"count\": 0,\n            \"rate\": \"0.00%\"\n        }\n    },\n    \"undeliveredMessages\": {\n        \"carrierViolations\": {\n            \"count\": 0,\n            \"rate\": \"0.00%\",\n            \"details\": {}\n        },\n        \"hardBounces\": {\n            \"count\": 0,\n            \"rate\": \"0.00%\",\n            \"details\": {}\n        },\n        \"softBounces\": {\n            \"count\": 0,\n            \"rate\": \"0.00%\",\n            \"details\": {}\n        },\n        \"deliveryFailures\": {\n            \"count\": 0,\n            \"rate\": \"0.00%\",\n            \"details\": {}\n        },\n        \"deliveryReportMissing\": {\n            \"count\": 0,\n            \"rate\": \"0.00%\"\n        }\n    }\n}\n\n401: Unauthorized request. Please make sure of your authorization key correctness\n\n422\n\nThe start time parameter must be earlier than the end time.\n\nThe start time parameter must be within the last 1 year.\n\nThe end time parameter must be earlier than the current time.\n\nThe start time parameter must be a valid integer.\n\nThe end time parameter must be a valid integer.\n\n429: Your request exceeds the limit.\n\nLimitations\n\nAll functions must be executed with an HTTPS POST request.\n\nThe X-INS-AUTH-KEY should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nThis API provides data for a 1-year range.\n\nYou can send 100 requests per minute with the same API Key. If you exceed the rate limit, the perPage value should be between 1-100."
+      parameters:
+      - name: startTime
+        in: query
+        required: false
+        schema:
+          type: string
+        example: Int64
+      - name: endTime
+        in: query
+        required: false
+        schema:
+          type: string
+        example: Int64
+      security:
+      - InsAuthKey: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              startTime: 1727643600
+              endTime: 1728334799
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    servers:
+    - url: https://sms.useinsider.com
+  /analytics/v1/verify:
+    post:
+      operationId: getOtpVerifySmsAnalytics
+      summary: Get OTP / Verify SMS analytics
+      tags:
+      - SMS
+      description: "SMS OTP / Verify Analytics details will be listed for a given time period as you send a request to this API.\n\nHeaders\n\nHeader\nSample Value\nDescription\n\nX-INS-AUTH-KEY\n1a2b3c4d5e6f\nThis key is required to authorize your request. Refer to API Authentication Tokens to generate your token.\n\nQuery Parameters\n\nParameter\nData Type\nDescription\nRequired\n\nstartTime\nint64\nThe time campaign is being launched. Specifies a 10-digit epoch start time.\nYes\n\nendTime\nint64\nThe current date (today’s date on the payload). It can be customizable according to your use case. Specifies a 10-digit epoch start time.\nYes\n\nPlease note that the endTime field operates on a T-1 logic:- To define a time range, ensure that the endTime is set to one second before the upper limit of the range.- For example, for a time range of 11-11-2024 10:00:00 to 11-11-2024 11:00:00, set the end_date to 11-11-2024 10:59:59The minimum allowed time range for requests is 1 hour. If the requested interval is shorter, the system aggregates and returns data for the entire hour. For instance, a 30-minute request will still yield data for the full hour.\n\nSample Query\nBefore sending the request, make sure: \n\nTo replace the authorization value with your API key.\n\nTo replace the sample values in startTime, and endTime with your values in the required data type.\n\ncurl --location 'https://sms.useinsider.com/analytics/v1/verify' \\\n--header 'x-ins-auth-key: 1a2b3c4d5e6f' \\\n--header 'Content-Type: application/json' \\\n--data '{\n    \"startTime\": 1727643600,\n    \"endTime\": 1728334799\n}'\n\nSample Responses\n200 Ok\n{\n    \"messageParts\": 0,\n    \"sent\": 0,\n    \"dropped\": 0,\n    \"delivery\": {\n        \"count\": {\n            \"delivered\": 0,\n            \"undelivered\": 0\n        },\n        \"rate\": \"0.00%\"\n    },\n    \"verification\": {\n        \"count\": {\n            \"verified\": 0,\n            \"unverified\": 0\n        },\n        \"rate\": \"0.00%\"\n    },\n    \"droppedMessages\": {\n        \"internalErrors\": {\n            \"count\": 0,\n            \"rate\": \"0.00%\"\n        },\n        \"countryCodeDrops\": {\n            \"count\": 0,\n            \"rate\": \"0.00%\"\n        },\n        \"invalidPhoneNumbers\": {\n            \"count\": 0,\n            \"rate\": \"0.00%\"\n        }\n    },\n    \"undeliveredMessages\": {\n        \"carrierViolations\": {\n            \"count\": 0,\n            \"rate\": \"0.00%\",\n            \"details\": {}\n        },\n        \"hardBounces\": {\n            \"count\": 0,\n            \"rate\": \"0.00%\",\n            \"details\": {}\n        },\n        \"softBounces\": {\n            \"count\": 0,\n            \"rate\": \"0.00%\",\n            \"details\": {}\n        },\n        \"deliveryFailures\": {\n            \"count\": 0,\n            \"rate\": \"0.00%\",\n            \"details\": {}\n        },\n        \"deliveryReportMissing\": {\n            \"count\": 0,\n            \"rate\": \"0.00%\"\n        }\n    },\n    \"unverifiedMessages\": {\n        \"attemptFailures\": {\n            \"count\": 0,\n            \"rate\": \"0.00%\"\n        },\n        \"timeoutFailures\": {\n            \"count\": 0,\n            \"rate\": \"0.00%\"\n        }\n    }\n}\n\n401: Unauthorized request. Please make sure of your authorization key correctness\n\n422\n\nThe start time parameter must be earlier than the end time.\n\nThe start time parameter must be within the last 1 year.\n\nThe end time parameter must be earlier than the current time.\n\nThe start time parameter must be a valid integer.\n\nThe end time parameter must be a valid integer.\n\n429: Your request exceeds the limit.\n\nLimitations\n\nAll functions must be executed with an HTTPS POST request.\n\nThe X-INS-AUTH-KEY should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nThis API provides data for a 1-year range.\n\nYou can send 100 requests per minute with the same API Key. If you exceed the rate limit, the perPage value should be between 1-100."
+      security:
+      - InsAuthKey: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              startTime: 1727643600
+              endTime: 1728334799
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    servers:
+    - url: https://sms.useinsider.com
+components:
+  responses:
+    TooManyRequests:
+      description: Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.
+      content:
+        application/json:
+          example:
+            message: Too Many Requests
+            status: 429
+  securitySchemes:
+    PartnerName:
+      type: apiKey
+      in: header
+      name: X-PARTNER-NAME
+      description: Insider One partner (account) name, lowercase.
+    RequestToken:
+      type: apiKey
+      in: header
+      name: X-REQUEST-TOKEN
+      description: Insider One API key (request token) generated in the InOne panel.
+    InsAuthKey:
+      type: apiKey
+      in: header
+      name: X-INS-AUTH-KEY
+      description: Insider One authorization key for this API, generated in the InOne panel.
+externalDocs:
+  description: Insider One API reference
+  url: https://academy.insiderone.com/docs/api-reference-welcome
+x-refined-from:
+- insider-contact-openapi.yml
+- insider-sms-openapi.yml
+x-provenance:
+  generated: '2026-08-13'
+  method: derived
+  source: postman/insider-one-apis.postman_collection.json
+  source_url: https://documenter.gw.postman.com/api/collections/24851117/2sB3dSR9bM
+  publisher_page: https://developers.insiderone.com/
+  note: Insider One publishes a single public Postman collection covering every REST API. This document is the subset of that collection served from analytics.api.useinsider.com.

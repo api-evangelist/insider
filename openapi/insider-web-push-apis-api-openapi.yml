@@ -1,0 +1,126 @@
+openapi: 3.2.0
+info:
+  title: Insider One Web Push Web Push APIs API
+  version: 1.0.0
+  description: 'Create, launch and delete single web push campaigns, plus web push statistics.
+
+
+    Derived by API Evangelist from Insider One''s own public Postman collection ("Insider One APIs", published at https://developers.insiderone.com/). Paths, methods, headers, query parameters and request/response examples are verbatim from that collection; nothing is invented. The 429 response is documented for all Insider One APIs on https://academy.insiderone.com/docs/api-rate-limits-1 .'
+  contact:
+    name: Insider One Support
+    email: support@useinsider.com
+    url: https://academy.insiderone.com/docs/insider-one-apis-1
+  termsOfService: https://insiderone.com/terms-of-use/
+servers:
+- url: https://web-push.api.useinsider.com
+tags:
+- name: Web Push APIs
+paths:
+  /v1/single:
+    post:
+      operationId: createSingleWebPushes
+      summary: Create single web pushes
+      tags:
+      - Web Push APIs
+      description: "Insider's web push API allows you to send single web push notifications from your own back-end without using Insider's InOne panel.\n\nHeaders\n\nHeader\nSample Value\nDescription\n\nAuthorization\n{{vault:bearer-token}}\nThis key is required to authorize your request. Refer to API Authentication Tokens to generate your token.\n\nContent-Type\napplication/json\nThis header specifies the media type of the resource.\n\nBody Parameters\nEach request body requires a partner ID and a title. \n\nParameter\nDescription\nData Type\nRequired\n\npartner_id\nThis is your partner identification number, available from InOne Settings > Account Preferences.\nString\nYes\n\ntitle\nEvery request creates a push notification campaign on InOne with the push type Single Push. This is the title of the campaign. It cannot be more than 100 characters.\nString\nYes\n\nlanguage\nThe language of the campaign, e.g., en_US. If you want to send the push to all languages, you can write “all_ALL”.\nString\nYes\n\nis_all\nIt helps you set when you want to send push notifications to all subscribers or segmented subscribers.  If you type true, it will be sent only once, and you can open the campaign in the InOne Panel. If you type false, it will be sent multiple times, but you cannot open the campaign in the InOne Panel.\nBoolean\nNo\n\nSample Example\nBefore sending the request, make sure:\n\nTo replace the authorization value with your own API key.\n\nTo add your partner ID in partner_id.\n\nTo add your campaign name in title.\n\nWhen you send the request, you will get your campaign_id as a response. You will use this campaign_id when launching the campaign.\n\nSample Request\ncurl --location --request POST 'https://web-push.api.useinsider.com/v1/single' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: {{vault:bearer-token}}' \\\n--data-raw '{\n  \"partner_id\": \"100XXXXX\",\n  \"title\": \"Title of campaign\",\n  \"language\": \"tr_TR\",\n  \"is_all\": false\n}'\n\nSample Responses\n201 CREATED\nYou can see this kind of response when you successfully created your campaign.\n\n{\n    \"success\": true,\n    \"campaign_id\": 25696\n}\n\nYou can also see your campaign in your InOne panel on the Web Push listing page as in Draft status, indicating that the campaign has been created but not launched yet.\n\n401 UNAUTHORIZED\n{\n\"message\": \"Unauthorized\"\n}\n\n424 FAILED DEPENDENCY\n{\n  \"message\": \"SERVICE:-\"\n}\n\nERROR CODES\n\n400: Bad request\n\n401: Unauthorized request\n\n424 Failed Dependency\n\n429 Request limit exceeded\n\nLimitations\n\nAll create requests must be executed with an HTTPS POST request.\n\nThe API key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nThe rate limit is 30 requests per minute second."
+      security:
+      - Authorization: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              partner_id: 100XXXXX
+              title: Title of campaign
+              language: tr_TR
+              is_all: false
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /v1/single/campaign_id:
+    post:
+      operationId: launchSingleWebPushesV1
+      summary: Launch single web pushes v1
+      tags:
+      - Web Push APIs
+      description: "Insider's web push API allows you to launch single web push notifications from your own back-end without using Insider's InOne panel.\n\nHeaders\n\nHeader\nSample Value\nDescription\n\nAuthorization\n{{vault:bearer-token}}\nThis key is required to authorize your request. Refer to API Authentication Tokens to generate your token.\n\nContent-Type\napplication/json\nThis header specifies the media type of the resource.\n\nBody Parameters\nEach request body requires a partner ID and a title. \n\nParameter\nDescription\nData Type\nRequired\n\npartner_id\nThis is your partner identification number, available from InOne Settings > Account Preferences.\nString\nYes\n\ntitle\nEvery request creates a push notification campaign on InOne with the push type Single Push. This is the title of the push content. Itcannot be more than 100 characters.\nString\nYes\n\ndescription\nThis is the body of your push notification. It cannot be more than 255 characters. If it is a rich push that has a banner, it is limited to 30 characters.\nString\nYes\n\nimage\nThis is the push notification icon. Only HTTPS protocols are accepted. If not provided, the default icon is used instead.\nString\nYes\n\nbanner\nThis is the rich push notification image. Only HTTPS protocols are accepted.\nString\nNo\n\nlink\nThe link of the Web push message.\nString\nYes\n\ninclude_unengaged\nEnables you to decide whether the bulk push should target unengaged tokens. When not sent in the payload, unengaged users are automatically excluded.\nBoolean (true/false)\nNo\n\nttl\nShort for time to live: This is the maximum time the system will try to send a push notification to an offline or temporarily unavailable user. TTL is limited to 240 hours.\nString\nYes\n\ntarget\nTargeting options for the campaign (segmenting).\nObject\nYes if is_all: false\n\nattribute\nThe attribute used for targeting, e.g. \"d_wp_browser\".\nString\nYes if target is used.\n\nvalues\nAn array of values to target, e.g. [\"Edg\"]\nArray\nYes if target is used.\n\nSample Example\nBefore sending the request, make sure:\n\nTo replace the authorization value with your own API key.\n\nTo add your partner ID in partner_id.\n\nTo add your campaign name in title.\n\nWhen you send the request to create it, you will get your campaign_id as a response.\n\nSample Request\nBelow you can see a sample request without segments; is_all: true.\n\ncurl --location --request POST 'https://web-push.api.useinsider.com/v1/single/campaign_id' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: {{vault:bearer-token}}' \\\n--data-raw '{\n  \"partner_id\": \"100000001\",\n  \"title\": \"title of push\",\n  \"description\": \"description of push\",\n  \"image\": \"https://image.useinsider.com/mywebsite/webPushDefaultImage/JpVu9aBXgTXmcrBkiZLB1512577074.jpeg\",\n  \"banner\": \"https://image.useinsider.com/mywebsite/webPushDefaultImage/JpVu9aBXgTXmcrBkiZLB1512577074.jpeg\",\n  \"link\": \"https://image.useinsider.com\",\n  \"include_unengage\": true,\n  \"ttl\": \"1000\"\n}'\n\nBelow you can see a sample request with segments; is_all: false.\n\ncurl --location --request POST 'https://web-push.api.useinsider.com/v1/single/campaign_id' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: {{vault:bearer-token}}' \\\n--data-raw '{\n  \"partner_id\": \"10000001\",\n  \"title\": \"title of push\",\n  \"description\": \"description of push\",\n  \"image\": \"https://image.useinsider.com/mywebsite/webPushDefaultImage/JpVu9aBXgTXmcrBkiZLB1512577074.jpeg\",\n  \"banner\": \"https://image.useinsider.com/mywebsite/webPushDefaultImage/JpVu9aBXgTXmcrBkiZLB1512577074.jpeg\",\n  \"link\": \"https://image.useinsider.com\",\n  \"include_unengage\": true,\n  \"ttl\": \"1000\",\n  \"language\": \"en_US\",\n  \"target\": {\n    \"attribute\": \"d_wp_browser\",\n    \"values\": [\"Edg\"]\n  }\n}'\n\nSample Responses\n200 OK\nYou can see this kind of response when you successfully launched your campaign.\n\n{\n  \"success\": true,\n  \"campaign_id\": 1697300275\n}\n\n401 UNAUTHORIZED\n{\n\"message\": \"Unauthorized\"\n}\n\n424 FAILED DEPENDENCY\n{\n  \"message\": \"SERVICE:-\"\n}\n\nERROR CODES\n\n400: Bad request\n\n401: Unauthorized request\n\n424 Failed Dependency\n\n429 Request limit exceeded\n\nLimitations\n\nAll functions must be executed with an HTTPS POST request.\n\nThe API key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nThe rate limit is 30 requests per minute second."
+      security:
+      - Authorization: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              partner_id: '100000001'
+              title: title of push
+              description: description of push
+              image: https://image.useinsider.com/mywebsite/webPushDefaultImage/JpVu9aBXgTXmcrBkiZLB1512577074.jpeg
+              banner: https://image.useinsider.com/mywebsite/webPushDefaultImage/JpVu9aBXgTXmcrBkiZLB1512577074.jpeg
+              link: https://image.useinsider.com
+              include_unengage: true
+              ttl: '1000'
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    delete:
+      operationId: deleteSingleWebPushes
+      summary: Delete single web pushes
+      tags:
+      - Web Push APIs
+      description: "Insider's web push API allows you to delete single web push notifications from your own back-end without using Insider's InOne panel.\n\nHeaders\n\nHeader\nSample Value\nDescription\n\nAuthorization\n{{vault:bearer-token}}\nThis key is required to authorize your request. Refer to API Authentication Tokens to generate your token.\n\nContent-Type\napplication/json\nThis header specifies the media type of the resource.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\npartner_id\nThis is your partner identification number, available from InOne Settings > Account Preferences.\nString\nYes\n\nSample Example\nBefore sending the request, make sure:\n\nTo replace the authorization value with your own API key.\n\nTo add your partner ID in partner_id.\n\nWhen you send the request to create it, you will get your campaign_id as a response.\n\nSample Request\ncurl --location --request DELETE 'https://web-push.api.useinsider.com/v1/single/campaign_id' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: {{vault:bearer-token}}' \\\n--data-raw '{\n  \"partner_id\": \"100000001\",\n}'\n\nSample Responses\n200 OK\nYou can see this kind of response when you successfully deleted your campaign.\n\n{\n  \"success\": true,\n  \"campaign_id\": 1697300275\n}\n\n401 UNAUTHORIZED\n{\n\"message\": \"Unauthorized\"\n}\n\n424 FAILED DEPENDENCY\n{\n  \"message\": \"SERVICE:-\"\n}\n\nERROR CODES\n\n400: Bad request\n\n401: Unauthorized request\n\n424 Failed Dependency\n\n429 Request limit exceeded\n\nLimitations\n\nAll functions must be executed with an HTTPS DELETE request.\n\nThe API key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nThe rate limit is 30 requests per minute second."
+      security:
+      - Authorization: []
+      requestBody:
+        content:
+          text/plain:
+            example: "{\n  \"partner_id\": \"100000001\",\n}"
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /v2/single/campaign_id:
+    post:
+      operationId: launchSingleWebPushesV2
+      summary: Launch single web pushes v2
+      tags:
+      - Web Push APIs
+      description: "Insider's web push API allows you to launch single web push notifications from your own back-end without using Insider's InOne panel.\n\nHeaders\n\nHeader\nSample Value\nDescription\n\nAuthorization\n{{vault:bearer-token}}\nThis key is required to authorize your request. Refer to API Authentication Tokens to generate your token.\n\nContent-Type\napplication/json\nThis header specifies the media type of the resource.\n\nBody Parameters\nEach request body requires a partner ID and a title.\n\nParameter\nDescription\nData Type\nRequired\n\npartner_id\nThis is your partner identification number, available from InOne Settings > Account Preferences.\nString\nYes\n\ntitle\nEvery request creates a push notification campaign on InOne with the push type Single Push. This is the title of the push content. Itcannot be more than 100 characters.\nString\nYes\n\ndescription\nThis is the body of your push notification. It cannot be more than 255 characters. If it is a rich push that has a banner, it is limited to 30 characters.\nString\nYes\n\nimage\nThis is the push notification icon. Only HTTPS protocols are accepted. If not provided, the default icon is used instead.\nString\nYes\n\nbanner\nThis is the rich push notification image. Only HTTPS protocols are accepted.\nString\nNo\n\nlink\nThe link of the Web push message.\nString\nYes\n\ninclude_unengaged\nEnables you to decide whether the bulk push should target unengaged tokens. When not sent in the payload, unengaged users are automatically excluded.\nBoolean (true/false)\nNo\n\nttl\nShort for time to live: This is the maximum time the system will try to send a push notification to an offline or temporarily unavailable user. TTL is limited to 240 hours.\nString\nYes\n\ntarget\nTargeting options for the campaign (segmenting).\nObject\nYes if is_all: false\n\nattribute\nThe attribute used for targeting, e.g. \"d_wp_browser\".\nString\nYes if target is used.\n\nvalues\nAn array of values to target, e.g. [\"Edg\"]\nArray\nYes if target is used.\n\nSample Example\nBefore sending the request, make sure:\n\nTo replace the authorization value with your own API key.\n\nTo add your partner ID in partner_id.\n\nTo add your campaign name in title.\n\nWhen you send the request to create it, you will get your campaign_id as a response.\n\nSample Request\nBelow you can see a sample request without segments; is_all: true.\n\ncurl --location --request POST 'https://web-push.api.useinsider.com/v2/single/campaign_id' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: {{vault:bearer-token}}' \\\n--data-raw '{\n  \"partner_id\": \"100000001\",\n  \"title\": \"title of push\",\n  \"description\": \"description of push\",\n  \"image\": \"https://image.useinsider.com/mywebsite/webPushDefaultImage/JpVu9aBXgTXmcrBkiZLB1512577074.jpeg\",\n  \"banner\": \"https://image.useinsider.com/mywebsite/webPushDefaultImage/JpVu9aBXgTXmcrBkiZLB1512577074.jpeg\",\n  \"link\": \"https://image.useinsider.com\",\n  \"include_unengage\": true,\n  \"ttl\": \"1000\"\n}'\n\nBelow you can see a sample request with segments; is_all: false.\n\ncurl --location --request POST 'https://web-push.api.useinsider.com/v2/single/campaign_id' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: {{vault:bearer-token}}' \\\n--data-raw '{\n  \"partner_id\": \"10000001\",\n  \"title\": \"title of push\",\n  \"description\": \"description of push\",\n  \"image\": \"https://image.useinsider.com/mywebsite/webPushDefaultImage/JpVu9aBXgTXmcrBkiZLB1512577074.jpeg\",\n  \"banner\": \"https://image.useinsider.com/mywebsite/webPushDefaultImage/JpVu9aBXgTXmcrBkiZLB1512577074.jpeg\",\n  \"link\": \"https://image.useinsider.com\",\n  \"include_unengage\": true,\n  \"ttl\": \"1000\",\n  \"language\": \"en_US\",\n  \"target\": {\n    \"attribute\": \"d_wp_browser\",\n    \"values\": [\"Edg\"]\n  }\n}'\n\nSample Responses\n200 OK\nYou can see this kind of response when you successfully launched your campaign.\n\n{\n  \"success\": true,\n  \"campaign_id\": 1697300275\n}\n\n401 UNAUTHORIZED\n{\n\"message\": \"Unauthorized\"\n}\n\n424 FAILED DEPENDENCY\n{\n  \"message\": \"SERVICE:-\"\n}\n\nERROR CODES\n\n400: Bad request\n\n401: Unauthorized request\n\n424 Failed Dependency\n\n429 Request limit exceeded\n\nLimitations\n\nAll functions must be executed with an HTTPS POST request.\n\nThe API key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nThe rate limit is 6000 requests per minute second."
+      security:
+      - Authorization: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              partner_id: '100000001'
+              title: title of push
+              description: description of push
+              image: https://image.useinsider.com/mywebsite/webPushDefaultImage/JpVu9aBXgTXmcrBkiZLB1512577074.jpeg
+              banner: https://image.useinsider.com/mywebsite/webPushDefaultImage/JpVu9aBXgTXmcrBkiZLB1512577074.jpeg
+              link: https://image.useinsider.com
+              include_unengage: true
+              ttl: '1000'
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+components:
+  responses:
+    TooManyRequests:
+      description: Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.
+      content:
+        application/json:
+          example:
+            message: Too Many Requests
+            status: 429
+  securitySchemes:
+    Authorization:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Authorization header. On gw.useinsider.com this carries an OAuth 2.0 Bearer token; on other hosts it carries the API key issued for that channel.
+externalDocs:
+  description: Insider One API reference
+  url: https://academy.insiderone.com/docs/api-reference-welcome
+x-provenance:
+  generated: '2026-08-13'
+  method: derived
+  source: postman/insider-one-apis.postman_collection.json
+  source_url: https://documenter.gw.postman.com/api/collections/24851117/2sB3dSR9bM
+  publisher_page: https://developers.insiderone.com/
+  note: Insider One publishes a single public Postman collection covering every REST API. This document is the subset of that collection served from web-push.api.useinsider.com.

@@ -1,0 +1,423 @@
+openapi: 3.2.0
+info:
+  title: Insider Mobile App APIs API
+  version: 1.0.0
+  contact:
+    name: Insider One Support
+    email: support@useinsider.com
+    url: https://academy.insiderone.com/docs/insider-one-apis-1
+  termsOfService: https://insiderone.com/terms-of-use/
+  description: 'Operations tagged Mobile App APIs across 2 of this provider''s published API definitions: insider-mobile-openapi.yml, insider-mobile-settings-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://mobile.useinsider.com
+- url: https://mobile.api.useinsider.com
+tags:
+- name: Mobile App APIs
+paths:
+  /api/custom_segment/v1/upload:
+    post:
+      operationId: uploadCustomSegmentsToMobileSuite
+      summary: Upload custom segments to mobile suite
+      description: Upload custom segments via a CSV file to your Insider One Mobile Suite.
+      tags:
+      - Mobile App APIs
+      security:
+      - RequestToken: []
+      - PartnerName: []
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      x-source: https://academy.insiderone.com/docs/insider-one-apis-1
+      x-source-note: Documented in the Insider One APIs overview table but not present in the public Postman collection; method, host and path taken verbatim from that table.
+    servers:
+    - url: https://mobile.useinsider.com
+  /api/message_center/v1:
+    post:
+      operationId: getMessageCenterData
+      summary: Get Message Center data
+      tags:
+      - Mobile App APIs
+      description: "This API allows you to get the push notifications of any type delivered to your users during a defined time interval, including the push notifications delivered in Architect journeys.\n\nBody Parameters\nBefore sending the request, make sure to replace the values in your request body.\n\nParameter\nDescription\nData Type\nRequired\n\nidentifiers\nUser's identifier information. Identifiers can be Email, Phone Number, UUID (unique user ID), or a custom identifier. The identifiers need to be written in the mentioned letter cases in the request, while the custom attribute needs to be written in the attribute_name format.\nObject\nYes\n\nstart_date\nStart date of the timeline push notifications are delivered within, in timestamp format.\nInteger\nYes\n\nend_date\nEnd date of the timeline push notifications are delivered within, in timestamp format.\nInteger\nYes\n\nlimit\nNumber of push notifications you can get in one request. The value can be between1-100.\nInteger\nYes\n\nSample Body\nThe following is a sample body to get your message center data.\n\n{\n  \"identifiers\": {\n    \"Email\": \"j.doe@mail.com\"\n  },\n  \"start_date\": 1633068172,\n  \"end_date\": 2143433430,\n  \"limit\": 100\n}\n\nSample Responses\n200 OK\nThe following sample response returns for a successful request with a limit of 3.\n\n[\n    {\n        \"camp_id\": 650,\n        \"camp_type\": \"Single Push\",\n        \"created_at\": \"2023-01-23T18:10:17Z\",\n        \"deep_links\": {\n            \"Page\": \"Cart\",\n            \"category\": \"insider_int_push\",\n            \"mutable-content\": \"1\"\n        },\n        \"message\": \"This is my message\",\n        \"title\": \"This is my title\",\n        \"variant_id\": 1907\n    },\n    {\n        \"camp_id\": 101,\n        \"camp_type\": \"Recurring Push\",\n        \"created_at\": \"2023-01-18T21:00:21Z\",\n        \"deep_links\": {\n            \"MyKey01\": \"MyValue01\"\n        },\n        \"message\": \"New women's clothing has launched...\",\n        \"title\": \"Don't forget about me!\",\n        \"variant_id\": 898\n    },\n    {\n        \"camp_id\": 132,\n        \"camp_type\": \"Recurring Push\",\n        \"created_at\": \"2023-01-18T21:00:20Z\",\n        \"deep_links\": {\n            \"Page\": \"Cart\",\n            \"MyKey02\": \"MyValue02\"\n        },\n        \"message\": \"Your favorite items are waiting for you. \",\n        \"title\": \"Retail\",\n        \"variant_id\": 1122\n    }\n]\n\n400 Bad Request\nThe following sample response returns for a request where the start date is greater than the end date.\n\nbad payload\n\n400 Bad Request\nThe following sample response returns for a request where the limit is greater than 100.\n\nlimit should be between 1 and 100.\n\n401 Unauthorized\nA request with an invalid API key will return a 401 Unauthorized response.\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nEach request can get push notifications only for one single user."
+      security:
+      - InsiderApiKey: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              identifiers:
+                Email: j.doe@mail.com
+              start_date: 1633068172
+              end_date: 2143433430
+              limit: 100
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+              - camp_id: 897
+                camp_type: Single Push
+                created_at: '2023-05-10T19:08:39Z'
+                deep_links:
+                  key1: value1
+                image_url: https://imageurl.useinsider.com
+                message: This is my message!
+                title: This is my title
+                variant_id: 1943
+              - camp_id: 896
+                camp_type: Single Push
+                created_at: '2023-05-09T22:10:56Z'
+                deep_links:
+                  key2: value2
+                image_url: https://imageurl.useinsider.com
+                message: This is my great message
+                title: This is my amazing title
+                variant_id: 1941
+              - camp_id: 894
+                camp_type: Single Push
+                created_at: '2023-05-08T23:55:45Z'
+                deep_links:
+                  key3: value3
+                message: This is my message
+                title: This is my title
+                variant_id: 1937
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    servers:
+    - url: https://mobile.useinsider.com
+  /api/v1/push/bulk:
+    post:
+      operationId: sendBulkAppPushes
+      summary: Send bulk app pushes
+      tags:
+      - Mobile App APIs
+      description: "Bulk Push API is a service that sends push notifications to a predefined segment over the web using predefined web services.\n\nYou can reach the analytics of your bulk push notifications sent via this API through Reports > Mobile App Analytics > Push API Campaigns on Inone.\n\nBody Parameters\nThe following are the body parameters you need to use in your request.\n\nParameter\nDescription\nData Type\nRequired\n\napi_key\nYour API Key. Refer to API Authentication Tokens to get your API key.\nString\nYes\n\ncampaign_name\nName of the push campaign.\nString\nYes\n\nsegment_name\nName of the segment the push notification is sent to. It should match with the segments on the Mobile Panel.\nString\nYes\n\ntitle\nTitle of the push notification. For instance, it can be your App name.\nString\nYes\n\ncontent\nContent of the push notification.\nString\nYes\n\ndeeplink\nKey/value pairs to be passed to the application in the push payload. The most common use of deep links is sending the user to the selected landing page when they open the push notification.\nObject\nNo\n\nnotification_image\nURL of the image in the rich push notification. If advanced_push_items is in use, notification_image will not be displayed.\nString\nNo\n\nandroid_sound\nName of the custom sound file in your app to play a custom sound on Android devices.\nString\nNo\n\nios_sound\nName of the custom sound file in your app to play a custom sound on iOS devices.\nString\nNo\n\ntest_push\ntrue will send the push notification only to the test devices.\nBoolean\nNo\n\nadvanced_push_items\nArray of Advanced Push Items object.\nArray\nNo\n\npreferred_type\nIt is required only to send Advanced Pushes. E.g. carousel, slider.\nString\nNo\n\noverride_global_freq_cap  \ntrue will override global frequency capping limit.  \nBoolean\nNo\n\nSample Body\nThe following is a sample body to send bulk app push notification. Before sending the request, make sure to replace the values in your request body.\n\n{\n   \"api_key\":\"Your API Key goes here\",\n   \"campaign_name\":\"Insider API Demo\",\n   \"segment_name\":\"All People\",\n   \"title\":\"Your push notification title goes here\",\n   \"content\":\"Your push content goes here.\",\n   \"deeplink\":{\n      \"your_deeplink_key\":\"value\",\n      \"your_another_deeplink_key\":\"value\"\n   },\n   \"notification_image\":\"https://your_image_url.jpg\",\n   \"android_sound\":\"Your custom sound name for Android goes here\",\n   \"ios_sound\":\"Your custom sound name for iOS goes here\",\n   \"test_push\":true,\n   \"override_global_freq_cap\":true,\n   \"advanced_push_items\":[\n      {\n         \"headline\":\"Title for the item 1\",\n         \"description\":\"Description for the item 1\",\n         \"image_url\":\"https://your_image_url.jpg\",\n         \"deep_links\":{\n            \"your_deeplink_key\":\"value\"\n         }\n      },\n      {\n         \"headline\":\"Title for the item 2\",\n         \"description\":\"Description for the item 2\",\n         \"image_url\":\"https://your_image_url.jpg\",\n         \"deep_links\":{\n            \"your_deeplink_key\":\"value\"\n         }\n      },\n      {\n         \"headline\":\"Title for the item 3\",\n         \"description\":\"Description for the item 3\",\n         \"image_url\":\"https://your_image_url.jpg\",\n         \"deep_links\":{\n            \"your_deeplink_key\":\"value\"\n         }\n      }\n   ],\n   \"preferred_type\":\"carousel\"\n}\n\nSample Responses\n200 Campaign Created Successfully\nThe following response returns if the request is successful.\n\n{\n    \"response\": \"Campaign Created.\"\n}\n\n400 Invalid API Key\nThe following response returns if the API Key is invalid.\n\n{\n    \"response\": \"No Partner Found With Api Key.\"\n}\n\n422 No Push Message Certificate\n{\n    \"response\": \"No Push Message Certificate is Provided.\"\n}\n\nFail Records Messages\nThe following are fail records that might return in the response.\n\nMessage\nDefinition\n\nError Creating Campaign\nSome parameters are missing in the campaign. You should have all the required parameters in your request.\n\nNo API Key Provided\nThe API key is a required parameter. You should have the API Key in your request.\n\nNo Title Provided\nPush notification title is a required parameter. You should add the push notification title to your request body.\n\nNo Content Provided\nPush content is a required parameter. You should add the content to your request body.\n\nNo Partner Found With API Key\nThe API Key sent in the payload does not match the API key at Insider. You should get the correct API Key via Inone > Settings > Mobile App Settings > Integration.\n\nBad IP\nThe IP the push payload is sent from is not whitelisted.\n\nNo Segment Matched\nThe segment name in the payload does not match any segments on Insider Dashboard.\n\nAdvancedPushItems should contain at least 3, max. 6 items.\nIf advanced_push_items key is in use in the request body, it should contain 3-6 items.\n\nPreferred Type is Not Carousel or Slider\nIf preferred_type key is in use in the request body, it can either be carousel or slider.\n\nInvalid Advanced Push Payload\nAll the items for the Advanced Push Notification should have headline, description, image URL variables defined with image URLs using the HTTPS protocol.\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nThe API key should be provided in the request body. If the key is incorrect, no operation will be executed.\n\nEach payload can contain only one bulk push campaign."
+      requestBody:
+        content:
+          application/json:
+            example:
+              api_key: '{mobileAppApiKey}'
+              campaign_name: Insider API Demo
+              segment_name: Your segment name goes here
+              title: Your push notification title goes here
+              content: Your push content goes here.
+              deeplink:
+                your_deeplink_key: value
+                your_another_deeplink_key: value
+              notification_image: https://your_image_url.jpg
+              android_sound: Your custom sound name for Android goes here
+              ios_sound: Your custom sound name for iOS goes here
+              test_push: true
+              override_global_freq_cap: true
+              advanced_push_items:
+              - headline: Title for the item 1
+                description: Description for the item 1
+                image_url: https://your_image_url.jpg
+                deep_links:
+                  your_deeplink_key: value
+              - headline: Title for the item 2
+                description: Description for the item 2
+                image_url: https://your_image_url.jpg
+                deep_links:
+                  your_deeplink_key: value
+              - headline: Title for the item 3
+                description: Description for the item 3
+                image_url: https://your_image_url.jpg
+                deep_links:
+                  your_deeplink_key: value
+              preferred_type: carousel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              examples:
+                default:
+                  value:
+                    response: Test Push Send to Test Devices
+                send-advanced-bulk-push-to-a-segment:
+                  value:
+                    response: Campaign Created
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    servers:
+    - url: https://mobile.useinsider.com
+  /api/v2/notification/user:
+    post:
+      operationId: sendTargetedAppPushes
+      summary: Send targeted app pushes
+      tags:
+      - Mobile App APIs
+      description: "You can use the Targeted Push API in various cases such as sending status update of an order from your ecommerce platform, or informing users of a sale on an item that was in their wishlist.\n\nYou can reach the analytics of your targeted push notifications sent via this API through Reports > Mobile App Analytics > Push API Campaigns on Inone.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\napi_key\nYour API key. Refer to API Authentication Tokens to get your API key.\nString\nYes\n\nasync\nTrue: The request is queued and HTTP 202 {\"message\":\"Async request accepted\"} returns. The notification send results are not in the response.  False (default): HTTP 200 returns send reports with success/error counts.\nBoolean\nNo\n\nnotifications\nThe array of notification object that includes the push data\nArray\nYes\n\nidentifiers\nThe object that contains the unique identifier of the user. The key can be an identifier such as email, phone_number, or uuid. E.g., \"phone_number\": \"+651234567890\".\nObject\nYes\n\ncamp_id\nID of the campaign that can be used to retrieve the statistics of the push notification via Statistics API. You can set any campaign ID.\nInteger\nYes\n\ncamp_name\nName of the push notification\nString\nYes\n\ntitle\nTitle of the push notification\nString\nYes\n\nmessage\nContent of the push notification\nString\nYes\n\nimage_url\nURL of the image in rich push notifications\nString\nNo\n\nGFC_enabled\nWhen set to true, the Targeted Push API enforces your pushed global frequency cap (GFC). Each successful API push increments the user’s GFC counter by one. If the user has already reached the GFC limit, the API blocks the send. The user is excluded, no message is sent, and the count is not incremented. The default value is set to false. Even if GFC_enabled is set to false, the user's counter is still incremented.\nBoolean\nNo\n\nttl\nExpiration time of the push notification in seconds\nInteger\nNo\n\nandroid\nObject for Android details\nObject\nNo\n\nchannel_id\nID of the channel\nInteger\nNo\n\nios\nObject for iOS details\nObject\nNo\n\nthread_id\nID of the notification thread\nInteger\nNo\n\ndeep_link\nKey/value pairs to be passed to the application in the push payload. The most common use of deep links is sending the user to the selected landing page when they open the push notification.\nObject\nNo\n\nsound\nName of the custom sound file in your app to play a custom sound\nString\nNo\n\nbadge\nBadge for iOS\nInteger\nNo\n\ncontent-available\n(iOS only) true sends the notifications with content--available=1, but the notification does not appear. This can be used to execute background tasks remotely.\nBoolean\nNo\n\nmutable-content\n(iOS only) true sends the notification with mutable-content=1 and updates the current screen app pushes. This can be used to update app push notification content that was sent incorrectly on the user's screen.\nBoolean\nNo\n\n<p >To add key-value pairs to the deep_link object, you can use the following deep link keys depending on its type:</p> \n\nins_dl_internal for an internal deep link,\n\nins_dl_external for an external deep link,\n\nins_dl_url_scheme for a URL scheme deep link,\n\nins_dl_json for a JSON deep link.\n\nThe URL in the value should always start with https://.\n\nSample Body\nThe following is a sample body to send targeted app push notifications.\n\ncamp_id allows you to list your app push notifications in the Message Center, and get campaign-based reporting of your Push API campaigns. When replacing the sample values in the payload, make sure to use a unique campaign ID value in the camp_id key. \n\n{\n    \"api_key\": \"Your API Key goes here\",\n    \"report_attributes\": [\n        \"INSIDER.carrier\",\n        \"INSIDER.idfa\",\n        \"INSIDER.name\",\n        \"INSIDER.surname\",\n        \"INSIDER.gender\",\n        \"INSIDER.age\",\n        \"INSIDER.birthday\",\n        \"INSIDER.email\",\n        \"INSIDER.phone_number\",\n        \"INSIDER.language\",\n        \"INSIDER.email_optin\",\n        \"INSIDER.sms_optin\",\n        \"INSIDER.push_optin\",\n        \"INSIDER.location_optin\",\n        \"INSIDER.insider_id\",\n        \"INSIDER.environment\",\n        \"INSIDER.idfa\",\n        \"INSIDER.device_token\",\n        \"INSIDER.udid\",\n        \"INSIDER.model\",\n        \"INSIDER.carrier\",\n        \"INSIDER.app_version\",\n        \"INSIDER.os_version\",\n        \"INSIDER.screen_width\",\n        \"INSIDER.screen_height\",\n        \"INSIDER.platform\",\n        \"INSIDER.timezone\",\n        \"INSIDER.device_language\",\n        \"INSIDER.sdk_version\",\n        \"INSIDER.last_ip\",\n        \"INSIDER.package_name\"\n    ],\n    \"notifications\": [\n        {\n            \"identifiers\": {\n                \"INSIDER.email\": \"sample@mail.com\",\n                \"INSIDER.phone_number\": \"+65123456789\",\n                \"INSIDER.uuid\": \"1234567890\"\n            },\n            \"camp_id\": 1,\n            \"camp_name\": \"Your push notification campaign name goes here\",\n            \"title\": \"Your push notification title goes here\",\n            \"message\": \"Your push content goes here.\",\n            \"image_url\": \"https://your_image_url.jpg\",\n            \"ttl\": 1,\n            \"check_optin\": true,\n            \"android\": {\n                \"thread-id\": 1,\n                \"sound\": \"sound_check\",\n                \"deep_link\": {\n                    \"ins_dl_internal\": \"https://www.deeplink.useinsider\"\n                }\n            },\n            \"ios\": {\n                \"thread-id\": 1,\n                \"badge\": 1,\n                \"content-available\": false,\n                \"mutable-content\": true,\n                \"sound\": \"sound_check\",\n                \"deep_link\": {\n                    \"ins_dl_internal\": \"https://www.deeplink.useinsider\"\n                }\n            }\n        }\n    ]\n}\n\nAdd advanced_push_payload in notifications if you would like to use advanced app pushes. The advanced_push_type value can be a carousel or slider.\n\nParameter\nDefinition\nData Type\nRequired\n\nadvanced_push_type\nType of the advanced push: carousel or slider\nString\nYes\n\nadvanced_push_items\nDetails of the advanced push\nArray\nYes\n\nimage_url\nURL of the image in rich push notifications\nString\nYes\n\ndeep_links\nKey/value pairs to be passed to the application in the push payload. The most common use of deep links is sending the user to the selected landing page when they open the push notification.\nObject\nNo\n\ndescription\nDescription for your push\nString\nYes\n\nheadline\nTitle for your push\nString\nYes\n\nid\nID of your push\nInteger\nYes\n\n{\n    \"api_key\": \"Your API Key goes here\",\n    \"report_attributes\": [\n        \"INSIDER.carrier\",\n        \"INSIDER.idfa\",\n        \"INSIDER.name\",\n        \"INSIDER.surname\",\n        \"INSIDER.gender\",\n        \"INSIDER.age\",\n        \"INSIDER.birthday\",\n        \"INSIDER.email\",\n        \"INSIDER.phone_number\",\n        \"INSIDER.language\",\n        \"INSIDER.email_optin\",\n        \"INSIDER.sms_optin\",\n        \"INSIDER.push_optin\",\n        \"INSIDER.location_optin\",\n        \"INSIDER.insider_id\",\n        \"INSIDER.environment\",\n        \"INSIDER.idfa\",\n        \"INSIDER.device_token\",\n        \"INSIDER.udid\",\n        \"INSIDER.model\",\n        \"INSIDER.carrier\",\n        \"INSIDER.app_version\",\n        \"INSIDER.os_version\",\n        \"INSIDER.screen_width\",\n        \"INSIDER.screen_height\",\n        \"INSIDER.platform\",\n        \"INSIDER.timezone\",\n        \"INSIDER.device_language\",\n        \"INSIDER.sdk_version\",\n        \"INSIDER.last_ip\",\n        \"INSIDER.package_name\"\n    ],\n    \"notifications\": [\n        {\n            \"identifiers\": {\n                \"INSIDER.email\": \"example@gmail.com\",\n                \"INSIDER.phone_number\": \"+9059713551597135123\",\n                \"INSIDER.uuid\": \"5971351231234567\"\n            },\n            \"advanced_push_payload\": {\n                \"advanced_push_type\": \"carousel\",\n                \"advanced_push_items\": [\n                    {\n                        \"image_url\": \"https://your_image_url.jpg\",\n                        \"deep_links\": {\n                            \"your_deeplink_key\": \"value1\"\n                        },\n                        \"description\": \"Description for the item 1\",\n                        \"headline\": \"Title for the item 1\",\n                        \"id\": 1\n                    },\n                    {\n                        \"image_url\": \"https://your_image_url.jpg\",\n                        \"deep_links\": {\n                            \"your_deeplink_key\": \"value2\"\n                        },\n                        \"description\": \"Description for the item 2\",\n                        \"headline\": \"Title for the item 2\",\n                        \"id\": 2\n                    },\n                    {\n                        \"image_url\": \"https://your_image_url.jpg\",\n                        \"deep_links\": {\n                            \"your_deeplink_key\": \"value3\"\n                        },\n                        \"description\": \"Description for the item 3\",\n                        \"headline\": \"Title for the item 3\",\n                        \"id\": 3\n                    }\n                ]\n            },\n            \"camp_id\": 1,\n            \"camp_name\": \"Your push notification campaign name goes here\",\n            \"title\": \"Your push notification title goes here\",\n            \"message\": \"Your push content goes here\",\n            \"image_url\": \"https://your_image_url.jpg\",\n            \"ttl\": 1,\n            \"send_single_user\": true,\n            \"check_optin\": true,\n            \"android\": {\n                \"thread-id\": 1,\n                \"sound\": \"sound_check\",\n                \"deep_link\": {\n                    \"ins_dl_internal\": \"https://www.deeplink.useinsider\"\n                }\n            },\n            \"ios\": {\n                \"thread-id\": 13,\n                \"badge\": 1,\n                \"content-available\": false,\n                \"mutable-content\": true,\n                \"sound\": \"sound_check\",\n                \"deep_link\": {\n                    \"ins_dl_internal\": \"https://www.deeplink.useinsider\"\n                }\n            }\n        }\n    ]\n}\n\nYou can replace the advanced_push_payload.advanced_push_items[n].deep_links.your_deeplink_key with a custom deep link key, or use one of the following default keys: ins_dl_internal, ins_dl_external, ins_dl_url_scheme, or ins_dl_json. \n\nSample Responses\n200 OK\nThe following response returns if the request body has the report_attributes array.\n\ninsider_id represents the profile ID in user profiles. \n\n{\n    \"successes\": [\n        {\n            \"INSIDER.age\": 37,\n            \"INSIDER.app_version\": \"4.0\",\n            \"INSIDER.birthday\": \"1982-11-13T23:00:00Z\",\n            \"INSIDER.carrier\": \"mycarrier\",\n            \"INSIDER.device_language\": \"en\",\n            \"INSIDER.device_token\": \"d07951020f3835bbc303084ecda3746170cfb5d696ddcc55b6\",\n            \"INSIDER.email\": \"sample@mail.com\",\n            \"INSIDER.email_optin\": true,\n            \"INSIDER.environment\": \"production\",\n            \"INSIDER.gender\": \"F\",\n            \"INSIDER.idfa\": \"AF3CCF3F-0V8E-6571-B296-E9BDFF7\",\n            \"INSIDER.insider_id\": \"940E4A98F309288AAC8C4\",\n            \"INSIDER.language\": \"en_US\",\n            \"INSIDER.last_ip\": null,\n            \"INSIDER.location_optin\": false,\n            \"INSIDER.model\": \"iPhone 11\",\n            \"INSIDER.name\": \"John Smith\",\n            \"INSIDER.os_version\": \"14.7.1\",\n            \"INSIDER.package_name\": \"com.useinsider.iGurmeV3\",\n            \"INSIDER.phone_number\": \"+65123456789\",\n            \"INSIDER.platform\": \"iOS\",\n            \"INSIDER.push_optin\": true,\n            \"INSIDER.screen_height\": null,\n            \"INSIDER.screen_width\": null,\n            \"INSIDER.sdk_version\": \"10.6.0-RN-4.0.0\",\n            \"INSIDER.sms_optin\": true,\n            \"INSIDER.surname\": \"Smith\",\n            \"INSIDER.timezone\": \"Europe/Helsinki\",\n            \"INSIDER.udid\": \"98BB170F5078F309288AAC8C4\"\n        }\n    ],\n    \"errors\": {}\n}\n\nThe following response returns if the request body does not have the report_attributes array.\n\n{\n    \"successes\": [\n        {\n            \"INSIDER.device_token\": \"d07951020f3084ecd4d3deda3746170cfb5d69672c055b6\"\n        }\n    ],\n    \"errors\": {}\n}\n\nThere might be cases where the request returns a 200 response but the app pushes cannot be sent to users. The following list displays the reasons for these cases.\n\n| noUserErr | \"NoUserFound\" || optOutErr | \"OptOut\" || unregisteredErr | \"Unregistered\" || userGloballyCappedErr | \"UserGloballyCapped\" || userGloballyCappedForInappErr | \"UserGloballyCappedForInapp\" || invalidCertificateErr | \"InvalidCertificate\" |\n\n400 Bad Request\nThe following response returns if the request body does not have an identifier.\n\n{\n    \"error\": \"empty_insider_identifiers\",\n    \"message\": \"'insider_identifiers' object need to have at least one identifier\"\n}\n\n400 Bad Request\nThe following response returns if the notifications array is empty.\n\n{\n  \"error\": \"invalid_notifications\",\n  \"message\": \"'notifications' is empty, add some notification objects\"\n}\n\n400 Bad Request\nThe following response returns if the array has more than 20 objects.\n\n{\n  \"error\": \"invalid_notifications\",\n  \"message\": \"'notifications' can't have more than 20 objects\"\n}\n\n400 Bad Request\nThe following response returns if the deep link is blacklisted.\n\n{\n  \"error\": \"blacklisted_deeplink\",\n  \"message\": \"deepLink can't contain 'aps' key\"\n}\n\n400 Bad Request\nThe following response returns if the camp ID or channel ID is a negative integer.\n\n{\n  \"error\": \"negative_integer\",\n  \"message\": \"camp_id' and/or 'channel_id' must be greater than zero\"\n}\n\n400 Bad Request\nThe following response returns if the advanced push type is invalid.\n\n{\n  \"error\": \"invalid_advanced_push_type\",\n  \"message\": \"'advanced_push_type' must be either Carousel or Slider\"\n}\n\n400 Bad Request\nThe following response returns if the certificate is invalid.\n\n{\n  \"error\": \"invalid_certificate\",\n  \"message\": \"You do not have a validated certificate. Please check Certificate section under Insider's Settings.\"\n}\n\n401 Unauthorized\nThe following response returns if the API Key is either empty or incorrect.\n\n{\n    \"error\": \"bad_api_key\",\n    \"message\": \"'api_key' is either empty or wrong. You can get your API key from Insider Dashboard\"\n}\n\nFail Records Messages\n\nMessage\nDefinition\n\nInvalidRegistration (Android)\nYou should check the format of the registration passed to the server. Make sure it matches the registration token the client app receives from registering with FCM. Do not truncate or add additional characters.\n\nNotRegistered (Android)\nUser uninstalled the app and is no longer reachable.\n\nMismatchSenderId (Android)\nGoogle Sender ID used in the integration and the FCM Server Key do not belong to the same parent Google Account.\n\nBadDeviceToken (iOS)\nThe application and the app environment do not match. One is in development and the other is in production environment.\n\nDeviceTokenNotForTopic (iOS)\nPush notification certificate topic and the application package name do not match.\n\nUnregistered (iOS)\nUser uninstalled the app and is no longer reachable.\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nThe API key should be provided in the request body. If the key is incorrect, no operation will be executed.\n\nYou must complete the identifier integration with Insider SDK's user object for your platforms. See Android, iOS, React Native, Flutter, and Cordova for further details.\n\nThe camp ID value should be greater than 0.\n\nThe advanced_push_type value can be slider or carousel.\n\nThe Android channel ID value should be greater than 0."
+      requestBody:
+        content:
+          application/json:
+            examples:
+              default:
+                value:
+                  api_key: '{mobileAppApiKey}'
+                  report_attributes:
+                  - INSIDER.carrier
+                  - INSIDER.idfa
+                  - INSIDER.name
+                  - INSIDER.surname
+                  - INSIDER.gender
+                  - INSIDER.age
+                  - INSIDER.birthday
+                  - INSIDER.email
+                  - INSIDER.phone_number
+                  - INSIDER.language
+                  - INSIDER.email_optin
+                  - INSIDER.sms_optin
+                  - INSIDER.push_optin
+                  - INSIDER.location_optin
+                  - INSIDER.insider_id
+                  - INSIDER.environment
+                  - INSIDER.idfa
+                  - INSIDER.device_token
+                  - INSIDER.udid
+                  - INSIDER.model
+                  - INSIDER.carrier
+                  - INSIDER.app_version
+                  - INSIDER.os_version
+                  - INSIDER.screen_width
+                  - INSIDER.screen_height
+                  - INSIDER.platform
+                  - INSIDER.timezone
+                  - INSIDER.device_language
+                  - INSIDER.sdk_version
+                  - INSIDER.last_ip
+                  - INSIDER.package_name
+                  - INSIDER.push_enabled
+                  - INSIDER.location_enabled
+                  notifications:
+                  - identifiers:
+                      INSIDER.email: sample@useinsider.com
+                      INSIDER.phone_number: '+65123456789'
+                      INSIDER.uuid: '1234567890'
+                    camp_id: 1
+                    camp_name: Your push notification campaign name goes here
+                    title: Your push notification title goes here
+                    message: Your push content goes here.
+                    image_url: https://your_image_url.jpg
+                    ttl: 1
+                    check_optin: true
+                    android:
+                      thread-id: 1
+                      sound: sound_check
+                      deep_link:
+                        ins_dl_internal: https://www.deeplink.useinsider
+                    ios:
+                      thread-id: 1
+                      badge: 1
+                      content-available: false
+                      mutable-content: true
+                      sound: sound_check
+                      deep_link:
+                        ins_dl_internal: https://www.deeplink.useinsider
+              send-advanced-app-pushes:
+                summary: Send advanced app pushes
+                value:
+                  api_key: '{mobileAppApiKey}'
+                  report_attributes:
+                  - INSIDER.carrier
+                  - INSIDER.idfa
+                  - INSIDER.name
+                  - INSIDER.surname
+                  - INSIDER.gender
+                  - INSIDER.age
+                  - INSIDER.birthday
+                  - INSIDER.email
+                  - INSIDER.phone_number
+                  - INSIDER.language
+                  - INSIDER.email_optin
+                  - INSIDER.sms_optin
+                  - INSIDER.push_optin
+                  - INSIDER.location_optin
+                  - INSIDER.insider_id
+                  - INSIDER.environment
+                  - INSIDER.idfa
+                  - INSIDER.device_token
+                  - INSIDER.udid
+                  - INSIDER.model
+                  - INSIDER.carrier
+                  - INSIDER.app_version
+                  - INSIDER.os_version
+                  - INSIDER.screen_width
+                  - INSIDER.screen_height
+                  - INSIDER.platform
+                  - INSIDER.timezone
+                  - INSIDER.device_language
+                  - INSIDER.sdk_version
+                  - INSIDER.last_ip
+                  - INSIDER.package_name
+                  - INSIDER.push_enabled
+                  - INSIDER.location_enabled
+                  notifications:
+                  - identifiers:
+                      INSIDER.email: sample@useinsider.com
+                      INSIDER.phone_number: '+6559713551597135123'
+                      INSIDER.uuid: '5971351231234567'
+                    advanced_push_payload:
+                      advanced_push_type: carousel
+                      advanced_push_items:
+                      - image_url: https://your_image_url.jpg
+                        deep_links:
+                          your_deeplink_key: value1
+                        description: Description for the item 1
+                        headline: Title for the item 1
+                        id: 1
+                      - image_url: https://your_image_url.jpg
+                        deep_links:
+                          your_deeplink_key: value2
+                        description: Description for the item 2
+                        headline: Title for the item 2
+                        id: 2
+                      - image_url: https://your_image_url.jpg
+                        deep_links:
+                          your_deeplink_key: value3
+                        description: Description for the item 3
+                        headline: Title for the item 3
+                        id: 3
+                    camp_id: 1
+                    camp_name: Your push notification campaign name goes here
+                    title: Your push notification title goes here
+                    message: Your push content goes here
+                    image_url: https://your_image_url.jpg
+                    ttl: 1
+                    check_optin: true
+                    android:
+                      thread-id: 1
+                      sound: sound_check
+                      deep_link:
+                        ins_dl_internal: https://www.deeplink.useinsider
+                    ios:
+                      thread-id: 13
+                      badge: 1
+                      deliver_silently: true
+                      mutable-content: true
+                      sound: sound_check
+                      content-available: true
+                      deep_link:
+                        ins_dl_internal: https://www.deeplink.useinsider
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              examples:
+                default:
+                  value:
+                    successes: []
+                    errors:
+                      NoUserFound:
+                      - INSIDER.uuid: u1u2i3d4
+                send-targeted-app-push:
+                  value:
+                    successes:
+                    - INSIDER.app_version: '10.0'
+                      INSIDER.birthday: null
+                      INSIDER.carrier: Turkcell
+                      INSIDER.device_language: en
+                      INSIDER.email: sample@useinsider.com
+                      INSIDER.email_optin: true
+                      INSIDER.environment: production
+                      INSIDER.insider_id: 1234-5678-9012
+                      INSIDER.language: en_US
+                      INSIDER.location_optin: false
+                      INSIDER.model: iPhone 11
+                      INSIDER.os_version: '16.3'
+                      INSIDER.phone_number: '+16102362339'
+                      INSIDER.platform: iOS
+                      INSIDER.push_optin: true
+                      INSIDER.sdk_version: 12.7.3-RN-5.5.0
+                      INSIDER.sms_optin: true
+                      INSIDER.timezone: Europe/Istanbul
+                      INSIDER.udid: u1u2i3d4
+                    errors: {}
+              example:
+                successes:
+                - INSIDER.birthday: null
+                  INSIDER.device_language: en
+                  INSIDER.email: sample@useinsider.com
+                  INSIDER.language: en_US
+                  INSIDER.model: iPhone 11
+                  INSIDER.phone_number: '+16102362339'
+                  INSIDER.sdk_version: 12.7.3-RN-5.5.0
+                errors: {}
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    servers:
+    - url: https://mobile.useinsider.com
+  /v1/details/inapp:
+    post:
+      operationId: getInappCampaignDetails
+      summary: Get inapp campaign details
+      tags:
+      - Mobile App APIs
+      description: "This API allows you to retrieve detailed information about your app template campaigns. The campaigns in the App Templates, App Survey, App Template from Push, and Architect journeys can return in the response if available.\n\nYou can either:\n\nSearch for a specific campaign using its ID or\n\nFilter campaigns created within a specific date range.\n\nBody Parameters\nBefore sending the request, make sure to replace the values in your request body.\n\nParameter\nDescription\nData Type\n\ninapp_id\nThe ID of the app template\nInteger\n\ncreated_between\nThe dates between which the campaigns are created\nObject\n\nfrom\nThe start date of the date range\nString\n\nto\nThe end date of the date range\nString\n\nSample Body\nBefore sending the request, make sure to replace the values in your request body. Below is an example for the created_between parameter.\n\n{\n  \"created_between\": {\n    \"from\": \"2025-01-16\",\n    \"to\": \"2025-04-15\"\n  }\n}\n\nBelow is an example for the inapp_id parameter.\n\n{\n  \"inapp_id\": 1434\n}\n\nSample Responses\nThe following are some example responses you might receive for your request.\n\n200 OK\nThe following is a sample response for the created_between parameter.\n\n{\n  \"data\": [\n    {\n      \"inapp_id\": 2,\n      \"linked_push_id\": 3,\n      \"linked_push_type\": \"conversion\",\n      \"name\": \"My campaign\",\n      \"created_by\": \"test@useinsider.com\",\n      \"status\": \"passive\",\n      \"is_inapp_from_push\": true,\n      \"is_inapp_from_architect\": false,\n      \"created_at\": \"2025-01-01T15:08:55Z\",\n      \"start_date\": \"2024-01-01T15:08:56Z\",\n      \"updated_at\": \"2023-01-05T15:08:55Z\",\n      \"end_date\": \"2024-01-01T15:08:57Z\",\n      \"variations\": [\n        {\n          \"variation_id\": 1,\n          \"percentage\": 50,\n          \"variation_name\": \"Variant A\",\n          \"type\": \"wheelOfFortune\"\n        },\n        {\n          \"variation_id\": 2,\n          \"percentage\": 50,\n          \"variation_name\": \"Control Group\",\n          \"type\": \"wheelOfFortune\"\n        }\n      ],\n      \"tags\": [\n        \"tagName2\"\n      ]\n    },\n    {\n      \"inapp_id\": 3,\n      \"name\": \"Our campaign\",\n      \"created_by\": \"test@useinsider.com\",\n      \"status\": \"draft\",\n      \"is_inapp_from_push\": false,\n      \"is_inapp_from_architect\": false,\n      \"created_at\": \"2025-01-02T15:08:55Z\",\n      \"start_date\": \"2024-01-01T15:08:56Z\",\n      \"updated_at\": \"2023-01-05T15:08:55Z\",\n      \"end_date\": \"2024-01-01T15:08:57Z\",\n      \"variations\": [\n        {\n          \"variation_id\": 3,\n          \"percentage\": 50,\n          \"variation_name\": \"Variant A\",\n          \"type\": \"wheelOfFortune\"\n        },\n        {\n          \"variation_id\": 4,\n          \"percentage\": 50,\n          \"variation_name\": \"Control Group\",\n          \"type\": \"wheelOfFortune\"\n        }\n      ],\n      \"tags\": [\n        \"tagName3\"\n      ]\n    },\n    {\n      \"inapp_id\": 4,\n      \"journey_id\": 15,\n      \"name\": \"This campaign\",\n      \"created_by\": \"test@useinsider.com\",\n      \"status\": \"active\",\n      \"is_inapp_from_push\": false,\n      \"is_inapp_from_architect\": true,\n      \"created_at\": \"2025-01-03T15:08:55Z\",\n      \"start_date\": \"2024-01-01T15:08:56Z\",\n      \"updated_at\": \"2023-01-05T15:08:55Z\",\n      \"variations\": [\n        {\n          \"variation_id\": 5,\n          \"percentage\": 50,\n          \"variation_name\": \"Variant A\",\n          \"type\": \"wheelOfFortune\"\n        }\n      ]\n    }\n  ]\n}\n\nThe following is a sample response for the inapp_id parameter.\n\n{\n  \"data\": [\n    {\n      \"inapp_id\": 2,\n      \"name\": \"My campaign\",\n      \"linked_push_id\": 3,\n      \"linked_push_type\": \"conversion\",\n      \"created_at\": \"2024-01-01T15:08:55Z\",\n      \"created_by\": \"test@useinsider.com\",\n      \"status\": \"passive\",\n      \"is_inapp_from_push\": true,\n      \"is_inapp_from_architect\": false,\n      \"start_date\": \"2024-01-01T15:08:56Z\",\n      \"end_date\": \"2024-01-01T15:08:57Z\",\n      \"updated_at\": \"2023-01-05T15:08:55Z\",\n      \"variations\": [\n        {\n          \"variation_id\": 1,\n          \"percentage\": 50,\n          \"variation_name\": \"Variant A\",\n          \"type\": \"wheelOfFortune\"\n        },\n        {\n          \"variation_id\": 2,\n          \"percentage\": 50,\n          \"variation_name\": \"Control Group\",\n          \"type\": \"wheelOfFortune\"\n        }\n      ],\n      \"tags\": [\n        \"tagName2\"\n      ]\n    }\n  ]\n}\n\n400 Bad Request\nhe following is a sample response for a request where the API key is missing.\n\n{\n  \"error\": \"No api key provided\"\n}\n\n400 Bad Request\nThe following is a sample response for a request where the payload is invalid.\n\n{\n  \"error\": \"invalid request payload\"\n}\n\n400 Bad Request\nThe following is a sample response for a request where the required parameter is missing.\n\n{\n  \"error\": \"either 'inapp_id' or 'created_between' must be provided\"\n}\n\n400 Bad Request\nThe following is a sample response for a request where the payload has both parameters while it requires only one.\n\n{\n  \"error\": \"provide either 'inapp_id' or 'created_between', not both\"\n}\n\n400 Bad Request\nThe following is a sample response for a request where the date format is incorrect for the from parameter.\n\n{\n  \"error\": \"invalid date format for 'from'; expected format is YYYY-MM-DD\"\n}\n\n400 Bad Request\nThe following is a sample response for a request where the date format is incorrect for the to parameter.\n\n{\n  \"error\": \"invalid date format for 'to'; expected format is YYYY-MM-DD\"\n}\n\n400 Bad Request\nThe following is a sample response for a request where the to date is not greater than or equal to the from date.\n\n{\n  \"error\": \"'to' date must be after or equal to 'from' date\"\n}\n\n400 Bad Request\nThe following is a sample response for a request where the date range exceeds 90 days.\n\n{\n  \"error\": \"date range must not exceed 90 days\"\n}\n\n404 Not Found\nThe following is a sample response for a request where no inapp is found.\n\n{\n  \"error\": \"inapp not found\"\n}\n\n403 Forbidden\nThe following is a sample response for a request where the API key is invalid.\n\n{\n  \"error\": \"Invalid api key\"\n}\n\nLimitations\n\nAll functions must be executed with a simple HTTPS POST request.\n\nnly one of the filters (inapp_id or created_between) can be used at a time.\n\nThe date range must be 90 days or less."
+      security:
+      - ApiKey: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              created_between:
+                from: '2025-01-16'
+                to: '2025-04-15'
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    servers:
+    - url: https://mobile.api.useinsider.com
+  /v1/settings/certificate/firebase:
+    post:
+      operationId: uploadFcmCertificate
+      summary: Upload FCM certificate
+      tags:
+      - Mobile App APIs
+      description: This API allows you to upload your FCM certificate to Insider without visiting the Inone panel. With this API, you can upload or change your certificate.
+      security:
+      - ApiKey: []
+      requestBody:
+        content:
+          text/plain:
+            example: "{\n  \"type\": \"service_account\",\n  \"project_id\": \"certificate-id\",\n  \"private_key_id\": \"01ab23cd45ef\",\n  \"private_key\": \"-----BEGIN PRIVATE KEY-----\\abcdef123456\\n-----END PRIVATE KEY-----\\n\",\n  \"client_email\": \"firebase-admin-abc123@insider-sdk.iam.gserviceaccount.com\",\n  \"client_id\": \"1234567890\",\n  \"auth_uri\": \"https://accounts.google.com/o/oauth2/auth\",\n  \"token_uri\": \"https://oauth2.googleapis.com/token\",\n  \"auth_provider_x509_cert_url\": \"https://www.googleapis.com/oauth2/v1/certs\",\n  \"client_x509_cert_url\": \"https://www.googleapis.com/robot/v1/metadata/x509/firebase-admin-abc123-%insider-sdk.iam.gserviceaccount.com\",\n  \"universe_domain\": \"googleapis.com\"\n}"
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    servers:
+    - url: https://mobile.api.useinsider.com
+components:
+  responses:
+    TooManyRequests:
+      description: Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.
+      content:
+        application/json:
+          example:
+            message: Too Many Requests
+            status: 429
+  securitySchemes:
+    InsiderApiKey:
+      type: apiKey
+      in: header
+      name: X-INSIDER-API-KEY
+      description: Insider One API key for this API.
+    ApiKey:
+      type: apiKey
+      in: header
+      name: X-API-KEY
+      description: Insider One API key for this API.
+externalDocs:
+  description: Insider One API reference
+  url: https://academy.insiderone.com/docs/api-reference-welcome
+x-refined-from:
+- insider-mobile-openapi.yml
+- insider-mobile-settings-openapi.yml
+x-provenance:
+  generated: '2026-08-13'
+  method: derived
+  source: postman/insider-one-apis.postman_collection.json
+  source_url: https://documenter.gw.postman.com/api/collections/24851117/2sB3dSR9bM
+  publisher_page: https://developers.insiderone.com/
+  note: Insider One publishes a single public Postman collection covering every REST API. This document is the subset of that collection served from analytics.api.useinsider.com.

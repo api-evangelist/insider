@@ -1,0 +1,505 @@
+openapi: 3.2.0
+info:
+  title: Insider Email API
+  version: 1.0.0
+  contact:
+    name: Insider One Support
+    email: support@useinsider.com
+    url: https://academy.insiderone.com/docs/insider-one-apis-1
+  termsOfService: https://insiderone.com/terms-of-use/
+  description: 'Operations tagged Email across 2 of this provider''s published API definitions: insider-analytics-openapi.yml, insider-contact-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://analytics.api.useinsider.com
+- url: https://contact.useinsider.com
+tags:
+- name: Email
+paths:
+  /email/v1/campaign/list:
+    get:
+      operationId: getEmailCampaignList
+      summary: Get email campaign list
+      tags:
+      - Email
+      description: "This request allows you to get the analytics of your email campaigns for a given time period.\n\nThe campaigns on the Draft and Scheduled statuses are not listed in the response. \n\nQuery Parameters\nThe following are the query parameters you need to use in your request.\n\nParameter\nData Type\nDescription\nRequired\n\npage\nInteger\nSpecifies the number of pages of email campaigns\nYes\n\nperPage\nInteger\nSpecifies the number of emails to be listed per page\nYes\n\nBefore sending the request, make sure:\n\nTo replace the authorization value with your own API key.\n\nTo replace the sample values in page and perPage with your own values in the required data type.\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\n    \"currentPage\": 1,\n    \"data\": [\n        {\n            \"id\": 67,\n            \"campaignName\": \"My awesome campaign\",\n            \"startTime\": \"01-01-2023 12:30:15\"\n        },\n        {\n            \"id\": 66,\n            \"campaignName\": \"This is a great campaign\",\n            \"startTime\": \"01-12-2022 09:30:17\"\n        },\n        {\n            \"id\": 65,\n            \"campaignName\": \"This is a recurring campaign\",\n            \"startTime\": \"12-12-2022 12:45:15\"\n        },\n        {\n            \"id\": 64,\n            \"campaignName\": \"This is a newsletter\",\n            \"startTime\": \"22-07-2022 16:00:01\"\n        },\n        {\n            \"id\": 63,\n            \"campaignName\": \"My email campaign\",\n            \"startTime\": \"01-01-2022 18:30:00\"\n        }\n    ],\n    \"firstPageUrl\": \"https://analytics.useinsider.com/email/v1/campaign/list?page=1&perPage=5\",\n    \"from\": 0,\n    \"lastPage\": 14,\n    \"lastPageUrl\": \"https://analytics.useinsider.com/email/v1/campaign/list?page=14&perPage=5\",\n    \"nextPageUrl\": \"https://analytics.useinsider.com/email/v1/campaign/list?page=2&perPage=5\",\n    \"path\": \"/email/v1/campaign/list\",\n    \"perPage\": 5,\n    \"prevPageUrl\": \"https://analytics.useinsider.com/email/v1/campaign/list?page=1&perPage=5\",\n    \"to\": 0,\n    \"total\": 67\n}\n\n400 Bad Request\nSorry, we’ve received an invalid request from your side. You can try again later.\n\n400 Bad Request\nSorry, we couldn’t validate the request at the moment. You can try again later.\n\n500 Internal Server Error\nSorry, we couldn’t receive any response from our server. You can try again later.\n\nLimitations\nWhen sending your request, make sure to follow these limitations:\n\nAll functions must be executed with an HTTPS GET request.\n\nThe x-ins-auth-key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nThis API provides data for a 1 year-range.\n\nYou can send 1000 requests/per minute with the same API Key. If you exceed the rate limit, you will receive a 429 error.\n\nThe perPage value should be between 1-100."
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: string
+        example: Integer
+      - name: perPage
+        in: query
+        required: false
+        schema:
+          type: string
+        example: Integer
+      security:
+      - InsAuthKey: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+                currentPage: 2
+                data:
+                - id: 1084265
+                  campaignName: Email 1
+                  startTime: 05-05-2023 10:09:28
+                - id: 1083699
+                  campaignName: A great email campaign
+                  startTime: 29-04-2023 14:05:04
+                - id: 1083536
+                  campaignName: My amazing email campaign
+                  startTime: 27-04-2023 15:28:33
+                - id: 1083532
+                  campaignName: RSS Email
+                  startTime: 27-04-2023 15:13:11
+                - id: 1083530
+                  campaignName: Email campaign
+                  startTime: 27-04-2023 14:34:05
+                firstPageUrl: https://analytics.useinsider.com/email/v1/campaign/list?page=1&perPage=5
+                from: 5
+                lastPage: 38
+                lastPageUrl: https://analytics.useinsider.com/email/v1/campaign/list?page=38&perPage=5
+                nextPageUrl: https://analytics.useinsider.com/email/v1/campaign/list?page=3&perPage=5
+                path: /email/v1/campaign/list
+                perPage: 5
+                prevPageUrl: https://analytics.useinsider.com/email/v1/campaign/list?page=1&perPage=5
+                to: 10
+                total: 190
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    servers:
+    - url: https://analytics.api.useinsider.com
+  /email/v1/campaign/statistics:
+    get:
+      operationId: getEmailCampaignAnalytics
+      summary: Get email campaign analytics
+      tags:
+      - Email
+      description: "This request allows you to get the analytics of your email campaigns for a given time period.\n\nThe campaigns on the Draft and Scheduled statuses are not listed in the response. \n\nQuery Parameters\nThe following are the query parameters you need to use in your request.\n\nParameter\nData Type\nDescription\nRequired\n\ncampaignId\nInteger\nYour campaign ID that can be found on the campaign URL.\nYes\n\nstartTime\nint64\nThe time campaign is being launched. Specifies a 10-digit epoch start time.\nYes\n\nendTime\nint64\nThe current date (today’s date on the payload). It can be customizable according to your use case. Specifies a 10-digit epoch start time.\nNo\n\nIf the endTime value is empty, it will be populated with today’s date and time in UTC. \n\nBefore sending the request, make sure:\n\nTo replace the authorization value with your own API key.\n\nTo replace the sample values in campaignID, startTime, and endTime with your own values in the required data type.\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\n    \"data\": {\n        \"details\": {},\n        \"summary\": {\n            \"blocks\": 300,\n            \"bounces\": 0,\n            \"clickRate\": 1.45,\n            \"clickToOpen\": 2860,\n            \"conversion\": 22,\n            \"conversionRate\": 0.01,\n            \"delivered\": 235746,\n            \"frequencyDrop\": 0,\n            \"invalid\": 0,\n            \"linkActivities\": [\n            {\n                \"totalClick\": 1,\n                \"uniqueClick\": 1,\n                \"url\": \"https://google.com\"\n            }\n        ],\n            \"machineOpen\": 0,\n            \"openRate\": 6.48,\n            \"revenue\": 0,\n            \"sendingDrop\": 0,\n            \"sent\": 236573,\n            \"spams\": 2,\n            \"systemDrop\": 0,\n            \"totalClick\": 4931,\n            \"totalOpen\": 64518,\n            \"uniqueClick\": 3429,\n            \"uniqueOpen\": 15272,\n            \"unsubscribes\": 100\n        }\n    }\n}\n\n400 Bad Request\nSorry, we’ve received an invalid request from your side. You can try again later.\n\n400 Bad Request\nSorry, we couldn’t validate the request at the moment. You can try again later.\n\n400 Bad Request\nSorry, we detected an invalid Campaign ID in your request. The Campaign ID is not found in the database. You can confirm your Campaign ID by checking the InOne panel.\n\n406 Not Acceptable Request\nSorry, we received an invalid request. We are able to provide the analytics data for only the last 1 year.\n\n500 Internal Server Error\nSorry, we couldn’t receive any response from our server. You can try again later.\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with an HTTPS GET request.\n\nThe x-ins-auth-key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nThis API provides data for a 1 year-range.\n\nYou can send 100 requests/per minute with the same API Key. If you exceed the rate limit, you will receive a 429 error.\n\nThe perPage value should be between 1-100."
+      parameters:
+      - name: campaignId
+        in: query
+        required: false
+        schema:
+          type: string
+        example: integer
+      - name: startTime
+        in: query
+        required: false
+        schema:
+          type: string
+        example: int64
+      security:
+      - InsAuthKey: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+                data:
+                  details:
+                    '4160':
+                      blocks: 0
+                      bounces: 0
+                      clickRate: 0
+                      clickToOpen: 0
+                      conversion: 0
+                      conversionRate: 0
+                      delivered: 12
+                      frequencyDrop: 0
+                      invalid: 0
+                      invalidDrop: 0
+                      linkActivity: []
+                      machineOpen: 2
+                      mobileRevenue: 0
+                      openRate: 16.666666666666664
+                      recommendationRevenue: 0
+                      revenue: 0
+                      sendingDrop: 0
+                      sent: 12
+                      spams: 0
+                      systemDrop: 0
+                      totalClick: 0
+                      totalOpen: 2
+                      uniqueClick: 0
+                      uniqueMachineOpen: 2
+                      uniqueOpen: 2
+                      unsubscribes: 0
+                  isp:
+                  - metrics:
+                      blocks: 0
+                      bounces: 0
+                      clickThroughRate: 0
+                      delivered: 10
+                      openRate: 0
+                      totalClick: 0
+                      totalOpen: 0
+                      uniqueClick: 0
+                      uniqueOpen: 0
+                    name: name1
+                  - metrics:
+                      blocks: 0
+                      bounces: 0
+                      clickThroughRate: 0
+                      delivered: 1
+                      openRate: 100
+                      totalClick: 0
+                      totalOpen: 1
+                      uniqueClick: 0
+                      uniqueOpen: 1
+                    name: name2
+                  - metrics:
+                      blocks: 0
+                      bounces: 0
+                      clickThroughRate: 0
+                      delivered: 1
+                      openRate: 100
+                      totalClick: 0
+                      totalOpen: 1
+                      uniqueClick: 0
+                      uniqueOpen: 1
+                    name: name3
+                  summary:
+                    blocks: 0
+                    bounces: 0
+                    clickRate: 0
+                    clickToOpen: 0
+                    conversion: 0
+                    conversionRate: 0
+                    delivered: 12
+                    frequencyDrop: 0
+                    invalid: 0
+                    invalidDrop: 0
+                    linkActivity: []
+                    machineOpen: 2
+                    mobileRevenue: 0
+                    openRate: 16.666666666666664
+                    recommendationRevenue: 0
+                    revenue: 0
+                    sendingDrop: 0
+                    sent: 12
+                    spams: 0
+                    systemDrop: 0
+                    totalClick: 0
+                    totalOpen: 2
+                    uniqueClick: 0
+                    uniqueMachineOpen: 2
+                    uniqueOpen: 2
+                    unsubscribes: 0
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    servers:
+    - url: https://analytics.api.useinsider.com
+  /email/v1/overall:
+    get:
+      operationId: getOverallAnalytics
+      summary: Get overall analytics
+      tags:
+      - Email
+      description: "This request allows you to get the overall analytics of your email campaigns for a given time period\n\nThe campaigns on the Draft and Scheduled statuses are not listed in the response. \n\nQuery Parameters\nThe following are the query parameters you need to use in your request.\n\nParameter\nData Type\nDescription\nRequired\n\nstartTime\nint64\nThe time campaign is being launched. Specifies a 10-digit epoch start time.\nYes\n\nendTime\nint64\nThe current date (today’s date on the payload). It can be customizable according to your case. Specifies a 10-digit epoch start time.\nNo\n\nBefore sending the request, make sure:\n\nTo replace the authorization value with your own API key.\n\nTo replace the sample values in start_date and end_date with your own values in the required data type.\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\n    \"data\": {\n        \"summary\": {\n            \"blocks\": 0,\n            \"bounceDrop\": 0,\n            \"bounces\": 0,\n            \"clickRate\": 5.88,\n            \"conversion\": 0,\n            \"conversionRate\": 0,\n            \"delivered\": 17,\n            \"frequencyDrop\": 0,\n            \"invalid\": 0,\n            \"invalidDrop\": 0,\n            \"machineOpen\": 0,\n            \"openRate\": 47.05,\n            \"revenue\": 0,\n            \"sendingDrop\": 0,\n            \"sent\": 27,\n            \"spamDrop\": 0,\n            \"spams\": 0,\n            \"systemDrop\": 0,\n            \"totalClick\": 1,\n            \"totalOpen\": 15,\n            \"unsubscribeDrop\": 0,\n            \"unsubscribes\": 0\n        },\n        \"linkActivities\": [\n            {\n                \"totalClick\": 1,\n                \"uniqueClick\": 1,\n                \"url\": \"https://google.com\"\n            }\n        ]\n    }\n}\n\n400 Bad Request\nSorry, we’ve received an invalid request from your side. You can try again later.\n\n400 Bad Request\nSorry, we couldn’t validate the request at the moment. You can try again later.\n\n429 Rate Limited\nRate limited\n\n500 Internal Server Error\nSorry, we couldn’t receive any response from our server. You can try again later.\n\nLimitations\nWhen sending your request, make sure to follow these limitations:\n\nAll functions must be executed with an HTTPS GET request.\n\nThe x-ins-auth-key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nThis API provides data for a 1 year-range.\n\nYou can send 100 requests/per minute with the same API Key. If you exceed the rate limit, you will receive a 429 error.\n\nThe perPage value should be between 1-100."
+      parameters:
+      - name: startTime
+        in: query
+        required: false
+        schema:
+          type: string
+        example: int64
+      - name: endTime
+        in: query
+        required: false
+        schema:
+          type: string
+        example: int64
+      security:
+      - InsAuthKey: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+                data:
+                  summary:
+                    blocks: 4791
+                    bounceDrop: 0
+                    bounces: 0
+                    clickRate: 0.7633587786259541
+                    conversion: 0
+                    conversionRate: 0
+                    delivered: 43261
+                    frequencyDrop: 0
+                    invalid: 0
+                    invalidDrop: 0
+                    machineOpen: 2
+                    openRate: 6.106870229007633
+                    revenue: 0
+                    sendingDrop: 4792
+                    sent: 48053
+                    spamDrop: 0
+                    spams: 1
+                    systemDrop: 0
+                    totalClick: 2
+                    totalOpen: 12
+                    uniqueClick: 1
+                    uniqueMachineOpen: 2
+                    uniqueOpen: 8
+                    unsubscribeDrop: 0
+                    unsubscribes: 3
+                  linkActivities:
+                  - totalClick: 2
+                    uniqueClick: 1
+                    url: https://mycampaign.useinsider
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    servers:
+    - url: https://analytics.api.useinsider.com
+  /email/v2/campaign/list:
+    get:
+      operationId: getEmailCampaignListV2
+      summary: Get email campaign list V2
+      tags:
+      - Email
+      description: "This request allows you to get the analytics of your email campaigns for a given time period with more metrics than V1.\n\nThe campaigns on the Draft and Scheduled statuses are not listed in the response. \n\nQuery Parameters\nThe following are the query parameters you need to use in your request.\n\nParameter\nData Type\nDescription\nRequired\n\npage\nInteger\nSpecifies the number of pages of email campaigns\nYes\n\nperPage\nInteger\nSpecifies the number of emails to be listed per page\nYes\n\nBefore sending the request, make sure:\n\nTo replace the authorization value with your own API key.\n\nTo replace the sample values in page and perPage with your own values in the required data type.\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\n   \"currentPage\": 1,\n   \"data\": [\n       {\n           \"id\": 6648,\n           \"name\": \"My Email Campaign\",\n           \"tags\": \"marketing\",\n           \"type\": \"experiment\",\n           \"subject\": \"Here is your experiment\",\n           \"senderDomain\": \"@useinsider.com\",\n           \"utmParameters\": {\n               \"utm_term\": \"\",\n               \"utm_medium\": \"email\",\n               \"utm_source\": \"insider\",\n               \"utm_status\": true,\n               \"utm_content\": \"example\",\n               \"utm_campaign\": \"insider_0225\"\n           },\n           \"startTime\": \"05-02-2025 09:00:05\"\n       }\n   ],\n“firstPageUrl”: “https://analytics.useinsider.com/email/v2/campaign/list?page=1&perPage=10”,\n    “from”: 0,\n    “lastPage”: 79,\n    “lastPageUrl”: “https://analytics.useinsider.com/email/v2/campaign/list?page=79&perPage=10”,\n    “nextPageUrl”: “https://analytics.useinsider.com/email/v2/campaign/list?page=2&perPage=10”,\n    “path”: “/email/v2/campaign/list”,\n    “perPage”: 10,\n    “prevPageUrl”: “https://analytics.useinsider.com/email/v2/campaign/list?page=1&perPage=10”,\n    “to”: 0,\n    “total”: 787\n}\n\n400 Bad Request\nSorry, we’ve received an invalid request from your side. You can try again later.\n\n400 Bad Request\nSorry, we couldn’t validate the request at the moment. You can try again later.\n\n500 Internal Server Error\nSorry, we couldn’t receive any response from our server. You can try again later.\n\nLimitations\nWhen sending your request, make sure to follow these limitations:\n\nAll functions must be executed with an HTTPS GET request.\n\nThe x-ins-auth-key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nThis API provides data for a 1 year-range.\n\nYou can send 1000 requests/per minute with the same API Key. If you exceed the rate limit, you will receive a 429 error.\n\nThe perPage value should be between 1-100."
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: string
+        example: Integer
+      - name: perPage
+        in: query
+        required: false
+        schema:
+          type: string
+        example: Integer
+      security:
+      - InsAuthKey: []
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    servers:
+    - url: https://analytics.api.useinsider.com
+  /email/v2/campaign/statistics:
+    get:
+      operationId: getEmailCampaignAnalyticsV2
+      summary: Get email campaign analytics V2
+      tags:
+      - Email
+      description: "This request allows you to get the analytics of your email campaigns for a given time period with more metrics than V1.\n\nThe campaigns on the Draft and Scheduled statuses are not listed in the response. \n\nQuery Parameters\nThe following are the query parameters you need to use in your request.\n\nParameter\nData Type\nDescription\nRequired\n\ncampaignId\nInteger\nYour campaign ID that can be found on the campaign URL.\nYes\n\nstartTime\nint64\nThe time campaign is being launched. Specifies a 10-digit epoch start time.\nYes\n\nendTime\nint64\nThe current date (today’s date on the payload). It can be customizable according to your use case. Specifies a 10-digit epoch start time.\nNo\n\nIf the endTime value is empty, it will be populated with today’s date and time in UTC. \n\nBefore sending the request, make sure:\n\nTo replace the authorization value with your own API key.\n\nTo replace the sample values in campaignID, startTime, and endTime with your own values in the required data type.\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\n  \"data\": {\n    \"details\": {\n      \"1199\": {\n        \"sent\": 76982,\n        \"delivered\": 75999,\n        \"deliveryRate\": 98.72307812215843,\n        \"openRate\": 19.88315635732049,\n        \"totalOpens\": 18763,\n        \"uniqueOpens\": 15111,\n        \"clickThroughRate\": 0.3710575139146568,\n        \"totalClicks\": 581,\n        \"uniqueClicks\": 282,\n        \"clickToOpenRate\": 1.8661901925749453,\n        \"conversions\": 5,\n        \"conversionRate\": 0.0065790339346570356,\n        \"revenue\": 337.56999588012695,\n        \"unsubscribe\": 131,\n        \"bounce\": 9,\n        \"bounceRate\": 0.0116910446597906,\n        \"blocks\": 1166,\n        \"spamReports\": 7,\n        \"uniqueUserOpens\": 4098,\n        \"uniqueUserOpenRate\": 5.392176212844906,\n        \"uniqueMachineOpens\": 11013,\n        \"uniqueMachineOpenRate\": 14.490980144475586,\n        \"systemDrops\": 0,\n        \"sendingDrops\": 1899,\n        \"frequencyDrop\": 0,\n        \"unsubscribeDrop\": 712,\n        \"spamDrop\": 0,\n        \"invalidDrop\": 0,\n        \"bounceDrop\": 5,\n        \"linkClickActivity\": [\n          {\n            \"totalClick\": 94,\n            \"uniqueClick\": 73,\n            \"link\": \"https://www.insider.com/products\"\n          },\n          {\n            \"totalClick\": 89,\n            \"uniqueClick\": 71,\n            \"link\": \"https://www.insider.com/collections/c\"\n          },\n          {\n            \"totalClick\": 9,\n            \"uniqueClick\": 6,\n            \"link\": \"https://www.insider.com/collections/f\"\n          }\n        ],\n        \"utmParameters\": \"{\\\"utm_source\\\":\\\"insider\\\",\\\"utm_medium\\\":\\\"email\\\",\\\"utm_campaign\\\":\\\"insider_2025\\\",\\\"utm_term\\\":\\\"\\\",\\\"utm_content\\\":\\\"\\\",\\\"utm_status\\\":true}\"\n      }\n    },\n    \"isp\": [\n      {\n        \"name\": \"gmail\",\n        \"metrics\": {\n          \"blocks\": 283,\n          \"bounces\": 4,\n          \"clickThroughRate\": 0.1826458356749466,\n          \"delivered\": 35588,\n          \"openRate\": 10.006181859053614,\n          \"spams\": 0,\n          \"totalClick\": 91,\n          \"totalOpen\": 4854,\n          \"uniqueClick\": 65,\n          \"uniqueOpen\": 3561,\n          \"unsubscribes\": 33\n        }\n      },\n      {\n        \"name\": \"hotmail\",\n        \"metrics\": {\n          \"blocks\": 139,\n          \"bounces\": 0,\n          \"clickThroughRate\": 0.3071253071253071,\n          \"delivered\": 14652,\n          \"openRate\": 28.77422877422877,\n          \"spams\": 1,\n          \"totalClick\": 51,\n          \"totalOpen\": 4796,\n          \"uniqueClick\": 45,\n          \"uniqueOpen\": 4216,\n          \"unsubscribes\": 24\n        }\n      },\n      {\n        \"name\": \"orange\",\n        \"metrics\": {\n          \"blocks\": 17,\n          \"bounces\": 0,\n          \"clickThroughRate\": 1.0698096101541252,\n          \"delivered\": 5515,\n          \"openRate\": 31.677243880326383,\n          \"spams\": 0,\n          \"totalClick\": 117,\n          \"totalOpen\": 2269,\n          \"uniqueClick\": 59,\n          \"uniqueOpen\": 1747,\n          \"unsubscribes\": 16\n        }\n      },\n      {\n        \"name\": \"yahoo\",\n        \"metrics\": {\n          \"blocks\": 6,\n          \"bounces\": 2,\n          \"clickThroughRate\": 0.690376569037657,\n          \"delivered\": 4780,\n          \"openRate\": 31.23430962343096,\n          \"spams\": 1,\n          \"totalClick\": 44,\n          \"totalOpen\": 1789,\n          \"uniqueClick\": 33,\n          \"uniqueOpen\": 1493,\n          \"unsubscribes\": 14\n        }\n      },\n      {\n        \"name\": \"icloud\",\n        \"metrics\": {\n          \"blocks\": 128,\n          \"bounces\": 0,\n          \"clickThroughRate\": 0.17921146953405018,\n          \"delivered\": 1674,\n          \"openRate\": 46.415770609319,\n          \"spams\": 0,\n          \"totalClick\": 3,\n          \"totalOpen\": 913,\n          \"uniqueClick\": 3,\n          \"uniqueOpen\": 777,\n          \"unsubscribes\": 2\n        }\n      },\n      {\n        \"name\": \"free\",\n        \"metrics\": {\n          \"blocks\": 57,\n          \"bounces\": 0,\n          \"clickThroughRate\": 0.5847953216374269,\n          \"delivered\": 1539,\n          \"openRate\": 30.734243014944767,\n          \"spams\": 0,\n          \"totalClick\": 11,\n          \"totalOpen\": 599,\n          \"uniqueClick\": 9,\n          \"uniqueOpen\": 473,\n          \"unsubscribes\": 7\n        }\n      },\n      {\n        \"name\": \"msn\",\n        \"metrics\": {\n          \"blocks\": 4,\n          \"bounces\": 0,\n          \"clickThroughRate\": 0,\n          \"delivered\": 264,\n          \"openRate\": 27.65151515151515,\n          \"spams\": 0,\n          \"totalClick\": 0,\n          \"totalOpen\": 85,\n          \"uniqueClick\": 0,\n          \"uniqueOpen\": 73,\n          \"unsubscribes\": 0\n        }\n      },\n      {\n        \"name\": \"bbox\",\n        \"metrics\": {\n          \"blocks\": 10,\n          \"bounces\": 1,\n          \"clickThroughRate\": 0.5524861878453038,\n          \"delivered\": 181,\n          \"openRate\": 17.12707182320442,\n          \"spams\": 0,\n          \"totalClick\": 1,\n          \"totalOpen\": 41,\n          \"uniqueClick\": 1,\n          \"uniqueOpen\": 31,\n          \"unsubscribes\": 0\n        }\n      }\n    ]\n  }\n}\n\n400 Bad Request\nSorry, we’ve received an invalid request from your side. You can try again later.\n\n400 Bad Request\nSorry, we couldn’t validate the request at the moment. You can try again later.\n\n400 Bad Request\nSorry, we detected an invalid Campaign ID in your request. The Campaign ID is not found in the database. You can confirm your Campaign ID by checking the InOne panel.\n\n406 Not Acceptable Request\nSorry, we received an invalid request. We are able to provide the analytics data for only the last 1 year.\n\n500 Internal Server Error\nSorry, we couldn’t receive any response from our server. You can try again later.\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with an HTTPS GET request.\n\nThe x-ins-auth-key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nThis API provides data for a 1 year-range.\n\nYou can send 100 requests/per minute with the same API Key. If you exceed the rate limit, you will receive a 429 error.\n\nThe perPage value should be between 1-100."
+      parameters:
+      - name: campaignId
+        in: query
+        required: false
+        schema:
+          type: string
+        example: integer
+      - name: startTime
+        in: query
+        required: false
+        schema:
+          type: string
+        example: int64
+      security:
+      - InsAuthKey: []
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    servers:
+    - url: https://analytics.api.useinsider.com
+  /email/v2/overall:
+    get:
+      operationId: getOverallAnalyticsV2
+      summary: Get overall analytics V2
+      tags:
+      - Email
+      description: "This request allows you to get the overall analytics of your email campaigns for a given time period with more metrics than V1.\n\nThe campaigns on the Draft and Scheduled statuses are not listed in the response. \n\nQuery Parameters\nThe following are the query parameters you need to use in your request.\n\nParameter\nData Type\nDescription\nRequired\n\nstartTime\nint64\nThe time campaign is being launched. Specifies a 10-digit epoch start time.\nYes\n\nendTime\nint64\nThe current date (today’s date on the payload). It can be customizable according to your case. Specifies a 10-digit epoch start time.\nNo\n\nBefore sending the request, make sure:\n\nTo replace the authorization value with your own API key.\n\nTo replace the sample values in start_date and end_date with your own values in the required data type.\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\n  \"data\": {\n    \"summary\": {\n      \"sent\": 28177222,\n      \"delivered\": 27174347,\n      \"deliveryRate\": 96.44083082427359,\n      \"openRate\": 15.377410908898751,\n      \"totalOpens\": 5028722,\n      \"uniqueOpens\": 4178711,\n      \"clickThroughRate\": 0.10888946107886237,\n      \"totalClicks\": 291619,\n      \"uniqueClicks\": 29590,\n      \"clickToOpenRate\": 0.708113099948764,\n      \"conversions\": 365,\n      \"conversionRate\": 0.0013431785499758283,\n      \"revenue\": 54860988,\n      \"unsubscribe\": 5083,\n      \"bounce\": 2238,\n      \"bounceRate\": 0.007942585681441554,\n      \"blocks\": 1013573,\n      \"spamReports\": 480,\n      \"uniqueUserOpens\": 1216549,\n      \"uniqueUserOpenRate\": 4.4768288268343674,\n      \"uniqueMachineOpens\": 2962162,\n      \"uniqueMachineOpenRate\": 10.900582082064382,\n      \"systemDrops\": 541566,\n      \"sendingDrops\": 1558662,\n      \"frequencyDrop\": 0,\n      \"unsubscribeDrop\": 533725,\n      \"spamDrop\": 22,\n      \"invalidDrop\": 12,\n      \"bounceDrop\": 8612\n    },\n    \"linkActivities\": [\n      {\n        \"totalClick\": 9908,\n        \"uniqueClick\": 5923,\n        \"link\": \"https://sample.useinsider.com/download\"\n      },\n      {\n        \"totalClick\": 379,\n        \"uniqueClick\": 109,\n        \"link\": \"https://sample.useinsider.com/download/v\"\n      },\n      {\n        \"totalClick\": 378,\n        \"uniqueClick\": 116,\n        \"link\": \"https://sample.useinsider.com/download_insider\"\n      },\n      {\n        \"totalClick\": 378,\n        \"uniqueClick\": 115,\n        \"link\": \"https://sample.useinsider.com/download_useinsider\"\n      },\n      {\n        \"totalClick\": 375,\n        \"uniqueClick\": 113,\n        \"link\": \"https://sample.useinsider.com/download_open\"\n      }\n    ],\n    \"topEmailClients\": {\n      \"android\": 0.46,\n      \"apple-mail\": 0.1,\n      \"g-mail\": 84.54,\n      \"i-pad\": 0.02,\n      \"i-phone\": 0.08,\n      \"other\": 7.56,\n      \"other-web-mail\": 0.05,\n      \"outlook\": 0.01,\n      \"yahoo\": 7.19\n    },\n    \"topEmailDevices\": {\n      \"desktop\": 0.13,\n      \"mobile\": 0.53,\n      \"others\": 7.57,\n      \"tablet\": 0.07,\n      \"web-mail\": 91.7\n    }\n  }\n}\n\n400 Bad Request\nSorry, we’ve received an invalid request from your side. You can try again later.\n\n400 Bad Request\nSorry, we couldn’t validate the request at the moment. You can try again later.\n\n429 Rate Limited\nRate limited\n\n500 Internal Server Error\nSorry, we couldn’t receive any response from our server. You can try again later.\n\nLimitations\nWhen sending your request, make sure to follow these limitations:\n\nAll functions must be executed with an HTTPS GET request.\n\nThe x-ins-auth-key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nThis API provides data for a 1 year-range.\n\nYou can send 100 requests/per minute with the same API Key. If you exceed the rate limit, you will receive a 429 error.\n\nThe perPage value should be between 1-100."
+      parameters:
+      - name: startTime
+        in: query
+        required: false
+        schema:
+          type: string
+        example: int64
+      - name: endTime
+        in: query
+        required: false
+        schema:
+          type: string
+        example: int64
+      security:
+      - InsAuthKey: []
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    servers:
+    - url: https://analytics.api.useinsider.com
+  /email/v1/subscribe:
+    post:
+      operationId: resubscribeEmailUsers
+      summary: Resubscribe email users
+      tags:
+      - Email
+      description: "This API allows you to set an unreachable email status as reachable on Insider's email platform.\n\nBody Parameters\nEvery request made to the request endpoint requires a request body formatted in JSON and containing your email's content and metadata. This includes the subscriber's email address.\n\nParameter\nDescription\nData Type\nRequired\n\nemail\nUser's email address\nString\nYes\n\nSample Body\nThe following is a sample body to resubscribe a user to the Email platform.\n\n{\n    \"email\": \"sample@mail.com\"\n}\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\n  \"statusMessage\": \"OK\"\n}\n\n400 Bad Request\n{\n  \"statusMessage\": \"Bad request\"\n}\n\n401 Unauthorized\nThe following response returns if the request is not authorized.\n\n{\n  \"statusMessage\": \"Unauthorized\"\n}\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nOnly emails can be sent via this API. No data can be retrieved.\n\nThe API Key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nThe value of X-PARTNER-NAME header should be lowercase."
+      security:
+      - PartnerName: []
+      - RequestToken: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              email: sample@useinsider.com
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+                statusMessage: OK
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    servers:
+    - url: https://contact.useinsider.com
+  /email/v1/unsubscribe:
+    post:
+      operationId: unsubscribeEmailUsersFromDatabase
+      summary: Unsubscribe email users from database
+      tags:
+      - Email
+      description: "This API enables you to unsubscribe users from Insider's email platform.\n\nBody Parameters\nEvery request made to the request endpoint requires a request body formatted in JSON and containing your email's content and metadata. This includes the subscriber's email address.\n\nParameter\nDescription\nData Type\nRequired\n\nemail\nUser's email address\nString\nYes\n\nSample Body\nThe following is a sample body to unsubscribe a user from Email platform.\n\n{\n    \"email\": \"sample@mail.com\"\n}\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\n  \"statusMessage\": \"OK\"\n}\n\n400 Bad Request\n{\n  \"statusMessage\": \"Bad request\"\n}\n\n401 Unauthorized\nThe following response returns if the request is not authorized.\n\n{\n  \"statusMessage\": \"Unauthorized\"\n}\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nOnly global unsubscribers can be sent via this API. No data can be retrieved.\n\nThe API Key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nThe value of X-PARTNER-NAME header should be lowercase."
+      security:
+      - PartnerName: []
+      - RequestToken: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              email: sample@useinsider.com
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+                statusMessage: OK
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    servers:
+    - url: https://contact.useinsider.com
+  /email/v2/subscribe:
+    post:
+      operationId: resubscribeEmailUsersForEmailGlobalSubscribe
+      summary: Resubscribe Email Users for Email Global Subscribe
+      tags:
+      - Email
+      description: "The Email Resubscribe API allows you to set an unreachable email status as reachable on the Insider's Email platform.\n\nThe Resubscribe API v2 is the latest version of the Email Resubscribe API, which supports bulk data ingestion. If you're still using the previous version (v1), we strongly recommend migrating to this updated version to benefit from bulk updates and enhanced functionality. Please note that new integrations with v1 are no longer supported.\n\nAPI usage changes depending on the identifier format you're using. Please refer to the relevant section based on your identifier configuration.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\nemails\nUser's email address(es)\nString Array\nes (normal and email-based)\n\nuuids\nUsers unique user identifier\nString Array\nYes (only if you are not using email as an identifier and using profile-based)\n\nSample Requests\nWhen Email is the Identifier or Email-Based Flow is Enabled\nEvery request made to the request endpoint requires a request body formatted in JSON and containing your email's content and metadata.\n\nFor the email-based flow, the same request is used; however, it will only update the status of existing users and will not create new users.\n\nThe emails field is required for resubscribe requests.\n\ncurl --location --request POST 'http://contact.useinsider.com/email/v2/subscribe' \\\n--header 'Content-Type: application/json' \\\n--header 'X-PARTNER-NAME: mybrand' \\\n--header 'X-REQUEST-TOKEN: a1b2c3d4e5f6' \\\n--data-raw '{\n     \"emails\": [\n        \"sample1@useinsider.com\",\n        \"sample2@useinsider.com\"\n    ]\n}'\n\nWhen UUID is the Identifier and Profile-Based Flow is Enabled\nEvery request made to the request endpoint requires a request body formatted in JSON and containing your email's content and metadata.\n\nIf the profile-based flow is enabled for your account:- If the user in the request exists, their status will be updated.- If the user does not exist, a new user will be created.\n\nThe uuid, and uploader_email fields are required for resubscribe requests.\n\ncurl --location 'https://contact.useinsider.com/email/v2/subscribe' \\\n--header 'Content-Type: application/json' \\\n--header 'x-request-token: mybrand' \\\n--header 'x-partner-name: a1b2c3d4e5f6' \\\n--data-raw '{\n    \"uuids\": [\n        \"test-uuid-1\",\n        \"test-uuid-2\",\n        \"test-uuid-3\",\n        \"test-uuid-7\"\n    ],\n    \"emails\": [\n        \"samlpe1@useinsider.com\",\n        \"sample2@useinsider.com\",\n        \"sample3@useinsider.com\",\n        \"sample4@useinsider.com\"\n    ]\n}'\n\nSample Responses\n200 OK\n{\n  \"statusMessage\": \"OK\"\n}\n\n400 Bad Request\n{\n  \"statusMessage\": \"Bad request\"\n}\n\n401 Unauthorized\n{\n  \"statusMessage\": \"Unauthorized\"\n}\n\nLimitations\n\nAll functions must be executed with a simple HTTPS POST request.\n\nA maximum of 500 emails or UUIDs can be consumed in one request.\n\nThe API Key should be provided as the authorization key in the request header. If the key is incorrect, the operation will not be executed, and an authorization error will return in the response.\n\nThe value of X-PARTNER-NAME header should be lowercase.\n\n<p >The default limit shown here is a standard baseline. If your use case requires higher capacity, feel free to reach out to the Insider team — we can adjust it to fit your needs.</p>"
+      security:
+      - PartnerName: []
+      - RequestToken: []
+      requestBody:
+        content:
+          application/json:
+            examples:
+              default:
+                value:
+                  emails:
+                  - sample1@useinsider.com
+                  - sample2@useinsider.com
+              resubscribe-email-users-for-email-group-subscribe:
+                summary: Resubscribe Email Users for Email Group Subscribe
+                value:
+                  emails:
+                  - sample1@useinsider.com
+                  - sample2@useinsider.com
+                  group_id: 12345
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    servers:
+    - url: https://contact.useinsider.com
+  /email/v2/unsubscribe:
+    post:
+      operationId: unsubscribeEmailUsersForEmailGlobalUnsubscription
+      summary: Unsubscribe email users for email global unsubscription
+      tags:
+      - Email
+      description: "The Email Unsubscribe API allows you to ingest email addresses into either the global unsubscribe list or a specific unsubscribe group you created in InOne.\n\nThe Email Unsubscribe API v2 is the latest version of the Email Unsubscribe API, which supports bulk data ingestion. If you're still using the previous version (v1), we strongly recommend migrating to this updated version to benefit from bulk updates and enhanced functionality. Please note that new integrations with v1 are no longer supported.\n\nAPI usage changes depending on the identifier format you're using. Please refer to the relevant section based on your identifier configuration.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\nemails\nUser's email addresses\nString Array\nYes (normal and email based)\n\nuuids\nUser's unique user identifier\nString Array\nYes (only if you are not using email as an identifier and using profile based)\n\nSample Requests\nWhen Email is the Identifier or Email-Based Flow is Enabled\nEvery request made to the request endpoint requires a request body formatted in JSON and containing your email's content and metadata.\n\nIn cases where the email is used as the identifier, if the user exists, their status will be updated; if the user does not exist, a new user will be created.For the email-based flow, the same request is used; however, it will only update the status of existing users and will not create new users.\n\nThe emails field is required for global unsubscribe requests.\n\ncurl --location 'contact.useinsider.com/email/v2/unsubscribe' \\\n--header 'X-PARTNER-NAME: mybrand' \\\n--header 'X-REQUEST-TOKEN: a1b2c3d4e5f6' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"emails\": [\n        \"sample1@useinsider.com\",\n        \"sample2@useinsider.com\",\n        \"sample3@useinsider.com\"\n    ]\n}'\n\nWhen UUID is the Identifier and Profile-Based Flow is Enabled\nEvery request made to the request endpoint requires a request body formatted in JSON and containing your email's content and metadata.\n\nIf the profile-based flow is enabled for your account,- If the user in the request exists, their status will be updated.- If the user does not exist, a new user will be created.\n\nThe uuid and email fields are required for global unsubscribe requests.\n\ncurl --location 'http://contact.useinsider.com/email/v2/unsubscribe' \\\n--header 'Content-Type: application/json' \\\n--header 'x-request-token: a1b2c3d4e5f6' \\\n--header 'x-partner-name: mybrand' \\\n--data-raw '{\n    \"users\": [\n        {\n            \"uuid\": \"test-uuid-1\",\n            \"email\": \"sample1@useinsider.com\"\n        },\n        {\n            \"uuid\": \"test-uuid-2\",\n            \"email\": \"sample2@useinsider.com\"\n        },\n        {\n            \"uuid\": \"test-uuid-3\",\n            \"email\": \"sample3@useinsider.com\"\n        },\n        {\n            \"uuid\": \"test-uuid-4\",\n            \"email\": \"sample4@useinsider.com\"\n        }\n    ]\n}'\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\n  \"statusMessage\": \"OK\"\n}\n\n400 Bad Request\n{\n  \"statusMessage\": \"Bad request\"\n}\n\n401 Unauthorized\nThe following response returns if the request is not authorized.\n\n{\n  \"statusMessage\": \"Unauthorized\"\n}\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nA maximum of 500 emails or UUIDs can be consumed in one request.\n\nThe API Key should be provided as the authorization key in the request header. If the key is incorrect, the operation will not be executed, and an authorization error will return in the response.\n\nThe value of X-PARTNER-NAME header should be lowercase."
+      security:
+      - PartnerName: []
+      - RequestToken: []
+      requestBody:
+        content:
+          application/json:
+            examples:
+              default:
+                value:
+                  emails:
+                  - sample1@useinsider.com
+                  - sample2@useinsider.com
+                  - sample3@useinsider.com
+              unsubscribe-email-users-for-email-group:
+                summary: Unsubscribe email users for email group
+                value:
+                  emails:
+                  - sample1@useinsider.com
+                  - sample2@useinsider.com
+                  - sample3@useinsider.com
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              examples:
+                default:
+                  value:
+                    statusMessage: OK
+                unsubscribe-email-users-for-email-group:
+                  value:
+                    statusMessage: OK
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    servers:
+    - url: https://contact.useinsider.com
+components:
+  responses:
+    TooManyRequests:
+      description: Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.
+      content:
+        application/json:
+          example:
+            message: Too Many Requests
+            status: 429
+  securitySchemes:
+    InsAuthKey:
+      type: apiKey
+      in: header
+      name: X-INS-AUTH-KEY
+      description: Insider One authorization key for this API, generated in the InOne panel.
+    PartnerName:
+      type: apiKey
+      in: header
+      name: X-PARTNER-NAME
+      description: Insider One partner (account) name, lowercase.
+    RequestToken:
+      type: apiKey
+      in: header
+      name: X-REQUEST-TOKEN
+      description: Insider One API key (request token) generated in the InOne panel.
+externalDocs:
+  description: Insider One API reference
+  url: https://academy.insiderone.com/docs/api-reference-welcome
+x-refined-from:
+- insider-analytics-openapi.yml
+- insider-contact-openapi.yml
+x-provenance:
+  generated: '2026-08-13'
+  method: derived
+  source: postman/insider-one-apis.postman_collection.json
+  source_url: https://documenter.gw.postman.com/api/collections/24851117/2sB3dSR9bM
+  publisher_page: https://developers.insiderone.com/
+  note: Insider One publishes a single public Postman collection covering every REST API. This document is the subset of that collection served from analytics.api.useinsider.com.

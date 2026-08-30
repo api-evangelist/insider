@@ -1,0 +1,150 @@
+openapi: 3.2.0
+info:
+  title: Insider One Contact Whats App API
+  version: 1.0.0
+  description: 'First-party segment upload and per-channel subscription management (subscribe/unsubscribe) for Email, SMS and WhatsApp.
+
+
+    Derived by API Evangelist from Insider One''s own public Postman collection ("Insider One APIs", published at https://developers.insiderone.com/). Paths, methods, headers, query parameters and request/response examples are verbatim from that collection; nothing is invented. The 429 response is documented for all Insider One APIs on https://academy.insiderone.com/docs/api-rate-limits-1 .'
+  contact:
+    name: Insider One Support
+    email: support@useinsider.com
+    url: https://academy.insiderone.com/docs/insider-one-apis-1
+  termsOfService: https://insiderone.com/terms-of-use/
+servers:
+- url: https://contact.useinsider.com
+tags:
+- name: WhatsApp
+paths:
+  /whatsapp/v1/subscribe:
+    post:
+      operationId: resubscribeWhatsappUsers
+      summary: Resubscribe WhatsApp users
+      tags:
+      - WhatsApp
+      description: "This API allows you to set an unreachable phone number status as reachable on Insider's WhatsApp platform.\n\nA newer version of the Resubscribe API is available with support for bulk data ingestion. While the older version is still supported, we recommend using the latest version for improved functionality and future compatibility.\n\nBody Parameters\nEvery request made to the request endpoint requires a request body formatted in JSON and containing your phone number’s content and metadata. This includes the subscriber’s phone number.\n\nParameter\nDescription\nData Type\nRequired\n\nphone_number\nUser's phone number in E.164 format (e.g. +6598765432)\nString\nYes\n\nSample Body\nThe following is a sample body to resubsribe users to Insider's WhatsApp platform.\n\n{\n     \"phone_number\": \"+905012345678\"\n}\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\n  \"statusMessage\": \"OK\"\n}\n\n400 Bad Request\n{\n  \"statusMessage\": \"Bad request\"\n}\n\n401 Unauthorized\nThe following response returns if the request is not authorized.\n\n{\n  \"statusMessage\": \"Unauthorized\"\n}\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nOnly phone numbers can be sent via this API. No data can be retrieved.\n\nThe API Key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nThe value of X-PARTNER-NAME header should be lowercase."
+      security:
+      - PartnerName: []
+      - RequestToken: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              phone_number: '+655012345678'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+                statusMessage: OK
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /whatsapp/v1/unsubscribe:
+    post:
+      operationId: unsubscribeWhatsappUsersFromDatabase
+      summary: Unsubscribe WhatsApp users from database
+      tags:
+      - WhatsApp
+      description: "This API enables you to unsubscribe users from Insider's WhatsApp platform.\n\nA newer version of the Unsubscribe API is available with support for bulk data ingestion. While the older version is still supported, we recommend using the latest version for improved functionality and future compatibility.\n\nBody Parameters\nEvery request made to the request endpoint requires a request body formatted in JSON and containing your phone number’s content and metadata. This includes the subscriber’s phone number.\n\nParameter\nDescription\nData Type\nRequired\n\nphone_number\nUser's phone number in E.164 format (e.g. +6598765432)\nString\nYes\n\nSample Body\nThe following is a sample body to unsubscribe users from WhatsApp platform.\n\n{\n    \"phone_number\": \"+905012345678\"\n}\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\n  \"statusMessage\": \"OK\"\n}\n\n400 Bad Request\n{\n  \"statusMessage\": \"Bad request\"\n}\n\n401 Unauthorized\nThe following response returns if the request is not authorized.\n\n{\n  \"statusMessage\": \"Unauthorized\"\n}\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nOnly global unsubscribers can be sent via this API. No data can be retrieved.\n\nThe API Key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nThe value of X-PARTNER-NAME header should be lowercase."
+      security:
+      - PartnerName: []
+      - RequestToken: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              phone_number: '+6512345678'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+                statusMessage: OK
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /whatsapp/v2/subscribe:
+    post:
+      operationId: resubscribeWhatsappUsersV2
+      summary: Resubscribe WhatsApp users / v2
+      tags:
+      - WhatsApp
+      description: "The WhatsApp Resubscribe API enables you to update an unreachable phone number status to reachable on Insider's WhatsApp platform.\n\nIf a user exists with the provided phone number, the user's subscription status will be updated. If no user exists and the phone number is used as an identifier, a new user will be created.\n\nBody Parameters\nEvery request made to the request endpoint requires a request body formatted in JSON and containing your phone number’s content and metadata. This includes the subscriber’s phone number.\n\nParameter\nDescription\nData Type\nRequired\n\nphone_numbers\nUsers' phone numbers in E.164 format (e.g. +6598765432)\nString Array\nYes\n\nSample Request\nEvery request made to the request endpoint requires a request body formatted in JSON containing your phone number’s content and metadata, including the subscriber’s phone number.\n\nThe phone_numbers field is required for resubscribe requests.\n\ncurl --location --request POST 'http://contact.useinsider.com/whatsapp/v2/subscribe' \\\n--header 'Content-Type: application/json' \\\n--header 'X-PARTNER-NAME: mybrand' \\\n--header 'X-REQUEST-TOKEN: a1b2c3d4e5f6' \\\n--data-raw '{\n     \"phone_numbers\": [\n        \"+900000000000\",\n        \"+900000000000\",\n        \"+900000000000\",\n        \"+900000000000\",\n        \"+900000000000\",\n        \"+900000000000\"\n    ]\n}'\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\n  \"statusMessage\": \"OK\"\n}\n\n400 Bad Request\n{\n  \"statusMessage\": \"Bad request\"\n}\n\n401 Unauthorized\nThe following response returns if the request is not authorized.\n\n{\n  \"statusMessage\": \"Unauthorized\"\n}\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nOnly phone numbers can be sent via this API. No data can be retrieved.\n\nA maximum of 500 phone numbers can be consumed in one request.\n\nThe API Key should be provided as the authorization key in the request header. If the key is incorrect, the operation will not be executed, and an authorization error will return in the response.\n\nThe value of the X-PARTNER-NAME header should be lowercase.\n\nThe default limit shown here is a standard baseline. If your use case requires higher capacity, feel free to reach out to the Insider team — we can adjust it to fit your needs."
+      security:
+      - PartnerName: []
+      - RequestToken: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              phone_numbers:
+              - '+900000000000'
+              - '+900000000000'
+              - '+900000000000'
+              - '+900000000000'
+              - '+900000000000'
+              - '+900000000000'
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /whatsapp/v2/unsubscribe:
+    post:
+      operationId: unsubscribeWhatsappUsersFromDatabaseV2
+      summary: Unsubscribe WhatsApp users from database / v2
+      tags:
+      - WhatsApp
+      description: "The WhatsApp Unsubscribe API enables you to unsubscribe users from Insider's WhatsApp platform.\n\nIf a user exists with the provided phone number, the user's subscription status will be updated. If no user exists and the phone number is used as an identifier, a new user will be created.\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\nphone_numbers\nUsers' phone number in E.164 format (e.g. +6598765432)\nString Array\nYes\n\nSample Request\nEvery request made to the request endpoint requires a request body formatted in JSON containing your phone number’s content and metadata, including the subscriber’s phone number.\n\nThe phone_numbers field is required for resubscribe requests.\n\ncurl --location --request POST 'http://contact.useinsider.com/whatsapp/v2/unsubscribe' \\\n--header 'Content-Type: application/json' \\\n--header 'X-PARTNER-NAME: mybrand' \\\n--header 'X-REQUEST-TOKEN: a1b2c3d4e5f6' \\\n--data-raw '{\n     \"phone_numbers\": [\n        \"+900000000000\",\n        \"+900000000000\",\n        \"+900000000000\",\n        \"+900000000000\",\n        \"+900000000000\",\n        \"+900000000000\"\n    ]\n}'\n\nSample Responses\n200 OK\nThe following response returns if the request is successful.\n\n{\n  \"statusMessage\": \"OK\"\n}\n\n400 Bad Request\n{\n  \"statusMessage\": \"Bad request\"\n}\n\n401 Unauthorized\nThe following response returns if the request is not authorized.\n\n{\n  \"statusMessage\": \"Unauthorized\"\n}\n\nLimitations\nWhen sending your request, make sure to follow these limitations.\n\nAll functions must be executed with a simple HTTPS POST request.\n\nOnly phone numbers can be sent via this API. No data can be retrieved.\n\nA maximum of 500 phone numbers can be consumed in one request.\n\nThe API Key should be provided as the authorization key in the request header. If the key is incorrect, the operation will not be executed, and an authorization error will return in the response.\n\nThe value of the X-PARTNER-NAME header should be lowercase.\n\nThe default limit shown here is a standard baseline. If your use case requires higher capacity, feel free to reach out to the Insider team — we can adjust it to fit your needs."
+      security:
+      - PartnerName: []
+      - RequestToken: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              phone_numbers:
+              - '+900000000000'
+              - '+900000000000'
+              - '+900000000000'
+              - '+900000000000'
+              - '+900000000000'
+              - '+900000000000'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+                statusMessage: OK
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+components:
+  responses:
+    TooManyRequests:
+      description: Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.
+      content:
+        application/json:
+          example:
+            message: Too Many Requests
+            status: 429
+  securitySchemes:
+    PartnerName:
+      type: apiKey
+      in: header
+      name: X-PARTNER-NAME
+      description: Insider One partner (account) name, lowercase.
+    RequestToken:
+      type: apiKey
+      in: header
+      name: X-REQUEST-TOKEN
+      description: Insider One API key (request token) generated in the InOne panel.
+externalDocs:
+  description: Insider One API reference
+  url: https://academy.insiderone.com/docs/api-reference-welcome
+x-provenance:
+  generated: '2026-08-13'
+  method: derived
+  source: postman/insider-one-apis.postman_collection.json
+  source_url: https://documenter.gw.postman.com/api/collections/24851117/2sB3dSR9bM
+  publisher_page: https://developers.insiderone.com/
+  note: Insider One publishes a single public Postman collection covering every REST API. This document is the subset of that collection served from contact.useinsider.com.

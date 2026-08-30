@@ -1,0 +1,116 @@
+openapi: 3.2.0
+info:
+  title: Insider One SMS Transactional SMS API
+  version: 1.0.0
+  description: 'Transactional single and bulk SMS sending, plus SMS campaign, overall, transactional and OTP analytics.
+
+
+    Derived by API Evangelist from Insider One''s own public Postman collection ("Insider One APIs", published at https://developers.insiderone.com/). Paths, methods, headers, query parameters and request/response examples are verbatim from that collection; nothing is invented. The 429 response is documented for all Insider One APIs on https://academy.insiderone.com/docs/api-rate-limits-1 .'
+  contact:
+    name: Insider One Support
+    email: support@useinsider.com
+    url: https://academy.insiderone.com/docs/insider-one-apis-1
+  termsOfService: https://insiderone.com/terms-of-use/
+servers:
+- url: https://sms.useinsider.com
+tags:
+- name: Transactional SMS
+paths:
+  /v1/send:
+    post:
+      operationId: sendTransactionalSingleSms
+      summary: Send transactional Single SMS
+      tags:
+      - Transactional SMS
+      description: "This API enables you to send targeted transactional SMS to your users. You can trigger these SMS messages once a user takes a specific action on your platform.\n\nYou can use transactional SMS messages to:\n\nSend a post-purchase SMS to share details about a purchase/booking,\n\nHelp your users reset their password if they forget it,\n\nConfirm an order a user places,\n\nShare delivery tracking details of a purchase (when it is shipped, on the way, and delivered) and take many other actions.\n\nUse Cases\nYou can send transactional SMS messages for:\n\nSystem notifications\n\nOrder confirmation/information\n\nThank you for your purchase! Your order number is {orderNumber}. View more information about your order here: {Link}\n\nHey, {firstName}! Thanks for your purchase! View more information about your order ({orderNumber}) here: {Link}\n\nShipping Confirmation\n\nGreat news, {firstName}! Your order ({orderNumber}) has shipped and will arrive soon. Click here to view your order details: {Link}\n\nGet excited! Your order ({orderNumber}) has shipped and is on its way to you. Click here to view your order details: {Link}\n\nTicket booking confirmation or cancellation\n\nHey {firstName}, order #{orderNumber} was successfully canceled. You can check the status of your order here {Link}\n\nInformation about shipping and delivery updates\n\nRecurring billing / Payment Updates\n\nAppointment confirmations\n\nWelcome Messages\n\nBody Parameters\nYou need to use the following parameters in the request body.\n\nParameter\nDescription\nData Type\nRequired\n\nto\nPhone Number\nString\nYes\n\ncontent\nContent of the SMS\nString\nYes\n\nunique_args\nUnique arguments of transactional SMS used for tracking purposes\nObject\nNo\n\ncallback\nThe endpoint that you define to receive the webhook events. If the response does not return a 200 (Success) code, the Insider system will respond with \"Callback URL value is not valid\".\nURL\nNo\n\nsettings.UrlShorteningStatus\nFor using the URL shortening for status in your messages.\nBoolean\nNo\n\nsettings.UrlShorteningDomain\nFor using the URL shortening for your domain in your messages. e.g. insdr.io\nString\nNo\n\nsettings.UrlTrackingStatus\nFor using the URL click tracking in your messages. If you do not add this parameter to the payload, the default version will not provide usage. If you do not open urlTracking and if you do not have Insider Tag integration on the related link’s webpage you will see clickthrough metric under the analytics page as zero.\nBoolean\nNo\n\nsettings.UrlExcludeProtocol\nFor excluding URL protocol (e.g., 'http://' or 'https://')\nBoolean\nNo\n\nsendAt\nSpecifies the desired date and time at which the SMS message should be sent. For example: datetime=2006-01-02T15:04:05Z  This parameter is valid only for Twilio and Sinch partners.\nString\nNo\n\nSMS Status Callback\nThe current status of your SMS messages is provided to you through the API URL you specify in the callback parameter while they are being sent. If you don't respond to code between 200 and 300, the system retries the request 10 times. The retry policy process is as follows:\n\nThe first request is tried again 1 minute later.\n\nThe second request is tried again 2 minutes later after the first attempt.\n\nThe third request is tried again 3 minutes later after the first attempt.\n\nThe fourth request is tried again 8 minutes later after the first attempt.\n\nThe fifth request is tried again 13 minutes later after the first attempt.\n\nThe sixth request is tried again 18 minutes later after the first attempt.\n\nThe seventh request is tried again 28 minutes later after the first attempt.\n\nThe eighth request is tried again 38 minutes later after the first attempt.\n\nThe ninth request is tried again 48 minutes later after the first attempt.\n\nThe tenth request is tried again an hour later after the first attempt.\n\nSample Body\nEvery request made to the request endpoint requires a request body formatted in JSON and containing your sms content.\n\n{\n    \"content\": \"This is SMS body.\",\n    \"to\": \"+105555555555\",\n    \"callback\": \"http://callback.url\",\n    \"sendAt\" : \"2024-03-30T11:30:27Z\",\n    \"uniqueArgs\": {\n        \"additionalProp1\": \"string\",\n        \"additionalProp2\": \"string\",\n        \"additionalProp3\": \"string\"\n    },\n    \"settings\": {\n        \"urlShorteningDomain\": \"insdr.io\",\n        \"urlShorteningStatus\": true,\n        \"urlTrackingStatus\": true\n    }\n}\n\nMake sure to replace the sample values in the request header(s) and body where required before sending your request.\n\nSample Responses\nAccepted\nThis response indicates that your request was successfully completed.\n\n{\n    \"message\": \"Accepted\",\n    \"messageId\": \"sms-a1234567-b123-c123-d123-e123f123456\"\n}\n\nSMS Sent\n{\n  \"id\": \"sms-a1234567-b123-c123-d123-e123f123456\",\n  \"uniqueArgs\": {\n    \"additionalProp1\": \"string\",\n    \"additionalProp2\": \"string\",\n    \"additionalProp3\": \"string\"\n  },\n  \"event\": \"sent\",\n  \"partCount\": 1\n}\n\nSMS Delivered\nThis response indicates that your request was successfully completed.\n\n{\n  \"id\": \"sms-a1234567-b123-c123-d123-e123f123456\",\n  \"uniqueArgs\": {\n    \"additionalProp1\": \"string\",\n    \"additionalProp2\": \"string\",\n    \"additionalProp3\": \"string\"\n  },\n  \"event\": \"delivered\"\n}\n\nSMS Undelivered\n{\n  \"id\": \"sms-a1234567-b123-c123-d123-e123f123456\",\n  \"uniqueArgs\": {\n    \"additionalProp1\": \"string\",\n    \"additionalProp2\": \"string\",\n    \"additionalProp3\": \"string\"\n  },\n  \"event\": \"undelivered\",\n  \"reason\": {\n        \"message\": \"Soft Bounce\",\n        \"code\": 1404\n    }\n}\n\nSMS Dropped\n{\n  \"id\": \"sms-a1234567-b123-c123-d123-e123f123456\",\n  \"uniqueArgs\": {\n    \"additionalProp1\": \"string\",\n    \"additionalProp2\": \"string\",\n    \"additionalProp3\": \"string\"\n  },\n  \"event\": \"failed\",\n  \"reason\": {\n    \"message\": \"Invalid Phone Number\",\n    \"code\": 1500\n  },\n  \"partCount\": 1\n}\n\nSMS Scheduled\n{\n  \"id\": \"sms-a1234567-b123-c123-d123-e123f123456\",\n  \"uniqueArgs\": {\n    \"additionalProp1\": \"string\",\n    \"additionalProp2\": \"string\",\n    \"additionalProp3\": \"string\"\n  },\n  \"event\": \"scheduled\",\n  \"sendAt\": \"2006-01-02T15:04:05Z\",\n  \"partCount\": 1\n}\n\nSMS Sent\n{\n  \"id\": \"sms-a1234567-b123-c123-d123-e123f123456\",\n  \"uniqueArgs\": {\n    \"additionalProp1\": \"string\",\n    \"additionalProp2\": \"string\",\n    \"additionalProp3\": \"string\"\n  },\n  \"event\": \"sent\",\n  \"sendAt\": \"2006-01-02T15:04:05Z\",\n  \"partCount\": 1\n}\n\nLimitations\n\nAll functions must be executed with a simple HTTPS POST request.\n\nThe API Key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nTransactional API cannot be used to send promotional SMS. It is designed to set transactional SMS only.\n\nThe phone number should be in E164 format.\n\nContent can’t be empty. The maximum limit is 670 characters.\n\nThe rate limit is 5 requests per second.\n\nThe maximum speed will be determined based on the Provider Setup.\n\nInsider will send a sample request to the callback URL you provide. If the response does not return a 200 (Success) code, the Insider system will respond with \"Callback URL value is not valid\"."
+      security:
+      - InsAuthKey: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              content: This is SMS body.
+              to: '+105555555555'
+              callback: http://callback.url
+              sendAt: '2024-03-30T11:30:27Z'
+              uniqueArgs:
+                additionalProp1: string
+                additionalProp2: string
+                additionalProp3: string
+              settings:
+                urlExcludeProtocol: true
+                urlShorteningDomain: insdr.io
+                urlShorteningStatus: true
+                urlTrackingStatus: true
+                smartEncoding: true
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /v1/sendMultipleMessage:
+    post:
+      operationId: sendTransactionalBulkSms
+      summary: Send Transactional Bulk SMS
+      tags:
+      - Transactional SMS
+      description: "This API enables you to send targeted transactional SMS to your users. You can trigger these SMS messages once a user takes a specific action on your platform.\n\nYou can use transactional SMS messages to:\n\nSend a post-purchase SMS to share details about a purchase/booking,\n\nHelp your users reset their password if they forget it,\n\nConfirm an order a user places,\n\nShare delivery tracking details of a purchase (when it is shipped, on the way, and delivered) and take many other actions.\n\nUse Cases\nYou can send transactional SMS messages for:\n\nSystem notifications\n\nOrder confirmation/information\n\nThank you for your purchase! Your order number is {orderNumber}. View more information about your order here: {Link}\n\nHey, {firstName}! Thanks for your purchase! View more information about your order ({orderNumber}) here: {Link}\n\nShipping Confirmation\n\nGreat news, {firstName}! Your order ({orderNumber}) has shipped and will arrive soon. Click here to view your order details: {Link}\n\nGet excited! Your order ({orderNumber}) has shipped and is on its way to you. Click here to view your order details: {Link}\n\nTicket booking confirmation or cancellation\n\nHey {firstName}, order #{orderNumber} was successfully canceled. You can check the status of your order here {Link}\n\nInformation about shipping and delivery updates\n\nRecurring billing / Payment Updates\n\nAppointment confirmations\n\nWelcome Messages\n\nBody Parameters\n\nParameter\nDescription\nData Type\nRequired\n\nto\nPhone Number\nString\nYes\n\ncontent\nContent of the SMS\nString\nYes\n\nunique_args\nUnique arguments of transactional SMS used for tracking purposes\nObject\nNo\n\ncallback\nThe endpoint that you define to receive the webhook events\nURL\nNo\n\nsettings.UrlShorteningStatus\nFor using the URL shortening for status in your messages.\nBoolean\nNo\n\nsettings.UrlShorteningDomain\nFor using the URL shortening for your domain in your messages. e.g. insdr.io\nString\nNo\n\nsettings.UrlTrackingStatus\nFor using the URL click tracking in your messages. If you do not add this parameter to the payload, the default version will not provide usage. If you do not open urlTracking and if you do not have Insider Tag integration on the related link’s webpage you will see clickthrough metric under the analytics page as zero.\nBoolean\nNo\n\nsettings.UrlExcludeProtocol\nFor excluding URL protocol (e.g., 'http://' or 'https://')\nBoolean\nNo\n\nsendAt\nSpecifies the desired date and time at which the SMS message should be sent. For example: datetime=2006-01-02T15:04:05Z  This parameter is valid only for Twilio and Sinch partners.\nString\nNo\n\nSample Request\nEvery request made to the request endpoint requires a request body formatted in JSON and containing your SMS content. \n\nMake sure to replace the sample values in the request header(s) and body where required before sending your request.\n\n{\n  \"messages\": [\n    {\n      \"phoneNumber\": \"+905555555555\",\n      \"content\": \"This is SMS body.\",\n      \"callback\": \"http://callback.url\",\n      \"settings\": {\n        \"urlShorteningDomain\": \"insdr.io\",\n        \"urlShorteningStatus\": true,\n        \"urlTrackingStatus\": true\n      },\n      \"uniqueArgs\": {\n        \"additionalProp1\": \"string\",\n        \"additionalProp2\": \"string\",\n        \"additionalProp3\": \"string\"\n      }\n    },\n    {\n      \"phoneNumber\": \"90 (555) 55\",\n      \"content\": \"This is SMS body.\",\n      \"callback\": \"http://callback.url\",\n      \"settings\": {\n        \"urlShorteningDomain\": \"insdr.io\",\n        \"urlShorteningStatus\": true,\n        \"urlTrackingStatus\": true\n      },\n      \"uniqueArgs\": {\n        \"additionalProp1\": \"string\",\n        \"additionalProp2\": \"string\",\n        \"additionalProp3\": \"string\"\n      }\n    }\n  ]\n}\n\nSample Callback Responses\nSMS Accepted\n{\n    \"message\": \"Accepted\",\n    \"messageIds\": [\n        {\n            \"phoneNumber\": \"+905555555555\",\n            \"messageSid\": \"sms-a1234567-b123-c123-d123-e123f123456\"\n        }\n    ],\n    \"errors\": [\n        {\n            \"field\": \"messages[1].phoneNumber\",\n            \"error\": \"This field must be a valid phone number.\"\n        }\n    ]\n}\n\nSMS Sent\n{\n  \"id\": \"sms-a1234567-b123-c123-d123-e123f123456\",\n  \"uniqueArgs\": {\n    \"additionalProp1\": \"string\",\n    \"additionalProp2\": \"string\",\n    \"additionalProp3\": \"string\"\n  },\n  \"event\": \"sent\",\n  \"partCount\": 1\n}\n\nSMS Delivered\n{\n  \"id\": \"sms-a1234567-b123-c123-d123-e123f123456\",\n  \"uniqueArgs\": {\n    \"additionalProp1\": \"string\",\n    \"additionalProp2\": \"string\",\n    \"additionalProp3\": \"string\"\n  },\n  \"event\": \"delivered\"\n}\n\nSMS Undelivered\n{\n  \"id\": \"sms-a1234567-b123-c123-d123-e123f123456\",\n  \"uniqueArgs\": {\n    \"additionalProp1\": \"string\",\n    \"additionalProp2\": \"string\",\n    \"additionalProp3\": \"string\"\n  },\n  \"event\": \"undelivered\",\n  \"reason\": {\n        \"message\": \"Soft Bounce\",\n        \"code\": 1404\n    }\n}\n\nLimitations\n\nAll functions must be executed with a simple HTTPS POST request.\n\nThe API Key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nTransactional API cannot be used to send promotional SMS. It is designed to set transactional SMS only.\n\nThe phone number should be in E164 format.\n\nContent can’t be empty. The maximum limit is 670 characters.\n\nThe rate limit is 5 requests per second.\n\nThe message limit is 50 messages per request.\n\nThe maximum speed will be determined based on the Provider Setup."
+      security:
+      - InsAuthKey: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              messages:
+              - phoneNumber: '+905555555555'
+                content: This is SMS body.
+                callback: http://callback.url
+                settings:
+                  urlExcludeProtocol: true
+                  urlShorteningDomain: insdr.io
+                  urlShorteningStatus: true
+                  urlTrackingStatus: true
+                  smartEncoding: true
+                uniqueArgs:
+                  additionalProp1: string
+                  additionalProp2: string
+                  additionalProp3: string
+              - phoneNumber: 90 (555) 55
+                content: This is SMS body.
+                callback: http://callback.url
+                settings:
+                  urlExcludeProtocol: true
+                  urlShorteningDomain: insdr.io
+                  urlShorteningStatus: true
+                  urlTrackingStatus: true
+                  smartEncoding: true
+                uniqueArgs:
+                  additionalProp1: string
+                  additionalProp2: string
+                  additionalProp3: string
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+components:
+  responses:
+    TooManyRequests:
+      description: Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.
+      content:
+        application/json:
+          example:
+            message: Too Many Requests
+            status: 429
+  securitySchemes:
+    InsAuthKey:
+      type: apiKey
+      in: header
+      name: X-INS-AUTH-KEY
+      description: Insider One authorization key for this API, generated in the InOne panel.
+externalDocs:
+  description: Insider One API reference
+  url: https://academy.insiderone.com/docs/api-reference-welcome
+x-provenance:
+  generated: '2026-08-13'
+  method: derived
+  source: postman/insider-one-apis.postman_collection.json
+  source_url: https://documenter.gw.postman.com/api/collections/24851117/2sB3dSR9bM
+  publisher_page: https://developers.insiderone.com/
+  note: Insider One publishes a single public Postman collection covering every REST API. This document is the subset of that collection served from sms.useinsider.com.

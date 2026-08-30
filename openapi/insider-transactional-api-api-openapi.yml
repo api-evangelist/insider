@@ -1,0 +1,219 @@
+openapi: 3.2.0
+info:
+  title: Insider Transactional API
+  version: 1.0.0
+  contact:
+    name: Insider One Support
+    email: support@useinsider.com
+    url: https://academy.insiderone.com/docs/insider-one-apis-1
+  termsOfService: https://insiderone.com/terms-of-use/
+  description: 'Operations tagged Transactional API across 2 of this provider''s published API definitions: insider-gateway-openapi.yml, insider-whatsapp-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://gw.useinsider.com
+- url: https://whatsapp.useinsider.com
+tags:
+- name: Transactional API
+paths:
+  /api/wa/v2/transactional/messages/send:
+    post:
+      operationId: sendTransactionalWhatsappMessagesWithOauth20
+      summary: Send Transactional WhatsApp Messages with OAuth 2.0
+      tags:
+      - Transactional API
+      description: "WhatsApp Transactional API v2 is a REST API that enables your systems to send transactional messages through the WhatsApp Business Platform.\n\nNote: To send transactional WhatsApp messages using OAuth 2.0, you must first generate an OAuth 2.0 credential. For step-by-step instructions, refer to OAuth 2.0 Credentials.\n\nNote: Before sending Transactional WhatsApp template messages, make sure you create your template in InOne first. Refer to Create a WhatsApp Business Standard Template on InOne for step-by-step guidance.\n\nRefer to the visual below for an example of how a transactional WhatsApp template message is displayed.\n\nSample Request\n{\n    \"from\": \"+905551234567\",\n    \"messages\": [{\n        \"phone_number\": \"+905559876543\",\n        \"user_id\": \"user-uuid-123\",\n        \"message\": {\n            \"type\": \"template\",\n            \"template\": {\n                \"name\": \"welcome_message\",\n                \"language\": {\n                    \"code\": \"tr\"\n                },\n                \"components\": [{\n                    \"type\": \"body\",\n                    \"parameters\": [{\n                        \"type\": \"text\",\n                        \"text\": \"Ahmet\"\n                    }]\n                }]\n            }\n        }\n    }]\n}\n\nMain Body Parameters\n\nParameter\nType\nRequired\nDescription\n\nfrom\nstring\nYes\nSender’s WhatsApp phone number (in E.164 format)\n\nmessages\narray\nYes\nList of messages to be sent (minimum 1 message)\n\nurl_shortener_config\nobject\nNo\nURL shortening settings\n\nurl_shortener_config.status\nboolean\nNo\nEnable/disable URL shortening\n\nurl_shortener_config.domain\nstring\nNo\nDomain name for shortening\n\nunique_args\nobject\nNo\nCustom parameters (key–value map)\n\nremove_tracking_params\nboolean\nNo\nRemove tracking parameters\n\nMessages Array Parameters\nEach element in the messages array contains:\n\nParameter\nType\nRequired\nDescription\n\nphone_number\nstring\nYes\nThe recipient's phone number in international E.164 format (e.g., +905551234567).\n\nuser_id\nstring\nNo\nA unique identifier for the user within the partner's system, used for cross-platform tracking.\n\nmessage\nobject\nYes\nThe core payload containing the message content (see Message Object details below).\n\nreply_type\nstring\nNo\nDefines the automated response category. Values: first, second, third, other.\n\nunique_args\nobject\nNo\nA key–value map for passing custom metadata specific to this individual message.\n\nMessage Object Structure\n\nParameter\nType\nRequired\nDescription\n\ntype\nstring\nYes\nMessage type: template, text, image, video, document, audio, location, sticker, interactive.\n\ntemplate\nobject\nConditional\nTemplate message (required if type=template).\n\ntext\nobject\nConditional\nText message (required if type=text).\n\n...\n...\n...\nOther media types follow the same logic.\n\ncontext\nobject\nNo\nInformation about the message being replied to (reply-to message).\n\nTemplate Messages\nUsed to send template messages. Templates must be pre-created and approved in the Meta Business Manager.\n\nParameter\nType\nRequired\nDescription\n\nname\nstring\nYes\nTemplate name (must be defined in Meta).\n\nlanguage\nobject\nYes\nTemplate language settings.\n\nlanguage.code\nstring\nYes\nLanguage code (ISO 639-1, e.g., tr, en, ar).\n\nlanguage.policy\nstring\nNo\nLanguage policy: deterministic (default) or fallback.\n\ncomponents\narray\nNo\nTemplate components (for parameters).\n\nComponent Types\nTemplates can include the following component types:\n\nHeader Component\nThe header component corresponds to the template's header section.\n\n{\n    \"type\": \"header\",\n    \"parameters\": [{\n        \"type\": \"text\",\n        \"text\": \"Değişken başlık değeri\"\n    }]\n} \n\nTo use a media header, you can use the request below.\n\n{\n    \"type\": \"header\",\n    \"parameters\": [{\n        \"type\": \"image\",\n        \"image\": {\n            \"link\": \"https://example.com/image.jpg\"\n        }\n    }]\n}\n\nHeader parameter types can be text, image, video and document. \n\nBody Component\nBody component is the main text section of the template.\n\n{\n    \"type\": \"body\",\n    \"parameters\": [{\n        \"type\": \"text\",\n        \"text\": \"Ahmet Yılmaz\"\n    }, {\n        \"type\": \"text\",\n        \"text\": \"12345\"\n    }]\n}\n\nButton Component\nThe main text section of the template.\n\n{\n    \"type\": \"button\",\n    \"sub_type\": \"url\",\n    \"index\": \"0\",\n    \"parameters\": [{\n        \"type\": \"text\",\n        \"text\": \"PROMO2024\"\n    }]\n}\n\nTo add buttons to the template, use the request below.\n\n{\n    \"type\": \"button\",\n    \"sub_type\": \"url\",\n    \"index\": \"0\",\n    \"parameters\": [{\n        \"type\": \"text\",\n        \"text\": \"PROMO2024\"\n    }]\n}\n\nTo add CTA (Call-to-Action) links to your template, use the request below.\n\n{\n    \"type\": \"button\",\n    \"sub_type\": \"url\",\n    \"index\": \"0\",\n    \"parameters\": [{\n        \"type\": \"text\",\n        \"cta_link\": \"?code=SUMMER2024\"\n    }]\n}\n\nButton sub_types are url and quick_reply. \n\nCarousel Component\nCarousel template (product catalog cards).\n\n{\n  \"type\": \"carousel\",\n  \"cards\": [\n    {\n      \"card_index\": 0,\n      \"components\": [\n        {\n          \"type\": \"header\",\n          \"parameters\": [\n            {\n              \"type\": \"image\",\n              \"image\": {\n                \"link\": \"https://example.com/product1.jpg\"\n              }\n            }\n          ]\n        },\n        {\n          \"type\": \"body\",\n          \"parameters\": [\n            {\n              \"type\": \"text\",\n              \"text\": \"Ürün 1 Adı\"\n            },\n            {\n              \"type\": \"text\",\n              \"text\": \"999.99 TL\"\n            }\n          ]\n        },\n        {\n          \"type\": \"button\",\n          \"sub_type\": \"url\",\n          \"index\": \"0\",\n          \"parameters\": [\n            {\n              \"type\": \"text\",\n              \"text\": \"product-1-slug\"\n            }\n          ]\n        }\n      ]\n    },\n    {\n      \"card_index\": 1,\n      \"components\": [\n        {\n          \"type\": \"header\",\n          \"parameters\": [\n            {\n              \"type\": \"image\",\n              \"image\": {\n                \"link\": \"https://example.com/product2.jpg\"\n              }\n            }\n          ]\n        },\n        {\n          \"type\": \"body\",\n          \"parameters\": [\n            {\n              \"type\": \"text\",\n              \"text\": \"Ürün 2 Adı\"\n            },\n            {\n              \"type\": \"text\",\n              \"text\": \"1299.99 TL\"\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}\n\nCarousel template can contain a maximum of 10 cards (card_index: 0-9). \n\nLimited Time Offer (LTO) Component\n{\n  \"type\": \"limited_time_offer\",\n  \"parameters\": [\n    {\n      \"type\": \"limited_time_offer\",\n      \"limited_time_offer\": {\n        \"expiration_time_ms\": 1640000000000\n      }\n    }\n  ]\n}\n\nCoupon Code Component\n{\n  \"type\": \"button\",\n  \"sub_type\": \"copy_code\",\n  \"index\": \"0\",\n  \"parameters\": [\n    {\n      \"type\": \"coupon_code\",\n      \"coupon_code\": \"SUMMER2024\"\n    }\n  ]\n}\n\nFlow Button Component (For WhatsApp Flows)\n{\n  \"type\": \"button\",\n  \"sub_type\": \"flow\",\n  \"index\": \"0\",\n  \"parameters\": [\n    {\n      \"type\": \"action\",\n      \"action\": {\n        \"flow_token\": \"unique-flow-token\",\n        \"flow_action_data\": {\n          \"user_id\": \"12345\",\n          \"product_id\": \"SKU-123\"\n        }\n      }\n    }\n  ]\n}\n\nText Message\nUsed to send plain text messages (typically for conversational use).\n\nParameters\n\nParameter\nType\nRequired\nDescription\n\nbody\nstring\nYes\nMessage text (maximum 4096 characters).\n\npreview_url\nboolean\nNo\nDisplay URL preview (default: false).\n\n{\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": \"Merhaba! Siparişiniz hazırlanıyor.\",\n    \"preview_url\": false\n  }\n}\n\nImage Message\nUsed to send images.\n\nImage Object\n\nParameter\nType\nRequired\nDescription\n\nlink\nstring\nConditional\nImage URL (HTTP/HTTPS, mandatory if id is missing).\n\nid\nstring\nConditional\nUploaded media ID (mandatory if link is missing).\n\ncaption\nstring\nNo\nImage caption (maximum 1024 characters).\n\nImage Message with Link\n{\n  \"type\": \"image\",\n  \"image\": {\n    \"link\": \"https://example.com/image.jpg\",\n    \"caption\": \"Product Image\"\n  }\n}\n\nImage Message with Media ID\n{\n  \"type\": \"image\",\n  \"image\": {\n    \"id\": \"1234567890\",\n    \"caption\": \"Uploaded Image\"\n  }\n}\n\nSupported formats for image messages are JPEG, PNG. The maximum size is 5 MB. \n\nVideo Message\nUsed to send videos.\n\nParameter\nType\nRequired\nDescription\n\nlink\nstring\nConditional\nVideo URL (HTTP/HTTPS, mandatory if id is missing).\n\nid\nstring\nConditional\nUploaded media ID (mandatory if link is missing).\n\ncaption\nstring\nNo\nVideo caption (maximum 1024 characters).\n\n{\n  \"type\": \"video\",\n  \"video\": {\n    \"link\": \"https://example.com/video.mp4\",\n    \"caption\": \"Product video\"\n  }\n}\n\nSupported formats for video messages are MP4 and 3GPP. The maximum size is 16 MB. \n\nDocument Message\nUsed to send documents/files.\n\nParameter\nType\nRequired\nDescription\n\nlink\nstring\nConditional\nDocument URL (HTTP/HTTPS, mandatory if id is missing).\n\nid\nstring\nConditional\nUploaded media ID (mandatory if link is missing).\n\nfilename\nstring\nNo\nFilename (to be displayed).\n\ncaption\nstring\nNo\nDocument caption (maximum 1024 characters).\n\n{\n  \"type\": \"document\",\n  \"document\": {\n    \"link\": \"https://example.com/invoice.pdf\",\n    \"filename\": \"Fatura-12345.pdf\",\n    \"caption\": \"Sipariş faturanız\"\n  }\n}\n\nSupported formats for document messages are PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, TXT and CSV. The maximum size is 100 MB. \n\nAudio Message\nUsed to send audio files.\n\nParameter\nType\nRequired\nDescription\n\nlink\nstring\nConditional\nAudio URL (HTTP/HTTPS, mandatory if id is missing).\n\nid\nstring\nConditional\nUploaded media ID (mandatory if link is missing).\n\n{\n  \"type\": \"audio\",\n  \"audio\": {\n    \"link\": \"https://example.com/audio.mp3\"\n  }\n}\n\nSupported formats for audio messages are AAC, M4A, AMR, MP3 and OGG OPUS. The maximum size is 16 MB. \n\nLocation Message\nUsed to send location/map coordinates.\n\nLocation Object\n\nParameter\nType\nRequired\nDescription\n\nlatitude\nstring\nYes\nLatitude coordinate.\n\nlongitude\nstring\nYes\nLongitude coordinate.\n\nname\nstring\nNo\nLocation name.\n\naddress\nstring\nNo\nLocation address.\n\n{\n  \"type\": \"location\",\n  \"location\": {\n    \"latitude\": \"41.0082\",\n    \"longitude\": \"28.9784\",\n    \"name\": \"İstanbul\",\n    \"address\": \"İstanbul, Türkiye\"\n  }\n}\n\nSticker Message\nUsed to send stickers.\n\nParameter\nType\nRequired\nDescription\n\nlink\nstring\nConditional\nSticker URL (HTTP/HTTPS, mandatory if id is missing).\n\nid\nstring\nConditional\nUploaded media ID (mandatory if link is missing).\n\n{\n  \"type\": \"sticker\",\n  \"sticker\": {\n    \"link\": \"https://example.com/sticker.webp\"\n  }\n}\n\nSupported format for sticker messages is WebP (static or animated) The maximum size is 100 KB (static), 500 KB (animated). \n\nInteractive Message\nUsed to send interactive messages (buttons, lists, products, flows).\n\nParameter\nType\nRequired\nDescription\n\ntype\nstring\nYes\nInteractive type: button, list, product, product_list, flow, catalog_message, cta_url.\n\nheader\nobject\nNo\nMessage header.\n\nbody\nobject\nYes\nMessage main body.\n\nbody.text\nstring\nYes\nMessage text (maximum 1024 characters).\n\nfooter\nobject\nNo\nMessage footer.\n\nfooter.text\nstring\nYes\nFooter text (maximum 60 characters).\n\naction\nobject\nYes\nInteractive action definition.\n\nInteractive Header\n{\n  \"header\": {\n    \"type\": \"text\",\n    \"text\": \"Başlık metni\"\n  }\n}\n\nMedia Header\n{\n  \"header\": {\n    \"type\": \"image\",\n    \"image\": {\n      \"link\": \"https://example.com/header.jpg\"\n    }\n  }\n}\n\nHeader types can be text, image, video, document. \n\nInteractive Action Types\n\nButton Action - Reply buttons (maximum 3 buttons)\n\n{\n  \"action\": {\n    \"buttons\": [\n      {\n        \"type\": \"reply\",\n        \"reply\": {\n          \"id\": \"btn_yes\",\n          \"title\": \"Evet\"\n        }\n      },\n      {\n        \"type\": \"reply\",\n        \"reply\": {\n          \"id\": \"btn_no\",\n          \"title\": \"Hayır\"\n        }\n      }\n    ]\n  }\n}\n\nButton title can be a maximum 20 characters. \n\nList Action - Selection list (maximum 10 rows)\n\n{\n  \"action\": {\n    \"button\": \"Seçenekleri Gör\",\n    \"sections\": [\n      {\n        \"title\": \"Kategori 1\",\n        \"rows\": [\n          {\n            \"id\": \"row_1\",\n            \"title\": \"Seçenek 1\",\n            \"description\": \"Seçenek açıklaması\"\n          },\n          {\n            \"id\": \"row_2\",\n            \"title\": \"Seçenek 2\",\n            \"description\": \"Diğer seçenek\"\n          }\n        ]\n      }\n    ]\n  }\n}\n\nProduct Action - Single product display\n\n{\n  \"action\": {\n    \"catalog_id\": \"123456789\",\n    \"product_retailer_id\": \"SKU-12345\"\n  }\n}\n\n{ \"action\": { \"catalog_id\": \"123456789\", \"sections\": [ { \"title\": \"Öne Çıkan Ürünler\", \"product_items\": [ { \"product_retailer_id\": \"SKU-001\" }, { \"product_retailer_id\": \"SKU-002\" } ] } ] }}JSONCopy\n\n{ \"action\": { \"name\": \"flow\", \"parameters\": { \"flow_message_version\": \"3\", \"flow_token\": \"unique-token\", \"flow_id\": \"123456789\", \"flow_cta\": \"Form Doldur\", \"flow_action\": \"navigate\", \"flow_action_payload\": { \"screen\": \"FORM_SCREEN\", \"data\": { \"user_id\": \"12345\" } } } }}JSONCopy\n\n{ \"action\": { \"name\": \"cta_url\", \"parameters\": { \"display_text\": \"Web Siteyi Ziyaret Et\", \"url\": \"https://example.com\" } }}JSONCopy\n\n{ \"action\": { \"name\": \"catalog_message\", \"parameters\": { \"thumbnail_product_retailer_id\": \"SKU-FEATURED\" } }}JSONCopy\n\n{ \"action\": { \"cards\": [ { \"card_index\": 0, \"type\": \"carousel\", \"header\": { \"type\": \"image\", \"image\": { \"link\": \"https://example.com/product1.jpg\" } }, \"body\": { \"text\": \"Ürün 1 - 999 TL\" }, \"action\": { \"name\": \"cta_url\", \"parameters\": { \"display_text\": \"Satın Al\", \"url\": \"https://example.com/product/1\" } } } ] }}JSONCopy\n\nContext Object\nUsed to reply to a specific message.\n\nParameter\nType\nRequired\nDescription\n\nlink\nstring\nConditional\nSticker URL (HTTP/HTTPS, mandatory if id is missing).\n\nid\nstring\nConditional\nUploaded media ID (mandatory if link is missing).\n\n{\n  \"type\": \"text\",\n  \"context\": {\n    \"message_id\": \"wamid.HBgLOTA5NTU1MTIzNDU2NxUCABIYIDNBMzQwRjg2...\"\n  },\n  \"text\": {\n    \"body\": \"Teşekkür ederiz!\"\n  }\n}\n\nSample Responses\nResponse Parameters\n\nParameter\nType\nDescription\n\nkeys\narray\nUnique keys generated for each message. Used in webhook callbacks.\n\n200 OK - Success Response\n{\n  \"keys\": [\n    \"whatsapp-550e8400-e29b-41d4-a716-446655440000\"\n  ]\n}\n\n400 Bad Request\n{\n  \"message\": \"Failed to validate request.\",\n  \"error\": {\n    \"message\": \"Failed to validate request.\",\n    \"code\": \"2001\"\n  }\n}\n\n400 Bad Request - Validation\n{\n  \"message\": \"Failed to validate request.\",\n  \"error\": {\n    \"message\": \"Failed to validate request.\",\n    \"code\": \"2002\"\n  }\n}\n\n400 Bad Request - Send Failed\n{\n  \"message\": \"Message could not be sent.\",\n  \"detail\": \"There is no active provider.\",\n  \"error\": {\n    \"message\": \"Message could not be sent.\",\n    \"code\": \"2003\"\n  }\n}\n\nError Codes\n\nCode\nHTTP Status\nDescription\n\n2001\n400\nThe request body could not be decoded.\n\n2002\n400\nThe request body failed validation.\n\n2003\n400\nThe message could not be sent due to a provider error or an internal system issue.\n\nMedia Operation Errors\n\nCode\nHTTP Status\nDescription\n\n2017\n400\nProvider not found or upload error\n\n2018\n400\nError retrieving media information\n\n2019\n400\nMedia download error\n\nINVALID_FILE\n400\nInvalid file or file could not be read\n\nSystem Errors\n\nHTTP Status\nDescription\n\n503 Service Unavailable\nThe system is currently in maintenance mode"
+      requestBody:
+        content:
+          application/json:
+            example:
+              from: '+901212121212'
+              messages:
+              - phone_number: '+901111111111'
+                user_id: user-uuid-123
+                message:
+                  type: template
+                  template:
+                    name: welcome_message
+                    language:
+                      code: tr
+                    components:
+                    - type: body
+                      parameters:
+                      - type: text
+                        text: Ahmet
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      security:
+      - OAuth2: []
+    servers:
+    - url: https://gw.useinsider.com
+  /api/wa/v2/transactional/settings:
+    post:
+      operationId: updateTransactionalWhatsappWebhookSettingsWithOauth20
+      summary: Update Transactional WhatsApp Webhook Settings with OAuth 2.0
+      tags:
+      - Transactional API
+      description: "You can use this API to update webhooks and other settings for transactional WhatsApp messages.\n\n<p >The system supports two grant types for OAuth2 authentication:</p> \n\nclient_credentials\n\nrefresh_token\n\nClient Credentials Request\ncurl -X POST \"https://gw.useinsider.com/api/wa/v2/transactional/settings\" \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer your_access_token\" \\\n  -d '{\n    \"webhook_url\": \"https://partner.example.com/webhooks/transactional\",\n    \"from\": \"+1234567890\",\n    \"auth_type\": \"oauth2\",\n    \"oauth2\": {\n      \"grant_type\": \"client_credentials\",\n      \"token_url\": \"https://oauth.partner.com/oauth/token\",\n      \"client_id\": \"your_client_id\",\n      \"client_secret\": \"your_client_secret\",\n      \"scopes\": [\n        \"webhook.write\"\n      ],\n      \"expires_in\": 3600\n    }\n  }'\n\nRefresh Token Request\ncurl -X POST \"https://gw.useinsider.com/api/wa/v2/transactional/settings\" \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer your_access_token\" \\\n  -d '{\n    \"webhook_url\": \"https://partner.example.com/webhooks/transactional\",\n    \"from\": \"+1234567890\",\n    \"auth_type\": \"oauth2\",\n    \"oauth2\": {\n      \"grant_type\": \"refresh_token\",\n      \"token_url\": \"https://oauth.partner.com/oauth/token\",\n      \"client_id\": \"your_client_id\",\n      \"client_secret\": \"your_client_secret\",\n      \"refresh_token\": \"your_refresh_token\",\n      \"scopes\": [\n        \"webhook.write\"\n      ],\n      \"expires_in\": 3600\n    }\n  }'\n\nError Codes\n\nCode\nHTTP Status\nDescription\n\n2010\n400\nThe settings request body could not be decoded.\n\n2011\n400\nThe settings request body failed validation.\n\n2012\n400\nAn error occurred while saving the settings.\n\n2020\n400\nThe webhook URL failed validation."
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+      security:
+      - OAuth2: []
+    servers:
+    - url: https://gw.useinsider.com
+  /v1/send:
+    post:
+      operationId: sendTransactionalWhatsappTemplateMessage
+      summary: Send transactional WhatsApp template message
+      tags:
+      - Transactional API
+      description: "Transactional WhatsApp API enables you to send targeted transactional WhatsApp messages to your users. You can trigger these WhatsApp messages once a user takes a specific action on your platform.\n\nBody Parameters\n\nColumn\nDescription\nData Type\nRequired\n\nmessages\nAll messages are contained in the messages key. You can send multiple messages with a single request.\nArray\nYes\n\nphoneNumber\nPhone number for the person you want to send a message to.\nString\nYes\n\nmessage\nMessage object\nObject\nYes\n\ntype\nMust be a “template” for this message type.\nString\nYes\n\nname\nTemplate name to be sent\nString\nYes\n\nlanguage\n\nObject\nYes\n\ncode\nTemplate language\nString\nYes\n\nmessage variable components\n\nArray\nYes\n\ntype\nbody\nString\nYes\n\nparameters\n\nArray\nYes\n\ntype\ntext\nString\nYes\n\ntext\nParameter value\nString\nYes\n\nbutton components\n\nArray\nYes\n\ntype\nbutton\nString\nYes\n\nsub_type\nQuick_reply, URL, PHONE_NUMBER\nString\nYes\n\nindex\n\nString\nYes\n\nparameters\n\nArray\nYes\n\ntype\npayload\nString\nYes\n\npayload\nPayload value\nString\nYes\n\nNote: Meta doesn't support adding emojis on button ID.\n\nSample Body\nThe following is a sample body to send transactional WhatsApp messages.\n\ncurl --location 'https://whatsapp.useinsider.com/v1/send' \\\n--header 'Content-Type: application/json' \\\n--header 'x-ins-auth-key: INS.*****************' \\\n--data '{\n    \"messages\": [\n        {\n            \"phoneNumber\": \"+1**********\",\n            \"message\": {\n                \"type\": \"template\",\n                \"template\": {\n                    \"name\": \"{{TEMPLATE_NAME}}\",\n                    \"language\": {\n                        \"code\": \"{{TEMPLATE_LANGUAGE_CODE}}\"\n                    },\n                    \"components\": [\n                        {\n                            \"type\": \"body\",\n                            \"parameters\": [\n                                {\n                                    \"type\": \"text\",\n                                    \"text\": \"{{PARAMETER_VALUE}}\"\n                                }\n                            ]\n                        },\n                        {\n                            \"type\": \"button\",\n                            \"sub_type\": \"quick_reply\",\n                            \"index\": \"0\",\n                            \"parameters\": [\n                                {\n                                    \"type\": \"payload\",\n                                    \"payload\": \"1\"\n                                }\n                            ]\n                        },\n                        {\n                            \"type\": \"button\",\n                            \"sub_type\": \"quick_reply\",\n                            \"index\": \"1\",\n                            \"parameters\": [\n                                {\n                                    \"type\": \"payload\",\n                                    \"payload\": \"2\"\n                                }\n                            ]\n                        }\n                    ]\n                }\n            }\n        }\n    ]\n}'\n\nIf you want to use CTA (Call To Action), you can use the below sample request:\n\ncurl --location 'https://whatsapp.useinsider.com/v1/send' \\\n--header 'x-ins-auth-key: INS.kjQu-+bL4HpeZqvgr1j0.d4IVgHl9GcE+_eaKxNA3P8M3q8-emrO3-zalg9GSF29mK+Jz5k' \\\n--header 'Content-Type: application/json' \\\n--data '{\n    \"messages\": [\n        {\n            \"phoneNumber\": \"+994558964184\",\n            \"message\": {\n                \"type\": \"template\",\n                \"template\": {\n                    \"name\": \"mert_masterfile_media_with_button\",\n                    \"language\": {\n                        \"code\": \"en\",\n                        \"policy\": \"deterministic\"\n                    },\n                    \"components\": [\n                        {\n                            \"type\": \"header\",\n                            \"sub_type\": \"\",\n                            \"index\": \"\",\n                            \"parameters\": [\n                                {\n                                    \"type\": \"image\",\n                                    \"image\": {\n                                        \"link\": \"https://inshoppingcart.com/seleniumautomation/wp-content/uploads/2018/08/cap-2.jpg\"\n                                    }\n                                }\n                            ]\n                        },\n                        {\n                            \"type\": \"body\",\n                            \"sub_type\": \"\",\n                            \"index\": \"\",\n                            \"parameters\": [\n                                {\n                                    \"type\": \"text\",\n                                    \"text\": \"https://vikingsankara.com?abc=sha\"\n                                }\n                            ]\n                        },\n                        {\n                            \"type\": \"button\",\n                            \"sub_type\": \"url\",\n                            \"index\": \"0\",\n                            \"parameters\": [\n                                {\n                                    \"type\": \"text\",\n                                    \"text\": \"https://vikingsankara.com\"\n                                }\n                            ]\n                        }\n                    ]\n                }\n            }\n        }\n    ]\n}'\n\nIf you don't want to use CTA, you can use the below sample request:\n\ncurl --location 'https://whatsapp.useinsider.com/v1/send' \\\n--header 'Content-Type: application/json' \\\n--header 'x-ins-auth-key: INS.tiNlcL284J8dwCpfoqdR.gpyLwFG-0fSHPS9+kZYNsI-D2IWFNjlaRDlXJrZjx2_ZPTP37I' \\\n--data '{\n    \"messages\": [\n        {\n            \"phoneNumber\": \"+994558964184\",\n            \"message\": {\n                \"type\": \"template\",\n                \"template\": {\n                    \"name\": \"7_image_header_no_button_copy\",\n                    \"language\": {\n                        \"code\": \"fi\",\n                        \"policy\": \"deterministic\"\n                    },\n                    \"components\": [\n                        {\n                            \"type\": \"header\",\n                            \"sub_type\": \"\",\n                            \"index\": \"\",\n                            \"parameters\": [\n                                {\n                                    \"type\": \"image\",\n                                    \"image\": {\n                                        \"link\": \"https://image.useinsider.com/vikingsankara/media/whatsapp-business/11521/83rbBaWO7H63VmACSXiZ1716506118.jpg\"\n                                    }\n                                }\n                            ]\n                        },\n                        {\n                            \"type\": \"body\",\n                            \"sub_type\": \"\",\n                            \"index\": \"\",\n                            \"parameters\": [\n                                {\n                                    \"type\": \"text\",\n                                    \"text\": \"shahla\"\n                                }\n                            ]\n                        }\n                    ]\n                }\n            }\n        }\n    ]\n}'\n\nSample Responses\nOne key information will be returned for each message to be sent. This key will be added to all events related to the message.\n\n{\n    \"keys\": [\n        \"whatsapp-*************************\"\n    ]\n}\n\n401 Unauthorized\nIf you use the wrong key, you will see the following error.\n\n{\n    \"message\": \"unauthorized\"\n}\n\nLimitations\n\nAll functions must be executed with a simple HTTPS POST request.\n\nOnly new WhatsApp messages can be sent via this API. No data can be retrieved.\n\nThe API Key should be provided as the authorization key on the request header. If the key is incorrect, the operation will not be executed and an authorization error will return in the response.\n\nTransactional API cannot be used for sending bulk/promotional WhatsApp messages. It is designed only to set transactional WhatsApp messages.\n\nThe rate limit is 10 requests per second."
+      security:
+      - InsAuthKey: []
+      requestBody:
+        content:
+          application/json:
+            examples:
+              default:
+                value:
+                  messages:
+                  - phoneNumber: +1**********
+                    message:
+                      type: template
+                      template:
+                        name: '{{TEMPLATE_NAME}}'
+                        language:
+                          code: '{{TEMPLATE_LANGUAGE_CODE}}'
+                        components:
+                        - type: body
+                          parameters:
+                          - type: text
+                            text: '{{PARAMETER_VALUE}}'
+                        - type: button
+                          sub_type: quick_reply
+                          index: '0'
+                          parameters:
+                          - type: payload
+                            payload: '1'
+                        - type: button
+                          sub_type: quick_reply
+                          index: '1'
+                          parameters:
+                          - type: payload
+                            payload: '2'
+              send-transactional-whatsapp-text-message:
+                summary: Send transactional WhatsApp text message
+                value:
+                  messages:
+                  - phoneNumber: +1**********
+                    message:
+                      type: text
+                      text:
+                        preview_url: true
+                        body: Example Message
+              send-transactional-whatsapp-media-message-image:
+                summary: Send transactional WhatsApp media message (Image)
+                value:
+                  messages:
+                  - phoneNumber: +1**********
+                    message:
+                      type: image
+                      image:
+                        link: '{{IMAGE_URL}}'
+                        caption: Media Message (Image)
+              send-transactional-whatsapp-media-message-document:
+                summary: Send transactional WhatsApp media message (Document)
+                value:
+                  messages:
+                  - phoneNumber: +1**********
+                    message:
+                      type: document
+                      audio:
+                        link: '{{DOCUMENT_LINK}}'
+                        caption: '{{DOCUMENT_DESCRIPTION}}'
+                        filename: '{{DOCUMENT_NAME}}'
+              send-transactional-whatsapp-media-message-location:
+                summary: Send transactional WhatsApp media message (Location)
+                value:
+                  messages:
+                  - phoneNumber: +1**********
+                    message:
+                      type: location
+                      location:
+                        longitude: '11.1111111'
+                        latitude: '11.1111111'
+                        name: '{{ADDRESS_NAME}}'
+                        address: '{{FULL_ADDRESS}}'
+              send-transactional-whatsapp-message-with-button-reply:
+                summary: Send transactional WhatsApp message with button reply
+                value:
+                  messages:
+                  - phoneNumber: +1**********
+                    message:
+                      type: interactive
+                      interactive:
+                        type: button
+                        header:
+                          type: text
+                          text: HEADER_TEXT
+                        body:
+                          text: BUTTON_TEXT
+                        action:
+                          buttons:
+                          - type: reply
+                            reply:
+                              id: UNIQUE_BUTTON_ID_1
+                              title: BUTTON_TITLE_1
+                          - type: reply
+                            reply:
+                              id: UNIQUE_BUTTON_ID_2
+                              title: BUTTON_TITLE_2
+      responses:
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+    servers:
+    - url: https://whatsapp.useinsider.com
+components:
+  responses:
+    TooManyRequests:
+      description: Too Many Requests. The published per-endpoint rate limit was exceeded; back off and retry, honouring Retry-After when present.
+      content:
+        application/json:
+          example:
+            message: Too Many Requests
+            status: 429
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: OAuth 2.0. Client ID / Client Secret are generated in the InOne panel under Settings > InOne Settings > Integration Settings > OAuth 2.0 Credentials, with per-channel scopes selected at generation time. Endpoint metadata read live from https://gw.useinsider.com/.well-known/oauth-authorization-server (RFC 8414).
+      flows:
+        clientCredentials:
+          tokenUrl: https://gw.useinsider.com/oauth2/token
+          scopes: {}
+        authorizationCode:
+          authorizationUrl: https://gw.useinsider.com/oauth2/authorize
+          tokenUrl: https://gw.useinsider.com/oauth2/token
+          refreshUrl: https://gw.useinsider.com/oauth2/token
+          scopes: {}
+      x-pkce:
+      - S256
+      x-revocation-endpoint: https://gw.useinsider.com/oauth2/revoke
+      x-discovery: well-known/insider-gw-oauth-authorization-server.json
+    InsAuthKey:
+      type: apiKey
+      in: header
+      name: X-INS-AUTH-KEY
+      description: Insider One authorization key for this API, generated in the InOne panel.
+externalDocs:
+  description: Insider One API reference
+  url: https://academy.insiderone.com/docs/api-reference-welcome
+x-refined-from:
+- insider-gateway-openapi.yml
+- insider-whatsapp-openapi.yml
+x-provenance:
+  generated: '2026-08-13'
+  method: derived
+  source: postman/insider-one-apis.postman_collection.json
+  source_url: https://documenter.gw.postman.com/api/collections/24851117/2sB3dSR9bM
+  publisher_page: https://developers.insiderone.com/
+  note: Insider One publishes a single public Postman collection covering every REST API. This document is the subset of that collection served from analytics.api.useinsider.com.
