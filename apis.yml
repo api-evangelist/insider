@@ -1598,16 +1598,16 @@ apis:
     url: https://academy.insiderone.com/docs/architect-analytics-api
   - type: Documentation
     url: https://academy.insiderone.com/docs/transactional-journeys-on-api-call-starter
-- aid: insider:insider-whatsapp-api
+- aid: insider:insider-whats-app-api
   name: Insider Whats App API
-  description: The WhatsApp API from Insider — 4 operation(s) for whatsapp.
-  humanURL: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
-  baseURL: https://unification.useinsider.com
+  description: The Whats App API from Insider — 4 operation(s) for whats app.
+  humanURL: https://academy.insiderone.com/docs/set-up-insider-one-mcp
+  baseURL: https://mcp.insiderone.com/mcp
   tags:
-  - WhatsApp
+  - Whats App
   properties:
   - type: OpenAPI
-    url: openapi/insider-whatsapp-api-openapi.yml
+    url: openapi/insider-whats-app-api-openapi.yml
   - type: Documentation
     url: https://academy.insiderone.com/docs/ucd-user-data-apis-overview
   - type: APIReference
