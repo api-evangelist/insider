@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Insider One Architect Transactional Journey Transactional Journeys API
+  title: Insider One Architect Transactional Journey Transactional…
   version: 1.0.0
   description: 'The On API Call starter: allow backend systems to explicitly enter users into a transactional Architect journey and send messages in real time.
 
