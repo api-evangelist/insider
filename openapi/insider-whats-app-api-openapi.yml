@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Insider One Contact Whats App API
+  title: Insider One Contact WhatsApp API
   version: 1.0.0
   description: First-party segment upload and per-channel subscription management (subscribe/unsubscribe) for Email, SMS and WhatsApp.
   contact:
