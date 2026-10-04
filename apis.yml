@@ -1607,8 +1607,6 @@ apis:
   humanURL: https://academy.insiderone.com/docs/set-up-insider-one-mcp
   baseURL: https://mcp.insiderone.com/mcp
   tags:
-  - WhatsApp
-  tags_raw:
   - Whats App
   properties:
   - type: OpenAPI
