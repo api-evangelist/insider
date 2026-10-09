@@ -241,3 +241,18 @@ limitations:
 - OnSite analytics are not exposed through MCP.
 - Existing Insider One API rate limits apply to MCP calls (see rate-limits/insider-rate-limits.yml).
 crosswalk: mcp/insider-tool-crosswalk.yml
+rfc9728:
+  endpoint: https://mcp.insiderone.com/mcp
+  metadata_url: https://gw.useinsider.com/.well-known/oauth-protected-resource
+  discovered_via: WWW-Authenticate resource_metadata on an anonymous POST initialize
+  fetched: '2026-09-25'
+  http_status: 200
+  content_type: application/json
+  document:
+    resource: https://gw.useinsider.com
+    authorization_servers:
+    - https://gw.useinsider.com
+    scopes_supported:
+    - '*'
+    bearer_methods_supported:
+    - header
